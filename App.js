@@ -1,21 +1,38 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, {Component} from 'react';
+import {Provider} from 'react-redux';
+import {createStore, applyMiddleware} from 'redux';
+import ReduxThunk from 'redux-thunk';
+import firebase from 'firebase';
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-      </View>
-    );
-  }
+import {FIREBASE_CONFIG} from './env';
+import reducers from './src/reducers';
+import Router from './src/Router';
+
+const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
+
+import {StyleSheet, Text, View} from 'react-native';
+
+class App extends Component {
+    componentWillMount() {
+        firebase.initializeApp(FIREBASE_CONFIG);
+    }
+
+    render() {
+        return (
+            <Provider store={store}>
+                <Router/>
+            </Provider>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 });
+
+export default App;
