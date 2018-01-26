@@ -14,13 +14,13 @@ import {backgroundLight, highlightGreen, highlightBlue, iOSBlue} from './styles'
 import {campsite} from './locale.en';
 
 // our components - core
-import Login from './components/auth/Login';
+// import Login from './screens/LoginScreen';
 import Dashboard from './components/Dashboard';
 import More from './components/More';
 import Search from './components/Search';
 import Favorites from './components/Favorites';
-import List from './components/List';
-import Map from './components/Map';
+import List from './screens/ListScreen';
+import Map from './screens/MapScreen';
 import Filter from './components/Filter';
 import Campsite from './components/Campsite';
 // our components - additional

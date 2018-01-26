@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import {Text} from 'react-native';
 
 
-import {CardSection, Card} from './common';
+import {CardSection, Card} from '../components/common/index';
 
-class List extends Component {
+class ListScreen extends Component {
     render(){
         return(
             <Card>
@@ -18,4 +18,4 @@ class List extends Component {
     }
 }
 
-export default List;
+export default ListScreen;
