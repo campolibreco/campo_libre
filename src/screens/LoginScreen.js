@@ -14,6 +14,8 @@ import {login} from '../locale.en';
 // our components - core
 // our components - additional
 import {Button, Input, Card, CardSection, PasswordInput} from '../components/common/index';
+import ListScreen from "../components/SearchList";
+import MapScreen from "../components/SearchMap";
 
 class LoginScreen extends Component {
 
@@ -24,7 +26,7 @@ class LoginScreen extends Component {
     componentWillReceiveProps(nextProps) {
         const {token, navigation: {navigate}} = nextProps;
 
-        if(token){
+        if (token) {
             Keyboard.dismiss();
             navigate('map');
         }
@@ -38,6 +40,20 @@ class LoginScreen extends Component {
 
     onPressFacebookLogin = () => {
         // FB login code will go here
+        // for right now, it's just a shortcut past the loginScreen
+
+        const {navigation: {navigate}} = this.props;
+
+        navigate('main');
+    };
+
+    static navigationOptions = (props) => {
+        const {navigation: {navigate}} = props;
+
+        return {
+            header: null
+        }
+
     };
 
     render() {

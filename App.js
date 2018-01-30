@@ -9,8 +9,11 @@ import {FIREBASE_CONFIG} from './env';
 import reducers from './src/reducers';
 
 import LoginScreen from './src/screens/LoginScreen';
-import MapScreen from './src/screens/MapScreen';
-import ListScreen from './src/screens/ListScreen';
+import SearchScreen from './src/screens/SearchScreen';
+import FilterScreen from './src/screens/FilterScreen';
+import FavoritesScreen from './src/screens/FavoritesScreen';
+import AddSiteScreen from './src/screens/AddSiteScreen';
+import MoreScreen from './src/screens/MoreScreen';
 
 const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
 
@@ -24,23 +27,26 @@ class App extends Component {
     render() {
         const {navigatorContainerStyle} = styles;
 
-        const MainNavigator = TabNavigator({
-            login: {screen: LoginScreen},
+        const MainNavigator = StackNavigator({
+            login: {
+                screen: LoginScreen
+            },
             main: {
                 screen: TabNavigator({
-                    search: {
-                        screen: StackNavigator({
-                            map: {screen: MapScreen},
-                            list: {screen: ListScreen}
-                        })
-                    }
+                    search: {screen: SearchScreen},
+                    favorites: {screen: FavoritesScreen},
+                    addSite: {screen: AddSiteScreen},
+                    more: {screen: MoreScreen}
                 })
+            },
+            filter: {
+                screen: FilterScreen,
+                navigationOptions: {
+                    tabBarVisible: false
+                }
             }
         }, {
-            lazy: true,
-            navigationOptions: {
-                tabBarVisible: false
-            }
+            lazy: true
         });
 
         return (

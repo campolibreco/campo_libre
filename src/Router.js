@@ -16,13 +16,13 @@ import {campsite} from './locale.en';
 // our components - core
 // import Login from './screens/LoginScreen';
 import Dashboard from './components/Dashboard';
-import More from './components/More';
+import More from './screens/MoreScreen';
 import Search from './components/Search';
-import Favorites from './components/Favorites';
-import List from './screens/ListScreen';
-import Map from './screens/MapScreen';
-import Filter from './components/Filter';
-import Campsite from './components/Campsite';
+import Favorites from './screens/FavoritesScreen';
+import List from './components/SearchList';
+import Map from './components/SearchMap';
+import Filter from './screens/FilterScreen';
+import Campsite from './screens/AddSiteScreen';
 // our components - additional
 import {CardSection, Card, Input, Button} from './components/common';
 
