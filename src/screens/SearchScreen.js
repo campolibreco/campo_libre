@@ -27,19 +27,11 @@ class SearchScreen extends Component {
     };
 
     toggleButton = () => {
-        console.log("Clicked toggleButton with this state: ", this.state);
         const {viewStyle} = this.state;
+
         const nextButtonName = viewStyle;
-        let newViewStyle = '';
+        const newViewStyle = viewStyle === SearchOptions.MAP ? SearchOptions.LIST : SearchOptions.MAP;
 
-        if (viewStyle === SearchOptions.MAP) {
-            newViewStyle = SearchOptions.LIST;
-        } else {
-            newViewStyle = SearchOptions.MAP;
-        }
-
-        console.log("New buttonName: ", nextButtonName);
-        console.log("New viewStyle: ", newViewStyle);
         this.props.navigation.setParams({buttonName: nextButtonName});
         this.setState({viewStyle: newViewStyle});
     };
@@ -56,7 +48,6 @@ class SearchScreen extends Component {
 
     static renderLeftNavButton = ({buttonName, toggleButton}) => {
         let preparedName = _.capitalize(buttonName);
-        console.log("Rendering left button...", buttonName);
 
         if (Platform.OS === 'ios') {
             return (
@@ -95,7 +86,8 @@ class SearchScreen extends Component {
             headerTitle: 'Find a Site',
             headerLeft: SearchScreen.renderLeftNavButton(params),
             headerRight: SearchScreen.renderRightNavButton(navigate),
-            tabBarIcon: ({focused, tintColor }) => (<Icon type='ionicon' name={focused ? 'ios-search' : 'ios-search-outline'} size={25} color={tintColor} />)
+            tabBarIcon: ({focused, tintColor}) => (
+                <Icon type='ionicon' name={focused ? 'ios-search' : 'ios-search-outline'} size={25} color={tintColor}/>)
         }
 
     };
@@ -138,7 +130,7 @@ class SearchScreen extends Component {
     };
 
     renderList = () => {
-        return(
+        return (
             <Card>
                 <CardSection>
                     <Text>
