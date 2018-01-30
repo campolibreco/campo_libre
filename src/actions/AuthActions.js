@@ -30,20 +30,25 @@ export const loginAuthError = (dispatch, err) => {
     });
 };
 
-export const loginSuccess = (dispatch) => {
-    dispatch({
-        type: LOGIN_SUCCESS
-    });
+export const loginSuccess = (dispatch, token) => {
+    // TODO token arg will be used when we add FB Auth
+    let tokenToSend = token;
 
-    Actions.hidden({type: 'reset'});
-    Actions.tabbar();
+    if (!tokenToSend) {
+        tokenToSend = 'Manually Generated Token'
+    }
+
+    dispatch({
+        type: LOGIN_SUCCESS,
+        payload: tokenToSend
+    });
 };
 
 export const loginUser = ({email, password}) => {
     return (dispatch) => {
         firebase.auth().signInWithEmailAndPassword(_.trim(email), _.trim(password))
             .then(user => {
-                loginSuccess(dispatch)
+                loginSuccess(dispatch);
             })
             .catch(err => {
                 loginAuthError(dispatch, err);

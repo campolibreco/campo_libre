@@ -1,6 +1,7 @@
 export const login = {
     welcome_text: "Bienvenidos!",
     login: "Log in",
+    login_with_facebook: "Facebook Login Placeholder",
     signup: "Sign up",
     email: "Email",
     email_placeholder: "email@gmail.com",

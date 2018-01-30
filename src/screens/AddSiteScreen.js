@@ -1,12 +1,25 @@
 import React, {Component} from 'react';
 import {Text} from 'react-native';
+import {Icon} from 'react-native-elements';
 
 import {campsite} from '../locale.en';
-import {backgroundLogo} from '../styles';
+import {backgroundLogo} from '../styles/index';
 
-import {CardSection, Card, Input, Button} from './common';
+import {CardSection, Card, Input, Button} from '../components/common/index';
 
-class Campsite extends Component {
+class AddSiteScreen extends Component {
+    static navigationOptions = (props) => {
+        const {navigation: {navigate}} = props;
+
+        return {
+            title: 'Add a Site',
+            headerTitle: 'Add a Campsite',
+            headerLeft: null,
+            tabBarIcon: ({focused, tintColor }) => (<Icon type='material-community' name={focused ? 'tent' : 'tent'} size={25} color={tintColor} />)
+        }
+
+    };
+
     render(){
         const {containerStyle, descriptionStyle, sectionStyle} = styles;
 
@@ -45,4 +58,4 @@ const styles = {
     }
 }
 
-export default Campsite;
+export default AddSiteScreen;
