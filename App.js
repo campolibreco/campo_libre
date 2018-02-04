@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Provider} from 'react-redux';
-import {createStore, applyMiddleware} from 'redux';
+import {createStore, applyMiddleware, compose} from 'redux';
 import ReduxThunk from 'redux-thunk';
 import firebase from 'firebase';
 import {TabNavigator, StackNavigator} from 'react-navigation';
@@ -15,7 +15,7 @@ import FavoritesScreen from './src/screens/FavoritesScreen';
 import AddSiteScreen from './src/screens/AddSiteScreen';
 import MoreScreen from './src/screens/MoreScreen';
 
-const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
+const store = createStore(reducers, {}, compose(applyMiddleware(ReduxThunk)));
 
 import {StyleSheet, Text, View} from 'react-native';
 
