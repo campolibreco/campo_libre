@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import {Text} from 'react-native';
 import {Icon} from 'react-native-elements';
+import { Button, FormLabel } from 'react-native-elements';
 
 import {campsite} from '../locale.en';
-import {backgroundLogo} from '../styles/index';
+import {navyBlue, grey, darkBlue, lightwhiteblue} from '../styles/index';
 
-import {CardSection, Card, Input, Button} from '../components/common/index';
+import {CardSection, Card, Input} from '../components/common/index';
 
 class AddSiteScreen extends Component {
     static navigationOptions = (props) => {
@@ -21,40 +22,42 @@ class AddSiteScreen extends Component {
     };
 
     render(){
-        const {containerStyle, descriptionStyle, sectionStyle} = styles;
+        const { buttonStyle } = styles;
 
         return(
-            <Card style={containerStyle}>
-                <CardSection style={sectionStyle}>
-                    <Text style={descriptionStyle}>
+            <Card>
+                <CardSection>
+                    <Text>
                         {campsite.description}
-                    </Text>
-                </CardSection>
-
-                <CardSection style={sectionStyle}>
+                     </Text>
+                    <Input/>
+                 </CardSection>
                     <Button
-
+                      large
+                      rounded={true}
+                      buttonStyle={buttonStyle}
+                      icon={{name: 'plus', type: 'font-awesome'}}
+                      title='Add A Site'
                     >
                         {campsite.upload}
                     </Button>
-                </CardSection>
             </Card>
         );
     }
 }
 
 const styles = {
-    containerStyle: {
-        flex: 1,
-        backgroundColor: backgroundLogo
-    },
+
     descriptionStyle: {
-        padding: 10,
-        backgroundColor: backgroundLogo,
+        color: darkBlue,
         fontSize: 15
     },
     sectionStyle: {
-        backgroundColor: backgroundLogo
+        backgroundColor: grey
+    },
+    buttonStyle:{
+      marginTop: 10,
+      backgroundColor: navyBlue
     }
 }
 

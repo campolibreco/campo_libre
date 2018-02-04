@@ -208,7 +208,7 @@ const RouterComponent = () => {
 
 const styles = {
     navigationStyle: {
-        backgroundColor: backgroundLight
+        backgroundColor: darkBlue
     },
     rightFilterStyle: {
         paddingRight: 10,
