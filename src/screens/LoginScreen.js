@@ -102,6 +102,7 @@ class LoginScreen extends Component {
                             >
                              {login.login_with_facebook}
                             </Button>
+
                   </View>
 
 
