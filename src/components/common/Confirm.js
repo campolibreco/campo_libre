@@ -1,7 +1,8 @@
 import React from 'react';
 import {Text, View, Modal} from 'react-native';
+import {Button} from 'react-native-elements';
 import {CardSection} from './CardSection';
-import {Button} from './Button';
+
 
 const Confirm = ({children, onAccept, onDecline, visible}) => {
     const {textStyle, containerStyle, cardSectionStyle} = styles;

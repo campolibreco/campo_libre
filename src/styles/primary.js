@@ -1,9 +1,13 @@
 
-export const backgroundLogo = '#b7a986';
-export const backgroundLight = '#E5E3C3';
-export const highlightBlue = '#99B5A0';
-export const highlightGreen = '#365743';
-export const accentDarkGreen = '#3C4131';
-export const accentBrownGreen = '#585A28';
-export const textDark = '#1A1C15';
-export const iOSBlue = '#3478f6'
+//Base colors
+
+export const navyBlue = '#7C9EC2';
+export const lightwhiteblue = '#E1E9F4';
+export const grayblue = '#C9D1DB';
+export const grey = '#999FA6';
+export const darkBlue = '#1F1F27';
+
+// Hightlight colors
+
+// Social media
+export const facebookBlue ='#3b5998';
