@@ -19,4 +19,4 @@ export const campsite = {
     description: "Looking for some secret sites? Want to find a hidden spot? Upload a campsite, and if it's approved, we'll unlock two secret sites that are only available to our contributing members.",
     upload: "Upload Campsite",
 
-}
+};
