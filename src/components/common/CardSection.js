@@ -14,13 +14,13 @@ const CardSection = ({children, style}) => {
 
 const styles = {
     containerStyle: {
-        borderBottomWidth: 1,
-        padding: 5,
-        backgroundColor: '#fff',
-        justifyContent: 'flex-start',
-        flexDirection: 'row',
-        borderColor: '#ddd',
-        position: 'relative'
+      backgroundColor:'#fff',
+      padding: 15,
+      margin:10,
+      borderRadius: 5,
+      shadowColor: '#C9D1DB',
+      shadowRadius: 5,
+      shadowOpacity: 0.3,
     }
 };
 

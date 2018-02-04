@@ -16,7 +16,6 @@
 // this below is equivalent to the longer code above
 // but note that we had to remove 'default' from exports in the other Components, and had to pass and Object instead
 
-export * from './Button';
 export * from './Card';
 export * from './CardSection';
 export * from './Header';

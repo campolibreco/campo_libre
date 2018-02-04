@@ -9,7 +9,7 @@ import { Button, FormInput, FormLabel } from 'react-native-elements'
 import {emailChanged, passwordChanged, loginUser} from '../actions/index';
 
 // language and styles
-import {textDark, lightwhiteblue, facebookBlue, grayblue} from '../styles/index';
+import {textDark, lightwhiteblue, facebookBlue, grayblue, navyBlue} from '../styles/index';
 import {login} from '../locale.en';
 
 
@@ -62,7 +62,8 @@ class LoginScreen extends Component {
         return (
             <Card style={containerStyle}>
                 <View style={innerContainerstyle}>
-                    <View style={loginContainer}>
+                    <View >
+                      <CardSection>
                           <FormLabel>Email</FormLabel>
                             <FormInput
                                 label={login.email}
@@ -92,20 +93,21 @@ class LoginScreen extends Component {
                             >
                                 {login.login}
                             </Button>
-                            <Button
-                               large
-                               icon={{name: 'facebook', type: 'font-awesome'}}
-                               title='Sign in with Facebook'
-                               buttonStyle={facebookStyle}
-                               onPress={this.onPressFacebookLogin}
-                               rounded={true}
-                            >
-                             {login.login_with_facebook}
-                            </Button>
 
-                  </View>
+                          </CardSection>
+                    </View>
 
-
+                    <Button
+                       large
+                       transparent
+                       icon={{name: 'facebook', type: 'font-awesome'}}
+                       title='Sign in with Facebook'
+                       buttonStyle={facebookStyle}
+                       onPress={this.onPressFacebookLogin}
+                       rounded={true}
+                    >
+                     {login.login_with_facebook}
+                    </Button>
                  </View>
             </Card>
         );
@@ -125,7 +127,7 @@ const styles = {
     },
     textStyle: {
         color: '#fff',
-        fontSize: 18,
+        fontSize: 20,
         alignSelf: 'center'
     },
     facebookStyle:{
@@ -133,13 +135,18 @@ const styles = {
       marginTop: 5
     },
     buttonStyle:{
-      marginTop: 10
+      marginTop: 10,
+      backgroundColor: navyBlue
     },
     loginContainer:{
       backgroundColor:'#fff',
       padding: 15,
       margin:10,
-      borderRadius: 10
+      borderRadius: 10,
+      shadowColor: grayblue,
+      shadowRadius: 5,
+      shadowOpacity: 0.3,
+
     }
 };
 
