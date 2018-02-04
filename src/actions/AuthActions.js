@@ -1,4 +1,3 @@
-import {Actions} from 'react-native-router-flux';
 import firebase from 'firebase';
 import _ from 'lodash';
 
@@ -61,7 +60,8 @@ export const logoutUser = () => {
         firebase.auth().signOut()
             .then((user) => {
                 console.log("Logged the user out", user)
-                Actions.login();
+
+                //TODO add a trigger here to route back to login screen
             })
     }
 }
