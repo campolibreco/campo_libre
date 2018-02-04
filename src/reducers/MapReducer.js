@@ -28,23 +28,13 @@ export default (state = INITIAL_STATE, action) => {
             return INITIAL_STATE;
 
         case VIEW_STYLE_UPDATE:
-            const thingToReturn = {...state, viewStyle: payload};
-
-            console.log("VIEW_STYLE_UPDATE", thingToReturn);
-
             return {...state, viewStyle: payload};
 
         case MAP_READY:
-            const thingToReturn2 = {...state, mapLoaded: true};
-
-            console.log("MAP_READY_DISPATCH", thingToReturn2);
-            return thingToReturn2;
+            return {...state, mapLoaded: true};
 
         case MAP_REGION_CHANGE:
-            const thingToReturn3 = {...state, region: payload};
-
-            console.log("REGION_CHANGE DISPATCH", thingToReturn3);
-            return {...state, region: payload};;
+            return {...state, region: payload};
 
         default:
             return state;

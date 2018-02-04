@@ -23,7 +23,6 @@ export const updateViewStyle = (newViewStyle) => {
 
     };
 
-    console.log("UpdateViewStyle payload", thingToReturn);
     return thingToReturn;
 };
 
