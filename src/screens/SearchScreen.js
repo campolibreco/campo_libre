@@ -3,48 +3,39 @@ import {View, Text, ActivityIndicator, StyleSheet, Platform, Keyboard} from 'rea
 import {Button} from 'react-native-elements';
 import {MapView} from 'expo';
 import {Icon} from 'react-native-elements';
+import {connect} from 'react-redux';
+
+import {initializeMap, updateViewStyle, mapLoaded, updateRegion} from "../actions";
 
 import _ from 'lodash';
 
 import {CardSection, Card} from '../components/common/index';
 
-const SearchOptions = {
-    MAP: 'map',
-    LIST: 'list'
-};
+import {map} from '../constants';
 
 
 class SearchScreen extends Component {
-    state = {
-        region: {
-            longitude: -105.727939,
-            latitude: 39.695168,
-            longitudeDelta: 1,
-            latitudeDelta: 1
-        },
-        mapLoaded: false,
-        viewStyle: SearchOptions.MAP
-    };
-
-    toggleButton = () => {
-        const {viewStyle} = this.state;
-
-        const nextButtonName = viewStyle;
-        const newViewStyle = viewStyle === SearchOptions.MAP ? SearchOptions.LIST : SearchOptions.MAP;
-
-        this.props.navigation.setParams({buttonName: nextButtonName});
-        this.setState({viewStyle: newViewStyle});
-    };
+    componentWillMount() {
+        this.props.initializeMap();
+    }
 
     componentDidMount() {
         Keyboard.dismiss();
 
-        this.props.navigation.setParams({buttonName: SearchOptions.LIST, toggleButton: this.toggleButton});
+        this.props.navigation.setParams({buttonName: map.SearchOptions.LIST, toggleButton: this.toggleButton});
 
-        this.setState({
-            mapLoaded: true
-        });
+        this.props.mapLoaded();
     }
+
+    toggleButton = () => {
+        const {viewStyle} = this.props;
+
+        const nextButtonName = viewStyle;
+        const newViewStyle = viewStyle === map.SearchOptions.MAP ? map.SearchOptions.LIST : map.SearchOptions.MAP;
+
+        this.props.navigation.setParams({buttonName: nextButtonName});
+        this.props.updateViewStyle(newViewStyle);
+    };
 
     static renderLeftNavButton = ({buttonName, toggleButton}) => {
         let preparedName = _.capitalize(buttonName);
@@ -93,8 +84,8 @@ class SearchScreen extends Component {
     };
 
     regionDeltaIsAcceptable = (newRegion) => {
-        const longDeltaIsAcceptable = (Math.abs(newRegion.longitudeDelta - this.state.region.longitudeDelta) < 10);
-        const latDeltaIsAcceptable = (Math.abs(newRegion.latitudeDelta - this.state.region.latitudeDelta) < 10);
+        const longDeltaIsAcceptable = (Math.abs(newRegion.longitudeDelta - this.props.region.longitudeDelta) < 10);
+        const latDeltaIsAcceptable = (Math.abs(newRegion.latitudeDelta - this.props.region.latitudeDelta) < 10);
 
         return longDeltaIsAcceptable && latDeltaIsAcceptable;
     };
@@ -104,19 +95,17 @@ class SearchScreen extends Component {
         if (!this.regionDeltaIsAcceptable(newRegion)) {
             return;
         }
-        this.setState({
-            region: newRegion
-        })
+        this.props.updateRegion(newRegion);
     };
 
     renderMap = () => {
         const {fillScreen, spinnerContainerStyle} = styles;
 
-        if (this.state.mapLoaded) {
+        if (this.props.mapLoaded) {
             return (
                 <MapView
                     style={fillScreen}
-                    region={this.state.region}
+                    region={this.props.region}
                     onRegionChangeComplete={this.onRegionChangeComplete}
                 />
             )
@@ -143,8 +132,8 @@ class SearchScreen extends Component {
 
     renderSearchScreen = () => {
 
-        const {viewStyle} = this.state;
-        if (viewStyle === SearchOptions.MAP) {
+        const {viewStyle} = this.props;
+        if (viewStyle === map.SearchOptions.MAP) {
             return this.renderMap();
         } else {
             return this.renderList();
@@ -172,4 +161,11 @@ const styles = StyleSheet.create({
     }
 });
 
-export default SearchScreen;
+function mapStateToProps(state) {
+    const {region, mapLoaded, viewStyle} = state.map;
+
+
+    return {region, mapLoaded, viewStyle};
+}
+
+export default connect(mapStateToProps, {initializeMap, updateViewStyle, mapLoaded, updateRegion})(SearchScreen);
