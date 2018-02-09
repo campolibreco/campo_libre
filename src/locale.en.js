@@ -1,7 +1,8 @@
 export const login = {
-    welcome_text: "Bienvenidos!",
-    login: "Log in",
-    login_with_facebook: "Facebook Login Placeholder",
+    campo_libre: 'Campo Libre',
+    tagline: "It's time to get out there...",
+    login_as_guest: "Continue as guest",
+    login_with_facebook: "Log in with Facebook",
     signup: "Sign up",
     email: "Email",
     email_placeholder: "email@gmail.com",

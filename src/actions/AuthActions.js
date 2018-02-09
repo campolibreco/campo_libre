@@ -1,67 +1,24 @@
-import firebase from 'firebase';
+import {Facebook} from 'expo';
+
 import _ from 'lodash';
 
 import {
-    EMAIL_CHANGED,
-    PASSWORD_CHANGED,
-    LOGIN_AUTH_ERROR,
-    LOGIN_SUCCESS
+    FACEBOOK_LOGIN_SUCCESS,
+    FACEBOOK_LOGIN_FAILURE,
+    FACEBOOK_LOGIN_LOGOUT
 } from './types';
 
-export const emailChanged = (text) => {
-    return {
-        type: EMAIL_CHANGED,
-        payload: text
+import {FACEBOOK_AUTH} from '../../env';
+
+export const logUserIntoFacebook = (dispatch) => {
+    const {appID} = FACEBOOK_AUTH;
+    const faceBookOptions = {
+        permissions: 'public_profile'
     };
+
+    Facebook.logInWithReadPermissionsAsync(appID, faceBookOptions)
+        .then((result) =>{
+            console.log("FB response: ", result);
+        })
+
 };
-
-export const passwordChanged = (text) => {
-    return {
-        type: PASSWORD_CHANGED,
-        payload: text
-    };
-};
-
-export const loginAuthError = (dispatch, err) => {
-    dispatch({
-        type: LOGIN_AUTH_ERROR,
-        payload: err
-    });
-};
-
-export const loginSuccess = (dispatch, token) => {
-    // TODO token arg will be used when we add FB Auth
-    let tokenToSend = token;
-
-    if (!tokenToSend) {
-        tokenToSend = 'Manually Generated Token'
-    }
-
-    dispatch({
-        type: LOGIN_SUCCESS,
-        payload: tokenToSend
-    });
-};
-
-export const loginUser = ({email, password}) => {
-    return (dispatch) => {
-        firebase.auth().signInWithEmailAndPassword(_.trim(email), _.trim(password))
-            .then(user => {
-                loginSuccess(dispatch);
-            })
-            .catch(err => {
-                loginAuthError(dispatch, err);
-            })
-    }
-};
-
-export const logoutUser = () => {
-    return (dispatch) => {
-        firebase.auth().signOut()
-            .then((user) => {
-                console.log("Logged the user out", user)
-
-                //TODO add a trigger here to route back to login screen
-            })
-    }
-}

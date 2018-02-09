@@ -4,6 +4,10 @@ export const LOGIN_SUCCESS = 'login_success';
 export const LOGIN_AUTH_ERROR = 'login_auth_error';
 export const LOGIN_USER_START = 'login_user_start';
 export const LOGIN_USER_COMPLETE = 'login_user_complete';
+export const FACEBOOK_LOGIN_SUCCESS = 'fb_login_success';
+export const FACEBOOK_LOGIN_FAILURE = 'fb_login_success';
+export const FACEBOOK_LOGIN_LOGOUT = 'fb_login_logout';
+
 
 export const INITIALIZE_MAP = 'initialize_map';
 export const MAP_READY = 'map_ready';
