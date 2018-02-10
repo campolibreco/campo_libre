@@ -1,30 +1,30 @@
+import {AppLoading} from 'expo';
 import React, {Component} from 'react';
-import {Platform, Text} from 'react-native';
+import {Platform, Text, View} from 'react-native';
 import {connect} from 'react-redux';
 import {Icon, Button, Card} from 'react-native-elements';
 
 import {logUserOutOfFacebook} from '../actions';
 
 import {more_screen} from '../locale.en';
-
-const {right_nav} = more_screen;
+import {navKeys} from '../constants';
 
 class MoreScreen extends Component {
     componentDidMount() {
-        const {token, navigation: {navigate}} = this.props;
+        const {token, navigation: {navigate, state: {key}}} = this.props;
 
-        if (!token) {
-            navigate('login');
+        if (!token && key !== navKeys.LOGIN) {
+            navigate(navKeys.LOGIN);
         }
 
         this.props.navigation.setParams({onLogout: this.onLogout});
     }
 
     componentWillReceiveProps(nextProps) {
-        const {token, navigation: {navigate}} = nextProps;
+        const {token, navigation: {navigate, state: {key}}} = nextProps;
 
         if (!token) {
-            navigate('login');
+            navigate(navKeys.LOGIN);
         }
     }
 
@@ -36,7 +36,7 @@ class MoreScreen extends Component {
         if (Platform.OS === 'ios') {
             return (
                 <Button
-                    title={right_nav}
+                    title={more_screen.right_nav}
                     onPress={onLogout}
                     backgroundColor="rgba(0,0,0,0)"
                     color="rgba(0,122,255,1)"
@@ -61,7 +61,13 @@ class MoreScreen extends Component {
 
     };
 
-    render() {
+    renderScreen() {
+        const {appReady} = this.props;
+
+        if (!appReady) {
+            return <AppLoading/>
+        }
+
         return (
             <Card>
                 <Text>
@@ -70,12 +76,20 @@ class MoreScreen extends Component {
             </Card>
         );
     }
+
+    render() {
+        return (
+            <View>
+                {this.renderScreen()}
+            </View>
+        )
+    }
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const {token} = state.auth;
+    const {token, appReady} = state.auth;
 
-    return {token};
+    return {token, appReady};
 };
 
 export default connect(mapStateToProps, {logUserOutOfFacebook})(MoreScreen);

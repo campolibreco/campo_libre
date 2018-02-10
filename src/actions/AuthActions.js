@@ -5,6 +5,7 @@ import axios from 'axios';
 import _ from 'lodash';
 
 import {
+    APP_READY,
     FACEBOOK_LOGIN_SUCCESS,
     FACEBOOK_LOGIN_FAILURE,
     FACEBOOK_LOGOUT_COMPLETE,
@@ -50,7 +51,6 @@ export const logUserIntoFacebook = () => {
             attemptFacebookLogin(dispatch);
         }
     }
-
 };
 
 export const checkAndSetToken = (passedToken) => {
@@ -66,14 +66,18 @@ export const checkAndSetToken = (passedToken) => {
             if (token === tokens.GUEST) {
                 dispatch({
                     type: GUEST_TOKEN_SET,
-                    payload: token
+                    payload: {token, appReady: true}
                 });
             } else {
                 dispatch({
                     type: FACEBOOK_LOGIN_SUCCESS,
-                    payload: token
+                    payload: {token, appReady: true}
                 })
             }
+        } else {
+            dispatch({
+                type: APP_READY
+            })
         }
     }
 };

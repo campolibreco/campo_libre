@@ -9,15 +9,15 @@ import {initializeMap, updateViewStyle, mapLoaded, updateRegion} from "../action
 
 import _ from 'lodash';
 
-import {map} from '../constants';
+import {map, navKeys} from '../constants';
 
 
 class SearchScreen extends Component {
     componentWillMount() {
-        const {token, navigation: {navigate}} = this.props;
+        const {token, navigation: {navigate, state: {key}}} = this.props;
 
-        if (!token) {
-            navigate('login');
+        if (!token && key !== navKeys.LOGIN) {
+            navigate(navKeys.LOGIN);
         }
 
         this.props.initializeMap();

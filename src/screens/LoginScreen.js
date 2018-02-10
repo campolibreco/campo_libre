@@ -1,4 +1,5 @@
 // 3rd part libraries - core
+import {AppLoading} from 'expo';
 import React, {Component} from 'react';
 import {View, Text, AsyncStorage} from 'react-native';
 import {connect} from 'react-redux';
@@ -12,6 +13,7 @@ import {checkAndSetToken, setGuestToken, logUserIntoFacebook} from '../actions/i
 // language and styles
 import {textDark, lightwhiteblue, facebookBlue, grayblue, navyBlue} from '../styles/index';
 import {login} from '../locale.en';
+import {navKeys} from '../constants';
 
 const {campo_libre, tagline, login_as_guest, login_with_facebook} = login;
 
@@ -29,7 +31,7 @@ class LoginScreen extends Component {
         const {token, navigation: {navigate}} = nextProps;
 
         if (token) {
-            navigate('search');
+            navigate(navKeys.SEARCH);
         }
     }
 
@@ -49,7 +51,13 @@ class LoginScreen extends Component {
         }
     };
 
-    render() {
+    renderPage() {
+        const {appReady} = this.props;
+
+        if (!appReady) {
+            return <AppLoading />
+        }
+
         const {containerStyle, topContainer, heroContainer, buttonContainer, buttonStyle, facebookStyle} = styles;
 
         return (
@@ -89,9 +97,22 @@ class LoginScreen extends Component {
             </View>
         );
     }
+
+    render() {
+        const {fillScreen} = styles;
+
+        return (
+            <View style={fillScreen}>
+                {this.renderPage()}
+            </View>
+        );
+    }
 }
 
 const styles = {
+    fillScreen: {
+        flex: 1
+    },
     containerStyle: {
         flex: 1,
         marginTop: 40,
@@ -120,9 +141,9 @@ const styles = {
 };
 
 const mapStateToProps = (state, ownProps) => {
-    const {token} = state.auth;
+    const {token, appReady} = state.auth;
 
-    return {token};
+    return {token, appReady};
 };
 
 export default connect(mapStateToProps, {checkAndSetToken, setGuestToken, logUserIntoFacebook})(LoginScreen);

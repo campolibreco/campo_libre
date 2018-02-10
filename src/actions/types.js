@@ -1,8 +1,9 @@
+export const APP_READY = 'app_ready';
+
 export const GUEST_TOKEN_SET = 'guest_token_set';
 export const FACEBOOK_LOGIN_SUCCESS = 'fb_login_success';
 export const FACEBOOK_LOGIN_FAILURE = 'fb_login_success';
 export const FACEBOOK_LOGOUT_COMPLETE = 'fb_logout_complete';
-
 
 export const INITIALIZE_MAP = 'initialize_map';
 export const MAP_READY = 'map_ready';
