@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, Text, ActivityIndicator, StyleSheet, Platform, Keyboard} from 'react-native';
-import {Button} from 'react-native-elements';
+import {Button, Card} from 'react-native-elements';
 import {MapView} from 'expo';
 import {Icon} from 'react-native-elements';
 import {connect} from 'react-redux';
@@ -9,19 +9,21 @@ import {initializeMap, updateViewStyle, mapLoaded, updateRegion} from "../action
 
 import _ from 'lodash';
 
-import {CardSection, Card} from '../components/common/index';
-
 import {map} from '../constants';
 
 
 class SearchScreen extends Component {
     componentWillMount() {
+        const {token, navigation: {navigate}} = this.props;
+
+        if (!token) {
+            navigate('login');
+        }
+
         this.props.initializeMap();
     }
 
     componentDidMount() {
-        Keyboard.dismiss();
-
         this.props.navigation.setParams({buttonName: map.SearchOptions.LIST, toggleButton: this.toggleButton});
 
         this.props.mapLoaded();
@@ -121,11 +123,9 @@ class SearchScreen extends Component {
     renderList = () => {
         return (
             <Card>
-                <CardSection>
-                    <Text>
-                        List Results of Sites
-                    </Text>
-                </CardSection>
+                <Text>
+                    List Results of Sites
+                </Text>
             </Card>
         );
     };
@@ -163,9 +163,10 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     const {region, mapLoaded, viewStyle} = state.map;
+    const {token} = state.auth;
 
 
-    return {region, mapLoaded, viewStyle};
+    return {region, mapLoaded, viewStyle, token};
 }
 
 export default connect(mapStateToProps, {initializeMap, updateViewStyle, mapLoaded, updateRegion})(SearchScreen);

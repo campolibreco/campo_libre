@@ -4,3 +4,8 @@ export const map = {
         LIST: 'list'
     }
 };
+
+export const tokens = {
+    GUEST: 'guest',
+    USER_TOKEN: 'user_token'
+};

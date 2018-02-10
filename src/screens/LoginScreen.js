@@ -1,13 +1,13 @@
 // 3rd part libraries - core
 import React, {Component} from 'react';
-import {View, Text, Keyboard} from 'react-native';
+import {View, Text, AsyncStorage} from 'react-native';
 import {connect} from 'react-redux';
 import {Button, Card} from 'react-native-elements'
 // 3rd party libraries - additional
 import _ from 'lodash';
 
 // actions
-import {logUserIntoFacebook} from '../actions/index';
+import {checkAndSetToken, setGuestToken, logUserIntoFacebook} from '../actions/index';
 
 // language and styles
 import {textDark, lightwhiteblue, facebookBlue, grayblue, navyBlue} from '../styles/index';
@@ -22,14 +22,8 @@ const {campo_libre, tagline, login_as_guest, login_with_facebook} = login;
 
 class LoginScreen extends Component {
 
-    componentDidMount() {
-        const {token, navigation: {navigate}} = this.props;
-
-        if (token) {
-            navigate('search');
-        } else {
-            this.props.logUserIntoFacebook();
-        }
+    componentWillMount() {
+        this.props.checkAndSetToken();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -40,10 +34,8 @@ class LoginScreen extends Component {
         }
     }
 
-    onLoginPress = () => {
-        const {navigation: {navigate}} = this.props;
-
-        navigate('search');
+    onPressContinueAsGuest = () => {
+        this.props.setGuestToken();
     };
 
     onPressFacebookLogin = () => {
@@ -87,7 +79,7 @@ class LoginScreen extends Component {
                     />
 
                     <Button
-                        onPress={this.onLoginPress}
+                        onPress={this.onPressContinueAsGuest}
                         large
                         buttonStyle={buttonStyle}
                         icon={{name: 'envira', type: 'font-awesome'}}
@@ -134,4 +126,4 @@ const mapStateToProps = (state, ownProps) => {
     return {token};
 };
 
-export default connect(mapStateToProps, {logUserIntoFacebook})(LoginScreen);
+export default connect(mapStateToProps, {checkAndSetToken, setGuestToken, logUserIntoFacebook})(LoginScreen);
