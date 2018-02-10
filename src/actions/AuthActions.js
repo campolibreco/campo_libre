@@ -18,7 +18,7 @@ import {tokens} from '../constants';
 const attemptFacebookLogin = async (dispatch) => {
     const {appID} = FACEBOOK_AUTH;
     const faceBookOptions = {
-        permissions: ['public_profile']
+        permissions: ['public_profile', 'email']
     };
 
     let {type, token} = await Facebook.logInWithReadPermissionsAsync(appID, faceBookOptions);
