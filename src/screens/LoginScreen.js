@@ -22,11 +22,21 @@ const {campo_libre, tagline, login_as_guest, login_with_facebook} = login;
 
 class LoginScreen extends Component {
 
+    componentDidMount() {
+        const {token, navigation: {navigate}} = this.props;
+
+        if (token) {
+            navigate('search');
+        } else {
+            this.props.logUserIntoFacebook();
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
         const {token, navigation: {navigate}} = nextProps;
+
         if (token) {
-            Keyboard.dismiss();
-            navigate('map');
+            navigate('search');
         }
     }
 
@@ -37,11 +47,7 @@ class LoginScreen extends Component {
     };
 
     onPressFacebookLogin = () => {
-        // FB login code will go here
-        // for right now, it's just a shortcut past the loginScreen
-
-        const {navigation: {navigate}} = this.props;
-        navigate('main');
+        this.props.logUserIntoFacebook();
     };
 
     static navigationOptions = (props) => {
@@ -61,7 +67,7 @@ class LoginScreen extends Component {
                     <Card
                         style={heroContainer}
                         title={_.upperCase(campo_libre)}
-                        image={require('../../assets/intro.jpg')}
+                        image={require('../../assets/hero.jpg')}
                     >
                         <Text>
                             {tagline}

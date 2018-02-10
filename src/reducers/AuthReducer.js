@@ -13,6 +13,8 @@ export default (state = INITIAL_STATE, action) => {
 
     switch (type) {
 
+        case FACEBOOK_LOGIN_SUCCESS:
+            return ({...state, token: payload});
 
         default:
             return state;

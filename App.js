@@ -15,7 +15,12 @@ import FavoritesScreen from './src/screens/FavoritesScreen';
 import AddSiteScreen from './src/screens/AddSiteScreen';
 import MoreScreen from './src/screens/MoreScreen';
 
-const store = createStore(reducers, {}, compose(applyMiddleware(ReduxThunk)));
+const store = createStore(
+    reducers,
+    {},
+    compose(
+        applyMiddleware(ReduxThunk)
+    ));
 
 import {StyleSheet, Text, View} from 'react-native';
 
