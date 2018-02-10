@@ -63,17 +63,24 @@ export const checkAndSetToken = (passedToken) => {
         }
 
         if (token) {
-            dispatch({
-                type: FACEBOOK_LOGIN_SUCCESS,
-                payload: token
-            })
+            if (token === tokens.GUEST) {
+                dispatch({
+                    type: GUEST_TOKEN_SET,
+                    payload: token
+                });
+            } else {
+                dispatch({
+                    type: FACEBOOK_LOGIN_SUCCESS,
+                    payload: token
+                })
+            }
         }
     }
 };
 
 export const setGuestToken = () => {
 
-    return async (dispatch) =>{
+    return async (dispatch) => {
         await AsyncStorage.setItem(tokens.USER_TOKEN, tokens.GUEST);
 
         dispatch({
