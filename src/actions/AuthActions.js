@@ -1,67 +1,105 @@
-import firebase from 'firebase';
+import {AsyncStorage} from 'react-native';
+import {Facebook} from 'expo';
+import axios from 'axios';
+
 import _ from 'lodash';
 
 import {
-    EMAIL_CHANGED,
-    PASSWORD_CHANGED,
-    LOGIN_AUTH_ERROR,
-    LOGIN_SUCCESS
+    APP_READY,
+    FACEBOOK_LOGIN_SUCCESS,
+    FACEBOOK_LOGIN_FAILURE,
+    FACEBOOK_LOGOUT_COMPLETE,
+    GUEST_TOKEN_SET
 } from './types';
 
-export const emailChanged = (text) => {
-    return {
-        type: EMAIL_CHANGED,
-        payload: text
+import {FACEBOOK_AUTH} from '../../env';
+import {tokens} from '../constants';
+
+const attemptFacebookLogin = async (dispatch) => {
+    const {appID} = FACEBOOK_AUTH;
+    const faceBookOptions = {
+        permissions: ['public_profile', 'email']
+    };
+
+    let {type, token} = await Facebook.logInWithReadPermissionsAsync(appID, faceBookOptions);
+
+    if (type === 'success') {
+        let {data: {email, name, picture: {data: {url}}}} = await axios.get(`https://graph.facebook.com/me?fields=id,name,email,picture&access_token=${token}`);
+        // we now have access to email, name, and their profile picture
+
+        await AsyncStorage.setItem(tokens.USER_TOKEN, token);
+
+        dispatch({
+            type: FACEBOOK_LOGIN_SUCCESS,
+            payload: token
+        })
+    } else {
+        dispatch({
+            type: FACEBOOK_LOGIN_FAILURE
+        })
+    }
+};
+
+export const logUserIntoFacebook = () => {
+
+    return async (dispatch) => {
+        let token = await AsyncStorage.getItem(tokens.USER_TOKEN);
+
+        if (token) {
+            checkAndSetToken(token);
+        } else {
+            attemptFacebookLogin(dispatch);
+        }
+    }
+};
+
+export const checkAndSetToken = (passedToken) => {
+
+    return async (dispatch) => {
+        let token = passedToken;
+
+        if (!token) {
+            token = await AsyncStorage.getItem(tokens.USER_TOKEN);
+        }
+
+        if (token) {
+            if (token === tokens.GUEST) {
+                dispatch({
+                    type: GUEST_TOKEN_SET,
+                    payload: {token, appReady: true}
+                });
+            } else {
+                dispatch({
+                    type: FACEBOOK_LOGIN_SUCCESS,
+                    payload: {token, appReady: true}
+                })
+            }
+        } else {
+            dispatch({
+                type: APP_READY
+            })
+        }
+    }
+};
+
+export const setGuestToken = () => {
+
+    return async (dispatch) => {
+        await AsyncStorage.setItem(tokens.USER_TOKEN, tokens.GUEST);
+
+        dispatch({
+            type: GUEST_TOKEN_SET,
+            payload: tokens.GUEST
+        });
     };
 };
 
-export const passwordChanged = (text) => {
-    return {
-        type: PASSWORD_CHANGED,
-        payload: text
+export const logUserOutOfFacebook = () => {
+    return async (dispatch) => {
+        await AsyncStorage.removeItem(tokens.USER_TOKEN);
+
+        dispatch({
+            type: FACEBOOK_LOGOUT_COMPLETE
+        });
     };
 };
-
-export const loginAuthError = (dispatch, err) => {
-    dispatch({
-        type: LOGIN_AUTH_ERROR,
-        payload: err
-    });
-};
-
-export const loginSuccess = (dispatch, token) => {
-    // TODO token arg will be used when we add FB Auth
-    let tokenToSend = token;
-
-    if (!tokenToSend) {
-        tokenToSend = 'Manually Generated Token'
-    }
-
-    dispatch({
-        type: LOGIN_SUCCESS,
-        payload: tokenToSend
-    });
-};
-
-export const loginUser = ({email, password}) => {
-    return (dispatch) => {
-        firebase.auth().signInWithEmailAndPassword(_.trim(email), _.trim(password))
-            .then(user => {
-                loginSuccess(dispatch);
-            })
-            .catch(err => {
-                loginAuthError(dispatch, err);
-            })
-    }
-};
-
-export const logoutUser = () => {
-    return (dispatch) => {
-        firebase.auth().signOut()
-            .then((user) => {
-                console.log("Logged the user out", user)
-
-                //TODO add a trigger here to route back to login screen
-            })
-    }
-}

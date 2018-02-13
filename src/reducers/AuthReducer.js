@@ -1,30 +1,35 @@
-
 import {
-    EMAIL_CHANGED,
-    PASSWORD_CHANGED,
-    LOGIN_SUCCESS,
-    LOGIN_AUTH_ERROR,
-    LOGIN_USER_START,
-    LOGIN_USER_COMPLETE
+    APP_READY,
+    FACEBOOK_LOGIN_SUCCESS,
+    FACEBOOK_LOGIN_FAILURE,
+    FACEBOOK_LOGOUT_COMPLETE,
+    GUEST_TOKEN_SET
 } from '../actions/types';
 
 const INITIAL_STATE = {
-    email: '',
-    password: ''
+    appLoaded: false,
+    token: null
 };
 
 export default (state = INITIAL_STATE, action) => {
     const {type, payload} = action;
 
     switch (type) {
-        case EMAIL_CHANGED:
-            return {...state, email: payload};
 
-        case PASSWORD_CHANGED:
-            return {...state, password: payload};
+        case APP_READY:
+            return({...state, appReady: true});
 
-        case LOGIN_SUCCESS:
-            return {...state, token: payload};
+        case GUEST_TOKEN_SET:
+            return({...state, token: payload.token, appReady: payload.appReady});
+
+        case FACEBOOK_LOGIN_SUCCESS:
+            return({...state, token: payload.token, appReady: payload.appReady});
+
+        case FACEBOOK_LOGIN_FAILURE:
+            return ({...state, token: null});
+
+        case FACEBOOK_LOGOUT_COMPLETE:
+            return ({...state, token: null, appReady: false});
 
         default:
             return state;
