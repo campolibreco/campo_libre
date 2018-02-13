@@ -44,18 +44,19 @@ class AddSiteScreen extends Component {
                      </Text>
 
 
-                 <Button
-                   onPress={() => this.openModal()}
-                   title="Open modal"
-                   large
-                   rounded={true}
-                   buttonStyle={buttonStyle}
-                   icon={{name: 'plus', type: 'font-awesome'}}
-                   title='Add A Site'
-                 >
-                     {campsite.upload}
-                    </Button>
+
             </CardSection>
+            <Button
+              onPress={() => this.openModal()}
+              title="Open modal"
+              large
+              rounded={true}
+              buttonStyle={buttonStyle}
+              icon={{name: 'plus', type: 'font-awesome'}}
+              title='Add A Site'
+            >
+                {campsite.upload}
+               </Button>
             <Modal
                   visible={this.state.modalVisible}
                   animationType={'slide'}
@@ -63,7 +64,7 @@ class AddSiteScreen extends Component {
             >
                   <ScrollView>
                     <Button
-                      clear={clear}
+                      clear={true}
                       small
                       rounded={true}
                       buttonStyle={buttonStyle}
