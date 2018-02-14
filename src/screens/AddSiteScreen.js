@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Text, Picker, ScrollView, Modal, View} from 'react-native';
+
 import { Button, FormLabel, FormInput, Input, Icon, Overlay } from 'react-native-elements';
 
 import {campsite} from '../locale.en';
@@ -20,17 +21,14 @@ class AddSiteScreen extends Component {
     this.setState({modalVisible:false});
   }
 
-
     static navigationOptions = (props) => {
         const {navigation: {navigate}} = props;
-
         return {
             title: 'Add a Site',
             headerTitle: 'Add a Campsite',
             headerLeft: null,
             tabBarIcon: ({focused, tintColor }) => (<Icon type='material-community' name={focused ? 'tent' : 'tent'} size={25} color={tintColor} />)
         }
-
     };
 
     render(){
@@ -38,13 +36,9 @@ class AddSiteScreen extends Component {
         return(
           <View>
             <CardSection>
-
                     <Text>
                         {campsite.description}
                      </Text>
-
-
-
             </CardSection>
             <Button
               onPress={() => this.openModal()}
@@ -63,16 +57,12 @@ class AddSiteScreen extends Component {
                   onRequestClose={() => this.closeModal()}
             >
                   <ScrollView>
-                    <Button
-                      clear={true}
-                      small
-                      rounded={true}
-                      buttonStyle={buttonStyle}
-                      onPress={() => this.closeModal()}
-                      title="Close modal"
-                     >
-                      </Button>
-                            <CardSection>
+                        <CardSection>
+                          <Icon
+                              type='font-awesome'
+                              name='times-circle'
+                              onPress={() => this.closeModal()}
+                           />
                                 <Button
                                   small
                                   rounded={true}
@@ -86,17 +76,17 @@ class AddSiteScreen extends Component {
                                   <Text h2>Location</Text>
                                   <FormLabel>Latitude</FormLabel>
                                     <FormInput />
-                                      <FormLabel>Longitude</FormLabel>
-                                        <FormInput />
-                                          <FormLabel>Title</FormLabel>
-                                            <FormInput />
-                                              <FormLabel>Description</FormLabel>
-                                                <FormInput />
-                                                <FormLabel>Directions</FormLabel>
-                                                 <FormInput />
-                                                   <FormLabel>Nearest Town</FormLabel>
-                                                    <FormInput />
-                                                    <FormLabel>Accessiblitiy</FormLabel>
+                                  <FormLabel>Longitude</FormLabel>
+                                    <FormInput />
+                                  <FormLabel>Title</FormLabel>
+                                    <FormInput />
+                                  <FormLabel>Description</FormLabel>
+                                    <FormInput />
+                                  <FormLabel>Directions</FormLabel>
+                                    <FormInput />
+                                  <FormLabel>Nearest Town</FormLabel>
+                                    <FormInput />
+                                  <FormLabel>Accessiblitiy</FormLabel>
                                           <Picker>
                                             <Picker.Item label="Paved Road" value="paved_road" />
                                             <Picker.Item label="Dirt Road " value="dirt_road" />
@@ -107,18 +97,13 @@ class AddSiteScreen extends Component {
                                           </Picker>
                                         </CardSection>
                                         </ScrollView>
-                                      </Modal>
-
-          </View>
-        );
-    }
-}
-
-
-
+                                </Modal>
+                              </View>
+                            );
+                          }
+                        }
 
 const styles = {
-
     descriptionStyle: {
         color: darkBlue,
         fontSize: 15
