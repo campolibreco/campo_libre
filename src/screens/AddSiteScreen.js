@@ -69,10 +69,10 @@ class AddSiteScreen extends Component {
                                     >Location</Text>
                                   <FormLabel>Latitude</FormLabel>
                                     <FormInput
-                                      placeholder="add your Latitude" required />
+                                      placeholder="add Latitude" required />
                                   <FormLabel>Longitude</FormLabel>
                                     <FormInput
-                                      placeholder="add your Longitude" required
+                                      placeholder="Add Longitude" required
                                       />
                                       <Text h3
                                           style={headerTitle}
@@ -93,28 +93,30 @@ class AddSiteScreen extends Component {
                                   <FormLabel>Title</FormLabel>
 
                                     <FormInput
-                                      placeholder="add site title" />
+                                      placeholder="Add site title" />
                                   <FormLabel>Description</FormLabel>
                                     <FormInput
-                                      placeholder="enter a description of the site"
+                                      placeholder="Enter a description of the site"
                                       containerStyle={largeTextInput}
                                       multiline={true}
                                       maxLength={40}
                                       maxHeight={50}
+                                      editable={true}
                                        />
                                   <FormLabel>Directions</FormLabel>
                                     <FormInput
-                                      placeholder="enter descriptive directions"
+                                      placeholder="Enter a descriptive directions"
                                       containerStyle={largeTextInput}
                                       multiline={true}
                                       maxLength={40}
                                       maxHeight={50}
-                                      required={true}
+                                      editable={true}
                                        />
 
                                   <FormLabel>Nearest Town</FormLabel>
                                     <FormInput
-                                      placeholder="enter nearest/closest town"
+                                      placeholder="Enter nearest/closest town"
+                                      editable={true}
                                       />
                                   <FormLabel>Accessiblitiy</FormLabel>
                                           <Picker>
@@ -142,7 +144,7 @@ class AddSiteScreen extends Component {
                                         rounded={true}
                                         buttonStyle={buttonStyle}
                                         icon={{name: 'plus', type: 'font-awesome'}}
-                                        title='Add A Site'
+                                        title='Submit'
                                       >  Submit
                                        </Button>
                                         </CardSection>
