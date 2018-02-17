@@ -17,13 +17,11 @@ export const initializeMap = () => {
 };
 
 export const updateViewStyle = (newViewStyle) => {
-    const thingToReturn = {
+    return {
         type: VIEW_STYLE_UPDATE,
         payload: newViewStyle
 
     };
-
-    return thingToReturn;
 };
 
 export const mapLoaded = () => {

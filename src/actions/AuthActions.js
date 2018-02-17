@@ -13,7 +13,7 @@ import {
 } from './types';
 
 import {FACEBOOK_AUTH} from '../../env';
-import {tokens} from '../constants';
+import {tokens, navKeys} from '../constants';
 
 const attemptFacebookLogin = async (dispatch) => {
     const {appID} = FACEBOOK_AUTH;
@@ -46,23 +46,24 @@ export const logUserIntoFacebook = () => {
         let token = await AsyncStorage.getItem(tokens.USER_TOKEN);
 
         if (token) {
-            checkAndSetToken(token);
+            checkAndSetToken({token});
         } else {
             attemptFacebookLogin(dispatch);
         }
     }
 };
 
-export const checkAndSetToken = (passedToken) => {
+export const checkAndSetToken = ({token, navigate}) => {
 
     return async (dispatch) => {
-        let token = passedToken;
 
         if (!token) {
             token = await AsyncStorage.getItem(tokens.USER_TOKEN);
         }
 
         if (token) {
+            navigate(navKeys.SEARCH);
+
             if (token === tokens.GUEST) {
                 dispatch({
                     type: GUEST_TOKEN_SET,
@@ -82,7 +83,7 @@ export const checkAndSetToken = (passedToken) => {
     }
 };
 
-export const setGuestToken = () => {
+export const setGuestToken = ({navigate}) => {
 
     return async (dispatch) => {
         await AsyncStorage.setItem(tokens.USER_TOKEN, tokens.GUEST);
@@ -91,15 +92,19 @@ export const setGuestToken = () => {
             type: GUEST_TOKEN_SET,
             payload: tokens.GUEST
         });
+
+        navigate(navKeys.SEARCH);
     };
 };
 
-export const logUserOutOfFacebook = () => {
+export const logUserOutOfFacebook = ({navigate}) => {
     return async (dispatch) => {
         await AsyncStorage.removeItem(tokens.USER_TOKEN);
 
         dispatch({
             type: FACEBOOK_LOGOUT_COMPLETE
         });
+
+        navigate(navKeys.LOGIN);
     };
 };
