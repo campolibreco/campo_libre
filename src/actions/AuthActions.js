@@ -15,7 +15,7 @@ import {
 import {FACEBOOK_AUTH} from '../../env';
 import {tokens, navKeys} from '../constants';
 
-const attemptFacebookLogin = async (dispatch) => {
+const attemptFacebookLogin = async ({dispatch, navigate}) => {
     const {appID} = FACEBOOK_AUTH;
     const faceBookOptions = {
         permissions: ['public_profile', 'email']
@@ -25,30 +25,35 @@ const attemptFacebookLogin = async (dispatch) => {
 
     if (type === 'success') {
         let {data: {email, name, picture: {data: {url}}}} = await axios.get(`https://graph.facebook.com/me?fields=id,name,email,picture&access_token=${token}`);
-        // we now have access to email, name, and their profile picture
-
-        await AsyncStorage.setItem(tokens.USER_TOKEN, token);
 
         dispatch({
             type: FACEBOOK_LOGIN_SUCCESS,
-            payload: token
-        })
+            payload: {token, appReady: false}
+        });
+
+        await AsyncStorage.setItem(tokens.USER_TOKEN, token);
+
+        navigate(navKeys.SEARCH);
     } else {
         dispatch({
             type: FACEBOOK_LOGIN_FAILURE
-        })
+        });
+
+        navigate(navKeys.LOGIN);
     }
 };
 
-export const logUserIntoFacebook = () => {
+export const logUserIntoFacebook = ({navigate}) => {
 
     return async (dispatch) => {
+        navigate(navKeys.AUTH);
+
         let token = await AsyncStorage.getItem(tokens.USER_TOKEN);
 
         if (token) {
             checkAndSetToken({token});
         } else {
-            attemptFacebookLogin(dispatch);
+            attemptFacebookLogin({dispatch, navigate});
         }
     }
 };
@@ -62,19 +67,19 @@ export const checkAndSetToken = ({token, navigate}) => {
         }
 
         if (token) {
-            navigate(navKeys.SEARCH);
-
             if (token === tokens.GUEST) {
                 dispatch({
                     type: GUEST_TOKEN_SET,
-                    payload: {token, appReady: true}
+                    payload: {token, appReady: false}
                 });
             } else {
                 dispatch({
                     type: FACEBOOK_LOGIN_SUCCESS,
-                    payload: {token, appReady: true}
+                    payload: {token, appReady: false}
                 })
             }
+
+            navigate(navKeys.SEARCH);
         } else {
             dispatch({
                 type: APP_READY
@@ -90,7 +95,7 @@ export const setGuestToken = ({navigate}) => {
 
         dispatch({
             type: GUEST_TOKEN_SET,
-            payload: tokens.GUEST
+            payload: {token: tokens.GUEST, appReady: false}
         });
 
         navigate(navKeys.SEARCH);

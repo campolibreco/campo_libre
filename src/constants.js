@@ -11,11 +11,12 @@ export const tokens = {
 };
 
 export const navKeys = {
-  LOGIN: 'login',
-  MAIN: 'main',
-  SEARCH: 'search',
-  FAVORITES: 'favorites',
-  ADD_SITE: 'addSite',
-  MORE: 'more',
-  FILTER: 'filter'
+    LOGIN: 'login',
+    AUTH: 'auth',
+    MAIN: 'main',
+    SEARCH: 'search',
+    FAVORITES: 'favorites',
+    ADD_SITE: 'addSite',
+    MORE: 'more',
+    FILTER: 'filter'
 };

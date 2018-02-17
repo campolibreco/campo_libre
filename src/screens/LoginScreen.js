@@ -35,11 +35,12 @@ class LoginScreen extends Component {
     };
 
     onPressFacebookLogin = () => {
-        this.props.logUserIntoFacebook();
+        const {navigation: {navigate}} = this.props;
+
+        this.props.logUserIntoFacebook({navigate});
     };
 
     static navigationOptions = (props) => {
-        const {navigation: {navigate}} = props;
 
         return {
             header: null
@@ -47,12 +48,6 @@ class LoginScreen extends Component {
     };
 
     renderPage() {
-        const {appReady} = this.props;
-
-        if (!appReady) {
-            return <AppLoading />
-        }
-
         const {containerStyle, topContainer, heroContainer, buttonContainer, buttonStyle, facebookStyle} = styles;
 
         return (
@@ -95,6 +90,12 @@ class LoginScreen extends Component {
 
     render() {
         const {fillScreen} = styles;
+        const {appReady} = this.props;
+
+        if (!appReady) {
+            return <AppLoading />
+
+        }
 
         return (
             <View style={fillScreen}>

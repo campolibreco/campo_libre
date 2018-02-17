@@ -137,6 +137,12 @@ class SearchScreen extends Component {
 
     render() {
         const {fillScreen} = styles;
+        const {appReady} = this.props;
+
+        if (!appReady) {
+            return <AppLoading />
+
+        }
 
         return (
             <View style={fillScreen}>
@@ -160,7 +166,7 @@ function mapStateToProps(state) {
     const {token, appReady} = state.auth;
 
 
-    return {region, mapLoaded, viewStyle, token};
+    return {region, mapLoaded, viewStyle, token, appReady};
 }
 
 export default connect(mapStateToProps, {initializeMap, updateViewStyle, mapLoaded, updateRegion})(SearchScreen);
