@@ -13,9 +13,9 @@ import {
 } from './types';
 
 import {FACEBOOK_AUTH} from '../../env';
-import {tokens} from '../constants';
+import {tokens, navKeys} from '../constants';
 
-const attemptFacebookLogin = async (dispatch) => {
+const attemptFacebookLogin = async ({dispatch, navigate}) => {
     const {appID} = FACEBOOK_AUTH;
     const faceBookOptions = {
         permissions: ['public_profile', 'email']
@@ -25,38 +25,42 @@ const attemptFacebookLogin = async (dispatch) => {
 
     if (type === 'success') {
         let {data: {email, name, picture: {data: {url}}}} = await axios.get(`https://graph.facebook.com/me?fields=id,name,email,picture&access_token=${token}`);
-        // we now have access to email, name, and their profile picture
-
-        await AsyncStorage.setItem(tokens.USER_TOKEN, token);
 
         dispatch({
             type: FACEBOOK_LOGIN_SUCCESS,
-            payload: token
-        })
+            payload: {token, appReady: false}
+        });
+
+        await AsyncStorage.setItem(tokens.USER_TOKEN, token);
+
+        navigate(navKeys.SEARCH);
     } else {
         dispatch({
             type: FACEBOOK_LOGIN_FAILURE
-        })
+        });
+
+        navigate(navKeys.LOGIN);
     }
 };
 
-export const logUserIntoFacebook = () => {
+export const logUserIntoFacebook = ({navigate}) => {
 
     return async (dispatch) => {
+        navigate(navKeys.AUTH);
+
         let token = await AsyncStorage.getItem(tokens.USER_TOKEN);
 
         if (token) {
-            checkAndSetToken(token);
+            checkAndSetToken({token});
         } else {
-            attemptFacebookLogin(dispatch);
+            attemptFacebookLogin({dispatch, navigate});
         }
     }
 };
 
-export const checkAndSetToken = (passedToken) => {
+export const checkAndSetToken = ({token, navigate}) => {
 
     return async (dispatch) => {
-        let token = passedToken;
 
         if (!token) {
             token = await AsyncStorage.getItem(tokens.USER_TOKEN);
@@ -66,14 +70,16 @@ export const checkAndSetToken = (passedToken) => {
             if (token === tokens.GUEST) {
                 dispatch({
                     type: GUEST_TOKEN_SET,
-                    payload: {token, appReady: true}
+                    payload: {token, appReady: false}
                 });
             } else {
                 dispatch({
                     type: FACEBOOK_LOGIN_SUCCESS,
-                    payload: {token, appReady: true}
+                    payload: {token, appReady: false}
                 })
             }
+
+            navigate(navKeys.SEARCH);
         } else {
             dispatch({
                 type: APP_READY
@@ -82,24 +88,28 @@ export const checkAndSetToken = (passedToken) => {
     }
 };
 
-export const setGuestToken = () => {
+export const setGuestToken = ({navigate}) => {
 
     return async (dispatch) => {
         await AsyncStorage.setItem(tokens.USER_TOKEN, tokens.GUEST);
 
         dispatch({
             type: GUEST_TOKEN_SET,
-            payload: tokens.GUEST
+            payload: {token: tokens.GUEST, appReady: false}
         });
+
+        navigate(navKeys.SEARCH);
     };
 };
 
-export const logUserOutOfFacebook = () => {
+export const logUserOutOfFacebook = ({navigate}) => {
     return async (dispatch) => {
         await AsyncStorage.removeItem(tokens.USER_TOKEN);
 
         dispatch({
             type: FACEBOOK_LOGOUT_COMPLETE
         });
+
+        navigate(navKeys.LOGIN);
     };
 };

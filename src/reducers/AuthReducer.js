@@ -3,7 +3,8 @@ import {
     FACEBOOK_LOGIN_SUCCESS,
     FACEBOOK_LOGIN_FAILURE,
     FACEBOOK_LOGOUT_COMPLETE,
-    GUEST_TOKEN_SET
+    GUEST_TOKEN_SET,
+    MAP_READY
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -17,13 +18,16 @@ export default (state = INITIAL_STATE, action) => {
     switch (type) {
 
         case APP_READY:
-            return({...state, appReady: true});
+            return ({...state, appReady: true});
+
+        case MAP_READY:
+            return ({...state, appReady: true});
 
         case GUEST_TOKEN_SET:
-            return({...state, token: payload.token, appReady: payload.appReady});
+            return ({...state, token: payload.token, appReady: payload.appReady});
 
         case FACEBOOK_LOGIN_SUCCESS:
-            return({...state, token: payload.token, appReady: payload.appReady});
+            return ({...state, token: payload.token, appReady: payload.appReady});
 
         case FACEBOOK_LOGIN_FAILURE:
             return ({...state, token: null});

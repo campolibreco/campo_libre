@@ -11,25 +11,13 @@ import {navKeys} from '../constants';
 
 class MoreScreen extends Component {
     componentDidMount() {
-        const {token, navigation: {navigate, state: {key}}} = this.props;
-
-        if (!token && key !== navKeys.LOGIN) {
-            navigate(navKeys.LOGIN);
-        }
-
         this.props.navigation.setParams({onLogout: this.onLogout});
     }
 
-    componentWillReceiveProps(nextProps) {
-        const {token, navigation: {navigate, state: {key}}} = nextProps;
-
-        if (!token) {
-            navigate(navKeys.LOGIN);
-        }
-    }
-
     onLogout = () => {
-        this.props.logUserOutOfFacebook();
+        const {navigation: {navigate}} = this.props;
+
+        this.props.logUserOutOfFacebook({navigate});
     };
 
     static renderRightNavButton = ({onLogout}) => {

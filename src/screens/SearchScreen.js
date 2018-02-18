@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {View, Text, ActivityIndicator, StyleSheet, Platform, Keyboard} from 'react-native';
 import {Button, Card} from 'react-native-elements';
-import {MapView} from 'expo';
+import {MapView, AppLoading} from 'expo';
 import {Icon} from 'react-native-elements';
 import {connect} from 'react-redux';
 
@@ -14,12 +14,6 @@ import {map, navKeys} from '../constants';
 
 class SearchScreen extends Component {
     componentWillMount() {
-        const {token, navigation: {navigate, state: {key}}} = this.props;
-
-        if (!token && key !== navKeys.LOGIN) {
-            navigate(navKeys.LOGIN);
-        }
-
         this.props.initializeMap();
     }
 
@@ -143,6 +137,12 @@ class SearchScreen extends Component {
 
     render() {
         const {fillScreen} = styles;
+        const {appReady} = this.props;
+
+        if (!appReady) {
+            return <AppLoading />
+
+        }
 
         return (
             <View style={fillScreen}>
@@ -163,10 +163,10 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     const {region, mapLoaded, viewStyle} = state.map;
-    const {token} = state.auth;
+    const {token, appReady} = state.auth;
 
 
-    return {region, mapLoaded, viewStyle, token};
+    return {region, mapLoaded, viewStyle, token, appReady};
 }
 
 export default connect(mapStateToProps, {initializeMap, updateViewStyle, mapLoaded, updateRegion})(SearchScreen);

@@ -17,6 +17,7 @@ import FilterScreen from './src/screens/FilterScreen';
 import FavoritesScreen from './src/screens/FavoritesScreen';
 import AddSiteScreen from './src/screens/AddSiteScreen';
 import MoreScreen from './src/screens/MoreScreen';
+import AuthScreen from "./src/screens/AuthScreen";
 
 const store = createStore(
     reducers,
@@ -38,6 +39,9 @@ class App extends Component {
         const MainNavigator = StackNavigator({
             [navKeys.LOGIN]: {
                 screen: LoginScreen
+            },
+            [navKeys.AUTH]: {
+                screen: AuthScreen
             },
             [navKeys.MAIN]: {
                 screen: TabNavigator({

@@ -13,7 +13,6 @@ import {checkAndSetToken, setGuestToken, logUserIntoFacebook} from '../actions/i
 // language and styles
 import {textDark, lightwhiteblue, facebookBlue, grayblue, navyBlue} from '../styles/index';
 import {login} from '../locale.en';
-import {navKeys} from '../constants';
 
 const {campo_libre, tagline, login_as_guest, login_with_facebook} = login;
 
@@ -24,27 +23,24 @@ const {campo_libre, tagline, login_as_guest, login_with_facebook} = login;
 class LoginScreen extends Component {
 
     componentWillMount() {
-        this.props.checkAndSetToken();
-    }
+        const {navigation: {navigate}} = this.props;
 
-    componentWillReceiveProps(nextProps) {
-        const {token, navigation: {navigate}} = nextProps;
-
-        if (token) {
-            navigate(navKeys.SEARCH);
-        }
+        this.props.checkAndSetToken({navigate});
     }
 
     onPressContinueAsGuest = () => {
-        this.props.setGuestToken();
+        const {navigation: {navigate}} = this.props;
+
+        this.props.setGuestToken({navigate});
     };
 
     onPressFacebookLogin = () => {
-        this.props.logUserIntoFacebook();
+        const {navigation: {navigate}} = this.props;
+
+        this.props.logUserIntoFacebook({navigate});
     };
 
     static navigationOptions = (props) => {
-        const {navigation: {navigate}} = props;
 
         return {
             header: null
@@ -52,12 +48,6 @@ class LoginScreen extends Component {
     };
 
     renderPage() {
-        const {appReady} = this.props;
-
-        if (!appReady) {
-            return <AppLoading />
-        }
-
         const {containerStyle, topContainer, heroContainer, buttonContainer, buttonStyle, facebookStyle} = styles;
 
         return (
@@ -100,6 +90,12 @@ class LoginScreen extends Component {
 
     render() {
         const {fillScreen} = styles;
+        const {appReady} = this.props;
+
+        if (!appReady) {
+            return <AppLoading />
+
+        }
 
         return (
             <View style={fillScreen}>
