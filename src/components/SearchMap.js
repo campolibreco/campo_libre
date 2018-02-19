@@ -1,47 +1,70 @@
-import React, {Component} from 'react';
-import {View, ActivityIndicator, StyleSheet, Platform, Keyboard} from 'react-native';
-import {Button} from 'react-native-elements';
-
+// 3rd party libraries - core
+import React from 'react';
+import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
 import {MapView} from 'expo';
+import {Button} from 'react-native-elements';
+// 3rd party libraries - additional
 
+// styles and language
 
-class SearchMap extends Component {
-    state = {
-        region: {
-            longitude: -105.727939,
-            latitude: 39.695168,
-            longitudeDelta: 1,
-            latitudeDelta: 1
-        },
-        mapLoaded: false
+// our components - core
+// our components - additional
+
+const searchMap = ({mapLoaded, region, updateRegion}) => {
+    const {fillScreen, spinnerContainerStyle} = styles;
+
+    const newRegionIsAcceptable = (newRegion) => {
+        const {longitude, latitude, latitudeDelta, longitudeDelta} = newRegion;
+
+        const notZoomedTooFarOut = latitudeDelta < 60 && longitudeDelta < 60;
+        const isNotSF = (Math.abs(longitude - 122.409) > 1) && (Math.abs(latitude - 37.787) > 1);
+
+        return isNotSF && notZoomedTooFarOut;
     };
 
-    componentDidMount() {
-        Keyboard.dismiss();
+    const onRegionChange = (newRegion) => {
 
-        this.setState({
-            mapLoaded: true
-        });
-    }
+        if (!newRegionIsAcceptable(newRegion)) {
+            return;
+        }
 
-    render() {
-        const {fillScreen} = styles;
+        updateRegion(newRegion);
+    };
 
-        return (
-            <View style={fillScreen}>
-                {this.renderMap()}
-            </View>
-        );
-    }
-}
+    const renderMap = () => {
+        if (mapLoaded) {
+            return (
+                <MapView
+                    style={fillScreen}
+                    region={region}
+                    onRegionChange={onRegionChange}
+                    rotateEnabled={false}
+                />
+            )
+        } else {
+            return (
+                <View style={[fillScreen, spinnerContainerStyle]}>
+                    <ActivityIndicator size="large"/>
+                </View>
+            );
+        }
+    };
 
-const styles = StyleSheet.create({
+    return (
+        <View style={fillScreen}>
+            {renderMap()}
+        </View>
+    );
+
+};
+
+const styles = {
     fillScreen: {
         flex: 1
     },
     spinnerContainerStyle: {
         justifyContent: 'center'
     }
-});
+};
 
-export default SearchMap;
+export default searchMap;

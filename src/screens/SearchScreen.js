@@ -5,9 +5,12 @@ import {MapView, AppLoading} from 'expo';
 import {Icon} from 'react-native-elements';
 import {connect} from 'react-redux';
 
-import {initializeMap, updateViewStyle, mapLoaded, updateRegion} from "../actions";
-
 import _ from 'lodash';
+
+import SearchList from '../components/SearchList';
+import SearchMap from '../components/SearchMap';
+
+import {initializeMap, updateViewStyle, mapHasLoaded, updateRegion} from "../actions";
 
 import {map, navKeys} from '../constants';
 
@@ -20,7 +23,7 @@ class SearchScreen extends Component {
     componentDidMount() {
         this.props.navigation.setParams({buttonName: map.SearchOptions.LIST, toggleButton: this.toggleButton});
 
-        this.props.mapLoaded();
+        this.props.mapHasLoaded();
     }
 
     toggleButton = () => {
@@ -79,41 +82,6 @@ class SearchScreen extends Component {
 
     };
 
-    regionDeltaIsAcceptable = (newRegion) => {
-        const longDeltaIsAcceptable = (Math.abs(newRegion.longitudeDelta - this.props.region.longitudeDelta) < 10);
-        const latDeltaIsAcceptable = (Math.abs(newRegion.latitudeDelta - this.props.region.latitudeDelta) < 10);
-
-        return longDeltaIsAcceptable && latDeltaIsAcceptable;
-    };
-
-    onRegionChangeComplete = (newRegion) => {
-
-        if (!this.regionDeltaIsAcceptable(newRegion)) {
-            return;
-        }
-        this.props.updateRegion(newRegion);
-    };
-
-    renderMap = () => {
-        const {fillScreen, spinnerContainerStyle} = styles;
-
-        if (this.props.mapLoaded) {
-            return (
-                <MapView
-                    style={fillScreen}
-                    region={this.props.region}
-                    onRegionChangeComplete={this.onRegionChangeComplete}
-                />
-            )
-        } else {
-            return (
-                <View style={[fillScreen, spinnerContainerStyle]}>
-                    <ActivityIndicator size="large"/>
-                </View>
-            );
-        }
-    };
-
     renderList = () => {
         return (
             <Card>
@@ -126,9 +94,16 @@ class SearchScreen extends Component {
 
     renderSearchScreen = () => {
 
-        const {viewStyle} = this.props;
+        const {viewStyle, region, mapLoaded} = this.props;
+
         if (viewStyle === map.SearchOptions.MAP) {
-            return this.renderMap();
+            return (
+                <SearchMap
+                    region={region}
+                    mapLoaded={mapLoaded}
+                    updateRegion={this.props.updateRegion}
+                />
+            );
         } else {
             return this.renderList();
         }
@@ -140,7 +115,7 @@ class SearchScreen extends Component {
         const {appReady} = this.props;
 
         if (!appReady) {
-            return <AppLoading />
+            return <AppLoading/>
 
         }
 
@@ -169,4 +144,4 @@ function mapStateToProps(state) {
     return {region, mapLoaded, viewStyle, token, appReady};
 }
 
-export default connect(mapStateToProps, {initializeMap, updateViewStyle, mapLoaded, updateRegion})(SearchScreen);
+export default connect(mapStateToProps, {initializeMap, updateViewStyle, mapHasLoaded, updateRegion})(SearchScreen);
