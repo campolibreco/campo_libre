@@ -10,7 +10,7 @@ import {Button} from 'react-native-elements';
 // our components - core
 // our components - additional
 
-const searchMap = ({mapLoaded, region, updateRegion}) => {
+const SearchMap = ({mapLoaded, region, updateRegion, sites}) => {
     const {fillScreen, spinnerContainerStyle} = styles;
 
     const newRegionIsAcceptable = (newRegion) => {
@@ -58,13 +58,13 @@ const searchMap = ({mapLoaded, region, updateRegion}) => {
 
 };
 
-const styles = {
+const styles = StyleSheet.create({
     fillScreen: {
         flex: 1
     },
     spinnerContainerStyle: {
         justifyContent: 'center'
     }
-};
+});
 
-export default searchMap;
+export default SearchMap;

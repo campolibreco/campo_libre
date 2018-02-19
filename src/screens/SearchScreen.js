@@ -79,21 +79,9 @@ class SearchScreen extends Component {
             tabBarIcon: ({focused, tintColor}) => (
                 <Icon type='ionicon' name={focused ? 'ios-search' : 'ios-search-outline'} size={25} color={tintColor}/>)
         }
-
-    };
-
-    renderList = () => {
-        return (
-            <Card>
-                <Text>
-                    List Results of Sites
-                </Text>
-            </Card>
-        );
     };
 
     renderSearchScreen = () => {
-
         const {viewStyle, region, mapLoaded} = this.props;
 
         if (viewStyle === map.SearchOptions.MAP) {
@@ -102,10 +90,15 @@ class SearchScreen extends Component {
                     region={region}
                     mapLoaded={mapLoaded}
                     updateRegion={this.props.updateRegion}
+                    sites={[]}
                 />
             );
         } else {
-            return this.renderList();
+            return (
+                <SearchList
+                    sites={[]}
+                />
+            );
         }
 
     };
