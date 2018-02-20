@@ -24,7 +24,7 @@ export const updateViewStyle = (newViewStyle) => {
     };
 };
 
-export const mapLoaded = () => {
+export const mapHasLoaded = () => {
     return {
         type: MAP_READY
     }

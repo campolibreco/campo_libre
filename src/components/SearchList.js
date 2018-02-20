@@ -1,23 +1,33 @@
-import React, {Component} from 'react';
-import {Platform, Text} from 'react-native';
-import {Button} from 'react-native-elements';
+// 3rd party libraries - core
+import React from 'react';
+import {View, Text, StyleSheet} from 'react-native';
+import {Card} from 'react-native-elements';
+// 3rd party libraries - additional
 
+// styles and language
 
-import {CardSection, Card} from './common/index';
+// our components - core
+// our components - additional
 
-class SearchList extends Component {
+const SearchList = ({sites}) => {
 
-    render(){
-        return(
-            <Card>
-                <CardSection>
-                    <Text>
-                        List Results of Sites
-                    </Text>
-                </CardSection>
-            </Card>
-        );
+    return (
+        <Card>
+            <Text>
+                List Results of Sites
+            </Text>
+        </Card>
+    );
+
+};
+
+const styles = StyleSheet.create({
+    fillScreen: {
+        flex: 1
+    },
+    spinnerContainerStyle: {
+        justifyContent: 'center'
     }
-}
+});
 
 export default SearchList;
