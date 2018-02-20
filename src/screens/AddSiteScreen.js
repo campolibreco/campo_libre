@@ -3,10 +3,37 @@ import { Alert, Picker, ScrollView, Modal, View} from 'react-native';
 
 import { Button, FormLabel, FormInput, Input, Icon, Overlay, Text } from 'react-native-elements';
 
-import {campsite} from '../locale.en';
-import {navyBlue, grey, darkBlue, lightwhiteblue} from '../styles/index';
+import { campsite, submit_form, common} from '../locale.en';
 
-import {CardSection, Card, largeFormElement} from '../components/common/index';
+const{ site_description, upload,
+                 campsite_form:{
+                 latitude, longitude,
+                 longitude_placeholder, latitude_placeholder,
+                 add_site_title,site_info,
+                 description,description_placeholder,
+                 directions,directions_placeholder,
+                 nearest_town,nearest_town_placeholder,
+                 here_now, add_site,
+                     accessibility_options:{
+                       accessibility, paved_road,
+                       dirt_road, uneven_terrain,
+                       fourbyfour, fourbyfour_clearence,
+                       hike_access},
+                     facilities_options:{
+                       full_service, some,
+                       none, permit,
+                       paid, free,
+                       facilities}
+                     }} = campsite;
+
+
+
+const { submit, submitted } = submit_form;
+
+const{ title, location } = common;
+
+import { navyBlue, grey, darkBlue, lightwhiteblue } from '../styles/index';
+import { CardSection, Card, largeFormElement } from '../components/common/index';
 
 class AddSiteScreen extends Component {
   state = {
@@ -21,7 +48,6 @@ class AddSiteScreen extends Component {
     this.setState({modalVisible:false});
   }
 
-
     static navigationOptions = (props) => {
         const {navigation: {navigate}} = props;
         return {
@@ -34,12 +60,13 @@ class AddSiteScreen extends Component {
 
     render(){
         const { buttonStyle, headerTitle, largeTextInput } = styles;
+
         return(
           <View>
             <CardSection>
-                    <Text>
-                        {campsite.description}
-                     </Text>
+              <Text>
+              {site_description}
+              </Text>
             </CardSection>
             <Button
               onPress={() => this.openModal()}
@@ -48,64 +75,66 @@ class AddSiteScreen extends Component {
               rounded={true}
               buttonStyle={buttonStyle}
               icon={{name: 'plus', type: 'font-awesome'}}
-              title='Add A Site'
+              title={add_site}
             >
-                {campsite.upload}
-               </Button>
+                {upload}
+            </Button>
+
+
             <Modal
-                  visible={this.state.modalVisible}
-                  animationType={'slide'}
-                  onRequestClose={() => this.closeModal()}
+              visible={this.state.modalVisible}
+              animationType={'slide'}
+              onRequestClose={() => this.closeModal()}
             >
                   <ScrollView>
-                        <CardSection  >
+                        <CardSection>
                           <Icon
                               type='font-awesome'
                               name='times-circle'
                               onPress={() => this.closeModal()}
                            />
-                                  <Text h2
-                                    style={headerTitle}
-                                    >Location</Text>
-                                  <FormLabel>Latitude</FormLabel>
+                              <Text h2
+                                  style={headerTitle}
+                                  >{location}</Text>
+                                  <FormLabel>{latitude}</FormLabel>
                                     <FormInput
-                                      placeholder="add Latitude" required />
-                                  <FormLabel>Longitude</FormLabel>
+                                      placeholder={latitude_placeholder} required />
+                                    <FormLabel>{longitude}</FormLabel>
                                     <FormInput
-                                      placeholder="Add Longitude" required
-                                      />
+                                      placeholder={longitude_placeholder} required
+                                    />
                                       <Text h3
                                           style={headerTitle}
                                           >- or -</Text>
                                     <Button
                                         large
                                         rounded={true}
-                                        onPress={()=> alert('submitted')}
+                                        onPress={()=> alert(submitted)}
                                         buttonStyle={buttonStyle}
                                         icon={{name: 'bullseye', type: 'font-awesome'}}
-                                        title='I am here now'
+                                        title={here_now}
                                     >
                                               {campsite.upload}
                                           </Button>
                                   <Text h2
-                                      style={headerTitle}
-                                      >Site info</Text>
-                                  <FormLabel>Title</FormLabel>
-
+                                      style={headerTitle}>
+                                      {site_info}
+                                  </Text>
+                                  <FormLabel>{title}</FormLabel>
                                     <FormInput
-                                      placeholder="Add site title" />
-                                  <FormLabel>Description</FormLabel>
+                                      placeholder={add_site_title} />
+                                    <FormLabel>{description}</FormLabel>
                                     <FormInput
-                                      placeholder="Enter a description of the site"
+                                      placeholder={description_placeholder}
                                       containerStyle={largeTextInput}
                                       multiline={true}
                                       maxLength={40}
                                       maxHeight={50}
                                       editable={true}
                                        />
-                                  <FormLabel>Directions</FormLabel>
+                                     <FormLabel>{directions_placeholder}</FormLabel>
                                     <FormInput
-                                      placeholder="Enter a descriptive directions"
+                                      placeholder={directions_placeholder}
                                       containerStyle={largeTextInput}
                                       multiline={true}
                                       maxLength={40}
@@ -113,28 +142,28 @@ class AddSiteScreen extends Component {
                                       editable={true}
                                        />
 
-                                  <FormLabel>Nearest Town</FormLabel>
+                                     <FormLabel>{nearest_town}</FormLabel>
                                     <FormInput
-                                      placeholder="Enter nearest/closest town"
+                                      placeholder={nearest_town_placeholder}
                                       editable={true}
                                       />
-                                  <FormLabel>Accessiblitiy</FormLabel>
+                                    <FormLabel>{accessibility}</FormLabel>
                                           <Picker>
-                                            <Picker.Item label="Paved Road" value="paved_road" />
-                                            <Picker.Item label="Dirt Road " value="dirt_road" />
-                                            <Picker.Item label="Uneven Terrain" value="uneven_terrain" />
-                                            <Picker.Item label="4x4(recommended)" value="4x4" />
-                                            <Picker.Item label="4X4 Drive High Clearance" value="high_clearence" />
-                                            <Picker.Item label="Hike" value="hike" />
+                                            <Picker.Item label={paved_road} value={paved_road} />
+                                            <Picker.Item label={dirt_road} value={dirt_road} />
+                                            <Picker.Item label={uneven_terrain} value={uneven_terrain}/>
+                                            <Picker.Item label={fourbyfour} value={fourbyfour} />
+                                            <Picker.Item label={fourbyfour_clearence} value={fourbyfour_clearence}/>
+                                            <Picker.Item label={hike_access} value={hike_access}/>
                                           </Picker>
-                                    <FormLabel>Facilities</FormLabel>
+                                    <FormLabel>{facilities}</FormLabel>
                                       <Picker>
-                                        <Picker.Item label="Full Service" value="full_service" />
-                                        <Picker.Item label="Some " value="some" />
-                                        <Picker.Item label="None" value="none" />
-                                        <Picker.Item label="Permit" value="permit" />
-                                        <Picker.Item label="Paid" value="paid" />
-                                        <Picker.Item label="Free" value="free" />
+                                        <Picker.Item label={full_service} value={full_service}/>
+                                        <Picker.Item label={some} value={some} />
+                                        <Picker.Item label={none} value={none} />
+                                        <Picker.Item label={permit} value={permit} />
+                                        <Picker.Item label={paid} value={paid}/>
+                                        <Picker.Item label={free} value={free} />
                                       </Picker>
 
                                       <Button
@@ -144,44 +173,42 @@ class AddSiteScreen extends Component {
                                         rounded={true}
                                         buttonStyle={buttonStyle}
                                         icon={{name: 'plus', type: 'font-awesome'}}
-                                        title='Submit'
-                                      >  Submit
+                                        title={submit}
+                                      >  {submit}
                                        </Button>
-                                        </CardSection>
-                                        </ScrollView>
+                                    </CardSection>
+                                  </ScrollView>
+
                                 </Modal>
                               </View>
                             );
                           }
                         }
+//styles
+              const styles = {
+                  descriptionStyle: {
+                      color: darkBlue,
+                      fontSize: 15
+                  },
+                  sectionStyle: {
+                      backgroundColor: grey
+                  },
+                  buttonStyle:{
+                    marginTop: 10,
+                    marginBottom: 10,
+                    backgroundColor: navyBlue
+                  },
+                  headerTitle:{
+                    flex: 1,
+                    marginTop: 20,
+                    color: navyBlue,
+                     justifyContent: 'center',
+                     alignSelf:'center',
+                  },
+                  largeTextInput: {
+                    height: 100
+                  }
 
-
-
-
-const styles = {
-    descriptionStyle: {
-        color: darkBlue,
-        fontSize: 15
-    },
-    sectionStyle: {
-        backgroundColor: grey
-    },
-    buttonStyle:{
-      marginTop: 10,
-      marginBottom: 10,
-      backgroundColor: navyBlue
-    },
-    headerTitle:{
-      flex: 1,
-      marginTop: 20,
-      color: navyBlue,
-       justifyContent: 'center',
-       alignSelf:'center',
-    },
-    largeTextInput: {
-      height: 100
-    }
-
-}
+              }
 
 export default AddSiteScreen;
