@@ -57,14 +57,12 @@ export const more_screen = {
 };
 
 
-
-
 export const submit_form = {
   submit:'submit',
   submitted:'submitted'
-}
+};
 
 export const common ={
   title:'Title',
   location: 'Location'
-}
+};

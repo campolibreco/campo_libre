@@ -3,7 +3,7 @@ import { Alert, Picker, ScrollView, Modal, View} from 'react-native';
 
 import { Button, FormLabel, FormInput, Input, Icon, Overlay, Text } from 'react-native-elements';
 
-import { campsite } from '../locale.en';
+import { campsite, submit_form, common} from '../locale.en';
 
 const{ site_description, upload,
                  campsite_form:{
@@ -28,7 +28,7 @@ const{ site_description, upload,
 
 
 
-const { submit } = submit_form;
+const { submit, submitted } = submit_form;
 
 const{ title, location } = common;
 
@@ -167,7 +167,7 @@ class AddSiteScreen extends Component {
                                       </Picker>
 
                                       <Button
-                                        onPress={()=> alert(submitted)}
+                                        onPress={()=> alert('submitted')}
                                         title="Open modal"
                                         large
                                         rounded={true}
