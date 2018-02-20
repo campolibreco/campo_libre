@@ -14,19 +14,9 @@ const{ site_description, upload,
                  directions,directions_placeholder,
                  nearest_town,nearest_town_placeholder,
                  here_now, add_site,
-                     accessibility_options:{
-                       accessibility, paved_road,
-                       dirt_road, uneven_terrain,
-                       fourbyfour, fourbyfour_clearence,
-                       hike_access},
-                     facilities_options:{
-                       full_service, some,
-                       none, permit,
-                       paid, free,
-                       facilities}
-                     }} = campsite;
-
-
+                 accessibility,facilities,
+                 accessibility_options,
+                 facilities_options,}} = campsite;
 
 const { submit, submitted } = submit_form;
 
@@ -58,6 +48,18 @@ class AddSiteScreen extends Component {
         }
     };
 
+  accessibilityOptions(){
+  return Object.keys(accessibility_options).map((key)=> {
+        return <Picker.Item key={key} label={accessibility_options[key]} value={accessibility_options[key]}/>;
+        })
+  }
+
+  facilitiesOptions(){
+  return Object.keys(facilities_options).map((key) => {
+        return <Picker.Item key={key} label={facilities_options[key]} value={facilities_options[key]}/>;
+        })
+  }
+
     render(){
         const { buttonStyle, headerTitle, largeTextInput } = styles;
 
@@ -79,7 +81,6 @@ class AddSiteScreen extends Component {
             >
                 {upload}
             </Button>
-
 
             <Modal
               visible={this.state.modalVisible}
@@ -105,7 +106,7 @@ class AddSiteScreen extends Component {
                                     />
                                       <Text h3
                                           style={headerTitle}
-                                          >- or -</Text>
+                                         >- or -</Text>
                                     <Button
                                         large
                                         rounded={true}
@@ -148,22 +149,12 @@ class AddSiteScreen extends Component {
                                       editable={true}
                                       />
                                     <FormLabel>{accessibility}</FormLabel>
-                                          <Picker>
-                                            <Picker.Item label={paved_road} value={paved_road} />
-                                            <Picker.Item label={dirt_road} value={dirt_road} />
-                                            <Picker.Item label={uneven_terrain} value={uneven_terrain}/>
-                                            <Picker.Item label={fourbyfour} value={fourbyfour} />
-                                            <Picker.Item label={fourbyfour_clearence} value={fourbyfour_clearence}/>
-                                            <Picker.Item label={hike_access} value={hike_access}/>
-                                          </Picker>
+                                      <Picker>
+                                        {this.accessibilityOptions()}
+                                      </Picker>
                                     <FormLabel>{facilities}</FormLabel>
                                       <Picker>
-                                        <Picker.Item label={full_service} value={full_service}/>
-                                        <Picker.Item label={some} value={some} />
-                                        <Picker.Item label={none} value={none} />
-                                        <Picker.Item label={permit} value={permit} />
-                                        <Picker.Item label={paid} value={paid}/>
-                                        <Picker.Item label={free} value={free} />
+                                        {this.facilitiesOptions()}
                                       </Picker>
 
                                       <Button
@@ -178,13 +169,12 @@ class AddSiteScreen extends Component {
                                        </Button>
                                     </CardSection>
                                   </ScrollView>
-
                                 </Modal>
                               </View>
                             );
                           }
                         }
-//styles
+
               const styles = {
                   descriptionStyle: {
                       color: darkBlue,

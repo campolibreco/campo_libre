@@ -1,3 +1,4 @@
+
 export const login = {
     campo_libre: 'Campo Libre',
     tagline: "It's time to get out there...",
@@ -16,9 +17,9 @@ export const campsite = {
     upload: "Upload Campsite",
     campsite_form:{
         latitude: 'Latitude',
-        latitude_placeholder: 'add longitude',
+        latitude_placeholder: 'Add longitude',
         longitude: 'Longitude',
-        longitude_placeholder: 'add longitude',
+        longitude_placeholder: 'Add longitude',
         add_site_title:'Add Site Title',
         add_site: 'Add a Site',
         add_a_campsite: 'Add a Campsite',
@@ -30,9 +31,9 @@ export const campsite = {
         nearest_town:'nearest_town',
         nearest_town_placeholder:'Enter nearest town',
         here_now:'I am here now',
-        accessiblitiy: 'Accessiblitiy',
+        accessibility: 'Accessibility',
+        facilities: 'Facilities',
           facilities_options: {
-              facilities:'facilities',
               full_service: 'Full Service ',
               some: 'Some',
               none:'None',
@@ -41,7 +42,6 @@ export const campsite = {
               free: 'Free'
           },
           accessibility_options: {
-              accessibility:'Accessibility',
               paved_road:"Paved Road",
               dirt_road: "Dirt Road",
               uneven_terrain: "Uneven Terrain",
