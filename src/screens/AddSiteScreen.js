@@ -3,20 +3,34 @@ import { Alert, Picker, ScrollView, Modal, View} from 'react-native';
 
 import { Button, FormLabel, FormInput, Input, Icon, Overlay, Text } from 'react-native-elements';
 
-import {campsite, campsite_form, formFeedback, facilities_options, accessibility_options, submit_form} from '../locale.en';
+import {campsite, campsite_form, formFeedback, facilities_options, accessibility_options, submit_form, common} from '../locale.en';
+
+const{site_description, upload} = campsite
+
 const {latitude, longitude,
-  longitude_placeholder, latitude_placeholder,
-   add_site_title,site_info,description,
-  description_placeholder,directions,
-  directions_placeholder,nearest_town, nearest_town_placeholder, here_now, add_site} = campsite_form;
-// const {submit, submitted} = submit_form;
-const { full_service, some, none, permit, paid, free, facilities} = facilities_options;
-const {accessibility, paved_road, dirt_road, uneven_terrain, fourbyfour, fourbyfour_clearence, hike_access} = accessibility_options;
-const{submit} = submit_form
+       longitude_placeholder, latitude_placeholder,
+       add_site_title,site_info,
+       description,description_placeholder,
+       directions,directions_placeholder,
+       nearest_town,nearest_town_placeholder,
+       here_now, add_site } = campsite_form;
 
-import {navyBlue, grey, darkBlue, lightwhiteblue} from '../styles/index';
+const { full_service, some,
+        none, permit,
+        paid, free,
+        facilities } = facilities_options;
 
-import {CardSection, Card, largeFormElement} from '../components/common/index';
+const { accessibility, paved_road,
+        dirt_road, uneven_terrain,
+        fourbyfour, fourbyfour_clearence,
+        hike_access } = accessibility_options;
+
+const { submit } = submit_form;
+
+const{ title, location } = common;
+
+import { navyBlue, grey, darkBlue, lightwhiteblue } from '../styles/index';
+import { CardSection, Card, largeFormElement } from '../components/common/index';
 
 class AddSiteScreen extends Component {
   state = {
@@ -30,7 +44,6 @@ class AddSiteScreen extends Component {
   closeModal() {
     this.setState({modalVisible:false});
   }
-
 
     static navigationOptions = (props) => {
         const {navigation: {navigate}} = props;
@@ -48,9 +61,9 @@ class AddSiteScreen extends Component {
         return(
           <View>
             <CardSection>
-                    <Text>
-                        {campsite.description}
-                     </Text>
+              <Text>
+            {site_description}
+              </Text>
             </CardSection>
             <Button
               onPress={() => this.openModal()}
@@ -61,12 +74,12 @@ class AddSiteScreen extends Component {
               icon={{name: 'plus', type: 'font-awesome'}}
               title={add_site}
             >
-                {campsite.upload}
-               </Button>
+                {upload}
+            </Button>
             <Modal
-                  visible={this.state.modalVisible}
-                  animationType={'slide'}
-                  onRequestClose={() => this.closeModal()}
+              visible={this.state.modalVisible}
+              animationType={'slide'}
+              onRequestClose={() => this.closeModal()}
             >
                   <ScrollView>
                         <CardSection  >
@@ -75,16 +88,16 @@ class AddSiteScreen extends Component {
                               name='times-circle'
                               onPress={() => this.closeModal()}
                            />
-                                  <Text h2
-                                    style={headerTitle}
-                                    >Location</Text>
+                              <Text h2
+                                  style={headerTitle}
+                                  >{location}</Text>
                                   <FormLabel>{latitude}</FormLabel>
                                     <FormInput
                                       placeholder={latitude_placeholder} required />
                                     <FormLabel>{longitude}</FormLabel>
                                     <FormInput
                                       placeholder={longitude_placeholder} required
-                                      />
+                                    />
                                       <Text h3
                                           style={headerTitle}
                                           >- or -</Text>
@@ -101,9 +114,8 @@ class AddSiteScreen extends Component {
                                   <Text h2
                                       style={headerTitle}>
                                       {site_info}
-                                    </Text>
-                                  <FormLabel>Title</FormLabel>
-
+                                  </Text>
+                                  <FormLabel>{title}</FormLabel>
                                     <FormInput
                                       placeholder={add_site_title} />
                                     <FormLabel>{description}</FormLabel>

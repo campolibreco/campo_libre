@@ -12,7 +12,7 @@ export const login = {
 
 export const campsite = {
     nav_header: "Share a site, Get a site",
-    description: "Looking for some secret sites? Want to find a hidden spot? Upload a campsite, and if it's approved, we'll unlock two secret sites that are only available to our contributing members.",
+    site_description: "Looking for some secret sites? Want to find a hidden spot? Upload a campsite, and if it's approved, we'll unlock two secret sites that are only available to our contributing members.",
     upload: "Upload Campsite",
 
 };
@@ -21,14 +21,13 @@ export const more_screen = {
   right_nav: 'Log Out'
 };
 
-
 export const campsite_form = {
   latitude: 'Latitude',
   latitude_placeholder: 'add longitude',
   longitude: 'Longitude',
   longitude_placeholder: 'add longitude',
   add_site_title:'Add Site Title',
-  add_site: 'Add A Site',
+  add_site: 'Add a Site',
   add_a_campsite: 'Add a Campsite',
   site_info:'Site Info',
   description: 'Description',
@@ -40,7 +39,6 @@ export const campsite_form = {
   here_now:'I am here now',
   accessiblitiy: 'Accessiblitiy',
 };
-
 
 export const facilities_options = {
   facilities:'facilities',
@@ -61,8 +59,12 @@ export const accessibility_options = {
   fourbyfour_clearence:"4X4 Drive High Clearance",
   hike_access:"Hike Access"
 }
-//
+
 export const submit_form = {
   submit:'submit',
   submitted:'submitted'
+}
+
+export const common ={
+  title:'Title'
 }
