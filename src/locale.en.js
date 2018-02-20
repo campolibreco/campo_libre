@@ -20,3 +20,49 @@ export const campsite = {
 export const more_screen = {
   right_nav: 'Log Out'
 };
+
+
+export const campsite_form = {
+  latitude: 'Latitude',
+  latitude_placeholder: 'add longitude',
+  longitude: 'Longitude',
+  longitude_placeholder: 'add longitude',
+  add_site_title:'Add Site Title',
+  add_site: 'Add A Site',
+  add_a_campsite: 'Add a Campsite',
+  site_info:'Site Info',
+  description: 'Description',
+  description_placeholder: 'Add Description',
+  directions: 'Directions',
+  directions_placeholder:'Add descriptive directions',
+  nearest_town:'nearest_town',
+  nearest_town_placeholder:'Enter nearest town',
+  here_now:'I am here now',
+  accessiblitiy: 'Accessiblitiy',
+};
+
+
+export const facilities_options = {
+  facilities:'facilities',
+  full_service: 'Full Service ',
+  some: 'Some',
+  none:'None',
+  permit: 'Permit',
+  paid: 'Paid',
+  free: 'Free'
+}
+
+export const accessibility_options = {
+  accessibility:'Accessibility',
+  paved_road:"Paved Road",
+  dirt_road: "Dirt Road",
+  uneven_terrain: "Uneven Terrain",
+  fourbyfour:"4x4(recommended)",
+  fourbyfour_clearence:"4X4 Drive High Clearance",
+  hike_access:"Hike Access"
+}
+//
+export const submit_form = {
+  submit:'submit',
+  submitted:'submitted'
+}
