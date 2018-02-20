@@ -9,10 +9,11 @@ import {
 } from './types';
 
 
-export const initializeMap = () => {
+export const initializeMap = (region) => {
 
     return {
-        type: INITIALIZE_MAP
+        type: INITIALIZE_MAP,
+        payload: region
     }
 };
 

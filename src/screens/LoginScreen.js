@@ -23,9 +23,9 @@ const {campo_libre, tagline, login_as_guest, login_with_facebook} = login;
 class LoginScreen extends Component {
 
     componentWillMount() {
-        const {navigation: {navigate}} = this.props;
+        const {token, navigation: {navigate}} = this.props;
 
-        this.props.checkAndSetToken({navigate});
+        this.props.checkAndSetToken({token, navigate});
     }
 
     onPressContinueAsGuest = () => {

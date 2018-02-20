@@ -15,6 +15,8 @@ import {
 import {FACEBOOK_AUTH} from '../../env';
 import {tokens, navKeys} from '../constants';
 
+import {persistor} from '../store';
+
 const attemptFacebookLogin = async ({dispatch, navigate}) => {
     const {appID} = FACEBOOK_AUTH;
     const faceBookOptions = {
@@ -62,10 +64,6 @@ export const checkAndSetToken = ({token, navigate}) => {
 
     return async (dispatch) => {
 
-        if (!token) {
-            token = await AsyncStorage.getItem(tokens.USER_TOKEN);
-        }
-
         if (token) {
             if (token === tokens.GUEST) {
                 dispatch({
@@ -104,7 +102,11 @@ export const setGuestToken = ({navigate}) => {
 
 export const logUserOutOfFacebook = ({navigate}) => {
     return async (dispatch) => {
+        // get rid of the user's token
         await AsyncStorage.removeItem(tokens.USER_TOKEN);
+
+        // purge all async persisted state
+        await persistor.purge();
 
         dispatch({
             type: FACEBOOK_LOGOUT_COMPLETE
