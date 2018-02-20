@@ -3,27 +3,30 @@ import { Alert, Picker, ScrollView, Modal, View} from 'react-native';
 
 import { Button, FormLabel, FormInput, Input, Icon, Overlay, Text } from 'react-native-elements';
 
-import {campsite, campsite_form, formFeedback, facilities_options, accessibility_options, submit_form, common} from '../locale.en';
+import { campsite } from '../locale.en';
 
-const{site_description, upload} = campsite
+const{ site_description, upload,
+                 campsite_form:{
+                 latitude, longitude,
+                 longitude_placeholder, latitude_placeholder,
+                 add_site_title,site_info,
+                 description,description_placeholder,
+                 directions,directions_placeholder,
+                 nearest_town,nearest_town_placeholder,
+                 here_now, add_site,
+                     accessibility_options:{
+                       accessibility, paved_road,
+                       dirt_road, uneven_terrain,
+                       fourbyfour, fourbyfour_clearence,
+                       hike_access},
+                     facilities_options:{
+                       full_service, some,
+                       none, permit,
+                       paid, free,
+                       facilities}
+                     }} = campsite;
 
-const {latitude, longitude,
-       longitude_placeholder, latitude_placeholder,
-       add_site_title,site_info,
-       description,description_placeholder,
-       directions,directions_placeholder,
-       nearest_town,nearest_town_placeholder,
-       here_now, add_site } = campsite_form;
 
-const { full_service, some,
-        none, permit,
-        paid, free,
-        facilities } = facilities_options;
-
-const { accessibility, paved_road,
-        dirt_road, uneven_terrain,
-        fourbyfour, fourbyfour_clearence,
-        hike_access } = accessibility_options;
 
 const { submit } = submit_form;
 
@@ -62,7 +65,7 @@ class AddSiteScreen extends Component {
           <View>
             <CardSection>
               <Text>
-            {site_description}
+              {site_description}
               </Text>
             </CardSection>
             <Button
@@ -76,13 +79,15 @@ class AddSiteScreen extends Component {
             >
                 {upload}
             </Button>
+
+
             <Modal
               visible={this.state.modalVisible}
               animationType={'slide'}
               onRequestClose={() => this.closeModal()}
             >
                   <ScrollView>
-                        <CardSection  >
+                        <CardSection>
                           <Icon
                               type='font-awesome'
                               name='times-circle'
@@ -144,25 +149,25 @@ class AddSiteScreen extends Component {
                                       />
                                     <FormLabel>{accessibility}</FormLabel>
                                           <Picker>
-                                            <Picker.Item label={paved_road} value="paved_road" />
-                                            <Picker.Item label={dirt_road} value="dirt_road" />
-                                            <Picker.Item label={uneven_terrain} value="uneven_terrain" />
-                                            <Picker.Item label={fourbyfour} value="4x4" />
-                                            <Picker.Item label={fourbyfour_clearence} value="high_clearence" />
-                                            <Picker.Item label={hike_access} value="hike" />
+                                            <Picker.Item label={paved_road} value={paved_road} />
+                                            <Picker.Item label={dirt_road} value={dirt_road} />
+                                            <Picker.Item label={uneven_terrain} value={uneven_terrain}/>
+                                            <Picker.Item label={fourbyfour} value={fourbyfour} />
+                                            <Picker.Item label={fourbyfour_clearence} value={fourbyfour_clearence}/>
+                                            <Picker.Item label={hike_access} value={hike_access}/>
                                           </Picker>
                                     <FormLabel>{facilities}</FormLabel>
                                       <Picker>
-                                        <Picker.Item label={full_service} value="full_service" />
-                                        <Picker.Item label={some} value="some" />
-                                        <Picker.Item label={none} value="none" />
-                                        <Picker.Item label={permit} value="permit" />
-                                        <Picker.Item label={paid} value="paid" />
-                                        <Picker.Item label={free} value="free" />
+                                        <Picker.Item label={full_service} value={full_service}/>
+                                        <Picker.Item label={some} value={some} />
+                                        <Picker.Item label={none} value={none} />
+                                        <Picker.Item label={permit} value={permit} />
+                                        <Picker.Item label={paid} value={paid}/>
+                                        <Picker.Item label={free} value={free} />
                                       </Picker>
 
                                       <Button
-                                        onPress={()=> alert('submited')}
+                                        onPress={()=> alert(submitted)}
                                         title="Open modal"
                                         large
                                         rounded={true}
@@ -171,41 +176,39 @@ class AddSiteScreen extends Component {
                                         title={submit}
                                       >  Submit
                                        </Button>
-                                        </CardSection>
-                                        </ScrollView>
+                                    </CardSection>
+                                  </ScrollView>
+
                                 </Modal>
                               </View>
                             );
                           }
                         }
+//styles
+              const styles = {
+                  descriptionStyle: {
+                      color: darkBlue,
+                      fontSize: 15
+                  },
+                  sectionStyle: {
+                      backgroundColor: grey
+                  },
+                  buttonStyle:{
+                    marginTop: 10,
+                    marginBottom: 10,
+                    backgroundColor: navyBlue
+                  },
+                  headerTitle:{
+                    flex: 1,
+                    marginTop: 20,
+                    color: navyBlue,
+                     justifyContent: 'center',
+                     alignSelf:'center',
+                  },
+                  largeTextInput: {
+                    height: 100
+                  }
 
-
-
-
-const styles = {
-    descriptionStyle: {
-        color: darkBlue,
-        fontSize: 15
-    },
-    sectionStyle: {
-        backgroundColor: grey
-    },
-    buttonStyle:{
-      marginTop: 10,
-      marginBottom: 10,
-      backgroundColor: navyBlue
-    },
-    headerTitle:{
-      flex: 1,
-      marginTop: 20,
-      color: navyBlue,
-       justifyContent: 'center',
-       alignSelf:'center',
-    },
-    largeTextInput: {
-      height: 100
-    }
-
-}
+              }
 
 export default AddSiteScreen;
