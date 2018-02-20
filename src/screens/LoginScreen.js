@@ -1,7 +1,7 @@
 // 3rd part libraries - core
 import {AppLoading} from 'expo';
 import React, {Component} from 'react';
-import {View, Text, AsyncStorage} from 'react-native';
+import {View, Text} from 'react-native';
 import {connect} from 'react-redux';
 import {Button, Card} from 'react-native-elements'
 // 3rd party libraries - additional
