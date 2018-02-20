@@ -1,13 +1,12 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Provider} from 'react-redux';
-import {createStore, applyMiddleware, compose} from 'redux';
-import ReduxThunk from 'redux-thunk';
 import firebase from 'firebase';
 import {TabNavigator, StackNavigator} from 'react-navigation';
+import {PersistGate} from 'redux-persist/integration/react';
+import {AppLoading} from 'expo';
 
 import {FIREBASE_CONFIG} from './env';
-import reducers from './src/reducers';
 
 import {navKeys} from './src/constants';
 
@@ -19,14 +18,7 @@ import AddSiteScreen from './src/screens/AddSiteScreen';
 import MoreScreen from './src/screens/MoreScreen';
 import AuthScreen from "./src/screens/AuthScreen";
 
-const store = createStore(
-    reducers,
-    {},
-    compose(
-        applyMiddleware(ReduxThunk)
-    ));
-
-
+import {store, persistor} from './src/store';
 
 class App extends Component {
     componentWillMount() {
@@ -63,7 +55,9 @@ class App extends Component {
 
         return (
             <Provider store={store}>
-                <MainNavigator/>
+                <PersistGate loading={<AppLoading/>} persistor={persistor}>
+                    <MainNavigator/>
+                </PersistGate>
             </Provider>
         );
     }

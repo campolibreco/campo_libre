@@ -1,4 +1,3 @@
-import {AsyncStorage} from 'react-native';
 import {Facebook} from 'expo';
 import axios from 'axios';
 
@@ -14,6 +13,8 @@ import {
 
 import {FACEBOOK_AUTH} from '../../env';
 import {tokens, navKeys} from '../constants';
+
+import {persistor} from '../store';
 
 const attemptFacebookLogin = async ({dispatch, navigate}) => {
     const {appID} = FACEBOOK_AUTH;
@@ -31,8 +32,6 @@ const attemptFacebookLogin = async ({dispatch, navigate}) => {
             payload: {token, appReady: false}
         });
 
-        await AsyncStorage.setItem(tokens.USER_TOKEN, token);
-
         navigate(navKeys.SEARCH);
     } else {
         dispatch({
@@ -48,23 +47,13 @@ export const logUserIntoFacebook = ({navigate}) => {
     return async (dispatch) => {
         navigate(navKeys.AUTH);
 
-        let token = await AsyncStorage.getItem(tokens.USER_TOKEN);
-
-        if (token) {
-            checkAndSetToken({token});
-        } else {
-            attemptFacebookLogin({dispatch, navigate});
-        }
+        attemptFacebookLogin({dispatch, navigate});
     }
 };
 
 export const checkAndSetToken = ({token, navigate}) => {
 
     return async (dispatch) => {
-
-        if (!token) {
-            token = await AsyncStorage.getItem(tokens.USER_TOKEN);
-        }
 
         if (token) {
             if (token === tokens.GUEST) {
@@ -91,7 +80,6 @@ export const checkAndSetToken = ({token, navigate}) => {
 export const setGuestToken = ({navigate}) => {
 
     return async (dispatch) => {
-        await AsyncStorage.setItem(tokens.USER_TOKEN, tokens.GUEST);
 
         dispatch({
             type: GUEST_TOKEN_SET,
@@ -104,7 +92,9 @@ export const setGuestToken = ({navigate}) => {
 
 export const logUserOutOfFacebook = ({navigate}) => {
     return async (dispatch) => {
-        await AsyncStorage.removeItem(tokens.USER_TOKEN);
+
+        // purge all async persisted state
+        await persistor.purge();
 
         dispatch({
             type: FACEBOOK_LOGOUT_COMPLETE

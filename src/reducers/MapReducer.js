@@ -2,7 +2,7 @@ import {
     INITIALIZE_MAP,
     VIEW_STYLE_UPDATE,
     MAP_READY,
-    MAP_REGION_CHANGE
+    MAP_REGION_CHANGE, FACEBOOK_LOGOUT_COMPLETE
 
 } from '../actions/types';
 
@@ -25,7 +25,7 @@ export default (state = INITIAL_STATE, action) => {
     switch (type) {
 
         case INITIALIZE_MAP:
-            return INITIAL_STATE;
+            return payload ? {...INITIAL_STATE, region: payload} : INITIAL_STATE;
 
         case VIEW_STYLE_UPDATE:
             return {...state, viewStyle: payload};
@@ -35,6 +35,9 @@ export default (state = INITIAL_STATE, action) => {
 
         case MAP_REGION_CHANGE:
             return {...state, region: payload};
+
+        case FACEBOOK_LOGOUT_COMPLETE:
+            return INITIAL_STATE;
 
         default:
             return state;

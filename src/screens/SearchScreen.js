@@ -17,13 +17,17 @@ import {map, navKeys} from '../constants';
 
 class SearchScreen extends Component {
     componentWillMount() {
-        this.props.initializeMap();
+        const {region, initializeMap} = this.props;
+
+        initializeMap(region);
     }
 
     componentDidMount() {
-        this.props.navigation.setParams({buttonName: map.SearchOptions.LIST, toggleButton: this.toggleButton});
+        const {region, navigation: {setParams}, mapHasLoaded} = this.props;
 
-        this.props.mapHasLoaded();
+        setParams({buttonName: map.SearchOptions.LIST, toggleButton: this.toggleButton});
+
+        mapHasLoaded();
     }
 
     toggleButton = () => {
@@ -83,6 +87,8 @@ class SearchScreen extends Component {
 
     renderSearchScreen = () => {
         const {viewStyle, region, mapLoaded} = this.props;
+
+        const something = region;
 
         if (viewStyle === map.SearchOptions.MAP) {
             return (
