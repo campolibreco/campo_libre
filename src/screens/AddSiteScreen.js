@@ -174,7 +174,7 @@ class AddSiteScreen extends Component {
                                         buttonStyle={buttonStyle}
                                         icon={{name: 'plus', type: 'font-awesome'}}
                                         title={submit}
-                                      >  Submit
+                                      >  {submit}
                                        </Button>
                                     </CardSection>
                                   </ScrollView>
