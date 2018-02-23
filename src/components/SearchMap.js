@@ -10,16 +10,16 @@ import {Button} from 'react-native-elements';
 // our components - core
 // our components - additional
 
-const SearchMap = ({mapLoaded, region, updateRegion, sites}) => {
+const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites}) => {
     const {fillScreen, spinnerContainerStyle} = styles;
 
     const newRegionIsAcceptable = (newRegion) => {
         const {longitude, latitude, latitudeDelta, longitudeDelta} = newRegion;
 
-        const notZoomedTooFarOut = latitudeDelta < 60 && longitudeDelta < 60;
-        const isNotSF = (Math.abs(longitude - 122.409) > 1) && (Math.abs(latitude - 37.787) > 1);
+        const zoomedTooFarOut = latitudeDelta > 60 || longitudeDelta > 60;
+        const isSF = (Math.abs(Math.abs(longitude) - 122.409) < 1) && (Math.abs(Math.abs(latitude) - 37.787) < 1);
 
-        return isNotSF && notZoomedTooFarOut;
+        return !isSF && !zoomedTooFarOut;
     };
 
     const onRegionChange = (newRegion) => {
@@ -36,8 +36,8 @@ const SearchMap = ({mapLoaded, region, updateRegion, sites}) => {
             return (
                 <MapView
                     style={fillScreen}
-                    region={region}
-                    onRegionChange={onRegionChange}
+                    initialRegion={lastKnownRegion}
+                    onRegionChangeComplete={onRegionChange}
                     rotateEnabled={false}
                 />
             )

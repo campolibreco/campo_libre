@@ -17,13 +17,13 @@ import {map, navKeys} from '../constants';
 
 class SearchScreen extends Component {
     componentWillMount() {
-        const {region, initializeMap} = this.props;
+        const {lastKnownRegion, initializeMap} = this.props;
 
-        initializeMap(region);
+        initializeMap(lastKnownRegion);
     }
 
     componentDidMount() {
-        const {region, navigation: {setParams}, mapHasLoaded} = this.props;
+        const {lastKnownRegion, navigation: {setParams}, mapHasLoaded} = this.props;
 
         setParams({buttonName: map.SearchOptions.LIST, toggleButton: this.toggleButton});
 
@@ -86,14 +86,14 @@ class SearchScreen extends Component {
     };
 
     renderSearchScreen = () => {
-        const {viewStyle, region, mapLoaded} = this.props;
+        const {viewStyle, lastKnownRegion, mapLoaded} = this.props;
 
-        const something = region;
+        const something = lastKnownRegion;
 
         if (viewStyle === map.SearchOptions.MAP) {
             return (
                 <SearchMap
-                    region={region}
+                    lastKnownRegion={lastKnownRegion}
                     mapLoaded={mapLoaded}
                     updateRegion={this.props.updateRegion}
                     sites={[]}
@@ -136,11 +136,11 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-    const {region, mapLoaded, viewStyle} = state.map;
+    const {lastKnownRegion, mapLoaded, viewStyle} = state.map;
     const {token, appReady} = state.auth;
 
 
-    return {region, mapLoaded, viewStyle, token, appReady};
+    return {lastKnownRegion, mapLoaded, viewStyle, token, appReady};
 }
 
 export default connect(mapStateToProps, {initializeMap, updateViewStyle, mapHasLoaded, updateRegion})(SearchScreen);
