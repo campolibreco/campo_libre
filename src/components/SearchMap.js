@@ -7,7 +7,6 @@ const {Marker} = MapView;
 // 3rd party libraries - additional
 import _ from 'lodash';
 
-
 // styles and language
 
 // our components - core
@@ -16,9 +15,17 @@ import _ from 'lodash';
 const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites}) => {
     const {fillScreen, spinnerContainerStyle} = styles;
 
+    const newRegionIsAcceptable = (newRegion) => {
+        const {longitude, latitude, latitudeDelta, longitudeDelta} = newRegion;
+
+        const zoomedTooFarOut = latitudeDelta > 60 || longitudeDelta > 60;
+        const isSF = (Math.abs(Math.abs(longitude) - 122.409) < 1) && (Math.abs(Math.abs(latitude) - 37.787) < 1);
+
+        return !isSF && !zoomedTooFarOut;
+    };
 
     const renderSites = () => {
-        const renderedSites =  _.map(sites, site => {
+        const renderedSites = _.map(sites, site => {
             const {title, description, coordinate, id} = site;
 
             return (
@@ -34,13 +41,22 @@ const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites}) => {
         return renderedSites;
     };
 
+    const onRegionChange = (newRegion) => {
+
+        if (!newRegionIsAcceptable(newRegion)) {
+            return;
+        }
+
+        updateRegion(newRegion);
+    };
+
     const renderMap = () => {
         if (mapLoaded) {
             return (
                 <MapView
                     style={fillScreen}
                     initialRegion={lastKnownRegion}
-                    onRegionChangeComplete={updateRegion}
+                    onRegionChangeComplete={onRegionChange}
                     rotateEnabled={false}
                 >
 
