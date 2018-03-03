@@ -2,8 +2,11 @@
 import React from 'react';
 import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
 import {MapView} from 'expo';
-import {Button} from 'react-native-elements';
+
+const {Marker} = MapView;
 // 3rd party libraries - additional
+import _ from 'lodash';
+
 
 // styles and language
 
@@ -13,22 +16,22 @@ import {Button} from 'react-native-elements';
 const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites}) => {
     const {fillScreen, spinnerContainerStyle} = styles;
 
-    const newRegionIsAcceptable = (newRegion) => {
-        const {longitude, latitude, latitudeDelta, longitudeDelta} = newRegion;
 
-        const zoomedTooFarOut = latitudeDelta > 60 || longitudeDelta > 60;
-        const isSF = (Math.abs(Math.abs(longitude) - 122.409) < 1) && (Math.abs(Math.abs(latitude) - 37.787) < 1);
+    const renderSites = () => {
+        const renderedSites =  _.map(sites, site => {
+            const {title, description, coordinate, id} = site;
 
-        return !isSF && !zoomedTooFarOut;
-    };
+            return (
+                <Marker
+                    key={id}
+                    title={title}
+                    description={description}
+                    coordinate={coordinate}
+                />
+            );
+        });
 
-    const onRegionChange = (newRegion) => {
-
-        if (!newRegionIsAcceptable(newRegion)) {
-            return;
-        }
-
-        updateRegion(newRegion);
+        return renderedSites;
     };
 
     const renderMap = () => {
@@ -37,9 +40,13 @@ const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites}) => {
                 <MapView
                     style={fillScreen}
                     initialRegion={lastKnownRegion}
-                    onRegionChangeComplete={onRegionChange}
+                    onRegionChangeComplete={updateRegion}
                     rotateEnabled={false}
-                />
+                >
+
+                    {renderSites()}
+
+                </MapView>
             )
         } else {
             return (

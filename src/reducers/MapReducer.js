@@ -8,6 +8,36 @@ import {
 
 import {map} from "../constants";
 
+const sampleSiteMarkers = [
+    {
+        id: 1,
+        title: 'Twin Lakes Hidden Spot',
+        description: 'Beautiful view of Twin Lakes off this hidden forest road.',
+        coordinate: {
+            latitude: -106.391015,
+            longitude: 39.085855
+        }
+    },
+    {
+        id: 2,
+        title: 'Lily Lake',
+        description: 'Nice view of the lilypads in this secluded spot, but a pretty tough road to reach it.',
+        coordinate: {
+            latitude: -106.368051,
+            longitude: 39.351661
+        }
+    },
+    {
+        id: 3,
+        title: 'Slide Lake',
+        description: 'Pretty riverside camping, but a REALLY nasty road to get there.',
+        coordinate: {
+            latitude: -106.389204,
+            longitude: 39.372171
+        }
+    }
+];
+
 const INITIAL_STATE = {
     lastKnownRegion: {
         longitude: -105.727939,
@@ -16,8 +46,11 @@ const INITIAL_STATE = {
         latitudeDelta: 1
     },
     mapLoaded: false,
-    viewStyle: map.SearchOptions.MAP
+    viewStyle: map.SearchOptions.MAP,
+    sites: sampleSiteMarkers
 };
+
+
 
 export default (state = INITIAL_STATE, action) => {
     const {type, payload} = action;

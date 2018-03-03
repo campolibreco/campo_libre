@@ -86,9 +86,7 @@ class SearchScreen extends Component {
     };
 
     renderSearchScreen = () => {
-        const {viewStyle, lastKnownRegion, mapLoaded} = this.props;
-
-        const something = lastKnownRegion;
+        const {viewStyle, lastKnownRegion, mapLoaded, sites} = this.props;
 
         if (viewStyle === map.SearchOptions.MAP) {
             return (
@@ -96,13 +94,13 @@ class SearchScreen extends Component {
                     lastKnownRegion={lastKnownRegion}
                     mapLoaded={mapLoaded}
                     updateRegion={this.props.updateRegion}
-                    sites={[]}
+                    sites={sites}
                 />
             );
         } else {
             return (
                 <SearchList
-                    sites={[]}
+                    sites={sites}
                 />
             );
         }
@@ -136,11 +134,11 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-    const {lastKnownRegion, mapLoaded, viewStyle} = state.map;
+    const {lastKnownRegion, mapLoaded, viewStyle, sites} = state.map;
     const {token, appReady} = state.auth;
 
 
-    return {lastKnownRegion, mapLoaded, viewStyle, token, appReady};
+    return {lastKnownRegion, mapLoaded, viewStyle, token, appReady, sites};
 }
 
 export default connect(mapStateToProps, {initializeMap, updateViewStyle, mapHasLoaded, updateRegion})(SearchScreen);
