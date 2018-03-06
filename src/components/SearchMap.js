@@ -1,6 +1,7 @@
 // 3rd party libraries - core
 import React from 'react';
-import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
+import {View, Image, StyleSheet, ActivityIndicator} from 'react-native';
+import {Icon} from 'react-native-elements';
 import {MapView} from 'expo';
 
 const {Marker} = MapView;
@@ -34,7 +35,11 @@ const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites}) => {
                     title={title}
                     description={description}
                     coordinate={coordinate}
-                />
+                >
+
+                    <Icon type='material-community' name='tent' size={25} color='green'/>
+
+                </Marker>
             );
         });
 
