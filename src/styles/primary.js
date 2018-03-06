@@ -11,3 +11,6 @@ export const darkBlue = '#1F1F27';
 
 // Social media
 export const facebookBlue ='#3b5998';
+
+// Campsite Icons
+export const campsiteIcon = '#228b22';

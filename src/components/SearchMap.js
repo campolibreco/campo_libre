@@ -9,6 +9,7 @@ const {Marker} = MapView;
 import _ from 'lodash';
 
 // styles and language
+import {campsiteIcon} from '../styles';
 
 // our components - core
 // our components - additional
@@ -37,7 +38,7 @@ const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites}) => {
                     coordinate={coordinate}
                 >
 
-                    <Icon type='material-community' name='tent' size={25} color='green'/>
+                    <Icon type='material-community' name='tent' size={25} color={campsiteIcon}/>
 
                 </Marker>
             );
