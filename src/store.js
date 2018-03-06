@@ -10,7 +10,7 @@ const persistConfig = {
     storage: storage,
     // autoMergeLevel1 is the default anyway, but I want to be explicit
     stateReconciler: autoMergeLevel1,
-    whitelist: ['auth', 'map']
+    whitelist: ['auth', 'map', 'addSite']
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
