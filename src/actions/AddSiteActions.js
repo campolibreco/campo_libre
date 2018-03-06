@@ -6,7 +6,8 @@ import {
     SITE_DIRECTIONS_TEXT_CHANGED,
     SITE_NEAREST_TOWN_TEXT_CHANGED,
     SITE_ACCESSIBILITY_OPTION_CHANGED,
-    SITE_FACILITIES_OPTION_CHANGED
+    SITE_FACILITIES_OPTION_CHANGED,
+    ADD_SITE_FIELDS_RESET
 } from './types';
 
 export const updateLatitudeText = ({latitudeText}) => {
@@ -62,5 +63,11 @@ export const updateFacilitiesOption = ({facilitiesOption}) => {
     return {
         type: SITE_FACILITIES_OPTION_CHANGED,
         payload: {facilitiesOption}
+    }
+};
+
+export const resetAddScreenFields = () => {
+    return {
+        type: ADD_SITE_FIELDS_RESET
     }
 };

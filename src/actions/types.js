@@ -19,3 +19,4 @@ export const SITE_DIRECTIONS_TEXT_CHANGED = 'site_directions_text_changed';
 export const SITE_NEAREST_TOWN_TEXT_CHANGED = 'site_nearest_town_text_changed';
 export const SITE_ACCESSIBILITY_OPTION_CHANGED = 'site_accessibility_option_changed';
 export const SITE_FACILITIES_OPTION_CHANGED = 'site_facilities_option_changed';
+export const ADD_SITE_FIELDS_RESET = 'add_site_fields_reset';

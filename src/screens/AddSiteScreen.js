@@ -28,7 +28,17 @@ const {title, location} = common;
 
 import {navyBlue, grey, darkBlue} from '../styles/index';
 
-import {updateLatitudeText, updateLongitudeText, updateSiteTitleText, updateSiteDescriptionText, updateSiteDirectionsText, updateSiteNearestTownText, updateAccessibilityOption, updateFacilitiesOption} from '../actions';
+import {
+    updateLatitudeText,
+    updateLongitudeText,
+    updateSiteTitleText,
+    updateSiteDescriptionText,
+    updateSiteDirectionsText,
+    updateSiteNearestTownText,
+    updateAccessibilityOption,
+    updateFacilitiesOption,
+    resetAddScreenFields
+} from '../actions';
 
 class AddSiteScreen extends Component {
     state = {
@@ -98,8 +108,12 @@ class AddSiteScreen extends Component {
         this.props.updateFacilitiesOption({facilitiesOption: newFacilitiesOption})
     };
 
+    onClickReset = () => {
+        this.props.resetAddScreenFields();
+    };
+
     render() {
-        const {buttonStyle, headerTitle, largeTextInput, modalStyle, lastButtonStyle} = styles;
+        const {buttonStyle, headerTitle, largeTextInput, modalStyle, lastButtonStyle, exitOrResetStyle} = styles;
         const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption} = this.props;
 
         return (
@@ -127,11 +141,21 @@ class AddSiteScreen extends Component {
                     onRequestClose={() => this.closeModal()}
                 >
                     <ScrollView style={modalStyle}>
-                        <Icon
-                            type='font-awesome'
-                            name='times-circle'
-                            onPress={() => this.closeModal()}
-                        />
+                        <View style={exitOrResetStyle}>
+                            <Icon
+                                type='font-awesome'
+                                name='times-circle'
+                                onPress={() => this.closeModal()}
+                            />
+
+                            <Button
+                                title="Reset"
+                                onPress={this.onClickReset}
+                                backgroundColor="rgba(0,0,0,0)"
+                                color="rgba(0,122,255,1)"
+                            />
+
+                        </View>
 
                         <Text h2
                               style={headerTitle}
@@ -276,6 +300,12 @@ const styles = {
     },
     lastButtonStyle: {
         marginBottom: 100
+    },
+    exitOrResetStyle: {
+        paddingLeft: 20,
+        paddingRight: 20,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     }
 
 };
@@ -284,7 +314,26 @@ function mapStateToProps(state) {
     const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption} = state.addSite;
 
 
-    return {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption};
+    return {
+        latitudeText,
+        longitudeText,
+        siteTitleText,
+        siteDescriptionText,
+        siteDirectionsText,
+        siteNearestTownText,
+        accessibilityOption,
+        facilitiesOption
+    };
 }
 
-export default connect(mapStateToProps, {updateLatitudeText, updateLongitudeText, updateSiteTitleText, updateSiteDescriptionText, updateSiteDirectionsText, updateSiteNearestTownText, updateAccessibilityOption, updateFacilitiesOption})(AddSiteScreen);
+export default connect(mapStateToProps, {
+    updateLatitudeText,
+    updateLongitudeText,
+    updateSiteTitleText,
+    updateSiteDescriptionText,
+    updateSiteDirectionsText,
+    updateSiteNearestTownText,
+    updateAccessibilityOption,
+    updateFacilitiesOption,
+    resetAddScreenFields
+})(AddSiteScreen);

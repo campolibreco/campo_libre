@@ -8,7 +8,8 @@ import {
     SITE_DIRECTIONS_TEXT_CHANGED,
     SITE_NEAREST_TOWN_TEXT_CHANGED,
     SITE_ACCESSIBILITY_OPTION_CHANGED,
-    SITE_FACILITIES_OPTION_CHANGED
+    SITE_FACILITIES_OPTION_CHANGED,
+    ADD_SITE_FIELDS_RESET
 } from '../actions/types';
 
 import {campsite} from '../locale.en';
@@ -23,7 +24,7 @@ const INITIAL_STATE = {
     siteDirectionsText: '',
     siteNearestTownText: '',
     accessibilityOption: accessibility_options.paved_road,
-    facilitiesOption: facilities_options.free
+    facilitiesOption: facilities_options.full_service
 };
 
 const removeNonNumbers = (text) => {
@@ -70,6 +71,9 @@ export default (state = INITIAL_STATE, action) => {
         case SITE_FACILITIES_OPTION_CHANGED:
             const {facilitiesOption} = payload;
             return {...state, facilitiesOption};
+
+        case ADD_SITE_FIELDS_RESET:
+            return INITIAL_STATE;
 
         default:
             return state;
