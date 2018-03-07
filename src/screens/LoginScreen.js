@@ -1,9 +1,9 @@
 // 3rd part libraries - core
 import {AppLoading} from 'expo';
 import React, {Component} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, ImageBackground} from 'react-native';
 import {connect} from 'react-redux';
-import {Button, Card} from 'react-native-elements'
+import {Button} from 'react-native-elements'
 // 3rd party libraries - additional
 import _ from 'lodash';
 
@@ -11,11 +11,10 @@ import _ from 'lodash';
 import {checkAndSetToken, setGuestToken, logUserIntoFacebook} from '../actions/index';
 
 // language and styles
-import {textDark, lightwhiteblue, facebookBlue, grayblue, navyBlue} from '../styles/index';
+import { facebookBlueButtonTransparent, grayblue, navyBlueButtonTransparent, headerWhiteTransparent, overlayBlue, headerWhite} from '../styles/index';
 import {login} from '../locale.en';
 
 const {campo_libre, tagline, login_as_guest, login_with_facebook} = login;
-
 
 // our components - core
 // our components - additional
@@ -48,43 +47,39 @@ class LoginScreen extends Component {
     };
 
     renderPage() {
-        const {containerStyle, topContainer, heroContainer, buttonContainer, buttonStyle, facebookStyle} = styles;
+        const { heroContainer, overlayContainer, top, header, buttonContainer, facebookStyle, buttonStyle} = styles;
 
         return (
-            <View style={containerStyle}>
-                <View style={topContainer}>
-                    <Card
-                        style={heroContainer}
-                        title={_.upperCase(campo_libre)}
-                        image={require('../../assets/hero.jpg')}
-                    >
-                        <Text>
-                            {tagline}
-                        </Text>
-                    </Card>
-                </View>
+          <ImageBackground
+             source={require('../../assets/fireStarter.jpg')}
+             style={heroContainer}>
 
-                <View style={buttonContainer}>
-                    <Button
-                        large
-                        transparent
-                        icon={{name: 'facebook', type: 'font-awesome'}}
-                        title={login_with_facebook}
-                        buttonStyle={facebookStyle}
-                        onPress={this.onPressFacebookLogin}
-                        rounded={true}
-                    />
+            <View style={overlayContainer}>
+              <View style={top}>
+                      <Text style={header}>{campo_libre}</Text>
+              </View>
 
-                    <Button
-                        onPress={this.onPressContinueAsGuest}
-                        large
-                        buttonStyle={buttonStyle}
-                        icon={{name: 'envira', type: 'font-awesome'}}
-                        title={login_as_guest}
-                        rounded={true}
-                    />
-                </View>
-            </View>
+                <View style ={buttonContainer}>
+                  <Button
+                     large
+                     transparent
+                     icon={{name: 'facebook', type: 'font-awesome'}}
+                     title={login_with_facebook}
+                     buttonStyle={facebookStyle}
+                     onPress={this.onPressFacebookLogin}
+                     rounded={true}
+                 />
+                 <Button
+                     onPress={this.onPressContinueAsGuest}
+                     large
+                     buttonStyle={buttonStyle}
+                     icon={{name: 'envira', type: 'font-awesome'}}
+                     title={login_as_guest}
+                     rounded={true}
+                 />
+              </View>
+             </View>
+            </ImageBackground>
         );
     }
 
@@ -109,30 +104,40 @@ const styles = {
     fillScreen: {
         flex: 1
     },
-    containerStyle: {
-        flex: 1,
-        marginTop: 40,
-        backgroundColor: grayblue,
-        justifyContent: 'space-around'
-    },
-    topContainer: {
-        flex: 2
+    overlayContainer: {
+      flex:1,
+      backgroundColor: overlayBlue
     },
     heroContainer: {
-        flex: 1
-    },
-    buttonContainer: {
         flex: 1,
-        justifyContent: 'space-around',
-        marginBottom: 20
+        width: '100%',
+        height:'100%'
+    },
+    top:{
+      height:'50%',
+      alignItems: 'center',
+      justifyContent:'center'
+    },
+    header:{
+      color: headerWhite,
+      fontSize:28,
+      borderColor:headerWhite,
+      borderWidth:2,
+      padding: 20,
+      paddingLeft: 40,
+      paddingRight:40,
+      backgroundColor:headerWhiteTransparent
+    },
+    buttonContainer:{
+      height:'22%',
+      justifyContent: 'space-between'
     },
     facebookStyle: {
-        backgroundColor: facebookBlue,
+        backgroundColor: facebookBlueButtonTransparent,
         marginTop: 5
     },
     buttonStyle: {
-        marginTop: 10,
-        backgroundColor: navyBlue
+        backgroundColor: navyBlueButtonTransparent
     }
 };
 
