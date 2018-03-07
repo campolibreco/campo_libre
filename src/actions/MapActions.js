@@ -17,10 +17,23 @@ export const initializeMap = (region) => {
 
     return (dispatch) => {
 
-        dispatch({
-            type: INITIALIZE_MAP,
-            payload: {region}
-        });
+        // TODO - clean this up after finishing tutorial
+
+        // firebase.firestore().doc('campsites/testSiteOne')
+        //     .set({
+        //         name: 'Some test site'
+        //     })
+        //     .then(result =>{
+        //         console.log(result);
+
+                dispatch({
+                    type: INITIALIZE_MAP,
+                    payload: {region}
+                });
+            // })
+            // .catch(error =>{
+            //     console.log(error)
+            // });
 
 
     };
