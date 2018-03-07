@@ -20,3 +20,9 @@ export const navKeys = {
     MORE: 'more',
     FILTER: 'filter'
 };
+
+export const permissionResponses = {
+    GRANTED: 'granted',
+    DENIED: 'denied',
+    UNDETERMINED: 'undetermined'
+};

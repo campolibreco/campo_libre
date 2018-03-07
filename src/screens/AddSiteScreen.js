@@ -4,6 +4,20 @@ import {connect} from 'react-redux';
 
 import {Button, FormLabel, FormInput, Input, Icon, Overlay, Text, Card} from 'react-native-elements';
 
+import {
+    updateLatitudeText,
+    updateLongitudeText,
+    updateSiteTitleText,
+    updateSiteDescriptionText,
+    updateSiteDirectionsText,
+    updateSiteNearestTownText,
+    updateAccessibilityOption,
+    updateFacilitiesOption,
+    resetAddScreenFields,
+    promptForLocationServicesPermission,
+    getCurrentUserLocation
+} from '../actions';
+
 import {campsite, submit_form, common} from '../locale.en';
 
 const {
@@ -26,19 +40,11 @@ const {submit, submitted} = submit_form;
 
 const {title, location} = common;
 
-import {navyBlue, grey, darkBlue} from '../styles/index';
+import {permissionResponses} from '../constants';
 
-import {
-    updateLatitudeText,
-    updateLongitudeText,
-    updateSiteTitleText,
-    updateSiteDescriptionText,
-    updateSiteDirectionsText,
-    updateSiteNearestTownText,
-    updateAccessibilityOption,
-    updateFacilitiesOption,
-    resetAddScreenFields
-} from '../actions';
+const {GRANTED, DENIED, UNDETERMINED} = permissionResponses;
+
+import {navyBlue, grey, darkBlue} from '../styles/index';
 
 class AddSiteScreen extends Component {
     state = {
@@ -112,6 +118,16 @@ class AddSiteScreen extends Component {
         this.props.resetAddScreenFields();
     };
 
+    onClickIAmHere = () => {
+        const {locationServicesPermission} = this.props;
+
+        if (locationServicesPermission === GRANTED) {
+            this.props.getCurrentUserLocation();
+        } else {
+            this.props.promptForLocationServicesPermission();
+        }
+    };
+
     render() {
         const {buttonStyle, headerTitle, largeTextInput, modalStyle, lastButtonStyle, exitOrResetStyle} = styles;
         const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption} = this.props;
@@ -163,6 +179,21 @@ class AddSiteScreen extends Component {
                             {location}
                         </Text>
 
+                        <Button
+                            large
+                            rounded={true}
+                            onPress={this.onClickIAmHere}
+                            buttonStyle={buttonStyle}
+                            icon={{name: 'bullseye', type: 'font-awesome'}}
+                            title={here_now}
+                        >
+                            {campsite.upload}
+                        </Button>
+
+                        <Text h3
+                              style={headerTitle}
+                        >- or -</Text>
+
                         <FormLabel>{latitude}</FormLabel>
                         <FormInput
                             placeholder={latitude_placeholder}
@@ -178,21 +209,6 @@ class AddSiteScreen extends Component {
                             onChangeText={this.onUpdateLongitudeText}
                             required
                         />
-
-                        <Text h3
-                              style={headerTitle}
-                        >- or -</Text>
-                        <Button
-                            large
-                            rounded={true}
-                            onPress={() => alert(submitted)}
-                            buttonStyle={buttonStyle}
-                            icon={{name: 'bullseye', type: 'font-awesome'}}
-                            title={here_now}
-                        >
-                            {campsite.upload}
-                        </Button>
-
 
                         <Text h2
                               style={headerTitle}>
@@ -312,6 +328,7 @@ const styles = {
 
 function mapStateToProps(state) {
     const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption} = state.addSite;
+    const {locationServicesPermission, cameraPermission, cameraRollPermission} = state.permissions;
 
 
     return {
@@ -322,7 +339,10 @@ function mapStateToProps(state) {
         siteDirectionsText,
         siteNearestTownText,
         accessibilityOption,
-        facilitiesOption
+        facilitiesOption,
+        locationServicesPermission,
+        cameraPermission,
+        cameraRollPermission
     };
 }
 
@@ -335,5 +355,7 @@ export default connect(mapStateToProps, {
     updateSiteNearestTownText,
     updateAccessibilityOption,
     updateFacilitiesOption,
-    resetAddScreenFields
+    resetAddScreenFields,
+    promptForLocationServicesPermission,
+    getCurrentUserLocation
 })(AddSiteScreen);

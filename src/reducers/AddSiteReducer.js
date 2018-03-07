@@ -9,7 +9,8 @@ import {
     SITE_NEAREST_TOWN_TEXT_CHANGED,
     SITE_ACCESSIBILITY_OPTION_CHANGED,
     SITE_FACILITIES_OPTION_CHANGED,
-    ADD_SITE_FIELDS_RESET
+    ADD_SITE_FIELDS_RESET,
+    CURRENT_LOCATION_UPDATED
 } from '../actions/types';
 
 import {campsite} from '../locale.en';
@@ -74,6 +75,13 @@ export default (state = INITIAL_STATE, action) => {
 
         case ADD_SITE_FIELDS_RESET:
             return INITIAL_STATE;
+
+        case CURRENT_LOCATION_UPDATED:
+            const {currentLocation: {longitude, latitude}} = payload;
+            const stringLong =  _.toString(longitude);
+            const stringLat = _.toString(latitude);
+
+            return {...state, longitudeText: stringLong, latitudeText: stringLat};
 
         default:
             return state;
