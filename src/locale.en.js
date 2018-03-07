@@ -1,5 +1,5 @@
 export const login = {
-    campo_libre: 'Campo Libre',
+    campo_libre: 'C A M P O  L I B R E',
     tagline: "It's time to get out there...",
     login_as_guest: "Continue as guest",
     login_with_facebook: "Log in with Facebook",
