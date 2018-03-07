@@ -58,7 +58,9 @@ export default (state = INITIAL_STATE, action) => {
     switch (type) {
 
         case INITIALIZE_MAP:
-            return payload ? {...INITIAL_STATE, lastKnownRegion: payload} : INITIAL_STATE;
+            const {region} = payload;
+
+            return payload ? {...INITIAL_STATE, lastKnownRegion: region} : INITIAL_STATE;
 
         case VIEW_STYLE_UPDATE:
             return {...state, viewStyle: payload};
