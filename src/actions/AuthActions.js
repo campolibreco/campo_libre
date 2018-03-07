@@ -1,7 +1,6 @@
 import {Facebook} from 'expo';
 import axios from 'axios';
-
-import _ from 'lodash';
+import firebase from 'firebase';
 
 import {
     APP_READY,
@@ -11,10 +10,27 @@ import {
     GUEST_TOKEN_SET
 } from './types';
 
-import {FACEBOOK_AUTH} from '../../env';
+import {FACEBOOK_AUTH, FIREBASE_USER_PASSWORD} from '../../env';
 import {tokens, navKeys} from '../constants';
 
 import {persistor} from '../store';
+
+const userLoginSuccess = (dispatch, email, navigate) => {
+    dispatch({
+        type: FACEBOOK_LOGIN_SUCCESS,
+        payload: {token: email, appReady: false}
+    });
+
+    navigate(navKeys.SEARCH);
+};
+
+const userLoginFailure = (dispatch, navigate) => {
+    dispatch({
+        type: FACEBOOK_LOGIN_FAILURE
+    });
+
+    navigate(navKeys.LOGIN);
+};
 
 const attemptFacebookLogin = async ({dispatch, navigate}) => {
     const {appID} = FACEBOOK_AUTH;
@@ -27,18 +43,30 @@ const attemptFacebookLogin = async ({dispatch, navigate}) => {
     if (type === 'success') {
         let {data: {email, name, picture: {data: {url}}}} = await axios.get(`https://graph.facebook.com/me?fields=id,name,email,picture&access_token=${token}`);
 
-        dispatch({
-            type: FACEBOOK_LOGIN_SUCCESS,
-            payload: {token, appReady: false}
-        });
+        firebase.auth().signInWithEmailAndPassword(email, FIREBASE_USER_PASSWORD)
+            .then(user => {
+                userLoginSuccess(dispatch, email, navigate);
+            })
+            .catch(err => {
+                const errorCode = err.code;
 
-        navigate(navKeys.SEARCH);
+                if (errorCode === 'auth/user-not-found') {
+                    firebase.auth().createUserWithEmailAndPassword(email, FIREBASE_USER_PASSWORD)
+                        .then(user => {
+                            userLoginSuccess(dispatch, email, navigate);
+                        })
+                        .catch(err => {
+                            console.log("Error creating user: ", err);
+                            userLoginFailure(dispatch, navigate);
+                        })
+
+                } else {
+                    userLoginFailure(dispatch, navigate);
+                }
+            })
+
     } else {
-        dispatch({
-            type: FACEBOOK_LOGIN_FAILURE
-        });
-
-        navigate(navKeys.LOGIN);
+        userLoginFailure(dispatch, navigate);
     }
 };
 

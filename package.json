@@ -2,9 +2,10 @@
   "main": "node_modules/expo/AppEntry.js",
   "private": true,
   "dependencies": {
+    "@firebase/firestore": "^0.3.4",
     "axios": "^0.17.1",
     "expo": "24.0.0",
-    "firebase": "^4.9.0",
+    "firebase": "^4.10.1",
     "ionicons": "^3.0.0",
     "react": "16.0.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-24.0.0.tar.gz",

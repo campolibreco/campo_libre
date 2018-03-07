@@ -1,3 +1,6 @@
+import firebase from '@firebase/app';
+import '@firebase/firestore'
+
 import _ from 'lodash';
 
 import {
@@ -5,16 +8,22 @@ import {
     MAP_READY,
     MAP_NOT_READY,
     MAP_REGION_CHANGE,
-    VIEW_STYLE_UPDATE
+    VIEW_STYLE_UPDATE, GUEST_TOKEN_SET
 } from './types';
+import {navKeys, tokens} from "../constants";
 
 
 export const initializeMap = (region) => {
 
-    return {
-        type: INITIALIZE_MAP,
-        payload: region
-    }
+    return (dispatch) => {
+
+        dispatch({
+            type: INITIALIZE_MAP,
+            payload: {region}
+        });
+
+
+    };
 };
 
 export const updateViewStyle = (newViewStyle) => {
