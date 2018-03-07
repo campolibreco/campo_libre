@@ -3,7 +3,7 @@ import {AppLoading} from 'expo';
 import React, {Component} from 'react';
 import {View, Text, ImageBackground} from 'react-native';
 import {connect} from 'react-redux';
-import {Button, Card} from 'react-native-elements'
+import {Button} from 'react-native-elements'
 // 3rd party libraries - additional
 import _ from 'lodash';
 
@@ -11,11 +11,10 @@ import _ from 'lodash';
 import {checkAndSetToken, setGuestToken, logUserIntoFacebook} from '../actions/index';
 
 // language and styles
-import {textDark, lightwhiteblue, facebookBlueButtonTransparent, grayblue, navyBlueButtonTransparent, headerWhiteTransparent, overlayBlue, headerWhite} from '../styles/index';
+import { facebookBlueButtonTransparent, grayblue, navyBlueButtonTransparent, headerWhiteTransparent, overlayBlue, headerWhite} from '../styles/index';
 import {login} from '../locale.en';
 
 const {campo_libre, tagline, login_as_guest, login_with_facebook} = login;
-
 
 // our components - core
 // our components - additional
@@ -59,6 +58,7 @@ class LoginScreen extends Component {
               <View style={top}>
                       <Text style={header}>{campo_libre}</Text>
               </View>
+
                 <View style ={buttonContainer}>
                   <Button
                      large
@@ -77,8 +77,8 @@ class LoginScreen extends Component {
                      title={login_as_guest}
                      rounded={true}
                  />
-                   </View>
               </View>
+             </View>
             </ImageBackground>
         );
     }
