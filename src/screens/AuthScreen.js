@@ -1,7 +1,9 @@
 // 3rd part libraries - core
 import {AppLoading} from 'expo';
 import React, {Component} from 'react';
+import { ImageBackground } from 'react-native';
 import {connect} from 'react-redux';
+
 
 // actions
 
@@ -19,11 +21,23 @@ class AuthScreen extends Component {
     };
 
     render() {
-        return <AppLoading/>
+        return (
+          <ImageBackground
+             source={require('../../assets/starTent.jpg')}
+             style={styles.heroContainer}>
+          </ImageBackground>
+        )
     }
 }
 
-const styles = {};
+const styles = {
+  heroContainer: {
+      flex: 1,
+      width: '100%',
+      height:'100%'
+  },
+
+};
 
 const mapStateToProps = (state, ownProps) => {
 
