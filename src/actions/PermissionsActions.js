@@ -23,6 +23,7 @@ export const getCurrentUserLocation = () => {
             })
 
         } catch (error) {
+            console.log(error);
             return dispatch({
                 type: LOCATION_SERVICES_PERMISSION_UPDATED,
                 payload: {locationServicesPermission: DENIED}

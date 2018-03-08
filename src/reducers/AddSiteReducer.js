@@ -10,7 +10,8 @@ import {
     SITE_ACCESSIBILITY_OPTION_CHANGED,
     SITE_FACILITIES_OPTION_CHANGED,
     ADD_SITE_FIELDS_RESET,
-    CURRENT_LOCATION_UPDATED
+    CURRENT_LOCATION_UPDATED,
+    CHECK_IF_SITE_IS_READY
 } from '../actions/types';
 
 import {campsite} from '../locale.en';
@@ -25,11 +26,16 @@ const INITIAL_STATE = {
     siteDirectionsText: '',
     siteNearestTownText: '',
     accessibilityOption: accessibility_options.paved_road,
-    facilitiesOption: facilities_options.full_service
+    facilitiesOption: facilities_options.full_service,
+    siteReadyForUpload: false
 };
 
 const removeNonNumbers = (text) => {
     return text.replace(/[^0-9.-]/g, '');
+};
+
+const siteIsReadyForUpload = ({latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption}) => {
+    return latitudeText && longitudeText && siteTitleText && siteDescriptionText && siteDirectionsText && siteNearestTownText && accessibilityOption && facilitiesOption;
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -78,10 +84,15 @@ export default (state = INITIAL_STATE, action) => {
 
         case CURRENT_LOCATION_UPDATED:
             const {currentLocation: {longitude, latitude}} = payload;
-            const stringLong =  _.toString(longitude);
+            const stringLong = _.toString(longitude);
             const stringLat = _.toString(latitude);
 
             return {...state, longitudeText: stringLong, latitudeText: stringLat};
+
+        case CHECK_IF_SITE_IS_READY:
+            const siteReadyForUpload = siteIsReadyForUpload(state);
+
+            return {...state, siteReadyForUpload};
 
         default:
             return state;

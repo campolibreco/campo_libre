@@ -15,7 +15,8 @@ import {
     updateFacilitiesOption,
     resetAddScreenFields,
     promptForLocationServicesPermission,
-    getCurrentUserLocation
+    getCurrentUserLocation,
+    checkIfSiteIsReadyForUpload
 } from '../actions';
 
 import {campsite, submit_form, common} from '../locale.en';
@@ -44,7 +45,7 @@ import {permissionResponses} from '../constants';
 
 const {GRANTED, DENIED, UNDETERMINED} = permissionResponses;
 
-import {navyBlue, grey, darkBlue} from '../styles/index';
+import {navyBlueButton, grey, darkBlue} from '../styles/index';
 
 class AddSiteScreen extends Component {
     state = {
@@ -69,6 +70,14 @@ class AddSiteScreen extends Component {
                 <Icon type='material-community' name={focused ? 'tent' : 'tent'} size={25} color={tintColor}/>)
         }
     };
+
+    componentWillMount(){
+        this.props.checkIfSiteIsReadyForUpload();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.props.checkIfSiteIsReadyForUpload();
+    }
 
     accessibilityOptions() {
         return Object.keys(accessibility_options).map((key) => {
@@ -128,8 +137,34 @@ class AddSiteScreen extends Component {
         }
     };
 
+    renderSubmitButton = () => {
+        const {siteReadyForUpload} = this.props;
+        const {buttonStyle, lastElementStyle} = styles;
+
+        if (siteReadyForUpload) {
+            return (
+                <Button
+                    onPress={() => alert('submitted')}
+                    title="Open modal"
+                    large
+                    rounded={true}
+                    buttonStyle={[buttonStyle, lastElementStyle]}
+                    icon={{name: 'plus', type: 'font-awesome'}}
+                    title={submit}
+                >  {submit}
+                </Button>
+            );
+        } else {
+            return (
+                <View style={lastElementStyle}>
+
+                </View>
+            )
+        }
+    };
+
     render() {
-        const {buttonStyle, headerTitle, largeTextInput, modalStyle, lastButtonStyle, exitOrResetStyle} = styles;
+        const {buttonStyle, headerTitle, largeTextInput, modalStyle, exitOrResetStyle} = styles;
         const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption} = this.props;
 
         return (
@@ -270,16 +305,7 @@ class AddSiteScreen extends Component {
                             {this.facilitiesOptions()}
                         </Picker>
 
-                        <Button
-                            onPress={() => alert('submitted')}
-                            title="Open modal"
-                            large
-                            rounded={true}
-                            buttonStyle={[buttonStyle, lastButtonStyle]}
-                            icon={{name: 'plus', type: 'font-awesome'}}
-                            title={submit}
-                        >  {submit}
-                        </Button>
+                        {this.renderSubmitButton()}
                     </ScrollView>
                 </Modal>
             </View>
@@ -298,12 +324,12 @@ const styles = {
     buttonStyle: {
         marginTop: 10,
         marginBottom: 10,
-        backgroundColor: navyBlue
+        backgroundColor: navyBlueButton
     },
     headerTitle: {
         flex: 1,
         marginTop: 20,
-        color: navyBlue,
+        color: navyBlueButton,
         justifyContent: 'center',
         alignSelf: 'center',
     },
@@ -314,7 +340,7 @@ const styles = {
         padding: 20,
         paddingTop: 60
     },
-    lastButtonStyle: {
+    lastElementStyle: {
         marginBottom: 100
     },
     exitOrResetStyle: {
@@ -327,7 +353,7 @@ const styles = {
 };
 
 function mapStateToProps(state) {
-    const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption} = state.addSite;
+    const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, siteReadyForUpload} = state.addSite;
     const {locationServicesPermission, cameraPermission, cameraRollPermission} = state.permissions;
 
 
@@ -342,7 +368,8 @@ function mapStateToProps(state) {
         facilitiesOption,
         locationServicesPermission,
         cameraPermission,
-        cameraRollPermission
+        cameraRollPermission,
+        siteReadyForUpload
     };
 }
 
@@ -357,5 +384,6 @@ export default connect(mapStateToProps, {
     updateFacilitiesOption,
     resetAddScreenFields,
     promptForLocationServicesPermission,
-    getCurrentUserLocation
+    getCurrentUserLocation,
+    checkIfSiteIsReadyForUpload
 })(AddSiteScreen);

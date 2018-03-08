@@ -1,4 +1,3 @@
-
 import {
     LATITUDE_TEXT_UPDATED,
     LONGITUDE_TEXT_UPDATED,
@@ -8,7 +7,10 @@ import {
     SITE_NEAREST_TOWN_TEXT_CHANGED,
     SITE_ACCESSIBILITY_OPTION_CHANGED,
     SITE_FACILITIES_OPTION_CHANGED,
-    ADD_SITE_FIELDS_RESET
+    ADD_SITE_FIELDS_RESET,
+    ADD_SITE_SUCCESS,
+    ADD_SITE_FAILURE,
+    CHECK_IF_SITE_IS_READY
 } from './types';
 
 export const updateLatitudeText = ({latitudeText}) => {
@@ -71,4 +73,36 @@ export const resetAddScreenFields = () => {
     return {
         type: ADD_SITE_FIELDS_RESET
     }
+};
+
+export const checkIfSiteIsReadyForUpload = () =>{
+    return {
+        type: CHECK_IF_SITE_IS_READY
+    }
+};
+
+
+export const attemptToUploadSite = ({newSite}) => {
+    // const {} = newSite;
+
+    return (dispatch) => {
+        firebase.firestore().doc('campsites/testSiteOne')
+            .set({
+                name: 'Some test site'
+            })
+            .then(() => {
+                dispatch({
+                    type: ADD_SITE_SUCCESS
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: ADD_SITE_FAILURE,
+                    payload: {error}
+                });
+            });
+
+    }
+
+
 };
