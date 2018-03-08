@@ -51,6 +51,11 @@ export const campsite = {
     }
 };
 
+export const reducerAlerts = {
+    site_upload_success: 'Successfully uploaded your site. Thanks!',
+    site_upload_error: 'Sorry, there was an error uploading your site. Please try again later.'
+};
+
 export const more_screen = {
     right_nav: 'Log Out'
 };

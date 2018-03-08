@@ -1,6 +1,8 @@
 import _ from 'lodash';
 
 import {
+    OPEN_SITE_UPLOAD_MODAL,
+    CLOSE_SITE_UPLOAD_MODAL,
     LATITUDE_TEXT_UPDATED,
     LONGITUDE_TEXT_UPDATED,
     SITE_TITLE_TEXT_CHANGED,
@@ -11,14 +13,17 @@ import {
     SITE_FACILITIES_OPTION_CHANGED,
     ADD_SITE_FIELDS_RESET,
     CURRENT_LOCATION_UPDATED,
-    CHECK_IF_SITE_IS_READY
+    CHECK_IF_SITE_IS_READY,
+    ADD_SITE_SUCCESS,
+    ADD_SITE_FAILURE
 } from '../actions/types';
 
-import {campsite} from '../locale.en';
+import {campsite, reducerAlerts} from '../locale.en';
 
 const {campsite_form: {accessibility_options, facilities_options}} = campsite;
 
 const INITIAL_STATE = {
+    addSiteModalVisible: false,
     latitudeText: '',
     readyLatitude: 0,
     longitudeText: '',
@@ -44,6 +49,12 @@ export default (state = INITIAL_STATE, action) => {
     const {type, payload} = action;
 
     switch (type) {
+
+        case OPEN_SITE_UPLOAD_MODAL:
+            return {...state, addSiteModalVisible: true};
+
+        case CLOSE_SITE_UPLOAD_MODAL:
+            return {...state, addSiteModalVisible: false};
 
         case LATITUDE_TEXT_UPDATED:
             const {latitudeText} = payload;
@@ -84,19 +95,32 @@ export default (state = INITIAL_STATE, action) => {
             return {...state, facilitiesOption};
 
         case ADD_SITE_FIELDS_RESET:
-            return INITIAL_STATE;
+            return {...INITIAL_STATE, addSiteModalVisible: true};
 
         case CURRENT_LOCATION_UPDATED:
             const {currentLocation: {longitude, latitude}} = payload;
             const stringLong = _.toString(longitude);
             const stringLat = _.toString(latitude);
 
-            return {...state, longitudeText: stringLong, latitudeText: stringLat, readyLatitude: latitude, readyLongitude: longitude};
+            return {
+                ...state,
+                longitudeText: stringLong,
+                latitudeText: stringLat,
+                readyLatitude: latitude,
+                readyLongitude: longitude
+            };
 
         case CHECK_IF_SITE_IS_READY:
             const siteReadyForUpload = siteIsReadyForUpload(state);
 
             return {...state, siteReadyForUpload};
+
+        case ADD_SITE_SUCCESS:
+            return INITIAL_STATE;
+
+        case ADD_SITE_FAILURE:
+            return {...state, addSiteModalVisible: false};
+
 
         default:
             return state;

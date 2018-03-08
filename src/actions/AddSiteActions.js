@@ -2,6 +2,8 @@ import firebase from '@firebase/app';
 import '@firebase/firestore'
 
 import {
+    OPEN_SITE_UPLOAD_MODAL,
+    CLOSE_SITE_UPLOAD_MODAL,
     LATITUDE_TEXT_UPDATED,
     LONGITUDE_TEXT_UPDATED,
     SITE_TITLE_TEXT_CHANGED,
@@ -15,6 +17,18 @@ import {
     ADD_SITE_FAILURE,
     CHECK_IF_SITE_IS_READY
 } from './types';
+
+export const openSiteUploadModal = () => {
+    return {
+        type: OPEN_SITE_UPLOAD_MODAL
+    }
+};
+
+export const closeSiteUploadModal = () => {
+    return {
+        type: CLOSE_SITE_UPLOAD_MODAL
+    }
+};
 
 export const updateLatitudeText = ({latitudeText}) => {
     return {

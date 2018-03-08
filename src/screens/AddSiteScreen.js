@@ -17,7 +17,9 @@ import {
     promptForLocationServicesPermission,
     getCurrentUserLocation,
     checkIfSiteIsReadyForUpload,
-    attemptToUploadSite
+    attemptToUploadSite,
+    openSiteUploadModal,
+    closeSiteUploadModal
 } from '../actions';
 
 import {campsite, submit_form, common} from '../locale.en';
@@ -49,17 +51,6 @@ const {GRANTED, DENIED, UNDETERMINED} = permissionResponses;
 import {navyBlueButton, grey, darkBlue} from '../styles/index';
 
 class AddSiteScreen extends Component {
-    state = {
-        modalVisible: false,
-    };
-
-    openModal() {
-        this.setState({modalVisible: true});
-    }
-
-    closeModal() {
-        this.setState({modalVisible: false});
-    }
 
     static navigationOptions = (props) => {
         const {navigation: {navigate}} = props;
@@ -91,6 +82,14 @@ class AddSiteScreen extends Component {
             return <Picker.Item key={key} label={facilities_options[key]} value={facilities_options[key]}/>;
         })
     }
+
+    onClickOpenModal = () => {
+        this.props.openSiteUploadModal();
+    };
+
+    onClickCloseModal = () => {
+        this.props.closeSiteUploadModal();
+    };
 
     onUpdateLatitudeText = (newLatText) => {
         this.props.updateLatitudeText({latitudeText: newLatText})
@@ -182,7 +181,7 @@ class AddSiteScreen extends Component {
 
     render() {
         const {buttonStyle, headerTitle, largeTextInput, modalStyle, exitOrResetStyle} = styles;
-        const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption} = this.props;
+        const {addSiteModalVisible, latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption} = this.props;
 
         return (
             <View>
@@ -192,7 +191,7 @@ class AddSiteScreen extends Component {
                     </Text>
                 </Card>
                 <Button
-                    onPress={() => this.openModal()}
+                    onPress={this.onClickOpenModal}
                     title="Open modal"
                     large
                     rounded={true}
@@ -204,16 +203,16 @@ class AddSiteScreen extends Component {
                 </Button>
 
                 <Modal
-                    visible={this.state.modalVisible}
+                    visible={addSiteModalVisible}
                     animationType={'slide'}
-                    onRequestClose={() => this.closeModal()}
+                    onRequestClose={this.onClickCloseModal}
                 >
                     <ScrollView style={modalStyle}>
                         <View style={exitOrResetStyle}>
                             <Icon
                                 type='font-awesome'
                                 name='times-circle'
-                                onPress={() => this.closeModal()}
+                                onPress={this.onClickCloseModal}
                             />
 
                             <Button
@@ -370,11 +369,12 @@ const styles = {
 };
 
 function mapStateToProps(state) {
-    const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, siteReadyForUpload, readyLatitude, readyLongitude} = state.addSite;
+    const {addSiteModalVisible, latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, siteReadyForUpload, readyLatitude, readyLongitude} = state.addSite;
     const {locationServicesPermission, cameraPermission, cameraRollPermission} = state.permissions;
 
 
     return {
+        addSiteModalVisible,
         latitudeText,
         longitudeText,
         siteTitleText,
@@ -405,5 +405,7 @@ export default connect(mapStateToProps, {
     promptForLocationServicesPermission,
     getCurrentUserLocation,
     checkIfSiteIsReadyForUpload,
-    attemptToUploadSite
+    attemptToUploadSite,
+    openSiteUploadModal,
+    closeSiteUploadModal
 })(AddSiteScreen);
