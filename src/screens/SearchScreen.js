@@ -17,17 +17,26 @@ import {map, navKeys} from '../constants';
 
 class SearchScreen extends Component {
     componentWillMount() {
-        const {lastKnownRegion, initializeMap} = this.props;
+        const {lastKnownRegion} = this.props;
 
-        initializeMap(lastKnownRegion);
+        this.props.initializeMap(lastKnownRegion);
     }
 
     componentDidMount() {
-        const {lastKnownRegion, navigation: {setParams}, mapHasLoaded} = this.props;
+        const {lastKnownRegion, navigation: {setParams}} = this.props;
 
         setParams({buttonName: map.SearchOptions.LIST, toggleButton: this.toggleButton});
 
-        mapHasLoaded();
+        this.props.mapHasLoaded();
+    }
+
+    componentWillReceiveProps(nextProps){
+        const {sitesShouldUpdate, lastKnownRegion} = nextProps;
+
+        if(sitesShouldUpdate){
+            this.props.initializeMap(lastKnownRegion);
+        }
+
     }
 
     toggleButton = () => {
@@ -136,9 +145,10 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
     const {lastKnownRegion, mapLoaded, viewStyle, sites} = state.map;
     const {token, appReady} = state.auth;
+    const {sitesShouldUpdate} = state.addSite;
 
 
-    return {lastKnownRegion, mapLoaded, viewStyle, token, appReady, sites};
+    return {lastKnownRegion, mapLoaded, viewStyle, token, appReady, sites, sitesShouldUpdate};
 }
 
 export default connect(mapStateToProps, {initializeMap, updateViewStyle, mapHasLoaded, updateRegion})(SearchScreen);

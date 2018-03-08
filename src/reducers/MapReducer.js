@@ -47,7 +47,7 @@ const INITIAL_STATE = {
     },
     mapLoaded: false,
     viewStyle: map.SearchOptions.MAP,
-    sites: sampleSiteMarkers
+    sites: []
 };
 
 
@@ -58,9 +58,10 @@ export default (state = INITIAL_STATE, action) => {
     switch (type) {
 
         case INITIALIZE_MAP:
-            const {region} = payload;
+            const {region, sites} = payload;
+            const existingMapLoadedState = state.mapLoaded;
 
-            return payload ? {...INITIAL_STATE, lastKnownRegion: region} : INITIAL_STATE;
+            return payload ? {...INITIAL_STATE, lastKnownRegion: region, sites, mapLoaded: existingMapLoadedState} : INITIAL_STATE;
 
         case VIEW_STYLE_UPDATE:
             return {...state, viewStyle: payload};

@@ -16,9 +16,9 @@ export const campsite = {
     upload: "Upload Campsite",
     campsite_form: {
         latitude: 'Latitude',
-        latitude_placeholder: 'Add longitude',
+        latitude_placeholder: 'Add latitude',
         longitude: 'Longitude',
-        longitude_placeholder: 'Add latitude',
+        longitude_placeholder: 'Add longitude',
         add_site_title: 'Add Site Title',
         add_site: 'Add a Site',
         add_a_campsite: 'Add a Campsite',

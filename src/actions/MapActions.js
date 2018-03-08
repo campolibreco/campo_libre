@@ -16,10 +16,25 @@ import {navKeys, tokens} from "../constants";
 export const initializeMap = (region) => {
 
     return (dispatch) => {
-        dispatch({
-            type: INITIALIZE_MAP,
-            payload: {region}
-        });
+        firebase.firestore().collection('campsites')
+            .get()
+            .then(querySnapshot => {
+                const sites = _.map(querySnapshot.docs, (doc, index) => {
+                    let preparedSite = _.clone(doc.data());
+                    preparedSite.id = index;
+
+                    return preparedSite;
+                });
+
+                dispatch({
+                    type: INITIALIZE_MAP,
+                    payload: {region, sites}
+                });
+            })
+            .catch(error => {
+                console.log(error);
+            });
+
     };
 };
 

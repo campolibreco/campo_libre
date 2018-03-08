@@ -15,7 +15,7 @@ import {
     CURRENT_LOCATION_UPDATED,
     CHECK_IF_SITE_IS_READY,
     ADD_SITE_SUCCESS,
-    ADD_SITE_FAILURE
+    ADD_SITE_FAILURE, INITIALIZE_MAP
 } from '../actions/types';
 
 import {campsite, reducerAlerts} from '../locale.en';
@@ -34,7 +34,8 @@ const INITIAL_STATE = {
     siteNearestTownText: '',
     accessibilityOption: accessibility_options.paved_road,
     facilitiesOption: facilities_options.full_service,
-    siteReadyForUpload: false
+    siteReadyForUpload: false,
+    sitesShouldUpdate: false
 };
 
 const removeNonNumbers = (text) => {
@@ -116,11 +117,13 @@ export default (state = INITIAL_STATE, action) => {
             return {...state, siteReadyForUpload};
 
         case ADD_SITE_SUCCESS:
-            return INITIAL_STATE;
+            return {...INITIAL_STATE, sitesShouldUpdate: true};
 
         case ADD_SITE_FAILURE:
             return {...state, addSiteModalVisible: false};
 
+        case INITIALIZE_MAP:
+            return {...state, sitesShouldUpdate: false};
 
         default:
             return state;
