@@ -16,7 +16,8 @@ import {
     resetAddScreenFields,
     promptForLocationServicesPermission,
     getCurrentUserLocation,
-    checkIfSiteIsReadyForUpload
+    checkIfSiteIsReadyForUpload,
+    attemptToUploadSite
 } from '../actions';
 
 import {campsite, submit_form, common} from '../locale.en';
@@ -71,7 +72,7 @@ class AddSiteScreen extends Component {
         }
     };
 
-    componentWillMount(){
+    componentWillMount() {
         this.props.checkIfSiteIsReadyForUpload();
     }
 
@@ -137,6 +138,23 @@ class AddSiteScreen extends Component {
         }
     };
 
+    onClickSubmit = () => {
+        const newSite = {
+            title: this.props.siteTitleText,
+            description: this.props.siteDescriptionText,
+            directions: this.props.siteDirectionsText,
+            nearestTown: this.props.siteNearestTownText,
+            accessibility: this.props.accessibilityOption,
+            facilities: this.props.facilitiesOption,
+            coordinate: {
+                longitude: this.props.readyLongitude,
+                latitude: this.props.readyLatitude
+            }
+        };
+
+        this.props.attemptToUploadSite(newSite);
+    };
+
     renderSubmitButton = () => {
         const {siteReadyForUpload} = this.props;
         const {buttonStyle, lastElementStyle} = styles;
@@ -144,8 +162,7 @@ class AddSiteScreen extends Component {
         if (siteReadyForUpload) {
             return (
                 <Button
-                    onPress={() => alert('submitted')}
-                    title="Open modal"
+                    onPress={this.onClickSubmit}
                     large
                     rounded={true}
                     buttonStyle={[buttonStyle, lastElementStyle]}
@@ -353,7 +370,7 @@ const styles = {
 };
 
 function mapStateToProps(state) {
-    const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, siteReadyForUpload} = state.addSite;
+    const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, siteReadyForUpload, readyLatitude, readyLongitude} = state.addSite;
     const {locationServicesPermission, cameraPermission, cameraRollPermission} = state.permissions;
 
 
@@ -369,7 +386,9 @@ function mapStateToProps(state) {
         locationServicesPermission,
         cameraPermission,
         cameraRollPermission,
-        siteReadyForUpload
+        siteReadyForUpload,
+        readyLatitude,
+        readyLongitude
     };
 }
 
@@ -385,5 +404,6 @@ export default connect(mapStateToProps, {
     resetAddScreenFields,
     promptForLocationServicesPermission,
     getCurrentUserLocation,
-    checkIfSiteIsReadyForUpload
+    checkIfSiteIsReadyForUpload,
+    attemptToUploadSite
 })(AddSiteScreen);

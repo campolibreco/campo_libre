@@ -1,3 +1,6 @@
+import firebase from '@firebase/app';
+import '@firebase/firestore'
+
 import {
     LATITUDE_TEXT_UPDATED,
     LONGITUDE_TEXT_UPDATED,
@@ -75,20 +78,27 @@ export const resetAddScreenFields = () => {
     }
 };
 
-export const checkIfSiteIsReadyForUpload = () =>{
+export const checkIfSiteIsReadyForUpload = () => {
     return {
         type: CHECK_IF_SITE_IS_READY
     }
 };
 
 
-export const attemptToUploadSite = ({newSite}) => {
-    // const {} = newSite;
+export const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, coordinate}) => {
+    const {longitude, latitude} = coordinate;
+    const uniqueTitle = `${title}${longitude}${latitude}`;
 
     return (dispatch) => {
-        firebase.firestore().doc('campsites/testSiteOne')
+        firebase.firestore().doc(`campsites/${uniqueTitle}`)
             .set({
-                name: 'Some test site'
+                title,
+                description,
+                directions,
+                nearestTown,
+                accessibility,
+                facilities,
+                coordinate
             })
             .then(() => {
                 dispatch({

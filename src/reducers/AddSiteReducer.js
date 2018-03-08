@@ -20,7 +20,9 @@ const {campsite_form: {accessibility_options, facilities_options}} = campsite;
 
 const INITIAL_STATE = {
     latitudeText: '',
+    readyLatitude: 0,
     longitudeText: '',
+    readyLongitude: 0,
     siteTitleText: '',
     siteDescriptionText: '',
     siteDirectionsText: '',
@@ -46,14 +48,16 @@ export default (state = INITIAL_STATE, action) => {
         case LATITUDE_TEXT_UPDATED:
             const {latitudeText} = payload;
             const cleanLatText = removeNonNumbers(latitudeText);
+            const readyLatitude = _.toNumber(cleanLatText);
 
-            return {...state, latitudeText: cleanLatText};
+            return {...state, latitudeText: cleanLatText, readyLatitude};
 
         case LONGITUDE_TEXT_UPDATED:
             const {longitudeText} = payload;
             const cleanLongText = removeNonNumbers(longitudeText);
+            const readyLongitude = _.toNumber(cleanLongText);
 
-            return {...state, longitudeText: cleanLongText};
+            return {...state, longitudeText: cleanLongText, readyLongitude};
 
         case SITE_TITLE_TEXT_CHANGED:
             const {siteTitleText} = payload;
@@ -87,7 +91,7 @@ export default (state = INITIAL_STATE, action) => {
             const stringLong = _.toString(longitude);
             const stringLat = _.toString(latitude);
 
-            return {...state, longitudeText: stringLong, latitudeText: stringLat};
+            return {...state, longitudeText: stringLong, latitudeText: stringLat, readyLatitude: latitude, readyLongitude: longitude};
 
         case CHECK_IF_SITE_IS_READY:
             const siteReadyForUpload = siteIsReadyForUpload(state);
