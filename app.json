@@ -6,7 +6,7 @@
     "privacy": "unlisted",
     "sdkVersion": "24.0.0",
     "platforms": ["ios", "android"],
-    "version": "0.0.3",
+    "version": "0.0.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -16,7 +16,8 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.campo.libre"
+      "bundleIdentifier": "com.campo.libre",
+      "loadJSInBackgroundExperimental": true
     },
     "android": {
       "package": "com.campo.libre"
