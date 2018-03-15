@@ -13,6 +13,7 @@ import {
     updateSiteNearestTownText,
     updateAccessibilityOption,
     updateFacilitiesOption,
+    updatePriceOption,
     resetAddScreenFields,
     promptForLocationServicesPermission,
     getCurrentUserLocation,
@@ -34,9 +35,10 @@ const {
         directions, directions_placeholder,
         nearest_town, nearest_town_placeholder,
         here_now, add_site,
-        accessibility, facilities,
+        accessibility, facilities, price,
         accessibility_options,
         facilities_options,
+        price_options
     }
 } = campsite;
 
@@ -83,6 +85,12 @@ class AddSiteScreen extends Component {
         })
     }
 
+    priceOptions() {
+        return Object.keys(price_options).map((key) => {
+            return <Picker.Item key={key} label={price_options[key]} value={price_options[key]}/>;
+        })
+    }
+
     onClickOpenModal = () => {
         this.props.openSiteUploadModal();
     };
@@ -123,6 +131,10 @@ class AddSiteScreen extends Component {
         this.props.updateFacilitiesOption({facilitiesOption: newFacilitiesOption})
     };
 
+    onUpdatePriceOption = (newPriceOption) => {
+        this.props.updatePriceOption({priceOption: newPriceOption})
+    };
+
     onClickReset = () => {
         this.props.resetAddScreenFields();
     };
@@ -145,6 +157,7 @@ class AddSiteScreen extends Component {
             nearestTown: this.props.siteNearestTownText,
             accessibility: this.props.accessibilityOption,
             facilities: this.props.facilitiesOption,
+            price: this.props.priceOption,
             coordinate: {
                 longitude: this.props.readyLongitude,
                 latitude: this.props.readyLatitude
@@ -181,7 +194,7 @@ class AddSiteScreen extends Component {
 
     render() {
         const {buttonStyle, headerTitle, largeTextInput, modalStyle, exitOrResetStyle} = styles;
-        const {addSiteModalVisible, latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption} = this.props;
+        const {addSiteModalVisible, latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, priceOption} = this.props;
 
         return (
             <View>
@@ -285,7 +298,7 @@ class AddSiteScreen extends Component {
                             editable={true}
                         />
 
-                        <FormLabel>{directions_placeholder}</FormLabel>
+                        <FormLabel>{directions}</FormLabel>
                         <FormInput
                             placeholder={directions_placeholder}
                             value={siteDirectionsText}
@@ -304,6 +317,14 @@ class AddSiteScreen extends Component {
                             onChangeText={this.onUpdateSiteNearestTownText}
                             editable={true}
                         />
+
+                        <FormLabel>{price}</FormLabel>
+                        <Picker
+                            selectedValue={priceOption}
+                            onValueChange={this.onUpdatePriceOption}
+                        >
+                            {this.priceOptions()}
+                        </Picker>
 
                         <FormLabel>{accessibility}</FormLabel>
                         <Picker
@@ -369,7 +390,7 @@ const styles = {
 };
 
 function mapStateToProps(state) {
-    const {addSiteModalVisible, latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, siteReadyForUpload, readyLatitude, readyLongitude} = state.addSite;
+    const {addSiteModalVisible, latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, priceOption, siteReadyForUpload, readyLatitude, readyLongitude} = state.addSite;
     const {locationServicesPermission, cameraPermission, cameraRollPermission} = state.permissions;
 
 
@@ -383,6 +404,7 @@ function mapStateToProps(state) {
         siteNearestTownText,
         accessibilityOption,
         facilitiesOption,
+        priceOption,
         locationServicesPermission,
         cameraPermission,
         cameraRollPermission,
@@ -401,6 +423,7 @@ export default connect(mapStateToProps, {
     updateSiteNearestTownText,
     updateAccessibilityOption,
     updateFacilitiesOption,
+    updatePriceOption,
     resetAddScreenFields,
     promptForLocationServicesPermission,
     getCurrentUserLocation,

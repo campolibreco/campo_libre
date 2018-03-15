@@ -12,6 +12,7 @@ import {
     SITE_NEAREST_TOWN_TEXT_CHANGED,
     SITE_ACCESSIBILITY_OPTION_CHANGED,
     SITE_FACILITIES_OPTION_CHANGED,
+    SITE_PRICE_OPTION_CHANGED,
     ADD_SITE_FIELDS_RESET,
     ADD_SITE_SUCCESS,
     ADD_SITE_FAILURE,
@@ -86,6 +87,13 @@ export const updateFacilitiesOption = ({facilitiesOption}) => {
     }
 };
 
+export const updatePriceOption = ({priceOption}) => {
+    return {
+        type: SITE_PRICE_OPTION_CHANGED,
+        payload: {priceOption}
+    }
+};
+
 export const resetAddScreenFields = () => {
     return {
         type: ADD_SITE_FIELDS_RESET
@@ -99,7 +107,7 @@ export const checkIfSiteIsReadyForUpload = () => {
 };
 
 
-export const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, coordinate}) => {
+export const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, price, coordinate}) => {
     const {longitude, latitude} = coordinate;
     const uniqueTitle = `${title}${longitude}${latitude}`;
 
@@ -112,6 +120,7 @@ export const attemptToUploadSite = ({title, description, directions, nearestTown
                 nearestTown,
                 accessibility,
                 facilities,
+                price,
                 coordinate
             })
             .then(() => {

@@ -32,13 +32,16 @@ export const campsite = {
         here_now: 'I am here now',
         accessibility: 'Accessibility',
         facilities: 'Facilities',
+        price: 'Price',
+        price_options: {
+            free: 'Free',
+            paid: 'Paid',
+            permit: 'Permit'
+        },
         facilities_options: {
             full_service: 'Full Service ',
             some: 'Some',
-            none: 'None',
-            permit: 'Permit',
-            paid: 'Paid',
-            free: 'Free'
+            none: 'None'
         },
         accessibility_options: {
             paved_road: "Paved Road",
