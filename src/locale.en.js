@@ -32,13 +32,16 @@ export const campsite = {
         here_now: 'I am here now',
         accessibility: 'Accessibility',
         facilities: 'Facilities',
-        facilities_options: {
-            full_service: 'Full Service ',
-            some: 'Some',
-            none: 'None',
-            permit: 'Permit',
+        price: 'Price',
+        price_options: {
+            free: 'Free',
             paid: 'Paid',
-            free: 'Free'
+            permit: 'Permit'
+        },
+        facilities_options: {
+            full_service: 'Full Service',
+            some_facilities: 'Some',
+            no_facilities: 'None'
         },
         accessibility_options: {
             paved_road: "Paved Road",
@@ -59,7 +62,6 @@ export const reducerAlerts = {
 export const more_screen = {
     right_nav: 'Log Out'
 };
-
 
 export const submit_form = {
     submit: 'submit',

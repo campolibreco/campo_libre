@@ -11,6 +11,7 @@ import {
     SITE_NEAREST_TOWN_TEXT_CHANGED,
     SITE_ACCESSIBILITY_OPTION_CHANGED,
     SITE_FACILITIES_OPTION_CHANGED,
+    SITE_PRICE_OPTION_CHANGED,
     ADD_SITE_FIELDS_RESET,
     CURRENT_LOCATION_UPDATED,
     CHECK_IF_SITE_IS_READY,
@@ -20,7 +21,7 @@ import {
 
 import {campsite, reducerAlerts} from '../locale.en';
 
-const {campsite_form: {accessibility_options, facilities_options}} = campsite;
+const {campsite_form: {accessibility_options, facilities_options, price_options}} = campsite;
 
 const INITIAL_STATE = {
     addSiteModalVisible: false,
@@ -34,6 +35,7 @@ const INITIAL_STATE = {
     siteNearestTownText: '',
     accessibilityOption: accessibility_options.paved_road,
     facilitiesOption: facilities_options.full_service,
+    priceOption: price_options.free,
     siteReadyForUpload: false,
     sitesShouldUpdate: false
 };
@@ -42,8 +44,8 @@ const removeNonNumbers = (text) => {
     return text.replace(/[^0-9.-]/g, '');
 };
 
-const siteIsReadyForUpload = ({latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption}) => {
-    return latitudeText && longitudeText && siteTitleText && siteDescriptionText && siteDirectionsText && siteNearestTownText && accessibilityOption && facilitiesOption;
+const siteIsReadyForUpload = ({latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, priceOption}) => {
+    return latitudeText && longitudeText && siteTitleText && siteDescriptionText && siteDirectionsText && siteNearestTownText && accessibilityOption && facilitiesOption && priceOption;
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -94,6 +96,10 @@ export default (state = INITIAL_STATE, action) => {
         case SITE_FACILITIES_OPTION_CHANGED:
             const {facilitiesOption} = payload;
             return {...state, facilitiesOption};
+
+        case SITE_PRICE_OPTION_CHANGED:
+            const {priceOption} = payload;
+            return {...state, priceOption};
 
         case ADD_SITE_FIELDS_RESET:
             return {...INITIAL_STATE, addSiteModalVisible: true};

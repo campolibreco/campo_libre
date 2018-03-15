@@ -21,11 +21,14 @@ export const SITE_DIRECTIONS_TEXT_CHANGED = 'site_directions_text_changed';
 export const SITE_NEAREST_TOWN_TEXT_CHANGED = 'site_nearest_town_text_changed';
 export const SITE_ACCESSIBILITY_OPTION_CHANGED = 'site_accessibility_option_changed';
 export const SITE_FACILITIES_OPTION_CHANGED = 'site_facilities_option_changed';
+export const SITE_PRICE_OPTION_CHANGED = 'site_price_option_changed';
 export const ADD_SITE_FIELDS_RESET = 'add_site_fields_reset';
 export const CURRENT_LOCATION_UPDATED = 'current_location_updated';
 export const ADD_SITE_SUCCESS = 'add_site_success';
 export const ADD_SITE_FAILURE = 'add_site_failure';
 export const CHECK_IF_SITE_IS_READY = 'check_if_site_is_ready';
+
+export const FILTER_CRITERIA_UPDATED = 'filter_criteria_updated';
 
 export const LOCATION_SERVICES_PERMISSION_UPDATED = 'location_services_permission_updated';
 export const CAMERA_PERMISSION_UPDATED = 'camera_permission_updated';
