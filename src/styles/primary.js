@@ -1,11 +1,11 @@
 
 //Base colors
 export const headerWhiteTransparent = 'rgba(255,255,255, .1)';
-export const headerWhiteMediumTransparent = 'rgba(255,255,255, .5)';
+export const headerWhiteMediumTransparent = 'rgba(255,255,255, .8)';
 export const navyBlueButton = '#7C9EC2';
 export const navyBlueButtonTransparent = 'rgba(124, 158, 194, .8)';
 export const overlayBlue = 'rgba(47,163,218, .4)';
-export const overlayMediumBlue = 'rgba(24,24,24, .4)';
+export const overlayMediumGray = 'rgba(24,24,24, .7)';
 
 export const headerWhite = '#fff';
 export const lightwhiteblue = '#E1E9F4';

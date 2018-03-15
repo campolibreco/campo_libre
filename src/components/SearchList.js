@@ -1,11 +1,11 @@
 // 3rd party libraries - core
 import React from 'react';
 import {View, Text, StyleSheet, ScrollView, ImageBackground} from 'react-native';
-import {Card, ListItem, Button} from 'react-native-elements';
+import {Card, ListItem, Button, Tile, List, Image, Badge} from 'react-native-elements';
 // 3rd party libraries - additional
 
 // styles and language
-import { facebookBlueButtonTransparent, grayblue,overlayMediumBlue, headerWhiteMediumTransparent, navyBlueButtonTransparent, headerWhiteTransparent, overlayBlue, headerWhite} from '../styles/index';
+import { facebookBlueButtonTransparent, grayblue,overlayMediumGray, headerWhiteMediumTransparent, navyBlueButtonTransparent, headerWhiteTransparent, overlayBlue, headerWhite, darkBlue } from '../styles/index';
 // our components - core
 import SiteCard from './SiteCard'
 // our components - additional
@@ -13,71 +13,50 @@ import SiteCard from './SiteCard'
 
 
 const SearchList = ({sites}) => {
-  const{textStyle, cardButtonStyle} = styles
+  const{textStyle, cardButtonStyle, heroContainer, descriptionStyle, descriptionContainer, overlayContainer, nearestTownStyle, ratingText, subtitleView, titleView} = styles
   if(!sites){
     return( <Text> No Sites available </Text>)
 
   }else{
     return (
       <ScrollView>
+      <ImageBackground
+      source={require('../../assets/maps.jpg')}
+      style={{flex:1}}
+      >
+      <View style={styles.overlayContainer}>
+  <List>
        {
          sites.map(site => {
-            const {id, title, description} = site
-                     return (
-          <Card
-             key={id}
-               >
-               <ImageBackground
+            const {id, title, description, nearestTown} = site
+            return (
+                <ListItem
                   key={id}
-                  source={require('../../assets/fireStarter.jpg')}
-                  style={styles.heroContainer}>
+                  title={
+                  <View>
+                    <Badge
+                      wrapperStyle={{width:'40%', marginLeft:10}}
 
-                 <View style={styles.overlayContainer}>
-                   <View>
-                           <Text style={styles.textStyle}>{title}</Text>
+                  containerStyle={{ backgroundColor: '#1B6E65'}}>
+                    <Text style={{ color: 'white'}}>{nearestTown}</Text>
+                  </Badge>
+                    <Text style={titleView}>{title}</Text>
 
-                   </View>
-</View>
-                 </ImageBackground>
-               <Text style={styles.descriptionStyle}>
-                {description}
-               </Text>
-               <View style ={styles.buttonContainer}>
-               <View>
-                 <Button
-                    large
-                    transparent
-                    icon={{name: 'search', type: 'font-awesome'}}
-                    title={'more'}
-                    buttonStyle={styles.facebookStyle}
-                    rounded={true}
+                  </View>
+                  }
+                  subtitle={
+                    <View style={subtitleView}>
+                       <Text>{description}</Text>
+                    </View>
+                   }
+              avatar={require('../../assets/icon.png')}
                 />
-                </View>
-             </View>
-           </Card>
-          // <ImageBackground
-          //    key={id}
-          //    source={require('../../assets/fireStarter.jpg')}
-          //    style={styles.heroContainer}>
-          //
-          //   <View style={styles.overlayContainer}>
-          //     <View>
-          //             <Text style={styles.textStyle}>{title}</Text>
-          //
-          //     </View>
-          //     <View style={styles.descriptionContainer}>
-          //
-          //
-          //             <Text style={styles.descriptionStyle}> {description}</Text>
-          //     </View>
-          //
-
-          //    </View>
-          //   </ImageBackground>
-
            );
          })
        }
+       </List>
+         </View>
+       </ImageBackground>
      </ScrollView>
     );
   }
@@ -86,44 +65,43 @@ const SearchList = ({sites}) => {
 
 
 
+
+
+
+
+
     const styles = StyleSheet.create({
       overlayContainer: {
         flex:1,
-        backgroundColor: overlayMediumBlue
-      },
-      heroContainer: {
-          height:100,
-          width:'100%',
-          shadowOffset:{  width: 2,  height: 2,  },
-          shadowColor: 'black',
-          shadowOpacity: 0.1,
-      },
-      textStyle:{
-        height:100,
-        color: headerWhite,
-        fontSize:28,
-        padding: 20,
-        paddingLeft: 40,
-        paddingRight:40,
-        backgroundColor:headerWhiteMediumTransparent
-      },
-      descriptionStyle:{
-        padding: 20,
-        color: 'black',
-        fontSize:15
-      },
-      descriptionContainer:{
-        alignItems:'center',
-        padding:10
-      },
-      facebookStyle: {
-          backgroundColor: facebookBlueButtonTransparent,
-          marginTop: 5
+        backgroundColor: overlayMediumGray
       },
 
-      buttonStyle: {
-          backgroundColor: navyBlueButtonTransparent
-      }
+      heroContainer: {
+          padding:10
+      },
+       nearestTownStyle:{
+          padding: 10,
+          color: 'red',
+          fontSize:15,
+          backgroundColor:'white',
+
+        },
+        subtitleView: {
+        flexDirection: 'row',
+        paddingLeft: 10,
+        paddingTop: 5
+  },
+        titleView: {
+         fontSize:16,
+         fontWeight: '600',
+         color:'#B8BB5A',
+         flexDirection: 'row',
+         paddingLeft: 10,
+         paddingTop: 5
+
+ },
+
+
     });
 
 export default SearchList;
