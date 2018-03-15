@@ -17,6 +17,8 @@ import {
     CHECK_IF_SITE_IS_READY
 } from './types';
 
+import {navKeys} from '../constants';
+
 export const updateLatitudeText = ({latitudeText}) => {
     return {
         type: LATITUDE_TEXT_UPDATED,
@@ -93,7 +95,7 @@ export const checkIfSiteIsReadyForUpload = () => {
 };
 
 
-export const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, price, coordinate}) => {
+export const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, price, coordinate}, navigate) => {
     const {longitude, latitude} = coordinate;
     const uniqueTitle = `${title}${longitude}${latitude}`;
 
@@ -113,12 +115,16 @@ export const attemptToUploadSite = ({title, description, directions, nearestTown
                 dispatch({
                     type: ADD_SITE_SUCCESS
                 });
+
+                navigate(navKeys.ADD_SITE);
             })
             .catch(error => {
                 dispatch({
                     type: ADD_SITE_FAILURE,
                     payload: {error}
                 });
+
+                navigate(navKeys.ADD_SITE);
             });
 
     }

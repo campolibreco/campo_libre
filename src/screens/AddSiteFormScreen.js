@@ -195,6 +195,8 @@ class AddSiteFormScreen extends Component {
     };
 
     onClickSubmit = () => {
+        const {navigation: {navigate}} = this.props;
+
         const newSite = {
             title: this.props.siteTitleText,
             description: this.props.siteDescriptionText,
@@ -209,7 +211,7 @@ class AddSiteFormScreen extends Component {
             }
         };
 
-        this.props.attemptToUploadSite(newSite);
+        this.props.attemptToUploadSite(newSite, navigate);
     };
 
     renderSubmitButton = () => {
