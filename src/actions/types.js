@@ -28,6 +28,8 @@ export const ADD_SITE_SUCCESS = 'add_site_success';
 export const ADD_SITE_FAILURE = 'add_site_failure';
 export const CHECK_IF_SITE_IS_READY = 'check_if_site_is_ready';
 
+export const FILTER_CRITERIA_UPDATED = 'filter_criteria_updated';
+
 export const LOCATION_SERVICES_PERMISSION_UPDATED = 'location_services_permission_updated';
 export const CAMERA_PERMISSION_UPDATED = 'camera_permission_updated';
 export const CAMERA_ROLL_PERMISSION_UPDATED = 'camera_roll_permission_updated';

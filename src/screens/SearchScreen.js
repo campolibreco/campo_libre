@@ -71,7 +71,7 @@ class SearchScreen extends Component {
             return (
                 <Button
                     title="Filter"
-                    onPress={() => navigate('filter')}
+                    onPress={() => navigate(navKeys.FILTER)}
                     backgroundColor="rgba(0,0,0,0)"
                     color="rgba(0,122,255,1)"
                 />
@@ -95,7 +95,7 @@ class SearchScreen extends Component {
     };
 
     renderSearchScreen = () => {
-        const {viewStyle, lastKnownRegion, mapLoaded, sites} = this.props;
+        const {viewStyle, lastKnownRegion, mapLoaded, displaySites} = this.props;
 
         if (viewStyle === map.SearchOptions.MAP) {
             return (
@@ -103,13 +103,13 @@ class SearchScreen extends Component {
                     lastKnownRegion={lastKnownRegion}
                     mapLoaded={mapLoaded}
                     updateRegion={this.props.updateRegion}
-                    sites={sites}
+                    sites={displaySites}
                 />
             );
         } else {
             return (
                 <SearchList
-                    sites={sites}
+                    sites={displaySites}
                 />
             );
         }
@@ -143,12 +143,12 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-    const {lastKnownRegion, mapLoaded, viewStyle, sites} = state.map;
+    const {lastKnownRegion, mapLoaded, viewStyle, displaySites} = state.map;
     const {token, appReady} = state.auth;
     const {sitesShouldUpdate} = state.addSite;
 
 
-    return {lastKnownRegion, mapLoaded, viewStyle, token, appReady, sites, sitesShouldUpdate};
+    return {lastKnownRegion, mapLoaded, viewStyle, token, appReady, displaySites, sitesShouldUpdate};
 }
 
 export default connect(mapStateToProps, {initializeMap, updateViewStyle, mapHasLoaded, updateRegion})(SearchScreen);

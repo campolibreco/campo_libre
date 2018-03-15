@@ -39,9 +39,9 @@ export const campsite = {
             permit: 'Permit'
         },
         facilities_options: {
-            full_service: 'Full Service ',
-            some: 'Some',
-            none: 'None'
+            full_service: 'Full Service',
+            some_facilities: 'Some',
+            no_facilities: 'None'
         },
         accessibility_options: {
             paved_road: "Paved Road",
@@ -62,7 +62,6 @@ export const reducerAlerts = {
 export const more_screen = {
     right_nav: 'Log Out'
 };
-
 
 export const submit_form = {
     submit: 'submit',
