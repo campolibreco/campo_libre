@@ -21,7 +21,7 @@ const SearchList = ({sites}) => {
     return (
       <ScrollView>
       <ImageBackground
-      source={require('../../assets/maps.jpg')}
+      source={require('../../assets/fireStarter.jpg')}
       style={{flex:1}}
       >
       <View style={styles.overlayContainer}>
