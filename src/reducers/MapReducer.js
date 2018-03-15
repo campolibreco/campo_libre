@@ -87,14 +87,6 @@ const filterSites = ({sites}, updatedFilterKeys) => {
         return sites;
     }
 
-    const allPossibleFilterOptions = _.reduce([accessibility_options, facilities_options, price_options], (acc, optionObject) => {
-        _.forEach(optionObject, (value, key) => {
-            acc[key] = value;
-        });
-
-        return acc;
-    }, {});
-
     const filteredSites = _.filter(sites, site => {
         const {accessibility, price, facilities} = site;
         let accessibilityMatch = false;
