@@ -15,6 +15,7 @@ import SearchScreen from './src/screens/SearchScreen';
 import FilterScreen from './src/screens/FilterScreen';
 import FavoritesScreen from './src/screens/FavoritesScreen';
 import AddSiteScreen from './src/screens/AddSiteScreen';
+import AddSiteFormScreen from './src/screens/AddSiteFormScreen';
 import MoreScreen from './src/screens/MoreScreen';
 import AuthScreen from "./src/screens/AuthScreen";
 
@@ -30,23 +31,57 @@ class App extends Component {
 
         const MainNavigator = StackNavigator({
             [navKeys.LOGIN]: {
-                screen: LoginScreen
+                screen: LoginScreen,
+                navigationOptions: {
+                    gesturesEnabled: false,
+                }
             },
             [navKeys.AUTH]: {
-                screen: AuthScreen
+                screen: AuthScreen,
+                navigationOptions: {
+                    gesturesEnabled: false,
+                }
             },
             [navKeys.MAIN]: {
                 screen: TabNavigator({
-                    [navKeys.SEARCH]: {screen: SearchScreen},
-                    [navKeys.FAVORITES]: {screen: FavoritesScreen},
-                    [navKeys.ADD_SITE]: {screen: AddSiteScreen},
-                    [navKeys.MORE]: {screen: MoreScreen}
+                    [navKeys.SEARCH]: {
+                        screen: SearchScreen,
+                        navigationOptions: {
+                            gesturesEnabled: false,
+                        }
+                    },
+                    [navKeys.FAVORITES]: {
+                        screen: FavoritesScreen,
+                        navigationOptions: {
+                            gesturesEnabled: false,
+                        }
+                    },
+                    [navKeys.ADD_SITE]: {
+                        screen: AddSiteScreen,
+                        navigationOptions: {
+                            gesturesEnabled: false,
+                        }
+                    },
+                    [navKeys.MORE]: {
+                        screen: MoreScreen,
+                        navigationOptions: {
+                            gesturesEnabled: false,
+                        }
+                    }
                 })
             },
             [navKeys.FILTER]: {
                 screen: FilterScreen,
                 navigationOptions: {
-                    tabBarVisible: false
+                    tabBarVisible: false,
+                    gesturesEnabled: false,
+                }
+            },
+            [navKeys.ADD_SITE_FORM]: {
+                screen: AddSiteFormScreen,
+                navigationOptions: {
+                    tabBarVisible: false,
+                    gesturesEnabled: false,
                 }
             }
         }, {

@@ -17,6 +17,7 @@ export const navKeys = {
     SEARCH: 'search',
     FAVORITES: 'favorites',
     ADD_SITE: 'addSite',
+    ADD_SITE_FORM: 'addSiteForm',
     MORE: 'more',
     FILTER: 'filter'
 };
