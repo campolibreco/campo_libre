@@ -1,68 +1,33 @@
 import React, {Component} from 'react';
-import {Alert, Picker, ScrollView, Modal, View, Platform} from 'react-native';
+import {TouchableOpacity, View, Platform} from 'react-native';
 import {connect} from 'react-redux';
 
-import {Button, FormLabel, FormInput, Input, Icon, Overlay, Text, Card} from 'react-native-elements';
+import {Icon, Overlay, Text, Card} from 'react-native-elements';
 
-import {
-    updateLatitudeText,
-    updateLongitudeText,
-    updateSiteTitleText,
-    updateSiteDescriptionText,
-    updateSiteDirectionsText,
-    updateSiteNearestTownText,
-    updateAccessibilityOption,
-    updateFacilitiesOption,
-    updatePriceOption,
-    resetAddScreenFields,
-    promptForLocationServicesPermission,
-    getCurrentUserLocation,
-    checkIfSiteIsReadyForUpload,
-    attemptToUploadSite,
-    openSiteUploadModal,
-    closeSiteUploadModal
-} from '../actions';
+import {} from '../actions';
 
-import {campsite, submit_form, common} from '../locale.en';
+import {campsite} from '../locale.en';
 
-const {
-    site_description, upload,
-    campsite_form: {
-        latitude, longitude,
-        longitude_placeholder, latitude_placeholder,
-        add_site_title, site_info,
-        description, description_placeholder,
-        directions, directions_placeholder,
-        nearest_town, nearest_town_placeholder,
-        here_now, add_site,
-        accessibility, facilities, price,
-        accessibility_options,
-        facilities_options,
-        price_options
-    }
-} = campsite;
+const {site_description} = campsite;
 
-const {submit, submitted} = submit_form;
+import {navKeys} from '../constants';
 
-const {title, location} = common;
-
-import {navKeys, permissionResponses} from '../constants';
-
-const {GRANTED, DENIED, UNDETERMINED} = permissionResponses;
-
-import {navyBlueButton, grey, darkBlue} from '../styles/index';
 
 class AddSiteScreen extends Component {
 
     static renderRightNavButton = (navigate) => {
+        const {topRightIconStyle} = styles;
+
         if (Platform.OS === 'ios') {
             return (
-                <Button
-                    title={'Submit a Site'}
-                    onPress={() => navigate(navKeys.ADD_SITE_FORM)}
-                    backgroundColor="rgba(0,0,0,0)"
-                    color="rgba(0,122,255,1)"
-                />
+                <TouchableOpacity style={topRightIconStyle} onPress={() => navigate(navKeys.ADD_SITE_FORM)}>
+                    <Icon type='entypo'
+                          name='add-to-list'
+                          size={25}
+                          color="rgba(0,122,255,1)"
+
+                    />
+                </TouchableOpacity>
             );
         } else if (Platform.OS === 'android') {
             // android-specific code for navigation here
@@ -74,6 +39,7 @@ class AddSiteScreen extends Component {
 
         return {
             title: 'Add a Site',
+            headerTitle: 'Your Submitted Sites',
             headerLeft: null,
             headerRight: AddSiteScreen.renderRightNavButton(navigate),
             tabBarIcon: ({focused, tintColor}) => (
@@ -99,6 +65,9 @@ class AddSiteScreen extends Component {
 }
 
 const styles = {
+    topRightIconStyle: {
+        paddingRight: 20
+    }
 
 };
 
