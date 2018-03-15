@@ -83,7 +83,7 @@ const updateFilterKeys = ({filterCriteriaKeys}, filterKey) => {
 };
 
 const filterSites = ({sites}, updatedFilterKeys) => {
-    if (updatedFilterKeys.length === 0) {
+    if (updatedFilterKeys.accessibility.length === 0 && updatedFilterKeys.facilities.length === 0 && updatedFilterKeys.price.length === 0) {
         return sites;
     }
 
