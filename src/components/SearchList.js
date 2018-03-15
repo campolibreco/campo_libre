@@ -20,7 +20,64 @@ const SearchList = ({sites}) => {
   }else{
     return (
       <ScrollView>
-       <SiteCard/>
+       {
+         sites.map(site => {
+            const {id, title, description} = site
+                     return (
+          <Card
+             key={id}
+               >
+               <ImageBackground
+                  key={id}
+                  source={require('../../assets/fireStarter.jpg')}
+                  style={styles.heroContainer}>
+
+                 <View style={styles.overlayContainer}>
+                   <View>
+                           <Text style={styles.textStyle}>{title}</Text>
+
+                   </View>
+</View>
+                 </ImageBackground>
+               <Text style={styles.descriptionStyle}>
+                {description}
+               </Text>
+               <View style ={styles.buttonContainer}>
+               <View>
+                 <Button
+                    large
+                    transparent
+                    icon={{name: 'search', type: 'font-awesome'}}
+                    title={'more'}
+                    buttonStyle={styles.facebookStyle}
+                    rounded={true}
+                />
+                </View>
+             </View>
+           </Card>
+          // <ImageBackground
+          //    key={id}
+          //    source={require('../../assets/fireStarter.jpg')}
+          //    style={styles.heroContainer}>
+          //
+          //   <View style={styles.overlayContainer}>
+          //     <View>
+          //             <Text style={styles.textStyle}>{title}</Text>
+          //
+          //     </View>
+          //     <View style={styles.descriptionContainer}>
+          //
+          //
+          //             <Text style={styles.descriptionStyle}> {description}</Text>
+          //     </View>
+          //
+
+          //    </View>
+          //   </ImageBackground>
+
+           );
+         })
+       }
      </ScrollView>
     );
   }
@@ -35,13 +92,14 @@ const SearchList = ({sites}) => {
         backgroundColor: overlayMediumBlue
       },
       heroContainer: {
-          height:250,
-          margin:10,
+          height:100,
+          width:'100%',
           shadowOffset:{  width: 2,  height: 2,  },
           shadowColor: 'black',
           shadowOpacity: 0.1,
       },
       textStyle:{
+        height:100,
         color: headerWhite,
         fontSize:28,
         padding: 20,
@@ -50,7 +108,8 @@ const SearchList = ({sites}) => {
         backgroundColor:headerWhiteMediumTransparent
       },
       descriptionStyle:{
-        color: headerWhite,
+        padding: 20,
+        color: 'black',
         fontSize:15
       },
       descriptionContainer:{
