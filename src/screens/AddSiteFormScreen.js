@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, Picker, ScrollView, Modal, View} from 'react-native';
+import {Alert, Picker, Platform, ScrollView, View} from 'react-native';
 import {connect} from 'react-redux';
 
 import {Button, FormLabel, FormInput, Input, Icon, Overlay, Text, Card} from 'react-native-elements';
@@ -18,23 +18,21 @@ import {
     promptForLocationServicesPermission,
     getCurrentUserLocation,
     checkIfSiteIsReadyForUpload,
-    attemptToUploadSite,
-    openSiteUploadModal,
-    closeSiteUploadModal
+    attemptToUploadSite
 } from '../actions';
 
 import {campsite, submit_form, common} from '../locale.en';
 
 const {
-    site_description, upload,
     campsite_form: {
+        reset,
         latitude, longitude,
         longitude_placeholder, latitude_placeholder,
-        add_site_title, site_info,
+        add_site, add_a_campsite, add_site_title, site_info,
         description, description_placeholder,
         directions, directions_placeholder,
         nearest_town, nearest_town_placeholder,
-        here_now, add_site,
+        here_now,
         accessibility, facilities, price,
         accessibility_options,
         facilities_options,
@@ -46,7 +44,7 @@ const {submit, submitted} = submit_form;
 
 const {title, location} = common;
 
-import {permissionResponses} from '../constants';
+import {map, permissionResponses} from '../constants';
 
 const {GRANTED, DENIED, UNDETERMINED} = permissionResponses;
 
@@ -54,11 +52,39 @@ import {navyBlueButton, grey, darkBlue} from '../styles/index';
 
 class AddSiteFormScreen extends Component {
 
+    componentDidMount() {
+        const {navigation: {setParams}} = this.props;
+
+        setParams({onClickReset: this.onClickReset});
+    }
+
+    onClickReset = () => {
+        this.props.resetAddScreenFields();
+    };
+
+    static renderRightNavButton = ({onClickReset}) => {
+
+        if (Platform.OS === 'ios') {
+            return (
+                <Button
+                    title={reset}
+                    onPress={onClickReset}
+                    backgroundColor="rgba(0,0,0,0)"
+                    color="rgba(0,122,255,1)"
+                />
+            );
+        } else if (Platform.OS === 'android') {
+            // android-specific code for navigation here
+        }
+    };
+
     static navigationOptions = (props) => {
-        const {navigation: {navigate}} = props;
+        const {navigation: {state: {params = {}}}} = props;
+
         return {
-            title: 'Add a Site',
-            headerTitle: 'Add a Campsite',
+            title: add_site,
+            headerTitle: add_a_campsite,
+            headerRight: AddSiteFormScreen.renderRightNavButton(params),
             tabBarIcon: ({focused, tintColor}) => (
                 <Icon type='material-community' name={focused ? 'tent' : 'tent'} size={25} color={tintColor}/>)
         }
@@ -89,14 +115,6 @@ class AddSiteFormScreen extends Component {
             return <Picker.Item key={key} label={price_options[key]} value={price_options[key]}/>;
         })
     }
-
-    onClickOpenModal = () => {
-        this.props.openSiteUploadModal();
-    };
-
-    onClickCloseModal = () => {
-        this.props.closeSiteUploadModal();
-    };
 
     onUpdateLatitudeText = (newLatText) => {
         this.props.updateLatitudeText({latitudeText: newLatText})
@@ -134,9 +152,37 @@ class AddSiteFormScreen extends Component {
         this.props.updatePriceOption({priceOption: newPriceOption})
     };
 
-    onClickReset = () => {
-        this.props.resetAddScreenFields();
-    };
+
+    // TODO - add checkbox logic here
+
+    // onClickCheckbox = (key) => {
+    //     this.props.checkboxWasClicked({filterKey: key})
+    // };
+    //
+    // renderCheckedState = (key) => {
+    //     const {filterCriteriaKeys} = this.props;
+    //     const flatFilterCriteriaList = _(filterCriteriaKeys)
+    //         .map(categoryKeys => {
+    //             return _.map(categoryKeys, innerKey => innerKey)
+    //         })
+    //         .flatten()
+    //         .valueOf();
+    //
+    //     return _.includes(flatFilterCriteriaList, key);
+    // };
+    //
+    // renderCheckboxes = (checkboxObject) => {
+    //     return _.map(checkboxObject, (value, key) => {
+    //         return (
+    //             <CheckBox
+    //                 key={key}
+    //                 title={value}
+    //                 checked={this.renderCheckedState(key)}
+    //                 onPress={() => this.onClickCheckbox(key)}
+    //             />
+    //         );
+    //     })
+    // };
 
     onClickIAmHere = () => {
         const {locationServicesPermission} = this.props;
@@ -193,157 +239,118 @@ class AddSiteFormScreen extends Component {
 
     render() {
         const {buttonStyle, headerTitle, largeTextInput, modalStyle, exitOrResetStyle} = styles;
-        const {addSiteModalVisible, latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, priceOption} = this.props;
+        const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, priceOption} = this.props;
 
         return (
             <View>
-                <Card>
-                    <Text>
-                        {site_description}
+                <ScrollView style={modalStyle}>
+                    <Text h2
+                          style={headerTitle}
+                    >
+                        {location}
                     </Text>
-                </Card>
-                <Button
-                    onPress={this.onClickOpenModal}
-                    title="Open modal"
-                    large
-                    rounded={true}
-                    buttonStyle={buttonStyle}
-                    icon={{name: 'plus', type: 'font-awesome'}}
-                    title={add_site}
-                >
-                    {upload}
-                </Button>
 
-                <Modal
-                    visible={addSiteModalVisible}
-                    animationType={'slide'}
-                    onRequestClose={this.onClickCloseModal}
-                >
-                    <ScrollView style={modalStyle}>
-                        <View style={exitOrResetStyle}>
-                            <Icon
-                                type='font-awesome'
-                                name='times-circle'
-                                onPress={this.onClickCloseModal}
-                            />
+                    <Button
+                        large
+                        rounded={true}
+                        onPress={this.onClickIAmHere}
+                        buttonStyle={buttonStyle}
+                        icon={{name: 'bullseye', type: 'font-awesome'}}
+                        title={here_now}
+                    >
+                        {campsite.upload}
+                    </Button>
 
-                            <Button
-                                title="Reset"
-                                onPress={this.onClickReset}
-                                backgroundColor="rgba(0,0,0,0)"
-                                color="rgba(0,122,255,1)"
-                            />
+                    <Text h3
+                          style={headerTitle}
+                    >- or -</Text>
 
-                        </View>
+                    <FormLabel>{latitude}</FormLabel>
+                    <FormInput
+                        placeholder={latitude_placeholder}
+                        value={latitudeText}
+                        onChangeText={this.onUpdateLatitudeText}
+                        required
+                    />
 
-                        <Text h2
-                              style={headerTitle}
-                        >
-                            {location}
-                        </Text>
+                    <FormLabel>{longitude}</FormLabel>
+                    <FormInput
+                        placeholder={longitude_placeholder}
+                        value={longitudeText}
+                        onChangeText={this.onUpdateLongitudeText}
+                        required
+                    />
 
-                        <Button
-                            large
-                            rounded={true}
-                            onPress={this.onClickIAmHere}
-                            buttonStyle={buttonStyle}
-                            icon={{name: 'bullseye', type: 'font-awesome'}}
-                            title={here_now}
-                        >
-                            {campsite.upload}
-                        </Button>
+                    <Text h2
+                          style={headerTitle}>
+                        {site_info}
+                    </Text>
 
-                        <Text h3
-                              style={headerTitle}
-                        >- or -</Text>
+                    <FormLabel>{title}</FormLabel>
+                    <FormInput
+                        placeholder={add_site_title}
+                        value={siteTitleText}
+                        onChangeText={this.onUpdateSiteTitleText}
+                    />
 
-                        <FormLabel>{latitude}</FormLabel>
-                        <FormInput
-                            placeholder={latitude_placeholder}
-                            value={latitudeText}
-                            onChangeText={this.onUpdateLatitudeText}
-                            required
-                        />
+                    <FormLabel>{description}</FormLabel>
+                    <FormInput
+                        placeholder={description_placeholder}
+                        value={siteDescriptionText}
+                        onChangeText={this.onUpdateSiteDescriptionText}
+                        containerStyle={largeTextInput}
+                        multiline={true}
+                        maxLength={40}
+                        maxHeight={50}
+                        editable={true}
+                    />
 
-                        <FormLabel>{longitude}</FormLabel>
-                        <FormInput
-                            placeholder={longitude_placeholder}
-                            value={longitudeText}
-                            onChangeText={this.onUpdateLongitudeText}
-                            required
-                        />
+                    <FormLabel>{directions}</FormLabel>
+                    <FormInput
+                        placeholder={directions_placeholder}
+                        value={siteDirectionsText}
+                        onChangeText={this.onUpdateSiteDirectionsText}
+                        containerStyle={largeTextInput}
+                        multiline={true}
+                        maxLength={40}
+                        maxHeight={50}
+                        editable={true}
+                    />
 
-                        <Text h2
-                              style={headerTitle}>
-                            {site_info}
-                        </Text>
+                    <FormLabel>{nearest_town}</FormLabel>
+                    <FormInput
+                        placeholder={nearest_town_placeholder}
+                        value={siteNearestTownText}
+                        onChangeText={this.onUpdateSiteNearestTownText}
+                        editable={true}
+                    />
 
-                        <FormLabel>{title}</FormLabel>
-                        <FormInput
-                            placeholder={add_site_title}
-                            value={siteTitleText}
-                            onChangeText={this.onUpdateSiteTitleText}
-                        />
+                    <FormLabel>{price}</FormLabel>
+                    <Picker
+                        selectedValue={priceOption}
+                        onValueChange={this.onUpdatePriceOption}
+                    >
+                        {this.priceOptions()}
+                    </Picker>
 
-                        <FormLabel>{description}</FormLabel>
-                        <FormInput
-                            placeholder={description_placeholder}
-                            value={siteDescriptionText}
-                            onChangeText={this.onUpdateSiteDescriptionText}
-                            containerStyle={largeTextInput}
-                            multiline={true}
-                            maxLength={40}
-                            maxHeight={50}
-                            editable={true}
-                        />
+                    <FormLabel>{accessibility}</FormLabel>
+                    <Picker
+                        selectedValue={accessibilityOption}
+                        onValueChange={this.onUpdateAccessibilityOption}
+                    >
+                        {this.accessibilityOptions()}
+                    </Picker>
 
-                        <FormLabel>{directions}</FormLabel>
-                        <FormInput
-                            placeholder={directions_placeholder}
-                            value={siteDirectionsText}
-                            onChangeText={this.onUpdateSiteDirectionsText}
-                            containerStyle={largeTextInput}
-                            multiline={true}
-                            maxLength={40}
-                            maxHeight={50}
-                            editable={true}
-                        />
+                    <FormLabel>{facilities}</FormLabel>
+                    <Picker
+                        selectedValue={facilitiesOption}
+                        onValueChange={this.onUpdateFacilitiesOption}
+                    >
+                        {this.facilitiesOptions()}
+                    </Picker>
 
-                        <FormLabel>{nearest_town}</FormLabel>
-                        <FormInput
-                            placeholder={nearest_town_placeholder}
-                            value={siteNearestTownText}
-                            onChangeText={this.onUpdateSiteNearestTownText}
-                            editable={true}
-                        />
-
-                        <FormLabel>{price}</FormLabel>
-                        <Picker
-                            selectedValue={priceOption}
-                            onValueChange={this.onUpdatePriceOption}
-                        >
-                            {this.priceOptions()}
-                        </Picker>
-
-                        <FormLabel>{accessibility}</FormLabel>
-                        <Picker
-                            selectedValue={accessibilityOption}
-                            onValueChange={this.onUpdateAccessibilityOption}
-                        >
-                            {this.accessibilityOptions()}
-                        </Picker>
-
-                        <FormLabel>{facilities}</FormLabel>
-                        <Picker
-                            selectedValue={facilitiesOption}
-                            onValueChange={this.onUpdateFacilitiesOption}
-                        >
-                            {this.facilitiesOptions()}
-                        </Picker>
-
-                        {this.renderSubmitButton()}
-                    </ScrollView>
-                </Modal>
+                    {this.renderSubmitButton()}
+                </ScrollView>
             </View>
         );
     }
@@ -389,12 +396,11 @@ const styles = {
 };
 
 function mapStateToProps(state) {
-    const {addSiteModalVisible, latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, priceOption, siteReadyForUpload, readyLatitude, readyLongitude} = state.addSite;
+    const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, priceOption, siteReadyForUpload, readyLatitude, readyLongitude} = state.addSite;
     const {locationServicesPermission, cameraPermission, cameraRollPermission} = state.permissions;
 
 
     return {
-        addSiteModalVisible,
         latitudeText,
         longitudeText,
         siteTitleText,
@@ -427,7 +433,5 @@ export default connect(mapStateToProps, {
     promptForLocationServicesPermission,
     getCurrentUserLocation,
     checkIfSiteIsReadyForUpload,
-    attemptToUploadSite,
-    openSiteUploadModal,
-    closeSiteUploadModal
+    attemptToUploadSite
 })(AddSiteFormScreen);

@@ -123,7 +123,7 @@ class FilterScreen extends Component {
     };
 
     renderContent = (section) => {
-        const {contentStyle, contentTextStyle} = styles;
+        const {contentStyle} = styles;
 
         return (
             <View style={contentStyle}>

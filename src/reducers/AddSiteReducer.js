@@ -1,8 +1,6 @@
 import _ from 'lodash';
 
 import {
-    OPEN_SITE_UPLOAD_MODAL,
-    CLOSE_SITE_UPLOAD_MODAL,
     LATITUDE_TEXT_UPDATED,
     LONGITUDE_TEXT_UPDATED,
     SITE_TITLE_TEXT_CHANGED,
@@ -24,7 +22,6 @@ import {campsite, reducerAlerts} from '../locale.en';
 const {campsite_form: {accessibility_options, facilities_options, price_options}} = campsite;
 
 const INITIAL_STATE = {
-    addSiteModalVisible: false,
     latitudeText: '',
     readyLatitude: 0,
     longitudeText: '',
@@ -52,12 +49,6 @@ export default (state = INITIAL_STATE, action) => {
     const {type, payload} = action;
 
     switch (type) {
-
-        case OPEN_SITE_UPLOAD_MODAL:
-            return {...state, addSiteModalVisible: true};
-
-        case CLOSE_SITE_UPLOAD_MODAL:
-            return {...state, addSiteModalVisible: false};
 
         case LATITUDE_TEXT_UPDATED:
             const {latitudeText} = payload;
@@ -102,7 +93,7 @@ export default (state = INITIAL_STATE, action) => {
             return {...state, priceOption};
 
         case ADD_SITE_FIELDS_RESET:
-            return {...INITIAL_STATE, addSiteModalVisible: true};
+            return {...INITIAL_STATE};
 
         case CURRENT_LOCATION_UPDATED:
             const {currentLocation: {longitude, latitude}} = payload;
@@ -126,10 +117,10 @@ export default (state = INITIAL_STATE, action) => {
             return {...INITIAL_STATE, sitesShouldUpdate: true};
 
         case ADD_SITE_FAILURE:
-            return {...state, addSiteModalVisible: false};
+            return {...state};
 
         case INITIALIZE_MAP:
-            return {...state, sitesShouldUpdate: false};
+            return {...state};
 
         default:
             return state;

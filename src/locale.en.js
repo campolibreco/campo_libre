@@ -15,6 +15,7 @@ export const campsite = {
     site_description: "Your submitted sites will go here. Why don't you give it a try by submitting a site above?",
     upload: "Upload Campsite",
     campsite_form: {
+        reset: 'Reset',
         latitude: 'Latitude',
         latitude_placeholder: 'Add latitude',
         longitude: 'Longitude',
@@ -45,8 +46,8 @@ export const campsite = {
             potable_water: 'Potable Water',
             showers: 'Showers',
             metal_firepit: 'Metal Fire Pit',
-            tables: 'tables',
-            none: 'none'
+            tables: 'Tables',
+            none: 'None'
         },
         accessibility_options: {
             paved_road: "Paved Road",
