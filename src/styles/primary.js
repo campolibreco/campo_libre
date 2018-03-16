@@ -14,7 +14,8 @@ export const grey = '#999FA6';
 export const darkBlue = '#1F1F27';
 
 // Hightlight colors
-
+export const badgeGreen = '#1B6E65';
+export const limeGreenTitle ='#B8BB5A';
 // Social media
 export const facebookBlue ='#3b5998';
 export const facebookBlueButtonTransparent ='rgba(59, 89, 152, .8)';

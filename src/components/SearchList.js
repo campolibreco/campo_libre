@@ -1,31 +1,21 @@
 // 3rd party libraries - core
 import React from 'react';
 import {View, Text, StyleSheet, ScrollView, ImageBackground} from 'react-native';
-import {Card, ListItem, Button, Tile, List, Image, Badge} from 'react-native-elements';
+import {Card, ListItem, Button, Tile, List, Image, Badge, Icon} from 'react-native-elements';
 // 3rd party libraries - additional
-
 // styles and language
-import { facebookBlueButtonTransparent, grayblue,overlayMediumGray, headerWhiteMediumTransparent, navyBlueButtonTransparent, headerWhiteTransparent, overlayBlue, headerWhite, darkBlue } from '../styles/index';
-// our components - core
-import SiteCard from './SiteCard'
+import { badgeGreen, limeGreenTitle} from '../styles/index';
 // our components - additional
 
 
-
 const SearchList = ({sites}) => {
-  const{textStyle, cardButtonStyle, heroContainer, descriptionStyle, descriptionContainer, overlayContainer, nearestTownStyle, ratingText, subtitleView, titleView} = styles
+  const{textStyle, IconContainer, subtitleView,siteAvatarStyle, siteAvatarContainerStyle, titleView, nearestTownStyle, badgeWrapperStyle, badgeContainerStyle} = styles
   if(!sites){
-    return( <Text> No Sites available </Text>)
-
+    return( <Text> No Sites Available </Text>)
   }else{
     return (
-      <ScrollView>
-      <ImageBackground
-      source={require('../../assets/fireStarter.jpg')}
-      style={{flex:1}}
-      >
-      <View style={styles.overlayContainer}>
-  <List>
+  <ScrollView>
+     <List>
        {
          sites.map(site => {
             const {id, title, description, nearestTown} = site
@@ -33,75 +23,90 @@ const SearchList = ({sites}) => {
                 <ListItem
                   key={id}
                   title={
-                  <View>
-                    <Badge
-                      wrapperStyle={{width:'40%', marginLeft:10}}
+                         <View>
+                           <View style={IconContainer}>
+                            <Icon
+                              name='image-inverted'
+                              type="entypo"
+                              color='purple' />
+                              <Icon
+                               name='air'
+                               type="entypo"
+                                color='#f50' />
+                              <Icon
+                                name='drop'
+                                type="entypo"
+                                color='#7C9EC2' />
+                                <Icon
+                                name='leaf'
+                                type="entypo"
+                                color='orange' />
+                             </View>
+                              <Badge
+                                wrapperStyle={badgeWrapperStyle}
+                                containerStyle={badgeContainerStyle}
+                                >
+                                  <Text style={nearestTownStyle}>{nearestTown}</Text>
+                              </Badge>
 
-                  containerStyle={{ backgroundColor: '#1B6E65'}}>
-                    <Text style={{ color: 'white'}}>{nearestTown}</Text>
-                  </Badge>
-                    <Text style={titleView}>{title}</Text>
-
-                  </View>
-                  }
+                            <Text style={titleView}>{title}</Text>
+                          </View>
+                        }
                   subtitle={
-                    <View style={subtitleView}>
-                       <Text>{description}</Text>
-                    </View>
-                   }
-              avatar={require('../../assets/icon.png')}
+                            <View style={subtitleView}>
+                                <Text>{description}</Text>
+                            </View>
+                           }
+                  avatar={require('../../assets/starTent.jpg')}
+                  avatarContainerStyle={siteAvatarContainerStyle}
+                  avatarStyle={siteAvatarStyle}
                 />
-           );
-         })
-       }
+               );
+             })
+           }
        </List>
-         </View>
-       </ImageBackground>
      </ScrollView>
     );
   }
 };
 
 
-
-
-
-
-
-
-
     const styles = StyleSheet.create({
-      overlayContainer: {
-        flex:1,
-        backgroundColor: overlayMediumGray
+      IconContainer:{
+        flexDirection:'row',
+        paddingLeft:10
       },
-
-      heroContainer: {
-          padding:10
+      badgeWrapperStyle:{
+        width:'50%',
+         marginLeft:10
       },
+      badgeContainerStyle:{
+         backgroundColor: badgeGreen
+      },
+      siteAvatarStyle:{
+        height:'100%',
+        width:'100%'
+      },
+      siteAvatarContainerStyle:{
+         height:150,
+         width:'30%'
+       },
        nearestTownStyle:{
-          padding: 10,
-          color: 'red',
-          fontSize:15,
-          backgroundColor:'white',
-
+           color: 'white'
         },
         subtitleView: {
         flexDirection: 'row',
         paddingLeft: 10,
         paddingTop: 5
-  },
+        },
         titleView: {
-         fontSize:16,
+         fontSize:17,
          fontWeight: '600',
-         color:'#B8BB5A',
+         color:limeGreenTitle,
          flexDirection: 'row',
          paddingLeft: 10,
          paddingTop: 5
-
- },
-
-
+        },
     });
 
 export default SearchList;
