@@ -4,8 +4,6 @@ import {connect} from 'react-redux';
 
 import {Icon, Overlay, Text, Card} from 'react-native-elements';
 
-import {} from '../actions';
-
 import {campsite} from '../locale.en';
 
 const {site_description} = campsite;
@@ -48,7 +46,6 @@ class AddSiteScreen extends Component {
     };
 
     render() {
-        const {} = styles;
 
         return (
             <View>
@@ -57,8 +54,6 @@ class AddSiteScreen extends Component {
                         {site_description}
                     </Text>
                 </Card>
-
-
             </View>
         );
     }
@@ -71,10 +66,4 @@ const styles = {
 
 };
 
-function mapStateToProps(state) {
-
-
-    return {};
-}
-
-export default connect(mapStateToProps, {})(AddSiteScreen);
+export default connect(null)(AddSiteScreen);
