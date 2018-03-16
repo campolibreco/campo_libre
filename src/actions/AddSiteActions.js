@@ -14,7 +14,8 @@ import {
     ADD_SITE_FIELDS_RESET,
     ADD_SITE_SUCCESS,
     ADD_SITE_FAILURE,
-    CHECK_IF_SITE_IS_READY
+    CHECK_IF_SITE_IS_READY,
+    SITE_DETAIL_CHECKBOX_UPDATED
 } from './types';
 
 import {navKeys} from '../constants';
@@ -94,8 +95,15 @@ export const checkIfSiteIsReadyForUpload = () => {
     }
 };
 
+export const siteDetailCheckboxWasClicked = ({siteDetailCheckboxKey}) => {
+    return{
+        type: SITE_DETAIL_CHECKBOX_UPDATED,
+        payload: {siteDetailCheckboxKey}
+    }
+};
 
-export const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, price, coordinate}, navigate) => {
+
+export const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate}, navigate) => {
     const {longitude, latitude} = coordinate;
     const uniqueTitle = `${title}${longitude}${latitude}`;
 
@@ -108,6 +116,7 @@ export const attemptToUploadSite = ({title, description, directions, nearestTown
                 nearestTown,
                 accessibility,
                 facilities,
+                features,
                 price,
                 coordinate
             })

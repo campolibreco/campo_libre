@@ -2,7 +2,9 @@ import React, {Component} from 'react';
 import {Alert, Picker, Platform, ScrollView, View} from 'react-native';
 import {connect} from 'react-redux';
 
-import {Button, FormLabel, FormInput, Input, Icon, Overlay, Text, Card} from 'react-native-elements';
+import _ from 'lodash';
+
+import {Button, FormLabel, FormInput, Input, Icon, Overlay, Text, CheckBox} from 'react-native-elements';
 
 import {
     updateLatitudeText,
@@ -18,7 +20,8 @@ import {
     promptForLocationServicesPermission,
     getCurrentUserLocation,
     checkIfSiteIsReadyForUpload,
-    attemptToUploadSite
+    attemptToUploadSite,
+    siteDetailCheckboxWasClicked
 } from '../actions';
 
 import {campsite, submit_form, common} from '../locale.en';
@@ -33,9 +36,10 @@ const {
         directions, directions_placeholder,
         nearest_town, nearest_town_placeholder,
         here_now,
-        accessibility, facilities, price,
+        accessibility, facilities, price, features,
         accessibility_options,
         facilities_options,
+        features_options,
         price_options
     }
 } = campsite;
@@ -152,37 +156,34 @@ class AddSiteFormScreen extends Component {
         this.props.updatePriceOption({priceOption: newPriceOption})
     };
 
+    onClickCheckbox = (key) => {
+        this.props.siteDetailCheckboxWasClicked({siteDetailCheckboxKey: key})
+    };
 
-    // TODO - add checkbox logic here
+    renderCheckedState = (key) => {
+        const {siteDetailCheckboxesKeys} = this.props;
+        const flatSiteDetailCheckboxesList = _(siteDetailCheckboxesKeys)
+            .map(categoryKeys => {
+                return _.map(categoryKeys, innerKey => innerKey)
+            })
+            .flatten()
+            .valueOf();
 
-    // onClickCheckbox = (key) => {
-    //     this.props.checkboxWasClicked({filterKey: key})
-    // };
-    //
-    // renderCheckedState = (key) => {
-    //     const {filterCriteriaKeys} = this.props;
-    //     const flatFilterCriteriaList = _(filterCriteriaKeys)
-    //         .map(categoryKeys => {
-    //             return _.map(categoryKeys, innerKey => innerKey)
-    //         })
-    //         .flatten()
-    //         .valueOf();
-    //
-    //     return _.includes(flatFilterCriteriaList, key);
-    // };
-    //
-    // renderCheckboxes = (checkboxObject) => {
-    //     return _.map(checkboxObject, (value, key) => {
-    //         return (
-    //             <CheckBox
-    //                 key={key}
-    //                 title={value}
-    //                 checked={this.renderCheckedState(key)}
-    //                 onPress={() => this.onClickCheckbox(key)}
-    //             />
-    //         );
-    //     })
-    // };
+        return _.includes(flatSiteDetailCheckboxesList, key);
+    };
+
+    renderCheckboxes = (checkboxObject) => {
+        return _.map(checkboxObject, (value, key) => {
+            return (
+                <CheckBox
+                    key={key}
+                    title={value}
+                    checked={this.renderCheckedState(key)}
+                    onPress={() => this.onClickCheckbox(key)}
+                />
+            );
+        })
+    };
 
     onClickIAmHere = () => {
         const {locationServicesPermission} = this.props;
@@ -203,7 +204,8 @@ class AddSiteFormScreen extends Component {
             directions: this.props.siteDirectionsText,
             nearestTown: this.props.siteNearestTownText,
             accessibility: this.props.accessibilityOption,
-            facilities: this.props.facilitiesOption,
+            facilities: this.props.siteDetailCheckboxesKeys.facilities,
+            features: this.props.siteDetailCheckboxesKeys.features,
             price: this.props.priceOption,
             coordinate: {
                 longitude: this.props.readyLongitude,
@@ -344,12 +346,14 @@ class AddSiteFormScreen extends Component {
                     </Picker>
 
                     <FormLabel>{facilities}</FormLabel>
-                    <Picker
-                        selectedValue={facilitiesOption}
-                        onValueChange={this.onUpdateFacilitiesOption}
-                    >
-                        {this.facilitiesOptions()}
-                    </Picker>
+                    <View>
+                        {this.renderCheckboxes(facilities_options)}
+                    </View>
+
+                    <FormLabel>{features}</FormLabel>
+                    <View>
+                        {this.renderCheckboxes(features_options)}
+                    </View>
 
                     {this.renderSubmitButton()}
                 </ScrollView>
@@ -398,7 +402,7 @@ const styles = {
 };
 
 function mapStateToProps(state) {
-    const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, priceOption, siteReadyForUpload, readyLatitude, readyLongitude} = state.addSite;
+    const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, priceOption, siteReadyForUpload, readyLatitude, readyLongitude, siteDetailCheckboxesKeys} = state.addSite;
     const {locationServicesPermission, cameraPermission, cameraRollPermission} = state.permissions;
 
 
@@ -417,7 +421,8 @@ function mapStateToProps(state) {
         cameraRollPermission,
         siteReadyForUpload,
         readyLatitude,
-        readyLongitude
+        readyLongitude,
+        siteDetailCheckboxesKeys
     };
 }
 
@@ -435,5 +440,6 @@ export default connect(mapStateToProps, {
     promptForLocationServicesPermission,
     getCurrentUserLocation,
     checkIfSiteIsReadyForUpload,
-    attemptToUploadSite
+    attemptToUploadSite,
+    siteDetailCheckboxWasClicked
 })(AddSiteFormScreen);
