@@ -6,7 +6,7 @@ import {Card, ListItem, Button, Tile, List, Image, Badge, Icon} from 'react-nati
 // styles and language
 import { badgeGreen, limeGreenTitle} from '../styles/index';
 // our components - additional
-
+import _ from 'lodash';
 
 const SearchList = ({sites}) => {
   const{textStyle, IconContainer, subtitleView,siteAvatarStyle, siteAvatarContainerStyle, titleView, nearestTownStyle, badgeWrapperStyle, badgeContainerStyle} = styles
@@ -17,7 +17,7 @@ const SearchList = ({sites}) => {
   <ScrollView>
      <List>
        {
-         sites.map(site => {
+         _.map(sites, site => {
             const {id, title, description, nearestTown} = site
             return (
                 <ListItem
@@ -88,7 +88,7 @@ const SearchList = ({sites}) => {
         width:'100%'
       },
       siteAvatarContainerStyle:{
-         height:150,
+         height:120,
          width:'30%'
        },
        nearestTownStyle:{
