@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 import {
     INITIALIZE_MAP,
+    MAP_IS_INITIALIZING,
     MAP_READY,
     MAP_NOT_READY,
     MAP_REGION_CHANGE,
@@ -13,9 +14,13 @@ import {
 import {navKeys, tokens} from "../constants";
 
 
-export const initializeMap = (region) => {
+export const initializeMap = ({region}) => {
 
     return (dispatch) => {
+        dispatch({
+            type: MAP_IS_INITIALIZING
+        });
+
         firebase.firestore().collection('campsites')
             .get()
             .then(querySnapshot => {

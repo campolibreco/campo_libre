@@ -15,7 +15,7 @@ import {
     CHECK_IF_SITE_IS_READY,
     ADD_SITE_SUCCESS,
     ADD_SITE_FAILURE,
-    INITIALIZE_MAP,
+    MAP_IS_INITIALIZING,
     SITE_DETAIL_CHECKBOX_UPDATED,
     FACEBOOK_LOGOUT_COMPLETE
 } from '../actions/types';
@@ -149,8 +149,8 @@ export default (state = INITIAL_STATE, action) => {
         case ADD_SITE_FAILURE:
             return {...state};
 
-        case INITIALIZE_MAP:
-            return {...state};
+        case MAP_IS_INITIALIZING:
+            return {...state, sitesShouldUpdate: false};
 
         case FACEBOOK_LOGOUT_COMPLETE:
             return INITIAL_STATE;

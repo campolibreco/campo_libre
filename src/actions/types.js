@@ -6,6 +6,7 @@ export const FACEBOOK_LOGIN_FAILURE = 'fb_login_failure';
 export const FACEBOOK_LOGOUT_COMPLETE = 'fb_logout_complete';
 
 export const INITIALIZE_MAP = 'initialize_map';
+export const MAP_IS_INITIALIZING = 'map_is_initializing';
 export const MAP_READY = 'map_ready';
 export const MAP_NOT_READY = 'map_not_ready';
 export const MAP_REGION_CHANGE = 'map_region_change';
@@ -28,6 +29,7 @@ export const CHECK_IF_SITE_IS_READY = 'check_if_site_is_ready';
 export const SITE_DETAIL_CHECKBOX_UPDATED = 'site_detail_checkbox_updated';
 
 export const FILTER_CRITERIA_UPDATED = 'filter_criteria_updated';
+export const FILTER_TOGGLE_LOGIC_UPDATED = 'filter_toggle_logic_updated';
 export const FILTER_CRITERIA_RESET = 'filter_criteria_reset';
 
 export const LOCATION_SERVICES_PERMISSION_UPDATED = 'location_services_permission_updated';

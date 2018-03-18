@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, ScrollView, View, StyleSheet, Platform} from 'react-native';
+import {Text, ScrollView, View, StyleSheet, Platform, Switch} from 'react-native';
 import {connect} from "react-redux";
 
 import _ from 'lodash';
@@ -7,7 +7,7 @@ import _ from 'lodash';
 import {CheckBox, Button, Icon} from 'react-native-elements';
 import Accordion from 'react-native-collapsible/Accordion';
 
-import {checkboxWasClicked, resetAllFilters} from "../actions";
+import {checkboxWasClicked, resetAllFilters, filterToggleLogicUpdated} from "../actions";
 
 import {map, navKeys} from '../constants';
 import {campsite, more_screen, reducerAlerts} from '../locale.en';
@@ -149,11 +149,36 @@ class FilterScreen extends Component {
         })
     };
 
+    onFilterScrutinyToggleChange = ({filterToggleKey}) => {
+        this.props.filterToggleLogicUpdated({filterToggleKey});
+    };
+
+    renderToggleSwitch = ({title}) => {
+        const {toggleContainerStyle} = styles;
+        const {filterResultsScrutinyLoose} = this.props;
+
+        if (title === features || title === facilities) {
+            const lowercaseTitle = _.toLower(title);
+
+            return (
+                <View style={toggleContainerStyle}>
+                    <Text>Exactly These</Text>
+                    <Switch
+                        onValueChange={() => this.onFilterScrutinyToggleChange({filterToggleKey: lowercaseTitle})}
+                        value={filterResultsScrutinyLoose[lowercaseTitle]}
+                    />
+                    <Text>Some of These</Text>
+                </View>
+            )
+        }
+    };
+
     renderContent = (section) => {
         const {contentStyle} = styles;
 
         return (
             <View style={contentStyle}>
+                {this.renderToggleSwitch(section)}
                 {this.renderCheckboxes(section.content)}
             </View>
         );
@@ -220,16 +245,22 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingRight: 30
     },
+    toggleContainerStyle: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignContent: 'center'
+    },
     headerTextStyle: {},
     contentStyle: {},
     contentTextStyle: {}
 });
 
 function mapStateToProps(state) {
-    const {displaySites, filterCriteriaKeys} = state.map;
+    const {displaySites, filterCriteriaKeys, filterResultsScrutinyLoose} = state.map;
 
 
-    return {displaySites, filterCriteriaKeys};
+    return {displaySites, filterCriteriaKeys, filterResultsScrutinyLoose};
 }
 
-export default connect(mapStateToProps, {checkboxWasClicked, resetAllFilters})(FilterScreen);
+export default connect(mapStateToProps, {checkboxWasClicked, resetAllFilters, filterToggleLogicUpdated})(FilterScreen);

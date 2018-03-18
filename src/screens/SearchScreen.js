@@ -19,7 +19,7 @@ class SearchScreen extends Component {
     componentWillMount() {
         const {lastKnownRegion} = this.props;
 
-        this.props.initializeMap(lastKnownRegion);
+        this.props.initializeMap({region: lastKnownRegion});
     }
 
     componentDidMount() {
@@ -33,8 +33,8 @@ class SearchScreen extends Component {
     componentWillReceiveProps(nextProps){
         const {sitesShouldUpdate, lastKnownRegion} = nextProps;
 
-        if(sitesShouldUpdate){
-            this.props.initializeMap(lastKnownRegion);
+        if(sitesShouldUpdate && sitesShouldUpdate !== this.props.sitesShouldUpdate){
+            this.props.initializeMap({region: lastKnownRegion});
         }
 
     }

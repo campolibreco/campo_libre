@@ -7,6 +7,7 @@ import {
     MAP_REGION_CHANGE,
     FACEBOOK_LOGOUT_COMPLETE,
     FILTER_CRITERIA_UPDATED,
+    FILTER_TOGGLE_LOGIC_UPDATED,
     FILTER_CRITERIA_RESET
 
 } from '../actions/types';
@@ -57,7 +58,16 @@ const INITIAL_STATE = {
     viewStyle: map.SearchOptions.MAP,
     sites: [],
     displaySites: [],
+    filterResultsScrutinyLoose: {facilities: true, features: true},
     filterCriteriaKeys: {accessibility: [], facilities: [], price: [], features: []}
+};
+
+const updateFilterResultsScrutiny = ({filterResultsScrutinyLoose}, filterToggleKey) => {
+    let filterResultsScrutinyClone = _.cloneDeep(filterResultsScrutinyLoose);
+
+    filterResultsScrutinyClone[filterToggleKey] = !filterResultsScrutinyClone[filterToggleKey];
+
+    return filterResultsScrutinyClone;
 };
 
 const updateFilterKeys = ({filterCriteriaKeys}, filterKey) => {
@@ -136,7 +146,8 @@ export default (state = INITIAL_STATE, action) => {
                 sites: sites,
                 filterCriteriaKeys: state.filterCriteriaKeys,
                 displaySites: filterSites({sites}, state.filterCriteriaKeys),
-                mapLoaded: existingMapLoadedState
+                mapLoaded: existingMapLoadedState,
+                filterResultsScrutinyLoose: state.filterResultsScrutinyLoose
             } : INITIAL_STATE;
 
         case VIEW_STYLE_UPDATE:
@@ -161,8 +172,13 @@ export default (state = INITIAL_STATE, action) => {
         case FILTER_CRITERIA_RESET:
             const filterResetSites = filterSites(state, INITIAL_STATE.filterCriteriaKeys);
 
-            return {...state , filterCriteriaKeys: INITIAL_STATE.filterCriteriaKeys, displaySites: filterResetSites};
+            return {...state, filterCriteriaKeys: INITIAL_STATE.filterCriteriaKeys, displaySites: filterResetSites};
 
+        case FILTER_TOGGLE_LOGIC_UPDATED:
+            const {filterToggleKey} = payload;
+            const updatedFilterResultsScrutinyLooseObject = updateFilterResultsScrutiny(state, filterToggleKey);
+
+            return {...state, filterResultsScrutinyLoose: updatedFilterResultsScrutinyLooseObject};
 
         default:
             return state;
