@@ -6,7 +6,8 @@ import {
     MAP_READY,
     MAP_REGION_CHANGE,
     FACEBOOK_LOGOUT_COMPLETE,
-    FILTER_CRITERIA_UPDATED
+    FILTER_CRITERIA_UPDATED,
+    FILTER_CRITERIA_RESET
 
 } from '../actions/types';
 
@@ -156,6 +157,11 @@ export default (state = INITIAL_STATE, action) => {
             const newlyFilteredSites = filterSites(state, updatedFilterKeys);
 
             return {...state, filterCriteriaKeys: updatedFilterKeys, displaySites: newlyFilteredSites};
+
+        case FILTER_CRITERIA_RESET:
+            const filterResetSites = filterSites(state, INITIAL_STATE.filterCriteriaKeys);
+
+            return {...state , filterCriteriaKeys: INITIAL_STATE.filterCriteriaKeys, displaySites: filterResetSites};
 
 
         default:

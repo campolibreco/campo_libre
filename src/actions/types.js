@@ -28,6 +28,7 @@ export const CHECK_IF_SITE_IS_READY = 'check_if_site_is_ready';
 export const SITE_DETAIL_CHECKBOX_UPDATED = 'site_detail_checkbox_updated';
 
 export const FILTER_CRITERIA_UPDATED = 'filter_criteria_updated';
+export const FILTER_CRITERIA_RESET = 'filter_criteria_reset';
 
 export const LOCATION_SERVICES_PERMISSION_UPDATED = 'location_services_permission_updated';
 export const CAMERA_PERMISSION_UPDATED = 'camera_permission_updated';

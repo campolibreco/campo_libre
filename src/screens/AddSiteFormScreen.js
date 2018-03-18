@@ -329,20 +329,20 @@ class AddSiteFormScreen extends Component {
                         editable={true}
                     />
 
-                    <FormLabel>{price}</FormLabel>
-                    <Picker
-                        selectedValue={priceOption}
-                        onValueChange={this.onUpdatePriceOption}
-                    >
-                        {this.priceOptions()}
-                    </Picker>
-
                     <FormLabel>{accessibility}</FormLabel>
                     <Picker
                         selectedValue={accessibilityOption}
                         onValueChange={this.onUpdateAccessibilityOption}
                     >
                         {this.accessibilityOptions()}
+                    </Picker>
+
+                    <FormLabel>{price}</FormLabel>
+                    <Picker
+                        selectedValue={priceOption}
+                        onValueChange={this.onUpdatePriceOption}
+                    >
+                        {this.priceOptions()}
                     </Picker>
 
                     <FormLabel>{facilities}</FormLabel>

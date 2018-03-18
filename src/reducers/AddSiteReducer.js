@@ -16,7 +16,8 @@ import {
     ADD_SITE_SUCCESS,
     ADD_SITE_FAILURE,
     INITIALIZE_MAP,
-    SITE_DETAIL_CHECKBOX_UPDATED
+    SITE_DETAIL_CHECKBOX_UPDATED,
+    FACEBOOK_LOGOUT_COMPLETE
 } from '../actions/types';
 
 import {campsite, reducerAlerts} from '../locale.en';
@@ -150,6 +151,9 @@ export default (state = INITIAL_STATE, action) => {
 
         case INITIALIZE_MAP:
             return {...state};
+
+        case FACEBOOK_LOGOUT_COMPLETE:
+            return INITIAL_STATE;
 
         default:
             return state;
