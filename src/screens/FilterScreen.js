@@ -13,7 +13,7 @@ import {map, navKeys} from '../constants';
 import {campsite, more_screen, reducerAlerts} from '../locale.en';
 import {campsiteIcon, grey} from "../styles";
 
-const {campsite_form: {accessibility, facilities, price, features, accessibility_options, facilities_options, price_options, features_options, reset}} = campsite;
+const {campsite_form: {accessibility, facilities, price, features, accessibility_options, facilities_options, price_options, features_options, reset, filter}} = campsite;
 
 
 const ACCESSIBILITY = [
@@ -111,10 +111,11 @@ class FilterScreen extends Component {
 
         return (
             <View style={headerStyle}>
-                <Text style={headerTextStyle}>
-                    {section.title}
-
-                </Text>
+                <View style={headerTextStyle}>
+                    <Text>
+                        {section.title}
+                    </Text>
+                </View>
                 <Icon type='entypo' name={isActive ? 'chevron-down' : 'chevron-up'} size={25} color={campsiteIcon}/>
             </View>
         );
@@ -137,9 +138,12 @@ class FilterScreen extends Component {
     };
 
     renderCheckboxes = (checkboxObject) => {
+        const {checkBoxRowStyle} = styles;
+
         return _.map(checkboxObject, (value, key) => {
             return (
                 <CheckBox
+                    containerStyle={checkBoxRowStyle}
                     key={key}
                     title={value}
                     checked={this.renderCheckedState(key)}
@@ -162,12 +166,12 @@ class FilterScreen extends Component {
 
             return (
                 <View style={toggleContainerStyle}>
-                    <Text>Exactly These</Text>
+                    <Text>{filter.exactly_these}</Text>
                     <Switch
                         onValueChange={() => this.onFilterScrutinyToggleChange({filterToggleKey: lowercaseTitle})}
                         value={filterResultsScrutinyLoose[lowercaseTitle]}
                     />
-                    <Text>Some of These</Text>
+                    <Text>{filter.any_of_these}</Text>
                 </View>
             )
         }
@@ -186,11 +190,15 @@ class FilterScreen extends Component {
 
     render() {
         const {filterCriteriaKeys} = this.props;
-        const {mainContainerStyle, accordionFilterStyle} = styles;
+        const {mainContainerStyle, accordionFilterStyle, topSpaceStyle, bottomSpaceStyle} = styles;
         const collapsedState = filterCriteriaKeys.accessibility.length > 0 || filterCriteriaKeys.facilities.length > 0 || filterCriteriaKeys.features.length > 0 || filterCriteriaKeys.price.length > 0 ? 0 : -1;
 
         return (
             <ScrollView style={mainContainerStyle}>
+                <View style={topSpaceStyle}>
+
+                </View>
+
                 <Accordion
                     underlayColor={'#00000000'}
                     initiallyActiveSection={collapsedState}
@@ -227,33 +235,52 @@ class FilterScreen extends Component {
                     renderContent={this.renderContent}
                 />
 
+                <View style={bottomSpaceStyle}>
+
+                </View>
+
             </ScrollView>
         );
     }
 }
 
 const styles = StyleSheet.create({
+    topSpaceStyle: {
+        marginBottom: 30
+    },
+    bottomSpaceStyle: {
+        marginTop: 50
+    },
     mainContainerStyle: {
-        margin: 30
     },
     accordionFilterStyle: {},
     headerStyle: {
-        height: 30,
-        marginTop: 30,
+        height: 50,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingRight: 30
+        alignContent: 'center',
+        paddingLeft: 50,
+        paddingRight: 30,
+        backgroundColor: 'white'
     },
     toggleContainerStyle: {
+        marginTop: 20,
+        marginBottom: 10,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignContent: 'center'
     },
-    headerTextStyle: {},
+    headerTextStyle: {
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     contentStyle: {},
-    contentTextStyle: {}
+    contentTextStyle: {},
+    checkBoxRowStyle: {
+        margin: 0
+    }
 });
 
 function mapStateToProps(state) {

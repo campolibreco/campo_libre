@@ -167,9 +167,12 @@ class AddSiteFormScreen extends Component {
     };
 
     renderCheckboxes = (checkboxObject) => {
+        const {addSiteCheckboxRowStyle} = styles;
+
         return _.map(checkboxObject, (value, key) => {
             return (
                 <CheckBox
+                    containerStyle={addSiteCheckboxRowStyle}
                     key={key}
                     title={value}
                     checked={this.renderCheckedState(key)}
@@ -391,6 +394,9 @@ const styles = {
         paddingRight: 20,
         flexDirection: 'row',
         justifyContent: 'space-between'
+    },
+    addSiteCheckboxRowStyle: {
+        margin: 0
     }
 
 };

@@ -194,7 +194,7 @@ export default (state = INITIAL_STATE, action) => {
         case FILTER_CRITERIA_RESET:
             const filterResetSites = filterSites(state, INITIAL_STATE.filterCriteriaKeys);
 
-            return {...state, filterCriteriaKeys: INITIAL_STATE.filterCriteriaKeys, displaySites: filterResetSites};
+            return {...state, filterCriteriaKeys: INITIAL_STATE.filterCriteriaKeys, filterResultsScrutinyLoose: INITIAL_STATE.filterResultsScrutinyLoose, displaySites: filterResetSites};
 
         case FILTER_TOGGLE_LOGIC_UPDATED:
             const {filterToggleKey} = payload;
