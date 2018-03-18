@@ -104,19 +104,13 @@ class AddSiteFormScreen extends Component {
 
     accessibilityOptions() {
         return Object.keys(accessibility_options).map((key) => {
-            return <Picker.Item key={key} label={accessibility_options[key]} value={accessibility_options[key]}/>;
-        })
-    }
-
-    facilitiesOptions() {
-        return Object.keys(facilities_options).map((key) => {
-            return <Picker.Item key={key} label={facilities_options[key]} value={facilities_options[key]}/>;
+            return <Picker.Item key={key} label={accessibility_options[key]} value={key}/>;
         })
     }
 
     priceOptions() {
         return Object.keys(price_options).map((key) => {
-            return <Picker.Item key={key} label={price_options[key]} value={price_options[key]}/>;
+            return <Picker.Item key={key} label={price_options[key]} value={key}/>;
         })
     }
 
