@@ -1,8 +1,6 @@
 import _ from 'lodash';
 
 import {
-    OPEN_SITE_UPLOAD_MODAL,
-    CLOSE_SITE_UPLOAD_MODAL,
     LATITUDE_TEXT_UPDATED,
     LONGITUDE_TEXT_UPDATED,
     SITE_TITLE_TEXT_CHANGED,
@@ -16,15 +14,16 @@ import {
     CURRENT_LOCATION_UPDATED,
     CHECK_IF_SITE_IS_READY,
     ADD_SITE_SUCCESS,
-    ADD_SITE_FAILURE, INITIALIZE_MAP
+    ADD_SITE_FAILURE,
+    INITIALIZE_MAP,
+    SITE_DETAIL_CHECKBOX_UPDATED
 } from '../actions/types';
 
 import {campsite, reducerAlerts} from '../locale.en';
 
-const {campsite_form: {accessibility_options, facilities_options, price_options}} = campsite;
+const {campsite_form: {accessibility_options, facilities_options, price_options, features_options}} = campsite;
 
 const INITIAL_STATE = {
-    addSiteModalVisible: false,
     latitudeText: '',
     readyLatitude: 0,
     longitudeText: '',
@@ -34,30 +33,45 @@ const INITIAL_STATE = {
     siteDirectionsText: '',
     siteNearestTownText: '',
     accessibilityOption: accessibility_options.paved_road,
-    facilitiesOption: facilities_options.full_service,
     priceOption: price_options.free,
     siteReadyForUpload: false,
-    sitesShouldUpdate: false
+    sitesShouldUpdate: false,
+    siteDetailCheckboxesKeys: {facilities: [], features: []}
+};
+
+const updateSiteDetailCheckboxesKeys = ({siteDetailCheckboxesKeys}, siteDetailCheckboxKey) => {
+    let siteDetailCheckboxesSubKey = null;
+
+    if (_.includes(_.keys(features_options), siteDetailCheckboxKey)) {
+        siteDetailCheckboxesSubKey = 'features';
+    } else if (_.includes(_.keys(facilities_options), siteDetailCheckboxKey)) {
+        siteDetailCheckboxesSubKey = 'facilities';
+    }
+
+    const keyIsAlreadyInList = _.includes(siteDetailCheckboxesKeys[siteDetailCheckboxesSubKey], siteDetailCheckboxKey);
+    let updatedSiteDetailCheckboxesKeyList = _.cloneDeep(siteDetailCheckboxesKeys);
+
+    if (keyIsAlreadyInList) {
+        updatedSiteDetailCheckboxesKeyList[siteDetailCheckboxesSubKey] = _.reject(siteDetailCheckboxesKeys[siteDetailCheckboxesSubKey], existingSiteDetailCheckboxKey => existingSiteDetailCheckboxKey === siteDetailCheckboxKey);
+    } else {
+        updatedSiteDetailCheckboxesKeyList[siteDetailCheckboxesSubKey] = _.concat(siteDetailCheckboxesKeys[siteDetailCheckboxesSubKey], siteDetailCheckboxKey);
+    }
+
+    return updatedSiteDetailCheckboxesKeyList;
 };
 
 const removeNonNumbers = (text) => {
     return text.replace(/[^0-9.-]/g, '');
 };
 
-const siteIsReadyForUpload = ({latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, priceOption}) => {
-    return latitudeText && longitudeText && siteTitleText && siteDescriptionText && siteDirectionsText && siteNearestTownText && accessibilityOption && facilitiesOption && priceOption;
+const siteIsReadyForUpload = ({latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, siteDetailCheckboxesKeys, priceOption}) => {
+    return latitudeText && longitudeText && siteTitleText && siteDescriptionText && siteDirectionsText && siteNearestTownText && accessibilityOption && priceOption && siteDetailCheckboxesKeys.facilities.length > 0 && siteDetailCheckboxesKeys.features.length > 0;
 };
 
 export default (state = INITIAL_STATE, action) => {
     const {type, payload} = action;
 
     switch (type) {
-
-        case OPEN_SITE_UPLOAD_MODAL:
-            return {...state, addSiteModalVisible: true};
-
-        case CLOSE_SITE_UPLOAD_MODAL:
-            return {...state, addSiteModalVisible: false};
 
         case LATITUDE_TEXT_UPDATED:
             const {latitudeText} = payload;
@@ -102,7 +116,7 @@ export default (state = INITIAL_STATE, action) => {
             return {...state, priceOption};
 
         case ADD_SITE_FIELDS_RESET:
-            return {...INITIAL_STATE, addSiteModalVisible: true};
+            return {...INITIAL_STATE};
 
         case CURRENT_LOCATION_UPDATED:
             const {currentLocation: {longitude, latitude}} = payload;
@@ -117,6 +131,12 @@ export default (state = INITIAL_STATE, action) => {
                 readyLongitude: longitude
             };
 
+        case SITE_DETAIL_CHECKBOX_UPDATED:
+            const {siteDetailCheckboxKey} = payload;
+            const updatedSiteDetailCheckboxesKeys = updateSiteDetailCheckboxesKeys(state, siteDetailCheckboxKey);
+
+            return {...state, siteDetailCheckboxesKeys: updatedSiteDetailCheckboxesKeys};
+
         case CHECK_IF_SITE_IS_READY:
             const siteReadyForUpload = siteIsReadyForUpload(state);
 
@@ -126,10 +146,10 @@ export default (state = INITIAL_STATE, action) => {
             return {...INITIAL_STATE, sitesShouldUpdate: true};
 
         case ADD_SITE_FAILURE:
-            return {...state, addSiteModalVisible: false};
+            return {...state};
 
         case INITIALIZE_MAP:
-            return {...state, sitesShouldUpdate: false};
+            return {...state};
 
         default:
             return state;

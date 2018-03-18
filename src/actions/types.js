@@ -11,8 +11,6 @@ export const MAP_NOT_READY = 'map_not_ready';
 export const MAP_REGION_CHANGE = 'map_region_change';
 export const VIEW_STYLE_UPDATE = 'view_style_update';
 
-export const OPEN_SITE_UPLOAD_MODAL = 'open_site_upload_modal';
-export const CLOSE_SITE_UPLOAD_MODAL = 'close_site_upload_modal';
 export const LATITUDE_TEXT_UPDATED = 'latitude_text_updated';
 export const LONGITUDE_TEXT_UPDATED = 'longitude_text_updated';
 export const SITE_TITLE_TEXT_CHANGED = 'site_title_text_changed';
@@ -27,6 +25,7 @@ export const CURRENT_LOCATION_UPDATED = 'current_location_updated';
 export const ADD_SITE_SUCCESS = 'add_site_success';
 export const ADD_SITE_FAILURE = 'add_site_failure';
 export const CHECK_IF_SITE_IS_READY = 'check_if_site_is_ready';
+export const SITE_DETAIL_CHECKBOX_UPDATED = 'site_detail_checkbox_updated';
 
 export const FILTER_CRITERIA_UPDATED = 'filter_criteria_updated';
 

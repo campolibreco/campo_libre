@@ -2,8 +2,6 @@ import firebase from '@firebase/app';
 import '@firebase/firestore'
 
 import {
-    OPEN_SITE_UPLOAD_MODAL,
-    CLOSE_SITE_UPLOAD_MODAL,
     LATITUDE_TEXT_UPDATED,
     LONGITUDE_TEXT_UPDATED,
     SITE_TITLE_TEXT_CHANGED,
@@ -16,20 +14,11 @@ import {
     ADD_SITE_FIELDS_RESET,
     ADD_SITE_SUCCESS,
     ADD_SITE_FAILURE,
-    CHECK_IF_SITE_IS_READY
+    CHECK_IF_SITE_IS_READY,
+    SITE_DETAIL_CHECKBOX_UPDATED
 } from './types';
 
-export const openSiteUploadModal = () => {
-    return {
-        type: OPEN_SITE_UPLOAD_MODAL
-    }
-};
-
-export const closeSiteUploadModal = () => {
-    return {
-        type: CLOSE_SITE_UPLOAD_MODAL
-    }
-};
+import {navKeys} from '../constants';
 
 export const updateLatitudeText = ({latitudeText}) => {
     return {
@@ -106,8 +95,15 @@ export const checkIfSiteIsReadyForUpload = () => {
     }
 };
 
+export const siteDetailCheckboxWasClicked = ({siteDetailCheckboxKey}) => {
+    return{
+        type: SITE_DETAIL_CHECKBOX_UPDATED,
+        payload: {siteDetailCheckboxKey}
+    }
+};
 
-export const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, price, coordinate}) => {
+
+export const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate}, navigate) => {
     const {longitude, latitude} = coordinate;
     const uniqueTitle = `${title}${longitude}${latitude}`;
 
@@ -120,6 +116,7 @@ export const attemptToUploadSite = ({title, description, directions, nearestTown
                 nearestTown,
                 accessibility,
                 facilities,
+                features,
                 price,
                 coordinate
             })
@@ -127,12 +124,16 @@ export const attemptToUploadSite = ({title, description, directions, nearestTown
                 dispatch({
                     type: ADD_SITE_SUCCESS
                 });
+
+                navigate(navKeys.ADD_SITE);
             })
             .catch(error => {
                 dispatch({
                     type: ADD_SITE_FAILURE,
                     payload: {error}
                 });
+
+                navigate(navKeys.ADD_SITE);
             });
 
     }

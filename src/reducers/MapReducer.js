@@ -56,7 +56,7 @@ const INITIAL_STATE = {
     viewStyle: map.SearchOptions.MAP,
     sites: [],
     displaySites: [],
-    filterCriteriaKeys: {accessibility: [], facilities: [], price: []}
+    filterCriteriaKeys: {accessibility: [], facilities: [], price: [], features: []}
 };
 
 const updateFilterKeys = ({filterCriteriaKeys}, filterKey) => {

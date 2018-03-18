@@ -12,9 +12,10 @@ export const login = {
 
 export const campsite = {
     nav_header: "Share a site, Get a site",
-    site_description: "Looking for some secret sites? Want to find a hidden spot? Upload a campsite, and if it's approved, we'll unlock two secret sites that are only available to our contributing members.",
+    site_description: "Your submitted sites will go here. Why don't you give it a try by submitting a site above?",
     upload: "Upload Campsite",
     campsite_form: {
+        reset: 'Reset',
         latitude: 'Latitude',
         latitude_placeholder: 'Add latitude',
         longitude: 'Longitude',
@@ -33,23 +34,37 @@ export const campsite = {
         accessibility: 'Accessibility',
         facilities: 'Facilities',
         price: 'Price',
+        features: 'Features',
         price_options: {
             free: 'Free',
             paid: 'Paid',
+            paid_reservable: 'Paid & Reservable',
             permit: 'Permit'
         },
         facilities_options: {
-            full_service: 'Full Service',
-            some_facilities: 'Some',
-            no_facilities: 'None'
+            restrooms: 'Restrooms',
+            potable_water: 'Potable Water',
+            showers: 'Showers',
+            metal_firepit: 'Metal Fire Pit',
+            tables: 'Tables',
+            none: 'None'
         },
         accessibility_options: {
             paved_road: "Paved Road",
             dirt_road: "Dirt Road",
             uneven_terrain: "Uneven Terrain",
-            fourbyfour: "4x4(recommended)",
-            fourbyfour_clearence: "4X4 Drive High Clearance",
+            fourbyfour: "4x4 Recommended",
+            fourbyfour_clearence: "4X4 Required",
             hike_access: "Hike Access"
+        },
+        features_options: {
+            evergreens: 'Evergreens',
+            color_changing_trees: 'Aspen/Color-Changing Trees',
+            lake_view: 'Lake View',
+            river_view: 'River/Creek View',
+            secluded: 'Secluded',
+            mountain_views: 'Mountain Views',
+            easy_access: 'Easy Access'
         }
     }
 };
