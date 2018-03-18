@@ -15,7 +15,7 @@ import {
 import {map} from "../constants";
 import {campsite} from '../locale.en';
 
-const {campsite_form: {accessibility_options, facilities_options, price_options}} = campsite;
+const {campsite_form: {accessibility_options, facilities_options, features_options, price_options}} = campsite;
 
 const sampleSiteMarkers = [
     {
@@ -77,6 +77,8 @@ const updateFilterKeys = ({filterCriteriaKeys}, filterKey) => {
         filterCriteriaSubKey = 'accessibility';
     } else if (_.includes(_.keys(facilities_options), filterKey)) {
         filterCriteriaSubKey = 'facilities';
+    } else if (_.includes(_.keys(features_options), filterKey)) {
+        filterCriteriaSubKey = 'features';
     } else if (_.includes(_.keys(price_options), filterKey)) {
         filterCriteriaSubKey = 'price';
     }
@@ -93,39 +95,59 @@ const updateFilterKeys = ({filterCriteriaKeys}, filterKey) => {
     return updatedFilterKeyList;
 };
 
-const filterSites = ({sites}, updatedFilterKeys) => {
-    if (updatedFilterKeys.accessibility.length === 0 && updatedFilterKeys.facilities.length === 0 && updatedFilterKeys.price.length === 0) {
+const filterSites = ({sites, filterResultsScrutinyLoose}, updatedFilterKeys) => {
+    if (updatedFilterKeys.accessibility.length === 0 && updatedFilterKeys.facilities.length === 0 && updatedFilterKeys.features.length === 0 && updatedFilterKeys.price.length === 0) {
         return sites;
     }
 
     const filteredSites = _.filter(sites, site => {
-        const {accessibility, price, facilities} = site;
+        const {accessibility, price, facilities, features} = site;
         let accessibilityMatch = false;
         let facilitiesMatch = false;
+        let featuresMatch = false;
         let priceMatch = false;
 
         if (updatedFilterKeys.accessibility.length === 0) {
             accessibilityMatch = true;
         } else {
-            const accessibilityFullTextArray = _.map(updatedFilterKeys.accessibility, filterKey => accessibility_options[filterKey]);
-            accessibilityMatch = _.includes(accessibilityFullTextArray, accessibility);
+            accessibilityMatch = _.includes(updatedFilterKeys.accessibility, accessibility);
         }
 
         if (updatedFilterKeys.facilities.length === 0) {
             facilitiesMatch = true;
         } else {
-            const facilitiesFullTextArray = _.map(updatedFilterKeys.facilities, filterKey => facilities_options[filterKey]);
-            facilitiesMatch = _.includes(facilitiesFullTextArray, facilities);
+            if (filterResultsScrutinyLoose.facilities) {
+                facilitiesMatch = _.some(updatedFilterKeys.facilities, facilityFromFilterList => {
+                    return _.includes(facilities, facilityFromFilterList);
+                });
+            } else {
+                facilitiesMatch = _.every(updatedFilterKeys.facilities, facilityFromFilterList => {
+                    return _.includes(facilities, facilityFromFilterList);
+                });
+            }
+        }
+
+        if (updatedFilterKeys.features.length === 0) {
+            featuresMatch = true;
+        } else {
+            if (filterResultsScrutinyLoose.features) {
+                featuresMatch = _.some(updatedFilterKeys.features, featureFromFilterList => {
+                    return _.includes(features, featureFromFilterList);
+                });
+            } else {
+                featuresMatch = _.every(updatedFilterKeys.features, featureFromFilterList => {
+                    return _.includes(features, featureFromFilterList);
+                });
+            }
         }
 
         if (updatedFilterKeys.price.length === 0) {
             priceMatch = true;
         } else {
-            const pricesFullTextArray = _.map(updatedFilterKeys.price, filterKey => price_options[filterKey]);
-            priceMatch = _.includes(pricesFullTextArray, price);
+            priceMatch = _.includes(updatedFilterKeys.price, price);
         }
 
-        return accessibilityMatch && facilitiesMatch && priceMatch;
+        return accessibilityMatch && facilitiesMatch && priceMatch && featuresMatch;
     });
 
     return filteredSites;
@@ -177,8 +199,9 @@ export default (state = INITIAL_STATE, action) => {
         case FILTER_TOGGLE_LOGIC_UPDATED:
             const {filterToggleKey} = payload;
             const updatedFilterResultsScrutinyLooseObject = updateFilterResultsScrutiny(state, filterToggleKey);
+            const newlyFiteredSitesWithNewToggleLogic = filterSites({sites: state.sites, filterResultsScrutinyLoose: updatedFilterResultsScrutinyLooseObject}, state.filterCriteriaKeys);
 
-            return {...state, filterResultsScrutinyLoose: updatedFilterResultsScrutinyLooseObject};
+            return {...state, filterResultsScrutinyLoose: updatedFilterResultsScrutinyLooseObject, displaySites: newlyFiteredSitesWithNewToggleLogic};
 
         default:
             return state;

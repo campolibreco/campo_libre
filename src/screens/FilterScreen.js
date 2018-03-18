@@ -187,7 +187,7 @@ class FilterScreen extends Component {
     render() {
         const {filterCriteriaKeys} = this.props;
         const {mainContainerStyle, accordionFilterStyle} = styles;
-        const collapsedState = filterCriteriaKeys.accessibility.length > 0 || filterCriteriaKeys.facilities.length > 0 || filterCriteriaKeys.price.length > 0 ? 0 : -1;
+        const collapsedState = filterCriteriaKeys.accessibility.length > 0 || filterCriteriaKeys.facilities.length > 0 || filterCriteriaKeys.features.length > 0 || filterCriteriaKeys.price.length > 0 ? 0 : -1;
 
         return (
             <ScrollView style={mainContainerStyle}>
