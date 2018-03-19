@@ -11,6 +11,7 @@ import SearchList from '../components/SearchList';
 import SearchMap from '../components/SearchMap';
 
 import {initializeMap, updateViewStyle, mapHasLoaded, updateRegion} from "../actions";
+import { badgeGreen, limeGreenTitle, linkColorBlue, blueGreenNav } from '../styles/index';
 
 import {map, navKeys} from '../constants';
 
@@ -58,7 +59,7 @@ class SearchScreen extends Component {
                     title={preparedName}
                     onPress={toggleButton}
                     backgroundColor="rgba(0,0,0,0)"
-                    color="rgba(0,122,255,1)"
+                    color={linkColorBlue}
                 />
             );
         } else if (Platform.OS === 'android') {
@@ -73,7 +74,7 @@ class SearchScreen extends Component {
                     title="Filter"
                     onPress={() => navigate(navKeys.FILTER)}
                     backgroundColor="rgba(0,0,0,0)"
-                    color="rgba(0,122,255,1)"
+                    color={linkColorBlue}
                 />
             );
         } else if (Platform.OS === 'android') {
@@ -87,6 +88,12 @@ class SearchScreen extends Component {
         return {
             title: 'Search',
             headerTitle: 'Find a Site',
+            headerTitleStyle: {
+              color:'white'
+             },
+             headerStyle: {
+              backgroundColor: blueGreenNav
+            },
             headerLeft: SearchScreen.renderLeftNavButton(params),
             headerRight: SearchScreen.renderRightNavButton(navigate),
             tabBarIcon: ({focused, tintColor}) => (

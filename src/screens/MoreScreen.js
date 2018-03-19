@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {Icon, Button, Card} from 'react-native-elements';
 
 import {logUserOutOfFacebook} from '../actions';
+import { badgeGreen, limeGreenTitle, linkColorBlue } from '../styles/index';
 
 import {more_screen} from '../locale.en';
 import {navKeys} from '../constants';
@@ -27,7 +28,7 @@ class MoreScreen extends Component {
                     title={more_screen.right_nav}
                     onPress={onLogout}
                     backgroundColor="rgba(0,0,0,0)"
-                    color="rgba(0,122,255,1)"
+                    color={linkColorBlue}
                 />
             );
         } else if (Platform.OS === 'android') {
@@ -42,6 +43,12 @@ class MoreScreen extends Component {
             title: 'More',
             headerTitle: 'More Options',
             headerLeft: null,
+            headerTitleStyle: {
+              color:'white'
+             },
+             headerStyle: {
+              backgroundColor: badgeGreen
+             },
             headerRight: MoreScreen.renderRightNavButton(params),
             tabBarIcon: ({focused, tintColor}) => (
                 <Icon type='ionicon' name={focused ? 'ios-more' : 'ios-more-outline'} size={25} color={tintColor}/>)

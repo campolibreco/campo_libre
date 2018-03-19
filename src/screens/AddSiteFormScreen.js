@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import _ from 'lodash';
 
 import {Button, FormLabel, FormInput, Input, Icon, Overlay, Text, CheckBox} from 'react-native-elements';
-
+import { badgeGreen, limeGreenTitle, linkColorBlue, blueGreenNav } from '../styles/index';
 import {
     updateLatitudeText,
     updateLongitudeText,
@@ -74,7 +74,7 @@ class AddSiteFormScreen extends Component {
                     title={reset}
                     onPress={onClickReset}
                     backgroundColor="rgba(0,0,0,0)"
-                    color="rgba(0,122,255,1)"
+                    color={linkColorBlue}
                 />
             );
         } else if (Platform.OS === 'android') {
@@ -88,6 +88,12 @@ class AddSiteFormScreen extends Component {
         return {
             title: add_site,
             headerTitle: add_a_campsite,
+            headerTitleStyle: {
+              color:'white'
+             },
+             headerStyle: {
+              backgroundColor: blueGreenNav
+            },
             headerRight: AddSiteFormScreen.renderRightNavButton(params),
             tabBarIcon: ({focused, tintColor}) => (
                 <Icon type='material-community' name={focused ? 'tent' : 'tent'} size={25} color={tintColor}/>)
