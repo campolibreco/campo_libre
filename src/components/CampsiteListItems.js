@@ -67,43 +67,7 @@ const CampsiteListItems = ({sites}) => {
 
     )
 }
-const styles = StyleSheet.create({
-  IconContainer:{
-    flexDirection:'row',
-    paddingLeft:10
-  },
-  badgeWrapperStyle:{
-    width:'50%',
-     marginLeft:10
-  },
-  badgeContainerStyle:{
-     backgroundColor: badgeGreen
-  },
-  siteAvatarStyle:{
-    height:'100%',
-    width:'100%'
-  },
-  siteAvatarContainerStyle:{
-     height:120,
-     width:'30%'
-   },
-   nearestTownStyle:{
-       color: 'white'
-    },
-    subtitleView: {
-    flexDirection: 'row',
-    paddingLeft: 10,
-    paddingTop: 5
-    },
-    titleView: {
-     fontSize:17,
-     fontWeight: '600',
-     color:limeGreenTitle,
-     flexDirection: 'row',
-     paddingLeft: 10,
-     paddingTop: 5
-    },
-});
+
 
 
 export default CampsiteListItems

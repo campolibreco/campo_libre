@@ -3,7 +3,7 @@ import {TouchableOpacity, View, Platform} from 'react-native';
 import {connect} from 'react-redux';
 
 import {Icon, Overlay, Text, Card} from 'react-native-elements';
-
+import { badgeGreen, limeGreenTitle, linkColorBlue, blueGreenNav } from '../styles/index';
 import {campsite} from '../locale.en';
 
 const {site_description} = campsite;
@@ -22,7 +22,7 @@ class AddSiteScreen extends Component {
                     <Icon type='entypo'
                           name='add-to-list'
                           size={25}
-                          color="rgba(0,122,255,1)"
+                          color={linkColorBlue}
 
                     />
                 </TouchableOpacity>
@@ -38,6 +38,12 @@ class AddSiteScreen extends Component {
         return {
             title: 'Add a Site',
             headerTitle: 'Your Submitted Sites',
+            headerTitleStyle: {
+              color:'white'
+             },
+             headerStyle: {
+              backgroundColor: blueGreenNav
+             },
             headerLeft: null,
             headerRight: AddSiteScreen.renderRightNavButton(navigate),
             tabBarIcon: ({focused, tintColor}) => (
