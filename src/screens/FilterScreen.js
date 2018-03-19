@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, ScrollView, View, StyleSheet, Platform} from 'react-native';
+import {Text, ScrollView, View, StyleSheet, Platform, Switch} from 'react-native';
 import {connect} from "react-redux";
 
 import _ from 'lodash';
@@ -7,13 +7,13 @@ import _ from 'lodash';
 import {CheckBox, Button, Icon} from 'react-native-elements';
 import Accordion from 'react-native-collapsible/Accordion';
 
-import {checkboxWasClicked} from "../actions";
+import {checkboxWasClicked, resetAllFilters, filterToggleLogicUpdated} from "../actions";
 
-import {navKeys} from '../constants';
+import {map, navKeys} from '../constants';
 import {campsite, more_screen, reducerAlerts} from '../locale.en';
 import {campsiteIcon, grey} from "../styles";
 
-const {campsite_form: {accessibility, facilities, price, accessibility_options, facilities_options, price_options}} = campsite;
+const {campsite_form: {accessibility, facilities, price, features, accessibility_options, facilities_options, price_options, features_options, reset, filter}} = campsite;
 
 
 const ACCESSIBILITY = [
@@ -30,6 +30,13 @@ const FACILITIES = [
     }
 ];
 
+const FEATURES = [
+    {
+        title: features,
+        content: features_options
+    }
+];
+
 const PRICE = [
     {
         title: price,
@@ -42,7 +49,7 @@ class FilterScreen extends Component {
     componentWillMount() {
         const {displaySites} = this.props;
 
-        this.props.navigation.setParams({siteCount: displaySites.length});
+        this.props.navigation.setParams({siteCount: displaySites.length, onClickReset: this.onClickReset});
     }
 
     componentWillReceiveProps(nextProps) {
@@ -55,7 +62,11 @@ class FilterScreen extends Component {
         }
     }
 
-    static renderRightNavButton = (navigate, {siteCount}) => {
+    onClickReset = () => {
+        this.props.resetAllFilters();
+    };
+
+    static renderHeaderTitleButton = (navigate, {siteCount}) => {
         if (Platform.OS === 'ios') {
             return (
                 <Button
@@ -70,10 +81,26 @@ class FilterScreen extends Component {
         }
     };
 
+    static renderRightNavButton = (navigate, {onClickReset}) => {
+        if (Platform.OS === 'ios') {
+            return (
+                <Button
+                    title={reset}
+                    onPress={onClickReset}
+                    backgroundColor="rgba(0,0,0,0)"
+                    color="rgba(0,122,255,1)"
+                />
+            );
+        } else if (Platform.OS === 'android') {
+            // android-specific code for navigation here
+        }
+    };
+
     static navigationOptions = (props) => {
         const {navigation: {navigate, state: {params = {}}}} = props;
 
         return {
+            headerTitle: FilterScreen.renderHeaderTitleButton(navigate, params),
             headerRight: FilterScreen.renderRightNavButton(navigate, params)
         }
 
@@ -84,10 +111,11 @@ class FilterScreen extends Component {
 
         return (
             <View style={headerStyle}>
-                <Text style={headerTextStyle}>
-                    {section.title}
-
-                </Text>
+                <View style={headerTextStyle}>
+                    <Text>
+                        {section.title}
+                    </Text>
+                </View>
                 <Icon type='entypo' name={isActive ? 'chevron-down' : 'chevron-up'} size={25} color={campsiteIcon}/>
             </View>
         );
@@ -110,9 +138,12 @@ class FilterScreen extends Component {
     };
 
     renderCheckboxes = (checkboxObject) => {
+        const {checkBoxRowStyle} = styles;
+
         return _.map(checkboxObject, (value, key) => {
             return (
                 <CheckBox
+                    containerStyle={checkBoxRowStyle}
                     key={key}
                     title={value}
                     checked={this.renderCheckedState(key)}
@@ -122,11 +153,36 @@ class FilterScreen extends Component {
         })
     };
 
+    onFilterScrutinyToggleChange = ({filterToggleKey}) => {
+        this.props.filterToggleLogicUpdated({filterToggleKey});
+    };
+
+    renderToggleSwitch = ({title}) => {
+        const {toggleContainerStyle} = styles;
+        const {filterResultsScrutinyLoose} = this.props;
+
+        if (title === features || title === facilities) {
+            const lowercaseTitle = _.toLower(title);
+
+            return (
+                <View style={toggleContainerStyle}>
+                    <Text>{filter.exactly_these}</Text>
+                    <Switch
+                        onValueChange={() => this.onFilterScrutinyToggleChange({filterToggleKey: lowercaseTitle})}
+                        value={filterResultsScrutinyLoose[lowercaseTitle]}
+                    />
+                    <Text>{filter.any_of_these}</Text>
+                </View>
+            )
+        }
+    };
+
     renderContent = (section) => {
         const {contentStyle} = styles;
 
         return (
             <View style={contentStyle}>
+                {this.renderToggleSwitch(section)}
                 {this.renderCheckboxes(section.content)}
             </View>
         );
@@ -134,16 +190,29 @@ class FilterScreen extends Component {
 
     render() {
         const {filterCriteriaKeys} = this.props;
-        const {mainContainerStyle, accordionFilterStyle} = styles;
-        const collapsedState = filterCriteriaKeys.accessibility.length > 0 || filterCriteriaKeys.facilities.length > 0 || filterCriteriaKeys.price.length > 0 ? 0 : -1;
+        const {mainContainerStyle, accordionFilterStyle, topSpaceStyle, bottomSpaceStyle} = styles;
+        const collapsedState = filterCriteriaKeys.accessibility.length > 0 || filterCriteriaKeys.facilities.length > 0 || filterCriteriaKeys.features.length > 0 || filterCriteriaKeys.price.length > 0 ? 0 : -1;
 
         return (
             <ScrollView style={mainContainerStyle}>
+                <View style={topSpaceStyle}>
+
+                </View>
+
                 <Accordion
                     underlayColor={'#00000000'}
                     initiallyActiveSection={collapsedState}
                     style={accordionFilterStyle}
                     sections={ACCESSIBILITY}
+                    renderHeader={this.renderHeader}
+                    renderContent={this.renderContent}
+                />
+
+                <Accordion
+                    underlayColor={'#00000000'}
+                    initiallyActiveSection={collapsedState}
+                    style={accordionFilterStyle}
+                    sections={PRICE}
                     renderHeader={this.renderHeader}
                     renderContent={this.renderContent}
                 />
@@ -161,38 +230,64 @@ class FilterScreen extends Component {
                     underlayColor={'#00000000'}
                     initiallyActiveSection={collapsedState}
                     style={accordionFilterStyle}
-                    sections={PRICE}
+                    sections={FEATURES}
                     renderHeader={this.renderHeader}
                     renderContent={this.renderContent}
                 />
+
+                <View style={bottomSpaceStyle}>
+
+                </View>
+
             </ScrollView>
         );
     }
 }
 
 const styles = StyleSheet.create({
+    topSpaceStyle: {
+        marginBottom: 30
+    },
+    bottomSpaceStyle: {
+        marginTop: 50
+    },
     mainContainerStyle: {
-        margin: 30
     },
     accordionFilterStyle: {},
     headerStyle: {
-        height: 30,
-        marginTop: 30,
+        height: 50,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingRight: 30
+        alignContent: 'center',
+        paddingLeft: 50,
+        paddingRight: 30,
+        backgroundColor: 'white'
     },
-    headerTextStyle: {},
+    toggleContainerStyle: {
+        marginTop: 20,
+        marginBottom: 10,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignContent: 'center'
+    },
+    headerTextStyle: {
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     contentStyle: {},
-    contentTextStyle: {}
+    contentTextStyle: {},
+    checkBoxRowStyle: {
+        margin: 0
+    }
 });
 
 function mapStateToProps(state) {
-    const {displaySites, filterCriteriaKeys} = state.map;
+    const {displaySites, filterCriteriaKeys, filterResultsScrutinyLoose} = state.map;
 
 
-    return {displaySites, filterCriteriaKeys};
+    return {displaySites, filterCriteriaKeys, filterResultsScrutinyLoose};
 }
 
-export default connect(mapStateToProps, {checkboxWasClicked})(FilterScreen);
+export default connect(mapStateToProps, {checkboxWasClicked, resetAllFilters, filterToggleLogicUpdated})(FilterScreen);

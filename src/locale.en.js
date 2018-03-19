@@ -65,6 +65,10 @@ export const campsite = {
             secluded: 'Secluded',
             mountain_views: 'Mountain Views',
             easy_access: 'Easy Access'
+        },
+        filter: {
+            any_of_these: 'Any of these',
+            exactly_these: 'Exactly these'
         }
     }
 };

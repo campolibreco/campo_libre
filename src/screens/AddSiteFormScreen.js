@@ -104,19 +104,13 @@ class AddSiteFormScreen extends Component {
 
     accessibilityOptions() {
         return Object.keys(accessibility_options).map((key) => {
-            return <Picker.Item key={key} label={accessibility_options[key]} value={accessibility_options[key]}/>;
-        })
-    }
-
-    facilitiesOptions() {
-        return Object.keys(facilities_options).map((key) => {
-            return <Picker.Item key={key} label={facilities_options[key]} value={facilities_options[key]}/>;
+            return <Picker.Item key={key} label={accessibility_options[key]} value={key}/>;
         })
     }
 
     priceOptions() {
         return Object.keys(price_options).map((key) => {
-            return <Picker.Item key={key} label={price_options[key]} value={price_options[key]}/>;
+            return <Picker.Item key={key} label={price_options[key]} value={key}/>;
         })
     }
 
@@ -173,9 +167,12 @@ class AddSiteFormScreen extends Component {
     };
 
     renderCheckboxes = (checkboxObject) => {
+        const {addSiteCheckboxRowStyle} = styles;
+
         return _.map(checkboxObject, (value, key) => {
             return (
                 <CheckBox
+                    containerStyle={addSiteCheckboxRowStyle}
                     key={key}
                     title={value}
                     checked={this.renderCheckedState(key)}
@@ -329,20 +326,20 @@ class AddSiteFormScreen extends Component {
                         editable={true}
                     />
 
-                    <FormLabel>{price}</FormLabel>
-                    <Picker
-                        selectedValue={priceOption}
-                        onValueChange={this.onUpdatePriceOption}
-                    >
-                        {this.priceOptions()}
-                    </Picker>
-
                     <FormLabel>{accessibility}</FormLabel>
                     <Picker
                         selectedValue={accessibilityOption}
                         onValueChange={this.onUpdateAccessibilityOption}
                     >
                         {this.accessibilityOptions()}
+                    </Picker>
+
+                    <FormLabel>{price}</FormLabel>
+                    <Picker
+                        selectedValue={priceOption}
+                        onValueChange={this.onUpdatePriceOption}
+                    >
+                        {this.priceOptions()}
                     </Picker>
 
                     <FormLabel>{facilities}</FormLabel>
@@ -397,6 +394,9 @@ const styles = {
         paddingRight: 20,
         flexDirection: 'row',
         justifyContent: 'space-between'
+    },
+    addSiteCheckboxRowStyle: {
+        margin: 0
     }
 
 };
