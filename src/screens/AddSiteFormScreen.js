@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, Picker, Platform, ScrollView, View} from 'react-native';
+import {Alert, Picker, Platform, ScrollView, View, Image} from 'react-native';
 import {connect} from 'react-redux';
 
 import _ from 'lodash';
@@ -18,6 +18,8 @@ import {
     updatePriceOption,
     resetAddScreenFields,
     promptForLocationServicesPermission,
+    promptForGalleryPermission,
+    launchPhotoGallery,
     getCurrentUserLocation,
     checkIfSiteIsReadyForUpload,
     attemptToUploadSite,
@@ -142,10 +144,6 @@ class AddSiteFormScreen extends Component {
         this.props.updateAccessibilityOption({accessibilityOption: newAccessibilityOption})
     };
 
-    onUpdateFacilitiesOption = (newFacilitiesOption) => {
-        this.props.updateFacilitiesOption({facilitiesOption: newFacilitiesOption})
-    };
-
     onUpdatePriceOption = (newPriceOption) => {
         this.props.updatePriceOption({priceOption: newPriceOption})
     };
@@ -182,6 +180,37 @@ class AddSiteFormScreen extends Component {
         })
     };
 
+    renderSiteImage = () => {
+        const {siteImageData} = this.props;
+        const {siteImageContainerStyle, siteImageStyle} = styles;
+
+        if (siteImageData) {
+            const fullURI = `data:image/png;base64,${siteImageData}`;
+            return (
+                <View style={siteImageContainerStyle}>
+                    <Image
+                        style={siteImageStyle}
+                        source={{uri: fullURI}}
+                    />
+                </View>
+            );
+        }
+    };
+
+    onClickCameraButton = () => {
+        console.log("Camera!")
+    };
+
+    onClickGalleryButton = () => {
+        const {cameraRollPermission} = this.props;
+
+        if (cameraRollPermission === GRANTED) {
+            this.props.launchPhotoGallery();
+        } else {
+            this.props.promptForGalleryPermission();
+        }
+    };
+
     onClickIAmHere = () => {
         const {locationServicesPermission} = this.props;
 
@@ -207,7 +236,8 @@ class AddSiteFormScreen extends Component {
             coordinate: {
                 longitude: this.props.readyLongitude,
                 latitude: this.props.readyLatitude
-            }
+            },
+            siteImageData: this.props.siteImageData
         };
 
         this.props.attemptToUploadSite(newSite, navigate);
@@ -239,12 +269,40 @@ class AddSiteFormScreen extends Component {
     };
 
     render() {
-        const {buttonStyle, headerTitle, largeTextInput, modalStyle, exitOrResetStyle} = styles;
+        const {buttonStyle, headerTitle, largeTextInput, modalStyle, imageRowStyle} = styles;
         const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, priceOption} = this.props;
 
         return (
             <View>
                 <ScrollView style={modalStyle}>
+                    <Text h2
+                          style={headerTitle}
+                    >
+                        {'Site Image'}
+                    </Text>
+                    {this.renderSiteImage()}
+                    <View style={imageRowStyle}>
+
+                        <Icon
+                            reverse
+                            type='font-awesome'
+                            name='camera'
+                            size={25}
+                            color={navyBlueButton}
+                            onPress={this.onClickCameraButton}
+                        />
+
+                        <Icon
+                            reverse
+                            type='font-awesome'
+                            name='photo'
+                            size={25}
+                            color={navyBlueButton}
+                            onPress={this.onClickGalleryButton}
+                        />
+
+                    </View>
+
                     <Text h2
                           style={headerTitle}
                     >
@@ -259,7 +317,6 @@ class AddSiteFormScreen extends Component {
                         icon={{name: 'bullseye', type: 'font-awesome'}}
                         title={here_now}
                     >
-                        {campsite.upload}
                     </Button>
 
                     <Text h3
@@ -384,7 +441,10 @@ const styles = {
     },
     modalStyle: {
         padding: 20,
-        paddingTop: 60
+        paddingTop: 60,
+        display: 'flex',
+        flexDirection: 'column',
+        alignContent: 'center'
     },
     lastElementStyle: {
         marginBottom: 100
@@ -397,12 +457,30 @@ const styles = {
     },
     addSiteCheckboxRowStyle: {
         margin: 0
+    },
+    siteImageContainerStyle: {
+        alignSelf: 'center',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignContent: 'center',
+        height: 300,
+        width: 300
+    },
+    siteImageStyle: {
+        flex: 1,
+        resizeMode: Image.resizeMode.contain
+    },
+    imageRowStyle: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around'
     }
 
 };
 
 function mapStateToProps(state) {
-    const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, priceOption, siteReadyForUpload, readyLatitude, readyLongitude, siteDetailCheckboxesKeys} = state.addSite;
+    const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, priceOption, siteReadyForUpload, readyLatitude, readyLongitude, siteDetailCheckboxesKeys, siteImageData} = state.addSite;
     const {locationServicesPermission, cameraPermission, cameraRollPermission} = state.permissions;
 
 
@@ -422,7 +500,8 @@ function mapStateToProps(state) {
         siteReadyForUpload,
         readyLatitude,
         readyLongitude,
-        siteDetailCheckboxesKeys
+        siteDetailCheckboxesKeys,
+        siteImageData
     };
 }
 
@@ -438,6 +517,8 @@ export default connect(mapStateToProps, {
     updatePriceOption,
     resetAddScreenFields,
     promptForLocationServicesPermission,
+    promptForGalleryPermission,
+    launchPhotoGallery,
     getCurrentUserLocation,
     checkIfSiteIsReadyForUpload,
     attemptToUploadSite,

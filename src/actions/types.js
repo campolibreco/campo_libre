@@ -35,3 +35,4 @@ export const FILTER_CRITERIA_RESET = 'filter_criteria_reset';
 export const LOCATION_SERVICES_PERMISSION_UPDATED = 'location_services_permission_updated';
 export const CAMERA_PERMISSION_UPDATED = 'camera_permission_updated';
 export const CAMERA_ROLL_PERMISSION_UPDATED = 'camera_roll_permission_updated';
+export const ADDSITE_IMAGE_UPDATED = 'addsite_image_updated';

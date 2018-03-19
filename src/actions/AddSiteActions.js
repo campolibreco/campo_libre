@@ -103,7 +103,7 @@ export const siteDetailCheckboxWasClicked = ({siteDetailCheckboxKey}) => {
 };
 
 
-export const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate}, navigate) => {
+export const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData}, navigate) => {
     const {longitude, latitude} = coordinate;
     const uniqueTitle = `${title}${longitude}${latitude}`;
 
@@ -118,7 +118,8 @@ export const attemptToUploadSite = ({title, description, directions, nearestTown
                 facilities,
                 features,
                 price,
-                coordinate
+                coordinate,
+                siteImageData
             })
             .then(() => {
                 dispatch({

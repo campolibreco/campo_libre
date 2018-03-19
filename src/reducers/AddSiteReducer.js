@@ -17,7 +17,8 @@ import {
     ADD_SITE_FAILURE,
     MAP_IS_INITIALIZING,
     SITE_DETAIL_CHECKBOX_UPDATED,
-    FACEBOOK_LOGOUT_COMPLETE
+    FACEBOOK_LOGOUT_COMPLETE,
+    ADDSITE_IMAGE_UPDATED
 } from '../actions/types';
 
 import {campsite, reducerAlerts} from '../locale.en';
@@ -30,6 +31,7 @@ const INITIAL_STATE = {
     longitudeText: '',
     readyLongitude: 0,
     siteTitleText: '',
+    siteImageData: '',
     siteDescriptionText: '',
     siteDirectionsText: '',
     siteNearestTownText: '',
@@ -131,6 +133,12 @@ export default (state = INITIAL_STATE, action) => {
                 readyLatitude: latitude,
                 readyLongitude: longitude
             };
+
+        case ADDSITE_IMAGE_UPDATED:
+            const {updatedImage} = payload;
+            const siteImageData = updatedImage.hasImage ? updatedImage.base64 : '';
+
+            return {...state, siteImageData};
 
         case SITE_DETAIL_CHECKBOX_UPDATED:
             const {siteDetailCheckboxKey} = payload;
