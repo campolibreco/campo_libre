@@ -15,12 +15,11 @@ const CampsiteListItem = ({site}) => {
     const {id, title, description, nearestTown, accessibility, siteImageData} = site;
 return(
     <ListItem
-
-                   avatar={siteImageData ? {uri:`data:image/png;base64,${siteImageData}`} : require('../../assets/starTent.jpg')}
-                  avatarContainerStyle={siteAvatarContainerStyle}
-                  avatarStyle={siteAvatarStyle}
-                  title={
-                      <View>
+            avatar={siteImageData ? {uri:`data:image/png;base64,${siteImageData}`} : require('../../assets/starTent.jpg')}
+            avatarContainerStyle={siteAvatarContainerStyle}
+            avatarStyle={siteAvatarStyle}
+            title={
+                    <View>
                          <Text style={titleView}>{title}</Text>
                          <Badge
                            wrapperStyle={badgeWrapperStyle}
@@ -57,7 +56,8 @@ return(
                                       color='orange' />
                                  </View>
                          }
-                />)
+                             />
+              )
 }
 const styles = StyleSheet.create({
   IconContainer:{
@@ -66,19 +66,19 @@ const styles = StyleSheet.create({
     paddingTop: 5
   },
   badgeWrapperStyle:{
-    width:'50%',
+     width: 100,
      marginLeft:10
   },
   badgeContainerStyle:{
      backgroundColor: blueGreenNav
   },
   siteAvatarStyle:{
-    height:'100%',
-    width:'100%'
+  flex:1,
+  width:120
   },
   siteAvatarContainerStyle:{
-     height:'100%',
-     width:'30%'
+  height: 150,
+  width:120
    },
   nearestTownStyle:{
        color: 'white'
@@ -101,7 +101,6 @@ const styles = StyleSheet.create({
       borderStyle:'solid'
     }
 });
-
 
 
 export default CampsiteListItem
