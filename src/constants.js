@@ -27,3 +27,8 @@ export const permissionResponses = {
     DENIED: 'denied',
     UNDETERMINED: 'undetermined'
 };
+
+export const imageSourceTypes = {
+    CAMERA: 'camera',
+    CAMERA_ROLL: 'camera_roll'
+};

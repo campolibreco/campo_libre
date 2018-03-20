@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import _ from 'lodash';
 
 import {Button, FormLabel, FormInput, Input, Icon, Overlay, Text, CheckBox} from 'react-native-elements';
-import { badgeGreen, limeGreenTitle, linkColorBlue, blueGreenNav } from '../styles/index';
+import {badgeGreen, limeGreenTitle, linkColorBlue, blueGreenNav} from '../styles/index';
 import {
     updateLatitudeText,
     updateLongitudeText,
@@ -20,6 +20,8 @@ import {
     promptForLocationServicesPermission,
     promptForGalleryPermission,
     launchPhotoGallery,
+    launchCamera,
+    promptForCameraPermission,
     getCurrentUserLocation,
     checkIfSiteIsReadyForUpload,
     attemptToUploadSite,
@@ -91,10 +93,10 @@ class AddSiteFormScreen extends Component {
             title: add_site,
             headerTitle: add_a_campsite,
             headerTitleStyle: {
-              color:'white'
-             },
-             headerStyle: {
-              backgroundColor: blueGreenNav
+                color: 'white'
+            },
+            headerStyle: {
+                backgroundColor: blueGreenNav
             },
             headerRight: AddSiteFormScreen.renderRightNavButton(params),
             tabBarIcon: ({focused, tintColor}) => (
@@ -204,27 +206,15 @@ class AddSiteFormScreen extends Component {
     };
 
     onClickCameraButton = () => {
-        console.log("Camera!")
+        this.props.promptForCameraPermission();
     };
 
     onClickGalleryButton = () => {
-        const {cameraRollPermission} = this.props;
-
-        if (cameraRollPermission === GRANTED) {
-            this.props.launchPhotoGallery();
-        } else {
-            this.props.promptForGalleryPermission();
-        }
+        this.props.promptForGalleryPermission();
     };
 
     onClickIAmHere = () => {
-        const {locationServicesPermission} = this.props;
-
-        if (locationServicesPermission === GRANTED) {
-            this.props.getCurrentUserLocation();
-        } else {
-            this.props.promptForLocationServicesPermission();
-        }
+        this.props.promptForLocationServicesPermission();
     };
 
     onClickSubmit = () => {
@@ -525,6 +515,8 @@ export default connect(mapStateToProps, {
     promptForLocationServicesPermission,
     promptForGalleryPermission,
     launchPhotoGallery,
+    launchCamera,
+    promptForCameraPermission,
     getCurrentUserLocation,
     checkIfSiteIsReadyForUpload,
     attemptToUploadSite,

@@ -8,7 +8,7 @@ import {
     ADDSITE_IMAGE_UPDATED
 } from './types';
 
-import {permissionResponses} from '../constants';
+import {permissionResponses, imageSourceTypes} from '../constants';
 
 const {GRANTED, DENIED} = permissionResponses;
 
@@ -55,13 +55,28 @@ export const promptForLocationServicesPermission = () => {
     };
 };
 
-const getImageFromGallery = async (dispatch) => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-        allowsEditing: true,
-        aspect: [4, 4],
-        base64: true,
-        quality: 2
-    });
+const getImage = async (dispatch, imageSourceType) => {
+    let result = {cancelled: true};
+
+    if (imageSourceType === imageSourceTypes.CAMERA_ROLL) {
+        console.log("In the CAMERA_ROLL area: ",imageSourceType);
+
+        result = await ImagePicker.launchImageLibraryAsync({
+            allowsEditing: true,
+            // aspect: [4, 4],
+            base64: true,
+            quality: 0.5
+        });
+    } else if (imageSourceType === imageSourceTypes.CAMERA) {
+        console.log("In the CAMERA area: ",imageSourceType);
+
+        result = await ImagePicker.launchCameraAsync({
+            allowsEditing: true,
+            // aspect: [4, 4],
+            base64: true,
+            quality: 0.5
+        });
+    }
 
     result.hasImage = !result.cancelled;
 
@@ -73,7 +88,7 @@ const getImageFromGallery = async (dispatch) => {
 
 export const launchPhotoGallery = () => {
     return async (dispatch) => {
-        getImageFromGallery(dispatch);
+        getImage(dispatch, imageSourceTypes.CAMERA_ROLL);
     };
 };
 
@@ -83,12 +98,35 @@ export const promptForGalleryPermission = () => {
         let {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
         if (status === GRANTED) {
-            getImageFromGallery(dispatch);
+            getImage(dispatch, imageSourceTypes.CAMERA_ROLL);
         } else {
-           return dispatch({
+            return dispatch({
                 type: CAMERA_ROLL_PERMISSION_UPDATED,
                 payload: {cameraRollPermission: status}
             })
         }
     };
+};
+
+export const launchCamera = () => {
+    return async (dispatch) => {
+        getImage(dispatch, imageSourceTypes.CAMERA);
+    };
+};
+
+export const promptForCameraPermission = () => {
+
+    return async (dispatch) => {
+        let {status} = await Permissions.askAsync(Permissions.CAMERA);
+
+        if (status === GRANTED) {
+            getImage(dispatch, imageSourceTypes.CAMERA);
+        } else {
+            return dispatch({
+                type: CAMERA_PERMISSION_UPDATED,
+                payload: {cameraPermission: status}
+            })
+        }
+    };
+
 };

@@ -93,5 +93,7 @@ export const common = {
 };
 
 export const permissions = {
-    reminder_for_ls_access: 'Sorry, we need permission to access your location. Please go into Settings/Campo Libre and enable Location Services'
+    reminder_for_ls_access: 'Sorry, we need permission to access your location. Please go into Settings/Campo Libre and enable Location Services',
+    reminder_for_camera_roll_access: 'Sorry, we need permission to access your Camera Roll. Please go into Settings/Campo Libre and enable Camera Roll access',
+    reminder_for_camera_access: 'Sorry, we need permission to access your Camera. Please go into Settings/Campo Libre and enable Camera access'
 };
