@@ -74,7 +74,7 @@ class FilterScreen extends Component {
                     title={_.isUndefined(siteCount) ? '' : `${siteCount} ${results}`}
                     onPress={() => navigate(navKeys.SEARCH)}
                     backgroundColor="rgba(0,0,0,0)"
-                    color="rgba(0,122,255,1)"
+                    color={linkColorBlue}
                 />
             );
         } else if (Platform.OS === 'android') {
