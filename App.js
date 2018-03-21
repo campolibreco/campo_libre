@@ -9,6 +9,7 @@ import {AppLoading} from 'expo';
 import {FIREBASE_CONFIG} from './env';
 
 import {navKeys} from './src/constants';
+import {common} from './src/locale.en';
 
 import LoginScreen from './src/screens/LoginScreen';
 import SearchScreen from './src/screens/SearchScreen';
@@ -18,8 +19,10 @@ import AddSiteScreen from './src/screens/AddSiteScreen';
 import AddSiteFormScreen from './src/screens/AddSiteFormScreen';
 import MoreScreen from './src/screens/MoreScreen';
 import AuthScreen from "./src/screens/AuthScreen";
+import SiteDetailScreen from "./src/screens/SiteDetailScreen";
 
 import {store, persistor} from './src/store';
+import {blueGreenNav, linkColorBlue} from "./src/styles";
 
 class App extends Component {
     componentWillMount() {
@@ -31,61 +34,60 @@ class App extends Component {
 
         const MainNavigator = StackNavigator({
             [navKeys.LOGIN]: {
-                screen: LoginScreen,
-                navigationOptions: {
-                    gesturesEnabled: false,
-                }
+                screen: LoginScreen
             },
             [navKeys.AUTH]: {
-                screen: AuthScreen,
-                navigationOptions: {
-                    gesturesEnabled: false,
-                }
+                screen: AuthScreen
             },
             [navKeys.MAIN]: {
                 screen: TabNavigator({
                     [navKeys.SEARCH]: {
-                        screen: SearchScreen,
-                        navigationOptions: {
-                            gesturesEnabled: false,
-                        }
+                        screen: SearchScreen
                     },
                     [navKeys.FAVORITES]: {
-                        screen: FavoritesScreen,
-                        navigationOptions: {
-                            gesturesEnabled: false,
-                        }
+                        screen: FavoritesScreen
                     },
                     [navKeys.ADD_SITE]: {
-                        screen: AddSiteScreen,
-                        navigationOptions: {
-                            gesturesEnabled: false,
-                        }
+                        screen: AddSiteScreen
                     },
                     [navKeys.MORE]: {
-                        screen: MoreScreen,
-                        navigationOptions: {
-                            gesturesEnabled: false,
-                        }
+                        screen: MoreScreen
                     }
                 })
             },
             [navKeys.FILTER]: {
                 screen: FilterScreen,
                 navigationOptions: {
-                    tabBarVisible: false,
-                    gesturesEnabled: false,
+                    tabBarVisible: false
                 }
             },
             [navKeys.ADD_SITE_FORM]: {
                 screen: AddSiteFormScreen,
                 navigationOptions: {
-                    tabBarVisible: false,
-                    gesturesEnabled: false,
+                    tabBarVisible: false
+                }
+            },
+            [navKeys.SITE_DETAIL]: {
+                screen: SiteDetailScreen,
+                navigationOptions: {
+                    tabBarVisible: false
                 }
             }
         }, {
-            lazy: true
+            navigationOptions: {
+                gesturesEnabled: false,
+                headerTitleStyle: {
+                    color:'white'
+                },
+                headerStyle: {
+                    backgroundColor: blueGreenNav
+                },
+                headerBackTitle: common.back,
+                headerBackTitleStyle: {
+                    color: linkColorBlue
+                },
+                headerTintColor: linkColorBlue
+            }
         });
 
         return (

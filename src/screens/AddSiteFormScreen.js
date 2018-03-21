@@ -92,12 +92,6 @@ class AddSiteFormScreen extends Component {
         return {
             title: add_site,
             headerTitle: add_a_campsite,
-            headerTitleStyle: {
-                color: 'white'
-            },
-            headerStyle: {
-                backgroundColor: blueGreenNav
-            },
             headerRight: AddSiteFormScreen.renderRightNavButton(params),
             tabBarIcon: ({focused, tintColor}) => (
                 <Icon type='material-community' name={focused ? 'tent' : 'tent'} size={25} color={tintColor}/>)

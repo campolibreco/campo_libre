@@ -19,7 +19,8 @@ export const navKeys = {
     ADD_SITE: 'addSite',
     ADD_SITE_FORM: 'addSiteForm',
     MORE: 'more',
-    FILTER: 'filter'
+    FILTER: 'filter',
+    SITE_DETAIL: 'siteDetail'
 };
 
 export const permissionResponses = {

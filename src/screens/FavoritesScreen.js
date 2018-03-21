@@ -13,12 +13,6 @@ class FavoritesScreen extends Component {
         return {
             title: 'Favorites',
             headerTitle: 'Your Favorite Campsites',
-            headerTitleStyle: {
-              color:'white'
-             },
-             headerStyle: {
-              backgroundColor: blueGreenNav
-             },
             headerLeft: null,
             tabBarIcon: ({focused, tintColor }) => (<Icon type='ionicon' name={focused ? 'ios-heart' : 'ios-heart-outline'} size={25} color={tintColor} />)
         }

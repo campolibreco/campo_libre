@@ -7,38 +7,36 @@ import CampsiteListItem from './CampsiteListItem';
 // styles and language
 
 
-
-
-
 // our components - additional
 import _ from 'lodash';
 
-const SearchList = ({sites, accessibility}) => {
-
-  if(!sites){
-    return( <Text> No Sites Available </Text>)
-  }else{
-    return (
-  <ScrollView>
-     <List>
-       {
-         _.map(sites, (site, index) => {
-            return (
-        <CampsiteListItem
-        key={index}
-        site={site}
-
-
-        />
-               );
-             })
-           }
-       </List>
-     </ScrollView>
-    );
-  }
+const renderCampsiteListItemList = ({sites, getSiteDetail, navigate}) => {
+    return _.map(sites, (site, index) => {
+        return (
+            <CampsiteListItem
+                key={index}
+                site={site}
+                getSiteDetail={getSiteDetail}
+                navigate={navigate}
+            />
+        );
+    });
 };
 
+const SearchList = ({sites, getSiteDetail, navigate}) => {
+
+    if (!sites) {
+        return (<Text> No Sites Available </Text>)
+    } else {
+        return (
+            <ScrollView>
+                <List>
+                    {renderCampsiteListItemList({sites, getSiteDetail, navigate})}
+                </List>
+            </ScrollView>
+        );
+    }
+};
 
 
 export default SearchList;

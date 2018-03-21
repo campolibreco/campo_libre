@@ -7,12 +7,12 @@ import {
     INITIALIZE_MAP,
     MAP_IS_INITIALIZING,
     MAP_READY,
-    MAP_NOT_READY,
     MAP_REGION_CHANGE,
-    VIEW_STYLE_UPDATE, GUEST_TOKEN_SET
+    VIEW_STYLE_UPDATE,
+    SELECTED_SITE_UPDATE
 } from './types';
-import {navKeys, tokens} from "../constants";
 
+import {navKeys} from '../constants';
 
 export const initializeMap = ({region}) => {
 
@@ -61,5 +61,14 @@ export const updateRegion = (newRegion) => {
     return {
         type: MAP_REGION_CHANGE,
         payload: newRegion
+    }
+};
+
+export const getSiteDetail = ({selectedSite, navigate}) => {
+    navigate(navKeys.SITE_DETAIL);
+
+    return {
+        type: SELECTED_SITE_UPDATE,
+        payload: {selectedSite}
     }
 };

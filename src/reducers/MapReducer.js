@@ -8,7 +8,8 @@ import {
     FACEBOOK_LOGOUT_COMPLETE,
     FILTER_CRITERIA_UPDATED,
     FILTER_TOGGLE_LOGIC_UPDATED,
-    FILTER_CRITERIA_RESET
+    FILTER_CRITERIA_RESET,
+    SELECTED_SITE_UPDATE
 
 } from '../actions/types';
 
@@ -59,7 +60,8 @@ const INITIAL_STATE = {
     sites: [],
     displaySites: [],
     filterResultsScrutinyLoose: {facilities: true, features: true},
-    filterCriteriaKeys: {accessibility: [], facilities: [], price: [], features: []}
+    filterCriteriaKeys: {accessibility: [], facilities: [], price: [], features: []},
+    selectedSite: {}
 };
 
 const updateFilterResultsScrutiny = ({filterResultsScrutinyLoose}, filterToggleKey) => {
@@ -169,7 +171,8 @@ export default (state = INITIAL_STATE, action) => {
                 filterCriteriaKeys: state.filterCriteriaKeys,
                 displaySites: filterSites({sites}, state.filterCriteriaKeys),
                 mapLoaded: existingMapLoadedState,
-                filterResultsScrutinyLoose: state.filterResultsScrutinyLoose
+                filterResultsScrutinyLoose: state.filterResultsScrutinyLoose,
+                selectedSite: state.selectedSite
             } : INITIAL_STATE;
 
         case VIEW_STYLE_UPDATE:
@@ -202,6 +205,11 @@ export default (state = INITIAL_STATE, action) => {
             const newlyFiteredSitesWithNewToggleLogic = filterSites({sites: state.sites, filterResultsScrutinyLoose: updatedFilterResultsScrutinyLooseObject}, state.filterCriteriaKeys);
 
             return {...state, filterResultsScrutinyLoose: updatedFilterResultsScrutinyLooseObject, displaySites: newlyFiteredSitesWithNewToggleLogic};
+
+        case SELECTED_SITE_UPDATE:
+            const {selectedSite} = payload;
+
+            return {...state, selectedSite};
 
         default:
             return state;

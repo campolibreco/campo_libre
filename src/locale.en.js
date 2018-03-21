@@ -78,6 +78,25 @@ export const reducerAlerts = {
     site_upload_error: 'Sorry, there was an error uploading your site. Please try again later.'
 };
 
+export const search_screen = {
+    title: 'Search',
+    header_title: 'Find a Site',
+    filter: 'Filter'
+};
+
+export const site_detail_screen = {
+    header_title: 'Site Detail'
+};
+
+export const filter_screen = {
+    results: 'Results'
+};
+
+export const add_site_screen = {
+    title: 'Add a Site',
+    header_title: 'Your Submitted Sites'
+};
+
 export const more_screen = {
     right_nav: 'Log Out'
 };
@@ -89,7 +108,8 @@ export const submit_form = {
 
 export const common = {
     title: 'Title',
-    location: 'Location'
+    location: 'Location',
+    back: 'Back'
 };
 
 export const permissions = {

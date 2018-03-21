@@ -9,7 +9,8 @@ import {campsite} from '../locale.en';
 const {site_description} = campsite;
 
 import {navKeys} from '../constants';
-
+import {add_site_screen} from '../locale.en';
+const {title, header_title} = add_site_screen;
 
 class AddSiteScreen extends Component {
 
@@ -36,14 +37,8 @@ class AddSiteScreen extends Component {
         const {navigation: {navigate}} = props;
 
         return {
-            title: 'Add a Site',
-            headerTitle: 'Your Submitted Sites',
-            headerTitleStyle: {
-              color:'white'
-             },
-             headerStyle: {
-              backgroundColor: blueGreenNav
-             },
+            title: title,
+            headerTitle: header_title,
             headerLeft: null,
             headerRight: AddSiteScreen.renderRightNavButton(navigate),
             tabBarIcon: ({focused, tintColor}) => (

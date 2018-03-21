@@ -14,7 +14,7 @@ import {campsiteIcon} from '../styles';
 // our components - core
 // our components - additional
 
-const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites}) => {
+const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites, navigate}) => {
     const {fillScreen, spinnerContainerStyle} = styles;
 
     const newRegionIsAcceptable = (newRegion) => {

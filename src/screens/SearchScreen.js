@@ -10,10 +10,12 @@ import _ from 'lodash';
 import SearchList from '../components/SearchList';
 import SearchMap from '../components/SearchMap';
 
-import {initializeMap, updateViewStyle, mapHasLoaded, updateRegion} from "../actions";
+import {initializeMap, updateViewStyle, mapHasLoaded, updateRegion, getSiteDetail} from "../actions";
 import { badgeGreen, limeGreenTitle, linkColorBlue, blueGreenNav } from '../styles/index';
 
 import {map, navKeys} from '../constants';
+import {search_screen} from '../locale.en';
+const {title, header_title, filter} = search_screen;
 
 
 class SearchScreen extends Component {
@@ -71,7 +73,7 @@ class SearchScreen extends Component {
         if (Platform.OS === 'ios') {
             return (
                 <Button
-                    title="Filter"
+                    title={filter}
                     onPress={() => navigate(navKeys.FILTER)}
                     backgroundColor="rgba(0,0,0,0)"
                     color={linkColorBlue}
@@ -86,14 +88,8 @@ class SearchScreen extends Component {
         const {navigation: {navigate, state: {params = {}}}} = props;
 
         return {
-            title: 'Search',
-            headerTitle: 'Find a Site',
-            headerTitleStyle: {
-              color:'white'
-             },
-             headerStyle: {
-              backgroundColor: blueGreenNav
-            },
+            title: title,
+            headerTitle: header_title,
             headerLeft: SearchScreen.renderLeftNavButton(params),
             headerRight: SearchScreen.renderRightNavButton(navigate),
             tabBarIcon: ({focused, tintColor}) => (
@@ -102,7 +98,7 @@ class SearchScreen extends Component {
     };
 
     renderSearchScreen = () => {
-        const {viewStyle, lastKnownRegion, mapLoaded, displaySites} = this.props;
+        const {viewStyle, lastKnownRegion, mapLoaded, displaySites, navigation: {navigate}} = this.props;
 
         if (viewStyle === map.SearchOptions.MAP) {
             return (
@@ -111,13 +107,20 @@ class SearchScreen extends Component {
                     mapLoaded={mapLoaded}
                     updateRegion={this.props.updateRegion}
                     sites={displaySites}
+                    navigate={navigate}
+                />
+            );
+        } else if (viewStyle === map.SearchOptions.LIST) {
+            return (
+                <SearchList
+                    sites={displaySites}
+                    getSiteDetail={this.props.getSiteDetail}
+                    navigate={navigate}
                 />
             );
         } else {
             return (
-                <SearchList
-                    sites={displaySites}
-                />
+                <AppLoading/>
             );
         }
 
@@ -150,7 +153,7 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-    const {lastKnownRegion, mapLoaded, viewStyle, displaySites} = state.map;
+    const {lastKnownRegion, mapLoaded, viewStyle, displaySites, selectedSite} = state.map;
     const {token, appReady} = state.auth;
     const {sitesShouldUpdate} = state.addSite;
 
@@ -158,4 +161,4 @@ function mapStateToProps(state) {
     return {lastKnownRegion, mapLoaded, viewStyle, token, appReady, displaySites, sitesShouldUpdate};
 }
 
-export default connect(mapStateToProps, {initializeMap, updateViewStyle, mapHasLoaded, updateRegion})(SearchScreen);
+export default connect(mapStateToProps, {initializeMap, updateViewStyle, mapHasLoaded, updateRegion, getSiteDetail})(SearchScreen);

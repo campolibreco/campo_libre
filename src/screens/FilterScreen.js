@@ -10,8 +10,9 @@ import { badgeGreen, limeGreenTitle, linkColorBlue, blueGreenNav } from '../styl
 import {checkboxWasClicked, resetAllFilters, filterToggleLogicUpdated} from "../actions";
 
 import {map, navKeys} from '../constants';
-import {campsite, more_screen, reducerAlerts} from '../locale.en';
 import {campsiteIcon, grey} from "../styles";
+import {campsite, filter_screen} from '../locale.en';
+const {results} = filter_screen;
 
 const {campsite_form: {accessibility, facilities, price, features, accessibility_options, facilities_options, price_options, features_options, reset, filter}} = campsite;
 
@@ -70,7 +71,7 @@ class FilterScreen extends Component {
         if (Platform.OS === 'ios') {
             return (
                 <Button
-                    title={_.isUndefined(siteCount) ? '' : `${siteCount} Results`}
+                    title={_.isUndefined(siteCount) ? '' : `${siteCount} ${results}`}
                     onPress={() => navigate(navKeys.SEARCH)}
                     backgroundColor="rgba(0,0,0,0)"
                     color="rgba(0,122,255,1)"

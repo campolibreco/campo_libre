@@ -43,12 +43,6 @@ class MoreScreen extends Component {
             title: 'More',
             headerTitle: 'More Options',
             headerLeft: null,
-            headerTitleStyle: {
-              color:'white'
-             },
-             headerStyle: {
-              backgroundColor: badgeGreen
-             },
             headerRight: MoreScreen.renderRightNavButton(params),
             tabBarIcon: ({focused, tintColor}) => (
                 <Icon type='ionicon' name={focused ? 'ios-more' : 'ios-more-outline'} size={25} color={tintColor}/>)
