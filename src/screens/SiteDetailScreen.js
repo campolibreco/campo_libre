@@ -21,18 +21,6 @@ const {campsite_form} = campsite;
 const {location} = common;
 
 class SiteDetailScreen extends Component {
-    componentWillMount() {
-
-    }
-
-    componentDidMount() {
-
-    }
-
-    componentWillReceiveProps(nextProps) {
-
-
-    }
 
     renderFacilities = (facilities) => {
         return _.map(facilities, (facility, index) => {

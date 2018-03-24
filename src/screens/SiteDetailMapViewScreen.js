@@ -20,7 +20,6 @@ class SiteMapViewScreen extends Component {
         const {selectedSite, navigation: {setParams}} = this.props;
 
         setParams({siteTitle: selectedSite.title});
-
     }
 
     setMarkerRef = (ref) => {
