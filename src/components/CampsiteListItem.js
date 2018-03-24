@@ -3,16 +3,42 @@ import React from 'react';
 import {View, Text, StyleSheet, ScrollView, ImageBackground} from 'react-native';
 import {Card, ListItem, Button, Tile, List, Image, Badge, Icon} from 'react-native-elements';
 // 3rd party libraries - additional
+
 // styles and language
+import {featureIconDetails, facilityIconDetails} from '../constants';
 import {badgeGreen, limeGreenTitle, RoyalBlueHighlight, blueGreenNav} from '../styles/index';
 import {campsite} from '../locale.en'
 import _ from 'lodash';
 
 
+const renderIcons = ({features, facilities}) => {
+    const featureIcons = _.map(features, feature =>{
+        return(
+            <Icon
+                key={feature}
+                name={featureIconDetails[feature].name}
+                type={featureIconDetails[feature].type}
+            />
+        )
+    });
+
+    const facilityIcons = _.map(facilities, facility =>{
+       return(
+         <Icon
+             key={facility}
+             name={facilityIconDetails[facility].name}
+             type={facilityIconDetails[facility].type}
+         />
+       );
+    });
+
+    return _.concat(featureIcons, facilityIcons);
+};
+
 const CampsiteListItem = ({site, getSiteDetail, navigate}) => {
     const {textStyle, IconContainer, subtitleView, siteAvatarStyle, siteAvatarContainerStyle, titleView, nearestTownStyle, badgeWrapperStyle, badgeContainerStyle, accessibilityStyle} = styles
     const {campsite_form: {accessibility_options}} = campsite;
-    const {id, title, description, nearestTown, accessibility, siteImageData} = site;
+    const {id, title, description, nearestTown, accessibility, siteImageData, features, facilities} = site;
     return (
         <ListItem
             onPress={() => getSiteDetail({selectedSite: site, navigate})}
@@ -39,22 +65,7 @@ const CampsiteListItem = ({site, getSiteDetail, navigate}) => {
             }
             subtitle={
                 <View style={IconContainer}>
-                    <Icon
-                        name='image-inverted'
-                        type="entypo"
-                        color='purple'/>
-                    <Icon
-                        name='air'
-                        type="entypo"
-                        color='#f50'/>
-                    <Icon
-                        name='drop'
-                        type="entypo"
-                        color='#7C9EC2'/>
-                    <Icon
-                        name='leaf'
-                        type="entypo"
-                        color='orange'/>
+                    {renderIcons({features, facilities})}
                 </View>
             }
         />

@@ -33,6 +33,7 @@ import {campsite, submit_form, common} from '../locale.en';
 const {
     campsite_form: {
         reset,
+        site_image,
         latitude, longitude,
         longitude_placeholder, latitude_placeholder,
         add_site, add_a_campsite, add_site_title, site_info,
@@ -48,7 +49,7 @@ const {
     }
 } = campsite;
 
-const {submit, submitted} = submit_form;
+const {submit} = submit_form;
 
 const {title, location} = common;
 
@@ -268,7 +269,7 @@ class AddSiteFormScreen extends Component {
                     <Text h2
                           style={headerTitle}
                     >
-                        {'Site Image'}
+                        {site_image}
                     </Text>
                     {this.renderSiteImage()}
                     <View style={imageRowStyle}>
@@ -348,7 +349,6 @@ class AddSiteFormScreen extends Component {
                         onChangeText={this.onUpdateSiteDescriptionText}
                         containerStyle={largeTextInput}
                         multiline={true}
-                        maxLength={40}
                         maxHeight={50}
                         editable={true}
                     />
