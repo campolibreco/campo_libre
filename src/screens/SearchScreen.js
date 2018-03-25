@@ -99,10 +99,6 @@ class SearchScreen extends Component {
         }
     };
 
-    onClickSite = () => {
-
-    };
-
     renderSearchScreen = () => {
         const {viewStyle, lastKnownRegion, mapLoaded, displaySites, selectedSite, navigation: {navigate}} = this.props;
 
