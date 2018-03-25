@@ -11,10 +11,11 @@ import SearchList from '../components/SearchList';
 import SearchMap from '../components/SearchMap';
 
 import {initializeMap, updateViewStyle, mapHasLoaded, updateRegion, getSiteDetail} from "../actions";
-import { badgeGreen, limeGreenTitle, linkColorBlue, blueGreenNav } from '../styles/index';
+import {badgeGreen, limeGreenTitle, linkColorBlue, blueGreenNav} from '../styles/index';
 
 import {map, navKeys} from '../constants';
 import {search_screen} from '../locale.en';
+
 const {title, header_title, filter} = search_screen;
 
 
@@ -33,10 +34,10 @@ class SearchScreen extends Component {
         this.props.mapHasLoaded();
     }
 
-    componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps) {
         const {sitesShouldUpdate, lastKnownRegion} = nextProps;
 
-        if(sitesShouldUpdate && sitesShouldUpdate !== this.props.sitesShouldUpdate){
+        if (sitesShouldUpdate && sitesShouldUpdate !== this.props.sitesShouldUpdate) {
             this.props.initializeMap({region: lastKnownRegion});
         }
 
@@ -97,8 +98,12 @@ class SearchScreen extends Component {
         }
     };
 
+    onClickSite = () => {
+
+    };
+
     renderSearchScreen = () => {
-        const {viewStyle, lastKnownRegion, mapLoaded, displaySites, navigation: {navigate}} = this.props;
+        const {viewStyle, lastKnownRegion, mapLoaded, displaySites, selectedSite, navigation: {navigate}} = this.props;
 
         if (viewStyle === map.SearchOptions.MAP) {
             return (
@@ -108,6 +113,8 @@ class SearchScreen extends Component {
                     updateRegion={this.props.updateRegion}
                     sites={displaySites}
                     navigate={navigate}
+                    getSiteDetail={this.props.getSiteDetail}
+                    selectedSite={selectedSite}
                 />
             );
         } else if (viewStyle === map.SearchOptions.LIST) {
@@ -158,7 +165,13 @@ function mapStateToProps(state) {
     const {sitesShouldUpdate} = state.addSite;
 
 
-    return {lastKnownRegion, mapLoaded, viewStyle, token, appReady, displaySites, sitesShouldUpdate};
+    return {lastKnownRegion, mapLoaded, viewStyle, token, appReady, displaySites, sitesShouldUpdate, selectedSite};
 }
 
-export default connect(mapStateToProps, {initializeMap, updateViewStyle, mapHasLoaded, updateRegion, getSiteDetail})(SearchScreen);
+export default connect(mapStateToProps, {
+    initializeMap,
+    updateViewStyle,
+    mapHasLoaded,
+    updateRegion,
+    getSiteDetail
+})(SearchScreen);

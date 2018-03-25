@@ -1,20 +1,20 @@
 // 3rd party libraries - core
 import React from 'react';
-import {View, Image, StyleSheet, ActivityIndicator} from 'react-native';
-import {Icon} from 'react-native-elements';
+import {View, StyleSheet, ActivityIndicator, Dimensions, Image} from 'react-native';
+import {Icon, Card, Text} from 'react-native-elements';
 import {MapView} from 'expo';
 
 const {Marker} = MapView;
-// 3rd party libraries - additional
 import _ from 'lodash';
 
+// 3rd party libraries - additional
+
 // styles and language
-import {campsiteIcon} from '../styles';
+import {campsiteIcon, selectedCampsiteIcon} from '../styles';
 
-// our components - core
-// our components - additional
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
-const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites, navigate}) => {
+const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites, navigate, selectedSite, getSiteDetail}) => {
     const {fillScreen, spinnerContainerStyle} = styles;
 
     const newRegionIsAcceptable = (newRegion) => {
@@ -29,16 +29,19 @@ const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites, navigate}) 
     const renderSites = () => {
         const renderedSites = _.map(sites, site => {
             const {title, description, coordinate, id} = site;
+            const isSelectedSite = !!selectedSite && id === selectedSite.id;
 
             return (
                 <Marker
+                    onPress={() => getSiteDetail({selectedSite: site})}
                     key={id}
                     title={title}
                     description={description}
                     coordinate={coordinate}
                 >
 
-                    <Icon type='material-community' name='tent' size={25} color={campsiteIcon}/>
+                    <Icon type='material-community' name='tent' size={25}
+                          color={isSelectedSite ? selectedCampsiteIcon : campsiteIcon}/>
 
                 </Marker>
             );
@@ -56,20 +59,44 @@ const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites, navigate}) 
         updateRegion(newRegion);
     };
 
+    const renderSelectedSitePreview = () => {
+        if (selectedSite && !_.isEmpty(selectedSite)) {
+            const {id, title, description, nearestTown, accessibility, siteImageData, features, facilities} = selectedSite;
+            const {sitePreviewContainerStyle, sitePreviewStyle} = styles;
+
+            return (
+                <View
+                    pointerEvents="none"
+                    style={sitePreviewContainerStyle}
+                >
+                    <Image
+                        style={sitePreviewStyle}
+                        source={siteImageData ? {uri: `data:image/png;base64,${siteImageData}`} : require('../../assets/starTent.jpg')}
+                    />
+                </View>
+            );
+        }
+    };
+
     const renderMap = () => {
         if (mapLoaded) {
             return (
-                <MapView
-                    style={fillScreen}
-                    initialRegion={lastKnownRegion}
-                    onRegionChangeComplete={onRegionChange}
-                    rotateEnabled={false}
-                >
+                <View style={fillScreen}>
+                    <MapView
+                        style={fillScreen}
+                        initialRegion={lastKnownRegion}
+                        onRegionChangeComplete={onRegionChange}
+                        rotateEnabled={false}
+                    >
 
-                    {renderSites()}
+                        {renderSites()}
 
-                </MapView>
-            )
+                    </MapView>
+
+                    {renderSelectedSitePreview()}
+
+                </View>
+            );
         } else {
             return (
                 <View style={[fillScreen, spinnerContainerStyle]}>
@@ -93,7 +120,21 @@ const styles = StyleSheet.create({
     },
     spinnerContainerStyle: {
         justifyContent: 'center'
-    }
+    },
+    sitePreviewContainerStyle: {
+        position: 'absolute',
+        bottom: 0,
+        width: SCREEN_WIDTH,
+        display: 'flex',
+        alignContent: 'center',
+        justifyContent: 'center'
+    },
+    sitePreviewStyle: {
+        width: SCREEN_WIDTH,
+        height: 200
+    },
+    slide: {},
+    title: {}
 });
 
 export default SearchMap;
