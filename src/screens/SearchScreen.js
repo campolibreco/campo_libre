@@ -20,6 +20,7 @@ const {title, header_title, filter} = search_screen;
 
 
 class SearchScreen extends Component {
+
     componentWillMount() {
         const {lastKnownRegion} = this.props;
 
