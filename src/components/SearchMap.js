@@ -1,20 +1,26 @@
 // 3rd party libraries - core
 import React from 'react';
-import {View, Image, StyleSheet, ActivityIndicator} from 'react-native';
-import {Icon} from 'react-native-elements';
+import {View, StyleSheet, ActivityIndicator, Dimensions, ImageBackground, TouchableOpacity} from 'react-native';
+import {Icon, Card, Text} from 'react-native-elements';
 import {MapView} from 'expo';
 
 const {Marker} = MapView;
-// 3rd party libraries - additional
 import _ from 'lodash';
 
+// 3rd party libraries - additional
+
 // styles and language
-import {campsiteIcon} from '../styles';
+import {campsite} from '../locale.en';
 
-// our components - core
-// our components - additional
+const {campsite_form: {accessibility_options}} = campsite;
 
-const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites, navigate}) => {
+import {featureIconDetails, facilityIconDetails} from "../constants";
+
+import {campsiteIcon, selectedCampsiteIcon, navyBlueButton} from '../styles';
+
+const SCREEN_WIDTH = Dimensions.get('window').width;
+
+const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites, navigate, selectedSite, getSiteDetail}) => {
     const {fillScreen, spinnerContainerStyle} = styles;
 
     const newRegionIsAcceptable = (newRegion) => {
@@ -29,16 +35,19 @@ const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites, navigate}) 
     const renderSites = () => {
         const renderedSites = _.map(sites, site => {
             const {title, description, coordinate, id} = site;
+            const isSelectedSite = !!selectedSite && id === selectedSite.id;
 
             return (
                 <Marker
+                    onPress={() => getSiteDetail({selectedSite: site})}
                     key={id}
                     title={title}
                     description={description}
                     coordinate={coordinate}
                 >
 
-                    <Icon type='material-community' name='tent' size={25} color={campsiteIcon}/>
+                    <Icon type='material-community' name='tent' size={25}
+                          color={isSelectedSite ? selectedCampsiteIcon : campsiteIcon}/>
 
                 </Marker>
             );
@@ -56,20 +65,94 @@ const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites, navigate}) 
         updateRegion(newRegion);
     };
 
+    const renderIcons = ({features, facilities}) => {
+        const featureIcons = _.map(features, feature => {
+            return (
+                <Icon
+                    key={feature}
+                    reverse
+                    size={15}
+                    name={featureIconDetails[feature].name}
+                    type={featureIconDetails[feature].type}
+                />
+            )
+        });
+
+        const facilityIcons = _.map(facilities, facility => {
+            return (
+                <Icon
+                    key={facility}
+                    reverse
+                    size={15}
+                    name={facilityIconDetails[facility].name}
+                    type={facilityIconDetails[facility].type}
+                />
+            );
+        });
+
+        return _.concat(featureIcons, facilityIcons);
+    };
+
+    const renderSelectedSitePreview = () => {
+        if (selectedSite && !_.isEmpty(selectedSite)) {
+            const {id, title, description, nearestTown, accessibility, siteImageData, features, facilities} = selectedSite;
+            const {sitePreviewContainerStyle, touchableMainContainerStyle, mainInnerContainerStyle, topRowInfoStyle, topRowText, titleRowStyle, bottomRowInfoStyle, bottomRowText, closeIconStyle, IconContainer} = styles;
+
+            return (
+                <ImageBackground
+                    pointerEvents="none"
+                    source={siteImageData ? {uri: `data:image/png;base64,${siteImageData}`} : require('../../assets/starTent.jpg')}
+                    style={sitePreviewContainerStyle}
+                >
+                    <TouchableOpacity style={touchableMainContainerStyle} onPress={() => getSiteDetail({selectedSite: selectedSite, navigate})}>
+                        <View style={mainInnerContainerStyle}>
+                            <View style={topRowInfoStyle}>
+                                <View>
+
+                                </View>
+                                <Icon style={closeIconStyle} type='ionicon' name='md-close-circle' size={40}
+                                      color={'white'}
+                                      onPress={() => getSiteDetail({selectedSite: null})}/>
+                            </View>
+
+                            <View style={bottomRowInfoStyle}>
+                                <View style={titleRowStyle}>
+                                    <Text h4 style={bottomRowText}>{title}</Text>
+                                    <Text style={bottomRowText}> - </Text>
+                                    <Text style={bottomRowText}>{accessibility_options[accessibility]}</Text>
+                                </View>
+
+                                <View style={IconContainer}>
+                                    {renderIcons({features, facilities})}
+                                </View>
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+
+                </ImageBackground>
+            );
+        }
+    };
+
     const renderMap = () => {
         if (mapLoaded) {
             return (
-                <MapView
-                    style={fillScreen}
-                    initialRegion={lastKnownRegion}
-                    onRegionChangeComplete={onRegionChange}
-                    rotateEnabled={false}
-                >
+                <View style={fillScreen}>
+                    <MapView
+                        style={fillScreen}
+                        initialRegion={lastKnownRegion}
+                        onRegionChangeComplete={onRegionChange}
+                        rotateEnabled={false}
+                    >
 
-                    {renderSites()}
+                        {renderSites()}
 
-                </MapView>
-            )
+                    </MapView>
+
+                    {renderSelectedSitePreview()}
+
+                </View>
+            );
         } else {
             return (
                 <View style={[fillScreen, spinnerContainerStyle]}>
@@ -93,6 +176,57 @@ const styles = StyleSheet.create({
     },
     spinnerContainerStyle: {
         justifyContent: 'center'
+    },
+    sitePreviewContainerStyle: {
+        position: 'absolute',
+        bottom: 0,
+        width: SCREEN_WIDTH,
+        display: 'flex',
+        alignContent: 'center',
+        justifyContent: 'center',
+        height: 200
+    },
+    sitePreviewStyle: {
+        width: SCREEN_WIDTH,
+        height: 200
+    },
+    touchableMainContainerStyle: {
+        flex: 1
+    },
+    mainInnerContainerStyle: {
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        backgroundColor: 'transparent'
+    },
+    topRowInfoStyle: {
+        margin: 5,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    titleRowStyle: {
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap'
+    },
+    closeIconStyle: {},
+    topRowText: {
+        color: 'white',
+        fontWeight: 'bold'
+    },
+    bottomRowInfoStyle: {
+        margin: 10,
+    },
+    bottomRowText: {
+        color: 'white',
+        fontWeight: 'bold',
+        alignSelf: 'center'
+    },
+    IconContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap'
     }
 });
 

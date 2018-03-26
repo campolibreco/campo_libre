@@ -9,7 +9,8 @@ import {
     MAP_READY,
     MAP_REGION_CHANGE,
     VIEW_STYLE_UPDATE,
-    SELECTED_SITE_UPDATE
+    SELECTED_SITE_UPDATE,
+    SELECTED_SITE_CLEARED
 } from './types';
 
 import {navKeys} from '../constants';
@@ -26,7 +27,7 @@ export const initializeMap = ({region}) => {
             .then(querySnapshot => {
                 const sites = _.map(querySnapshot.docs, (doc, index) => {
                     let preparedSite = _.clone(doc.data());
-                    preparedSite.id = index;
+                    preparedSite.id = doc.id;
 
                     return preparedSite;
                 });
@@ -65,10 +66,19 @@ export const updateRegion = (newRegion) => {
 };
 
 export const getSiteDetail = ({selectedSite, navigate}) => {
-    navigate(navKeys.SITE_DETAIL);
-
-    return {
-        type: SELECTED_SITE_UPDATE,
-        payload: {selectedSite}
+    if (navigate) {
+        navigate(navKeys.SITE_DETAIL);
     }
+
+    if(selectedSite){
+        return {
+            type: SELECTED_SITE_UPDATE,
+            payload: {selectedSite}
+        }
+    } else {
+        return {
+            type: SELECTED_SITE_CLEARED
+        }
+    }
+
 };

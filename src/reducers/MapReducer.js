@@ -9,7 +9,8 @@ import {
     FILTER_CRITERIA_UPDATED,
     FILTER_TOGGLE_LOGIC_UPDATED,
     FILTER_CRITERIA_RESET,
-    SELECTED_SITE_UPDATE
+    SELECTED_SITE_UPDATE,
+    SELECTED_SITE_CLEARED
 
 } from '../actions/types';
 
@@ -210,6 +211,9 @@ export default (state = INITIAL_STATE, action) => {
             const {selectedSite} = payload;
 
             return {...state, selectedSite};
+
+        case SELECTED_SITE_CLEARED:
+            return {...state, selectedSite: INITIAL_STATE.selectedSite}
 
         default:
             return state;
