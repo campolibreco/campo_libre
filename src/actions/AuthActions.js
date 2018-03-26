@@ -38,7 +38,8 @@ const createUserInFirestore = ({dispatch, user, navigate}) => {
     const preparedUser = {
         name,
         email,
-        imageUrl
+        imageUrl,
+        favorites: []
     };
 
     firebase.firestore().doc(`users/${email}`)
