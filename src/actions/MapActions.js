@@ -23,8 +23,7 @@ export const initializeMap = ({region}) => {
         });
 
         firebase.firestore().collection('campsites')
-            .get()
-            .then(querySnapshot => {
+            .onSnapshot(querySnapshot => {
                 const sites = _.map(querySnapshot.docs, (doc, index) => {
                     let preparedSite = _.clone(doc.data());
                     preparedSite.id = doc.id;
@@ -36,9 +35,6 @@ export const initializeMap = ({region}) => {
                     type: INITIALIZE_MAP,
                     payload: {region, sites}
                 });
-            })
-            .catch(error => {
-                console.log(error);
             });
 
     };
@@ -70,7 +66,7 @@ export const getSiteDetail = ({selectedSite, navigate}) => {
         navigate(navKeys.SITE_DETAIL);
     }
 
-    if(selectedSite){
+    if (selectedSite) {
         return {
             type: SELECTED_SITE_UPDATE,
             payload: {selectedSite}

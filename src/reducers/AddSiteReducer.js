@@ -38,7 +38,6 @@ const INITIAL_STATE = {
     accessibilityOption: accessibility_options.paved_road,
     priceOption: price_options.free,
     siteReadyForUpload: false,
-    sitesShouldUpdate: false,
     siteDetailCheckboxesKeys: {facilities: [], features: []}
 };
 
@@ -152,13 +151,13 @@ export default (state = INITIAL_STATE, action) => {
             return {...state, siteReadyForUpload};
 
         case ADD_SITE_SUCCESS:
-            return {...INITIAL_STATE, sitesShouldUpdate: true};
+            return {...INITIAL_STATE};
 
         case ADD_SITE_FAILURE:
             return {...state};
 
         case MAP_IS_INITIALIZING:
-            return {...state, sitesShouldUpdate: false};
+            return {...state};
 
         case FACEBOOK_LOGOUT_COMPLETE:
             return INITIAL_STATE;

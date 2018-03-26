@@ -35,15 +35,6 @@ class SearchScreen extends Component {
         this.props.mapHasLoaded();
     }
 
-    componentWillReceiveProps(nextProps) {
-        const {sitesShouldUpdate, lastKnownRegion} = nextProps;
-
-        if (sitesShouldUpdate && sitesShouldUpdate !== this.props.sitesShouldUpdate) {
-            this.props.initializeMap({region: lastKnownRegion});
-        }
-
-    }
-
     toggleButton = () => {
         const {viewStyle} = this.props;
 
@@ -159,10 +150,9 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
     const {lastKnownRegion, mapLoaded, viewStyle, displaySites, selectedSite} = state.map;
     const {token, appReady} = state.auth;
-    const {sitesShouldUpdate} = state.addSite;
 
 
-    return {lastKnownRegion, mapLoaded, viewStyle, token, appReady, displaySites, sitesShouldUpdate, selectedSite};
+    return {lastKnownRegion, mapLoaded, viewStyle, token, appReady, displaySites, selectedSite};
 }
 
 export default connect(mapStateToProps, {
