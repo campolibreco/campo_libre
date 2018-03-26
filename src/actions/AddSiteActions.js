@@ -1,6 +1,8 @@
 import firebase from '@firebase/app';
 import '@firebase/firestore'
 
+import _ from 'lodash';
+
 import {
     LATITUDE_TEXT_UPDATED,
     LONGITUDE_TEXT_UPDATED,
@@ -105,7 +107,9 @@ export const siteDetailCheckboxWasClicked = ({siteDetailCheckboxKey}) => {
 
 export const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData}, navigate) => {
     const {longitude, latitude} = coordinate;
-    const uniqueTitle = `${title}${longitude}${latitude}`;
+    const uniqueTitle = _(`${title}${longitude}${latitude}`)
+        .replace(/ /g, '')
+        .slice(0,30);
 
     return (dispatch) => {
         firebase.firestore().doc(`campsites/${uniqueTitle}`)
