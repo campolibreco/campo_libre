@@ -19,36 +19,6 @@ import {campsite} from '../locale.en';
 
 const {campsite_form: {accessibility_options, facilities_options, features_options, price_options}} = campsite;
 
-const sampleSiteMarkers = [
-    {
-        id: 1,
-        title: 'Twin Lakes Hidden Spot',
-        description: 'Beautiful view of Twin Lakes off this hidden forest road.',
-        coordinate: {
-            longitude: -106.391015,
-            latitude: 39.085855
-        }
-    },
-    {
-        id: 2,
-        title: 'Lily Lake',
-        description: 'Nice view of the lilypads in this secluded spot, but a pretty tough road to reach it.',
-        coordinate: {
-            longitude: -106.368051,
-            latitude: 39.351661
-        }
-    },
-    {
-        id: 3,
-        title: 'Slide Lake',
-        description: 'Pretty riverside camping, but a REALLY nasty road to get there.',
-        coordinate: {
-            longitude: -106.389204,
-            latitude: 39.372171
-        }
-    }
-];
-
 const INITIAL_STATE = {
     lastKnownRegion: {
         longitude: -105.727939,
