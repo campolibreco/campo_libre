@@ -1,6 +1,7 @@
 import {Facebook} from 'expo';
 import axios from 'axios';
-import firebase from 'firebase';
+import firebase from '@firebase/app';
+import '@firebase/firestore'
 
 import {
     APP_READY,
@@ -15,21 +16,56 @@ import {tokens, navKeys} from '../constants';
 
 import {persistor} from '../store';
 
-const userLoginSuccess = (dispatch, email, navigate) => {
+const userLoginSuccess = ({dispatch, user, navigate}) => {
     dispatch({
         type: FACEBOOK_LOGIN_SUCCESS,
-        payload: {token: email, appReady: false}
+        payload: {token: user.email, currentUser: user, appReady: false}
     });
 
     navigate(navKeys.SEARCH);
 };
 
-const userLoginFailure = (dispatch, navigate) => {
+const userLoginFailure = ({dispatch, navigate}) => {
     dispatch({
         type: FACEBOOK_LOGIN_FAILURE
     });
 
     navigate(navKeys.LOGIN);
+};
+
+const createUserInFirestore = ({dispatch, user, navigate}) => {
+    const {name, email, imageUrl} = user;
+    const preparedUser = {
+        name,
+        email,
+        imageUrl
+    };
+
+    firebase.firestore().doc(`users/${email}`)
+        .set(preparedUser)
+        .then(() => {
+            userLoginSuccess({dispatch, user: preparedUser, navigate});
+        })
+        .catch(err => {
+            console.log(err);
+            userLoginFailure({dispatch, navigate});
+        })
+};
+
+const getFirestoreUserObject = ({dispatch, user, navigate}) => {
+    const {name, email, imageUrl} = user;
+
+    firebase.firestore().collection('users').doc(`${email}`)
+        .get()
+        .then(doc => {
+            if (doc.exists) {
+                const currentUser = doc.data();
+
+                userLoginSuccess({dispatch, user: currentUser, navigate});
+            } else {
+                createUserInFirestore({dispatch, user, navigate});
+            }
+        })
 };
 
 const attemptFacebookLogin = async ({dispatch, navigate}) => {
@@ -42,10 +78,15 @@ const attemptFacebookLogin = async ({dispatch, navigate}) => {
 
     if (type === 'success') {
         let {data: {email, name, picture: {data: {url}}}} = await axios.get(`https://graph.facebook.com/me?fields=id,name,email,picture&access_token=${token}`);
+        const preparedUser = {
+            name,
+            email,
+            imageUrl: url
+        };
 
         firebase.auth().signInWithEmailAndPassword(email, FIREBASE_USER_PASSWORD)
             .then(user => {
-                userLoginSuccess(dispatch, email, navigate);
+                getFirestoreUserObject({dispatch, user: preparedUser, navigate});
             })
             .catch(err => {
                 const errorCode = err.code;
@@ -53,20 +94,20 @@ const attemptFacebookLogin = async ({dispatch, navigate}) => {
                 if (errorCode === 'auth/user-not-found') {
                     firebase.auth().createUserWithEmailAndPassword(email, FIREBASE_USER_PASSWORD)
                         .then(user => {
-                            userLoginSuccess(dispatch, email, navigate);
+                            getFirestoreUserObject({dispatch, user: preparedUser, navigate});
                         })
                         .catch(err => {
                             console.log("Error creating user: ", err);
-                            userLoginFailure(dispatch, navigate);
+                            userLoginFailure({dispatch, navigate});
                         })
 
                 } else {
-                    userLoginFailure(dispatch, navigate);
+                    userLoginFailure({dispatch, navigate});
                 }
             })
 
     } else {
-        userLoginFailure(dispatch, navigate);
+        userLoginFailure({dispatch, navigate});
     }
 };
 

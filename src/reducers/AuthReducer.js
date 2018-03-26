@@ -9,7 +9,8 @@ import {
 
 const INITIAL_STATE = {
     appLoaded: false,
-    token: null
+    token: null,
+    currentUser: {}
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -27,7 +28,7 @@ export default (state = INITIAL_STATE, action) => {
             return ({...state, token: payload.token, appReady: payload.appReady});
 
         case FACEBOOK_LOGIN_SUCCESS:
-            return ({...state, token: payload.token, appReady: payload.appReady});
+            return ({...state, token: payload.token, currentUser: payload.currentUser, appReady: payload.appReady});
 
         case FACEBOOK_LOGIN_FAILURE:
             return ({...state, token: null});

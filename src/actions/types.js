@@ -38,3 +38,8 @@ export const LOCATION_SERVICES_PERMISSION_UPDATED = 'location_services_permissio
 export const CAMERA_PERMISSION_UPDATED = 'camera_permission_updated';
 export const CAMERA_ROLL_PERMISSION_UPDATED = 'camera_roll_permission_updated';
 export const ADDSITE_IMAGE_UPDATED = 'addsite_image_updated';
+
+export const FAVORITE_ADDED = 'favorite_added';
+export const FAVORITE_ADD_FAILED = 'favorite_add_failed';
+export const FAVORITE_REMOVED = 'favorite_removed';
+export const FAVORITE_REMOVE_FAILED = 'favorite_remove_failed';
