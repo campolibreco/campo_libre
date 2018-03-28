@@ -134,10 +134,17 @@ export default (state = INITIAL_STATE, action) => {
         case INITIALIZE_MAP:
             const {region, sites} = payload;
             const existingMapLoadedState = state.mapLoaded;
+            const selectedSiteIsEmpty = _.isEmpty(state.selectedSite);
+            const lastKnownRegionIncludingSelectedSite = selectedSiteIsEmpty ? region : {
+                longitudeDelta: 0.25,
+                latitudeDelta: 0.25,
+                longitude: state.selectedSite.coordinate.longitude,
+                latitude: state.selectedSite.coordinate.latitude
+            };
 
             return payload ? {
                 ...INITIAL_STATE,
-                lastKnownRegion: region,
+                lastKnownRegion: lastKnownRegionIncludingSelectedSite,
                 sites: sites,
                 filterCriteriaKeys: state.filterCriteriaKeys,
                 displaySites: filterSites({sites}, state.filterCriteriaKeys),
@@ -168,21 +175,40 @@ export default (state = INITIAL_STATE, action) => {
         case FILTER_CRITERIA_RESET:
             const filterResetSites = filterSites(state, INITIAL_STATE.filterCriteriaKeys);
 
-            return {...state, filterCriteriaKeys: INITIAL_STATE.filterCriteriaKeys, filterResultsScrutinyLoose: INITIAL_STATE.filterResultsScrutinyLoose, displaySites: filterResetSites};
+            return {
+                ...state,
+                filterCriteriaKeys: INITIAL_STATE.filterCriteriaKeys,
+                filterResultsScrutinyLoose: INITIAL_STATE.filterResultsScrutinyLoose,
+                displaySites: filterResetSites
+            };
 
         case FILTER_TOGGLE_LOGIC_UPDATED:
             const {filterToggleKey} = payload;
             const updatedFilterResultsScrutinyLooseObject = updateFilterResultsScrutiny(state, filterToggleKey);
-            const newlyFiteredSitesWithNewToggleLogic = filterSites({sites: state.sites, filterResultsScrutinyLoose: updatedFilterResultsScrutinyLooseObject}, state.filterCriteriaKeys);
+            const newlyFiteredSitesWithNewToggleLogic = filterSites({
+                sites: state.sites,
+                filterResultsScrutinyLoose: updatedFilterResultsScrutinyLooseObject
+            }, state.filterCriteriaKeys);
 
-            return {...state, filterResultsScrutinyLoose: updatedFilterResultsScrutinyLooseObject, displaySites: newlyFiteredSitesWithNewToggleLogic};
+            return {
+                ...state,
+                filterResultsScrutinyLoose: updatedFilterResultsScrutinyLooseObject,
+                displaySites: newlyFiteredSitesWithNewToggleLogic
+            };
 
         case SELECTED_SITE_UPDATE:
             const {selectedSite} = payload;
+            const updatedRegionFromSelectedSite = {
+                longitudeDelta: 0.25,
+                latitudeDelta: 0.25,
+                longitude: selectedSite.coordinate.longitude,
+                latitude: selectedSite.coordinate.latitude
+            };
 
-            return {...state, selectedSite};
+            return {...state, selectedSite, lastKnownRegion: updatedRegionFromSelectedSite};
 
-        case SELECTED_SITE_CLEARED:
+        case
+        SELECTED_SITE_CLEARED:
             return {...state, selectedSite: INITIAL_STATE.selectedSite}
 
         default:
