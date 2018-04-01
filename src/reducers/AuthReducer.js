@@ -7,13 +7,31 @@ import {
     FACEBOOK_LOGOUT_COMPLETE,
     GUEST_TOKEN_SET,
     MAP_READY,
-    FAVORITE_ADDED
+    FAVORITE_ADDED,
+    INITIALIZE_MAP
 } from '../actions/types';
 
 const INITIAL_STATE = {
     appLoaded: false,
     token: null,
     currentUser: {}
+};
+
+import {tokens} from '../constants';
+
+const hydrateFavorites = ({currentUser, sites}) => {
+    const preparedFavorites = _.map(currentUser.favorites, favorite => {
+        if (favorite.favoriteIsComplete) {
+            return favorite;
+        } else {
+            let matchedFavorite = _.find(sites, site => site.id === favorite.id);
+            matchedFavorite.favoriteIsComplete = true;
+
+            return matchedFavorite;
+        }
+    });
+
+    return preparedFavorites;
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -46,6 +64,20 @@ export default (state = INITIAL_STATE, action) => {
             updatedUser.favorites = _.concat(updatedUser.favorites, favoriteToAdd);
 
             return ({...state, currentUser: updatedUser});
+
+        case INITIALIZE_MAP:
+            const {sites} = payload;
+
+            if (state.currentUser && state.currentUser.name !== tokens.GUEST) {
+                const hydratedFavorites = hydrateFavorites({currentUser: state.currentUser, sites});
+                let userWithHydratedFavorites = _.cloneDeep(state.currentUser);
+                userWithHydratedFavorites.favorites = hydratedFavorites;
+
+                return ({...state, currentUser: userWithHydratedFavorites});
+            } else {
+                return state;
+            }
+
 
         default:
             return state;

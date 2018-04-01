@@ -43,19 +43,23 @@ class FavoritesScreen extends Component {
 
         if (!currentUser || currentUser.name === tokens.GUEST) {
             return (<Text> You must log in to have Favorites!</Text>);
-        } else if (currentUser && currentUser.favorites && currentUser.favorites.length === 0) {
-            return (<Text> You have no favorites... add some!</Text>);
         }
-        else {
+        else if (currentUser && currentUser.favorites && currentUser.favorites.length > 0) {
             const {navigation: {navigate}} = this.props;
 
             return (
                 <ScrollView>
                     <List>
-                        {this.renderFavorites({sites: currentUser.favorites, getSiteDetail: this.props.getSiteDetail, navigate})}
+                        {this.renderFavorites({
+                            sites: currentUser.favorites,
+                            getSiteDetail: this.props.getSiteDetail,
+                            navigate
+                        })}
                     </List>
                 </ScrollView>
             );
+        } else {
+            return (<Text> You have no favorites... add some!</Text>);
         }
     };
 

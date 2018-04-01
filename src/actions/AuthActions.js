@@ -42,7 +42,10 @@ const getUserFavorites = ({dispatch, currentUser, navigate}) => {
         .get()
         .then(querySnapshot => {
             const userFavorites = _.map(querySnapshot.docs, doc => {
-                return doc.data();
+                let preparedFavorite = doc.data();
+                preparedFavorite.favoriteIsComplete = false;
+
+                return preparedFavorite;
             });
 
             currentUser.favorites = userFavorites;
