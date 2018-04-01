@@ -39,6 +39,8 @@ const CampsiteListItem = ({site, getSiteDetail, navigate}) => {
     const {textStyle, IconContainer, subtitleView, siteAvatarStyle, siteAvatarContainerStyle, titleView, nearestTownStyle, badgeWrapperStyle, badgeContainerStyle, accessibilityStyle} = styles
     const {campsite_form: {accessibility_options}} = campsite;
     const {id, title, description, nearestTown, accessibility, siteImageData, features, facilities} = site;
+    const preparedDescription = description.length > 57 ?  `${description.substring(0, 57)}...` : description;
+
     return (
         <ListItem
             onPress={() => getSiteDetail({selectedSite: site, navigate})}
@@ -55,7 +57,7 @@ const CampsiteListItem = ({site, getSiteDetail, navigate}) => {
                         <Text style={nearestTownStyle}>{nearestTown}</Text>
                     </Badge>
                     <View style={subtitleView}>
-                        <Text>{description}</Text>
+                        <Text>{preparedDescription}</Text>
                     </View>
                     <View style={subtitleView}>
 
