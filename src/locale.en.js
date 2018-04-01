@@ -120,3 +120,8 @@ export const permissions = {
     reminder_for_camera_roll_access: 'Sorry, we need permission to access your Camera Roll. Please go into Settings/Campo Libre and enable Camera Roll access',
     reminder_for_camera_access: 'Sorry, we need permission to access your Camera. Please go into Settings/Campo Libre and enable Camera access'
 };
+
+export const favorites = {
+    add_favorite_error: 'Sorry, there was a problem adding this site to your Favorites.',
+    remove_favorite_error: 'Sorry, there was a problem removing this site from your Favorites'
+};

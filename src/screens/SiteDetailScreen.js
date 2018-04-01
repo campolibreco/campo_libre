@@ -26,16 +26,31 @@ class SiteDetailScreen extends Component {
     componentDidMount() {
         const {selectedSite, currentUser, navigation: {setParams}} = this.props;
 
-        if(currentUser.name === tokens.GUEST){
+        if (currentUser.name === tokens.GUEST) {
             return;
         }
 
-        setParams({selectedSite, currentUser, toggleSiteFavorite: this.toggleSiteFavorite});
+        const isFavorite = !!_.find(currentUser.favorites, favorite => favorite.id === selectedSite.id);
+
+        setParams({selectedSite, isFavorite, currentUser, toggleSiteFavorite: this.toggleSiteFavorite});
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const {navigation: {setParams, state: {params}}} = this.props;
+
+        if (!_.isUndefined(params)) {
+            const {currentUser, selectedSite} = nextProps;
+            const willBeFavorite = !!_.find(currentUser.favorites, favorite => favorite.id === selectedSite.id);
+
+            if(willBeFavorite !== params.isFavorite){
+                setParams({isFavorite: willBeFavorite});
+            }
+        }
     }
 
     toggleSiteFavorite = ({isFavorite, selectedSite, currentUser}) => {
 
-        if(!isFavorite) {
+        if (!isFavorite) {
             this.props.attemptToAddFavorite({selectedSite, currentUser});
         } else {
 
@@ -43,20 +58,17 @@ class SiteDetailScreen extends Component {
 
     };
 
-    static renderRightNavButton = ({selectedSite, currentUser, toggleSiteFavorite}) => {
-        if(!currentUser){
+    static renderRightNavButton = ({selectedSite, isFavorite, currentUser, toggleSiteFavorite}) => {
+        if (!currentUser) {
             return;
         }
 
-        console.log(currentUser);
-
         const {topRightIconStyle} = styles;
-
-        const isFavorite = _.find(currentUser.favorites, favorite => favorite.id === selectedSite.id);
 
         if (Platform.OS === 'ios') {
             return (
-                <TouchableOpacity style={topRightIconStyle} onPress={() => toggleSiteFavorite({isFavorite, selectedSite, currentUser})}>
+                <TouchableOpacity style={topRightIconStyle}
+                                  onPress={() => toggleSiteFavorite({isFavorite, selectedSite, currentUser})}>
                     <Icon type='ionicon'
                           name={isFavorite ? 'ios-heart' : 'ios-heart-outline'}
                           size={30}

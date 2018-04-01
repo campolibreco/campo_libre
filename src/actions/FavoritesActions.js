@@ -12,30 +12,26 @@ import {navKeys} from "../constants";
 export const attemptToAddFavorite = ({selectedSite, currentUser}) => {
 
     return async (dispatch) => {
-        const favoriteToAdd = {
-            name: selectedSite.title,
-            id: selectedSite.id
+        const favoriteMetadata = {
+            title: selectedSite.title,
+            id: selectedSite.id,
         };
 
-        return (dispatch) => {
-            firebase.firestore().doc(`users/${currentUser.email}/favorites/${selectedSite.title}`)
-                .set(favoriteToAdd)
-                .then(() => {
-                    dispatch({
-                        type: FAVORITE_ADDED,
-                        payload: {favoriteToAdd}
-                    });
-
-                })
-                .catch(error => {
-                    dispatch({
-                        type: FAVORITE_ADD_FAILED,
-                        payload: {error}
-                    });
-
+        return firebase.firestore().doc(`users/${currentUser.email}/favorites/${selectedSite.title}`)
+            .set(favoriteMetadata)
+            .then(() => {
+                dispatch({
+                    type: FAVORITE_ADDED,
+                    payload: {favoriteToAdd: selectedSite}
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: FAVORITE_ADD_FAILED,
+                    payload: {error}
                 });
 
-        };
+            });
     };
 };
 

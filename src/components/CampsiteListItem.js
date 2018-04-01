@@ -39,7 +39,7 @@ const CampsiteListItem = ({site, getSiteDetail, navigate}) => {
     const {textStyle, IconContainer, subtitleView, siteAvatarStyle, siteAvatarContainerStyle, titleView, nearestTownStyle, badgeWrapperStyle, badgeContainerStyle, accessibilityStyle} = styles
     const {campsite_form: {accessibility_options}} = campsite;
     const {id, title, description, nearestTown, accessibility, siteImageData, features, facilities} = site;
-    const preparedDescription = description.length > 57 ?  `${description.substring(0, 57)}...` : description;
+    const preparedDescription = description && description.length > 57 ?  `${description.substring(0, 57)}...` : description;
 
     return (
         <ListItem

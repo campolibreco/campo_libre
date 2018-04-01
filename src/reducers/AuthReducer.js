@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import {
     APP_READY,
     FACEBOOK_LOGIN_SUCCESS,
@@ -39,12 +41,11 @@ export default (state = INITIAL_STATE, action) => {
             return (INITIAL_STATE);
 
         case FAVORITE_ADDED:
-            const favoriteToAdd = payload.currentUser.favoriteToAdd;
+            const favoriteToAdd = payload.favoriteToAdd;
             let updatedUser = _.cloneDeep(state.currentUser);
             updatedUser.favorites = _.concat(updatedUser.favorites, favoriteToAdd);
 
-            return ({...state, currentUser updatedUser});
-
+            return ({...state, currentUser: updatedUser});
 
         default:
             return state;

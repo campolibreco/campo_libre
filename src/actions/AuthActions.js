@@ -3,6 +3,8 @@ import axios from 'axios';
 import firebase from '@firebase/app';
 import '@firebase/firestore'
 
+import _ from 'lodash';
+
 import {
     APP_READY,
     FACEBOOK_LOGIN_SUCCESS,
@@ -33,19 +35,39 @@ const userLoginFailure = ({dispatch, navigate}) => {
     navigate(navKeys.LOGIN);
 };
 
+const getUserFavorites = ({dispatch, currentUser, navigate}) => {
+    const {name, email, imageUrl} = currentUser;
+
+    firebase.firestore().collection(`users/${email}/favorites`)
+        .get()
+        .then(querySnapshot => {
+            const userFavorites = _.map(querySnapshot.docs, doc => {
+                return doc.data();
+            });
+
+            currentUser.favorites = userFavorites;
+        })
+        .then(() => {
+            userLoginSuccess({dispatch, user: currentUser, navigate});
+        })
+        .catch(err =>{
+            console.log(err);
+        });
+};
+
 const createUserInFirestore = ({dispatch, user, navigate}) => {
     const {name, email, imageUrl} = user;
-    const preparedUser = {
+    const currentUser = {
         name,
         email,
-        imageUrl,
-        favorites: []
+        imageUrl
     };
 
     firebase.firestore().doc(`users/${email}`)
-        .set(preparedUser)
+        .set(currentUser)
         .then(() => {
-            userLoginSuccess({dispatch, user: preparedUser, navigate});
+
+            getUserFavorites({dispatch, currentUser, navigate});
         })
         .catch(err => {
             console.log(err);
@@ -62,7 +84,7 @@ const getFirestoreUserObject = ({dispatch, user, navigate}) => {
             if (doc.exists) {
                 const currentUser = doc.data();
 
-                userLoginSuccess({dispatch, user: currentUser, navigate});
+                getUserFavorites({dispatch, currentUser, navigate});
             } else {
                 createUserInFirestore({dispatch, user, navigate});
             }
