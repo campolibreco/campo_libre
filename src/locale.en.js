@@ -66,6 +66,7 @@ export const campsite = {
             river_view: 'River/Creek View',
             secluded: 'Secluded',
             mountain_views: 'Mountain Views',
+            winter_access: 'Accessible in Winter',
             easy_access: 'Easy Access'
         },
         filter: {

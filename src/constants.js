@@ -51,5 +51,6 @@ export const featureIconDetails = {
     river_view: {name: 'waves', type: 'material-community'},
     secluded: {name: 'user-secret', type: 'font-awesome'},
     mountain_views: {name: 'mountains', type: 'foundation'},
+    winter_access: {name: 'snowflake-o', type: 'font-awesome'},
     easy_access: {name: 'road', type: 'font-awesome'},
 };

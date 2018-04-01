@@ -147,7 +147,7 @@ export default (state = INITIAL_STATE, action) => {
                 lastKnownRegion: lastKnownRegionIncludingSelectedSite,
                 sites: sites,
                 filterCriteriaKeys: state.filterCriteriaKeys,
-                displaySites: filterSites({sites}, state.filterCriteriaKeys),
+                displaySites: filterSites({sites, filterResultsScrutinyLoose: state.filterResultsScrutinyLoose}, state.filterCriteriaKeys),
                 mapLoaded: existingMapLoadedState,
                 filterResultsScrutinyLoose: state.filterResultsScrutinyLoose,
                 selectedSite: state.selectedSite
