@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, ScrollView} from 'react-native';
+import {View, StyleSheet, ScrollView, Platform, TouchableOpacity} from 'react-native';
 import {Card, Text, List, ListItem} from 'react-native-elements';
 import {Icon} from 'react-native-elements';
 import {connect} from 'react-redux';
@@ -9,10 +9,11 @@ const {Marker} = MapView;
 
 import _ from 'lodash';
 
+import {attemptToAddFavorite} from '../actions';
 
 import {linkColorBlue, navyBlueButton} from '../styles/index';
 
-import {navKeys, facilityIconDetails, featureIconDetails} from '../constants';
+import {navKeys, facilityIconDetails, featureIconDetails, map, tokens} from '../constants';
 import {site_detail_screen, campsite, common} from '../locale.en';
 import {campsiteIcon} from "../styles";
 
@@ -21,6 +22,60 @@ const {campsite_form} = campsite;
 const {location} = common;
 
 class SiteDetailScreen extends Component {
+
+    componentDidMount() {
+        const {selectedSite, currentUser, navigation: {setParams}} = this.props;
+
+        if(currentUser.name === tokens.GUEST){
+            return;
+        }
+
+        setParams({selectedSite, currentUser, toggleSiteFavorite: this.toggleSiteFavorite});
+    }
+
+    toggleSiteFavorite = ({isFavorite, selectedSite, currentUser}) => {
+
+        if(!isFavorite) {
+            this.props.attemptToAddFavorite({selectedSite, currentUser});
+        } else {
+
+        }
+
+    };
+
+    static renderRightNavButton = ({selectedSite, currentUser, toggleSiteFavorite}) => {
+        if(!currentUser){
+            return;
+        }
+
+        console.log(currentUser);
+
+        const {topRightIconStyle} = styles;
+
+        const isFavorite = _.find(currentUser.favorites, favorite => favorite.id === selectedSite.id);
+
+        if (Platform.OS === 'ios') {
+            return (
+                <TouchableOpacity style={topRightIconStyle} onPress={() => toggleSiteFavorite({isFavorite, selectedSite, currentUser})}>
+                    <Icon type='ionicon'
+                          name={isFavorite ? 'ios-heart' : 'ios-heart-outline'}
+                          size={30}
+                          color={linkColorBlue}
+                    />
+                </TouchableOpacity>
+            );
+        } else if (Platform.OS === 'android') {
+            // android-specific code for navigation here
+        }
+    };
+
+    static navigationOptions = (props) => {
+        const {navigation: {state: {params = {}}}} = props;
+
+        return {
+            headerRight: SiteDetailScreen.renderRightNavButton(params)
+        }
+    };
 
     renderFacilities = (facilities) => {
         return _.map(facilities, (facility, index) => {
@@ -66,6 +121,7 @@ class SiteDetailScreen extends Component {
                         title={title}
                         titleStyle={mainTitleStyle}
                         image={siteImageData ? {uri: `data:image/png;base64,${siteImageData}`} : require('../../assets/starTent.jpg')}
+                        imageProps={{resizeMode: 'cover'}}
                     >
                         <Text style={[textStyle, bottomMargin]}>
                             {description}
@@ -195,13 +251,16 @@ const styles = StyleSheet.create({
         height: 100,
         width: 100,
         borderRadius: 50
+    }, topRightIconStyle: {
+        paddingRight: 20
     }
 });
 
 function mapStateToProps(state) {
     const {selectedSite} = state.map;
+    const {currentUser} = state.auth;
 
-    return {selectedSite};
+    return {selectedSite, currentUser};
 }
 
-export default connect(mapStateToProps, {})(SiteDetailScreen);
+export default connect(mapStateToProps, {attemptToAddFavorite})(SiteDetailScreen);

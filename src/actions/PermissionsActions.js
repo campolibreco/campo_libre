@@ -63,18 +63,16 @@ const getImage = async (dispatch, imageSourceType) => {
 
         result = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
-            // aspect: [4, 4],
             base64: true,
-            quality: 0.5
+            quality: 0.4
         });
     } else if (imageSourceType === imageSourceTypes.CAMERA) {
         console.log("In the CAMERA area: ",imageSourceType);
 
         result = await ImagePicker.launchCameraAsync({
             allowsEditing: true,
-            // aspect: [4, 4],
             base64: true,
-            quality: 0.5
+            quality: 0.4
         });
     }
 

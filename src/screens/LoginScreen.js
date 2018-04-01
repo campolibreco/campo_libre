@@ -22,9 +22,9 @@ const {campo_libre, tagline, login_as_guest, login_with_facebook} = login;
 class LoginScreen extends Component {
 
     componentWillMount() {
-        const {token, navigation: {navigate}} = this.props;
+        const {token, currentUser, navigation: {navigate}} = this.props;
 
-        this.props.checkAndSetToken({token, navigate});
+        this.props.checkAndSetToken({token, currentUser, navigate});
     }
 
     onPressContinueAsGuest = () => {
@@ -142,9 +142,9 @@ const styles = {
 };
 
 const mapStateToProps = (state, ownProps) => {
-    const {token, appReady} = state.auth;
+    const {token, appReady, currentUser} = state.auth;
 
-    return {token, appReady};
+    return {token, appReady, currentUser};
 };
 
 export default connect(mapStateToProps, {checkAndSetToken, setGuestToken, logUserIntoFacebook})(LoginScreen);

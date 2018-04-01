@@ -121,7 +121,7 @@ export const logUserIntoFacebook = ({navigate}) => {
     }
 };
 
-export const checkAndSetToken = ({token, navigate}) => {
+export const checkAndSetToken = ({token, currentUser, navigate}) => {
 
     return async (dispatch) => {
 
@@ -134,7 +134,7 @@ export const checkAndSetToken = ({token, navigate}) => {
             } else {
                 dispatch({
                     type: FACEBOOK_LOGIN_SUCCESS,
-                    payload: {token, appReady: false}
+                    payload: {token, currentUser, appReady: false}
                 })
             }
 

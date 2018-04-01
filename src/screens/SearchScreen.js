@@ -151,7 +151,6 @@ function mapStateToProps(state) {
     const {lastKnownRegion, mapLoaded, viewStyle, displaySites, selectedSite} = state.map;
     const {token, appReady, currentUser} = state.auth;
 
-
     return {lastKnownRegion, mapLoaded, viewStyle, token, appReady, currentUser, displaySites, selectedSite};
 }
 

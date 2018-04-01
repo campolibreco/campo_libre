@@ -1,4 +1,5 @@
-
+import firebase from '@firebase/app';
+import '@firebase/firestore'
 
 import {
     FAVORITE_ADDED,
@@ -6,16 +7,37 @@ import {
     FAVORITE_REMOVED,
     FAVORITE_REMOVE_FAILED
 } from './types';
+import {navKeys} from "../constants";
 
-export const attemptToAddFavorite = () => {
+export const attemptToAddFavorite = ({selectedSite, currentUser}) => {
 
     return async (dispatch) => {
+        const favoriteToAdd = {
+            name: selectedSite.title,
+            id: selectedSite.id
+        };
 
+        return (dispatch) => {
+            firebase.firestore().doc(`users/${currentUser.email}/favorites/${selectedSite.title}`)
+                .set(favoriteToAdd)
+                .then(() => {
+                    dispatch({
+                        type: FAVORITE_ADDED,
+                        payload: {favoriteToAdd}
+                    });
 
-        dispatch({
-            type: FAVORITE_ADDED,
-            payload: {locationServicesPermission: status}
-        })
+                })
+                .catch(error => {
+                    dispatch({
+                        type: FAVORITE_ADD_FAILED,
+                        payload: {error}
+                    });
+
+                });
+
+        };
     };
 };
+
+
 
