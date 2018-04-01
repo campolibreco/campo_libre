@@ -16,17 +16,12 @@ export default (state = INITIAL_STATE, action) => {
 
     switch (type) {
 
-        case FAVORITE_ADDED:
-            return ({...state});
-
         case FAVORITE_ADD_FAILED:
             alert(add_favorite_error);
             return ({...state});
 
-        case FAVORITE_REMOVED:
-            return ({...state});
-
         case FAVORITE_REMOVE_FAILED:
+            alert(remove_favorite_error);
             return ({...state});
 
         default:

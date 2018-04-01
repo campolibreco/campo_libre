@@ -8,7 +8,8 @@ import {
     GUEST_TOKEN_SET,
     MAP_READY,
     FAVORITE_ADDED,
-    INITIALIZE_MAP
+    INITIALIZE_MAP,
+    FAVORITE_REMOVED
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -59,11 +60,19 @@ export default (state = INITIAL_STATE, action) => {
             return (INITIAL_STATE);
 
         case FAVORITE_ADDED:
-            const favoriteToAdd = payload.favoriteToAdd;
-            let updatedUser = _.cloneDeep(state.currentUser);
-            updatedUser.favorites = _.concat(updatedUser.favorites, favoriteToAdd);
+            const {favoriteToAdd} = payload;
 
-            return ({...state, currentUser: updatedUser});
+            let updatedUserWithNewFavorite = _.cloneDeep(state.currentUser);
+            updatedUserWithNewFavorite.favorites = _.concat(updatedUserWithNewFavorite.favorites, favoriteToAdd);
+
+            return ({...state, currentUser: updatedUserWithNewFavorite});
+
+        case FAVORITE_REMOVED:
+            const {favoriteToRemove} = payload;
+            let updatedUserWithoutFavorite = _.cloneDeep(state.currentUser);
+            updatedUserWithoutFavorite.favorites = _.reject(updatedUserWithoutFavorite.favorites, favorite => favorite.id === favoriteToRemove.id);
+
+            return ({...state, currentUser: updatedUserWithoutFavorite});
 
         case INITIALIZE_MAP:
             const {sites} = payload;

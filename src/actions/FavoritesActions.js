@@ -7,7 +7,6 @@ import {
     FAVORITE_REMOVED,
     FAVORITE_REMOVE_FAILED
 } from './types';
-import {navKeys} from "../constants";
 
 export const attemptToAddFavorite = ({selectedSite, currentUser}) => {
 
@@ -35,5 +34,31 @@ export const attemptToAddFavorite = ({selectedSite, currentUser}) => {
     };
 };
 
+
+export const attemptToRemoveFavorite = ({selectedSite, currentUser}) => {
+
+    return async (dispatch) => {
+        const favoriteMetadata = {
+            title: selectedSite.title,
+            id: selectedSite.id,
+        };
+
+        return firebase.firestore().doc(`users/${currentUser.email}/favorites/${selectedSite.title}`)
+            .delete()
+            .then(() => {
+                dispatch({
+                    type: FAVORITE_REMOVED,
+                    payload: {favoriteToRemove: selectedSite}
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: FAVORITE_REMOVE_FAILED,
+                    payload: {error}
+                });
+
+            });
+    };
+};
 
 

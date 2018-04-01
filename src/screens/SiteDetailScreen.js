@@ -9,7 +9,7 @@ const {Marker} = MapView;
 
 import _ from 'lodash';
 
-import {attemptToAddFavorite} from '../actions';
+import {attemptToAddFavorite, attemptToRemoveFavorite} from '../actions';
 
 import {linkColorBlue, navyBlueButton} from '../styles/index';
 
@@ -17,7 +17,6 @@ import {navKeys, facilityIconDetails, featureIconDetails, map, tokens} from '../
 import {site_detail_screen, campsite, common} from '../locale.en';
 import {campsiteIcon} from "../styles";
 
-const {header_title} = site_detail_screen;
 const {campsite_form} = campsite;
 const {location} = common;
 
@@ -53,7 +52,7 @@ class SiteDetailScreen extends Component {
         if (!isFavorite) {
             this.props.attemptToAddFavorite({selectedSite, currentUser});
         } else {
-
+            this.props.attemptToRemoveFavorite({selectedSite, currentUser});
         }
 
     };
@@ -275,4 +274,4 @@ function mapStateToProps(state) {
     return {selectedSite, currentUser};
 }
 
-export default connect(mapStateToProps, {attemptToAddFavorite})(SiteDetailScreen);
+export default connect(mapStateToProps, {attemptToAddFavorite, attemptToRemoveFavorite})(SiteDetailScreen);
