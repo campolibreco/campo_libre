@@ -1,15 +1,18 @@
 import React, {Component} from 'react';
-import {View, Text, ScrollView} from 'react-native';
+import {View, ScrollView, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
-import {Icon, List} from 'react-native-elements';
+import {Icon, List, Text, Card, Button} from 'react-native-elements';
 
 import _ from 'lodash';
 
 import CampsiteListItem from '../components/CampsiteListItem';
 
-import {getSiteDetail} from '../actions';
+import {getSiteDetail, logUserIntoFacebook} from '../actions';
 
 import {tokens} from '../constants';
+import {facebookBlueButtonTransparent, navyBlueButton} from '../styles';
+import {common, favorites, login} from '../locale.en';
+const {no_favorites_header, no_favorites_detail, must_log_in_detail} = favorites;
 
 class FavoritesScreen extends Component {
     static navigationOptions = (props) => {
@@ -23,6 +26,12 @@ class FavoritesScreen extends Component {
                 <Icon type='ionicon' name={focused ? 'ios-heart' : 'ios-heart-outline'} size={25} color={tintColor}/>)
         }
 
+    };
+
+    onPressFacebookLogin = () => {
+        const {navigation: {navigate}} = this.props;
+
+        this.props.logUserIntoFacebook({navigate});
     };
 
     renderFavorites = ({sites, getSiteDetail, navigate}) => {
@@ -40,9 +49,25 @@ class FavoritesScreen extends Component {
 
     renderFavoritesScreen = () => {
         const {currentUser} = this.props;
+        const {headerTitleStyle, infoTextStyle, facebookStyle} = styles;
 
         if (!currentUser || currentUser.name === tokens.GUEST) {
-            return (<Text> You must log in to have Favorites!</Text>);
+            return (
+                <Card>
+                    <Text style={headerTitleStyle}>{common.must_log_in}</Text>
+                    <Text style={infoTextStyle}>{must_log_in_detail}</Text>
+
+                    <Button
+                        large
+                        transparent
+                        icon={{name: 'facebook', type: 'font-awesome'}}
+                        title={login.login_with_facebook}
+                        buttonStyle={facebookStyle}
+                        onPress={this.onPressFacebookLogin}
+                        rounded={true}
+                    />
+                </Card>
+            );
         }
         else if (currentUser && currentUser.favorites && currentUser.favorites.length > 0) {
             const {navigation: {navigate}} = this.props;
@@ -59,7 +84,12 @@ class FavoritesScreen extends Component {
                 </ScrollView>
             );
         } else {
-            return (<Text> You have no favorites... add some!</Text>);
+            return (
+                <Card>
+                    <Text style={headerTitleStyle}>{no_favorites_header}</Text>
+                    <Text style={infoTextStyle}>{no_favorites_detail}</Text>
+                </Card>
+            );
         }
     };
 
@@ -72,10 +102,26 @@ class FavoritesScreen extends Component {
     }
 }
 
+const styles = StyleSheet.create({
+    headerTitleStyle: {
+        fontSize: 30,
+        marginBottom: 20,
+        color: navyBlueButton,
+        alignSelf:'center'
+    },
+    infoTextStyle: {
+        fontSize: 15
+    },
+    facebookStyle: {
+        backgroundColor: facebookBlueButtonTransparent,
+        marginTop: 40
+    },
+});
+
 function mapStateToProps(state) {
     const {currentUser} = state.auth;
 
     return {currentUser};
 }
 
-export default connect(mapStateToProps, {getSiteDetail})(FavoritesScreen);
+export default connect(mapStateToProps, {getSiteDetail, logUserIntoFacebook})(FavoritesScreen);

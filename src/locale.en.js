@@ -112,7 +112,8 @@ export const submit_form = {
 export const common = {
     title: 'Title',
     location: 'Location',
-    back: 'Back'
+    back: 'Back',
+    must_log_in: 'Must Log In'
 };
 
 export const permissions = {
@@ -123,5 +124,8 @@ export const permissions = {
 
 export const favorites = {
     add_favorite_error: 'Sorry, there was a problem adding this site to your Favorites.',
-    remove_favorite_error: 'Sorry, there was a problem removing this site from your Favorites'
+    remove_favorite_error: 'Sorry, there was a problem removing this site from your Favorites',
+    no_favorites_header: 'No Favorites',
+    no_favorites_detail: 'Add some Favorite Sites and they\'ll appear here!',
+    must_log_in_detail: 'Only logged in users can save Favorite Sites. Log in and start saving all your favorites!'
 };
