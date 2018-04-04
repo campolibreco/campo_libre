@@ -6,6 +6,8 @@ import {Icon, List, Text, Card, Button} from 'react-native-elements';
 import _ from 'lodash';
 
 import CampsiteListItem from '../components/CampsiteListItem';
+import LargeButton from '../components/common/LargeButton';
+
 
 import {getSiteDetail, logUserIntoFacebook} from '../actions';
 
@@ -57,14 +59,13 @@ class FavoritesScreen extends Component {
                     <Text style={headerTitleStyle}>{common.must_log_in}</Text>
                     <Text style={infoTextStyle}>{must_log_in_detail}</Text>
 
-                    <Button
-                        large
-                        transparent
-                        icon={{name: 'facebook', type: 'font-awesome'}}
+                    <LargeButton
                         title={login.login_with_facebook}
-                        buttonStyle={facebookStyle}
+                        iconType={'font-awesome'}
+                        iconName={'facebook'}
+                        iconColor={'white'}
+                        buttonStyleOverride={facebookStyle}
                         onPress={this.onPressFacebookLogin}
-                        rounded={true}
                     />
                 </Card>
             );
@@ -114,6 +115,7 @@ const styles = StyleSheet.create({
     },
     facebookStyle: {
         backgroundColor: facebookBlueButtonTransparent,
+        margin: 0,
         marginTop: 40
     },
 });

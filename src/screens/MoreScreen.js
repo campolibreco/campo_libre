@@ -1,11 +1,11 @@
 import {AppLoading} from 'expo';
 import React, {Component} from 'react';
-import {Platform, Text, View} from 'react-native';
+import {Platform, Text, View, ScrollView, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
-import {Icon, Button, Card} from 'react-native-elements';
+import {Icon, Button, Card, ListItem, Divider} from 'react-native-elements';
 
 import {logUserOutOfFacebook} from '../actions';
-import { badgeGreen, limeGreenTitle, linkColorBlue } from '../styles/index';
+import {badgeGreen, limeGreenTitle, linkColorBlue} from '../styles/index';
 
 import {more_screen} from '../locale.en';
 import {navKeys} from '../constants';
@@ -51,6 +51,8 @@ class MoreScreen extends Component {
     };
 
     renderScreen() {
+        const {headingStyle, cardStyle, listItemStyle} = styles;
+
         const {appReady} = this.props;
 
         if (!appReady) {
@@ -58,11 +60,38 @@ class MoreScreen extends Component {
         }
 
         return (
-            <Card>
-                <Text>
-                    More screen
-                </Text>
-            </Card>
+            <ScrollView>
+                <Text style={headingStyle}>First Heading</Text>
+                <Card containerStyle={cardStyle}>
+                    <ListItem
+                        containerStyle={listItemStyle}
+                        title={'First useful Link'}
+                        leftIcon={{name: 'md-bonfire', type: 'ionicon'}}
+                        bottomDivider={false}
+                        topDivider={false}
+                    />
+
+                    <ListItem
+                        title={'Another useful Link'}
+                        leftIcon={{name: 'md-bonfire', type: 'ionicon'}}
+                        bottomDivider={false}
+                        topDivider={false}
+                    />
+                </Card>
+
+                <Card>
+                    <ListItem
+                        title={'First useful Link'}
+                        leftIcon={{name: 'md-bonfire', type: 'ionicon'}}
+                    />
+
+                    <ListItem
+                        title={'Another useful Link'}
+                        leftIcon={{name: 'md-bonfire', type: 'ionicon'}}
+                    />
+                </Card>
+
+            </ScrollView>
         );
     }
 
@@ -74,6 +103,22 @@ class MoreScreen extends Component {
         )
     }
 }
+
+const styles = StyleSheet.create({
+    headingStyle: {
+        fontWeight: 'bold',
+        fontSize: 15,
+        marginLeft: 15,
+        marginTop: 15,
+        marginBottom: 5
+    },
+    cardStyle: {
+        marginTop: 0
+    },
+    listItemStyle: {
+        borderWidth: 0
+    }
+});
 
 const mapStateToProps = (state, ownProps) => {
     const {token, appReady} = state.auth;

@@ -1,9 +1,9 @@
 // 3rd part libraries - core
 import {AppLoading} from 'expo';
 import React, {Component} from 'react';
-import {View, Text, ImageBackground} from 'react-native';
+import {View, Text, ImageBackground, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
-import {Button} from 'react-native-elements'
+import {Button, Icon} from 'react-native-elements'
 // 3rd party libraries - additional
 import _ from 'lodash';
 
@@ -11,13 +11,22 @@ import _ from 'lodash';
 import {checkAndSetToken, setGuestToken, logUserIntoFacebook} from '../actions/index';
 
 // language and styles
-import { facebookBlueButtonTransparent, grayblue, navyBlueButtonTransparent, headerWhiteTransparent, overlayBlue, headerWhite} from '../styles/index';
+import {
+    facebookBlueButtonTransparent,
+    grayblue,
+    navyBlueButtonTransparent,
+    headerWhiteTransparent,
+    overlayBlue,
+    headerWhite
+} from '../styles/index';
 import {login} from '../locale.en';
+import {campsiteIcon} from "../styles";
 
 const {campo_libre, tagline, login_as_guest, login_with_facebook} = login;
 
 // our components - core
 // our components - additional
+import LargeButton from '../components/common/LargeButton';
 
 class LoginScreen extends Component {
 
@@ -47,38 +56,38 @@ class LoginScreen extends Component {
     };
 
     renderPage() {
-        const { heroContainer, overlayContainer, top, header, buttonContainer, facebookStyle, buttonStyle} = styles;
+        const {heroContainer, overlayContainer, top, header, buttonContainer, facebookStyle, buttonStyle, guestStyle} = styles;
 
         return (
-          <ImageBackground
-             source={require('../../assets/fireStarter.jpg')}
-             style={heroContainer}>
+            <ImageBackground
+                source={require('../../assets/fireStarter.jpg')}
+                style={heroContainer}>
 
-            <View style={overlayContainer}>
-              <View style={top}>
-                      <Text style={header}>{campo_libre}</Text>
-              </View>
+                <View style={overlayContainer}>
+                    <View style={top}>
+                        <Text style={header}>{campo_libre}</Text>
+                    </View>
 
-                <View style ={buttonContainer}>
-                  <Button
-                     large
-                     transparent
-                     icon={{name: 'facebook', type: 'font-awesome'}}
-                     title={login_with_facebook}
-                     buttonStyle={facebookStyle}
-                     onPress={this.onPressFacebookLogin}
-                     rounded={true}
-                 />
-                 <Button
-                     onPress={this.onPressContinueAsGuest}
-                     large
-                     buttonStyle={buttonStyle}
-                     icon={{name: 'envira', type: 'font-awesome'}}
-                     title={login_as_guest}
-                     rounded={true}
-                 />
-              </View>
-             </View>
+                    <View style={buttonContainer}>
+                        <LargeButton
+                            title={login_with_facebook}
+                            iconType={'font-awesome'}
+                            iconName={'facebook'}
+                            iconColor={'white'}
+                            buttonStyleOverride={facebookStyle}
+                            onPress={this.onPressFacebookLogin}
+                        />
+
+                        <LargeButton
+                            title={login_as_guest}
+                            iconType={'font-awesome'}
+                            iconName={'envira'}
+                            iconColor={'white'}
+                            buttonStyleOverride={guestStyle}
+                            onPress={this.onPressContinueAsGuest}
+                        />
+                    </View>
+                </View>
             </ImageBackground>
         );
     }
@@ -88,7 +97,7 @@ class LoginScreen extends Component {
         const {appReady} = this.props;
 
         if (!appReady) {
-            return <AppLoading />
+            return <AppLoading/>
 
         }
 
@@ -100,46 +109,49 @@ class LoginScreen extends Component {
     }
 }
 
-const styles = {
+const styles = StyleSheet.create({
     fillScreen: {
         flex: 1
     },
     overlayContainer: {
-      flex:1,
-      backgroundColor: overlayBlue
+        flex: 1,
+        backgroundColor: overlayBlue
     },
     heroContainer: {
-        flex: 1,
-        width: '100%',
-        height:'100%'
+        flex: 1
     },
-    top:{
-      height:'50%',
-      alignItems: 'center',
-      justifyContent:'center'
+    top: {
+        height: '50%',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
-    header:{
-      color: headerWhite,
-      fontSize:28,
-      borderColor:headerWhite,
-      borderWidth:2,
-      padding: 20,
-      paddingLeft: 40,
-      paddingRight:40,
-      backgroundColor:headerWhiteTransparent
+    header: {
+        color: headerWhite,
+        fontSize: 28,
+        borderColor: headerWhite,
+        borderWidth: 2,
+        padding: 20,
+        paddingLeft: 40,
+        paddingRight: 40,
+        backgroundColor: headerWhiteTransparent
     },
-    buttonContainer:{
-      height:'22%',
-      justifyContent: 'space-between'
+    buttonContainer: {
+        height: '22%',
+        justifyContent: 'space-between'
+    },
+    buttonStyle: {
+        margin: 30,
+        height: 70,
+        borderRadius: 40
     },
     facebookStyle: {
         backgroundColor: facebookBlueButtonTransparent,
         marginTop: 5
     },
-    buttonStyle: {
-        backgroundColor: navyBlueButtonTransparent
+    guestStyle: {
+        backgroundColor: navyBlueButtonTransparent,
     }
-};
+});
 
 const mapStateToProps = (state, ownProps) => {
     const {token, appReady, currentUser} = state.auth;
