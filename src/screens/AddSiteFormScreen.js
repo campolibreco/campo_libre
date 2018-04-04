@@ -1,11 +1,15 @@
 import React, {Component} from 'react';
 import {Alert, Picker, Platform, ScrollView, View, Image} from 'react-native';
 import {connect} from 'react-redux';
+import {Icon, Text, CheckBox, Input} from 'react-native-elements';
 
 import _ from 'lodash';
 
-import {Button, FormLabel, FormInput, Input, Icon, Overlay, Text, CheckBox} from 'react-native-elements';
-import {badgeGreen, limeGreenTitle, linkColorBlue, blueGreenNav} from '../styles/index';
+import LargeButton from '../components/common/LargeButton';
+import NavbarButton from '../components/common/NavbarButton';
+
+import {inputLabel} from '../styles/index';
+
 import {
     updateLatitudeText,
     updateLongitudeText,
@@ -28,7 +32,7 @@ import {
     siteDetailCheckboxWasClicked
 } from '../actions';
 
-import {campsite, submit_form, common} from '../locale.en';
+import {campsite, submit_form, common, more_screen} from '../locale.en';
 
 const {
     campsite_form: {
@@ -75,11 +79,9 @@ class AddSiteFormScreen extends Component {
 
         if (Platform.OS === 'ios') {
             return (
-                <Button
+                <NavbarButton
                     title={reset}
                     onPress={onClickReset}
-                    backgroundColor="rgba(0,0,0,0)"
-                    color={linkColorBlue}
                 />
             );
         } else if (Platform.OS === 'android') {
@@ -236,19 +238,18 @@ class AddSiteFormScreen extends Component {
 
     renderSubmitButton = () => {
         const {siteReadyForUpload} = this.props;
-        const {buttonStyle, lastElementStyle} = styles;
+        const {submitButtonStyle, lastElementStyle} = styles;
 
         if (siteReadyForUpload) {
             return (
-                <Button
-                    onPress={this.onClickSubmit}
-                    large
-                    rounded={true}
-                    buttonStyle={[buttonStyle, lastElementStyle]}
-                    icon={{name: 'plus', type: 'font-awesome'}}
+                <LargeButton
                     title={submit}
-                >  {submit}
-                </Button>
+                    iconType={'font-awesome'}
+                    iconName={'plus'}
+                    iconColor={'white'}
+                    buttonStyleOverride={submitButtonStyle}
+                    onPress={this.onClickSubmit}
+                />
             );
         } else {
             return (
@@ -260,7 +261,7 @@ class AddSiteFormScreen extends Component {
     };
 
     render() {
-        const {buttonStyle, headerTitle, largeTextInput, modalStyle, imageRowStyle} = styles;
+        const {iAmHereButtonStyle, headerTitle, largeTextInput, modalStyle, imageRowStyle, labelStyle, formInputStyle, pickerStyle} = styles;
         const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, priceOption} = this.props;
 
         return (
@@ -300,30 +301,31 @@ class AddSiteFormScreen extends Component {
                         {location}
                     </Text>
 
-                    <Button
-                        large
-                        rounded={true}
-                        onPress={this.onClickIAmHere}
-                        buttonStyle={buttonStyle}
-                        icon={{name: 'bullseye', type: 'font-awesome'}}
+                    <LargeButton
                         title={here_now}
-                    >
-                    </Button>
+                        iconType={'font-awesome'}
+                        iconName={'bullseye'}
+                        iconColor={'white'}
+                        buttonStyleOverride={iAmHereButtonStyle}
+                        onPress={this.onClickIAmHere}
+                    />
 
                     <Text h3
                           style={headerTitle}
                     >- or -</Text>
 
-                    <FormLabel>{latitude}</FormLabel>
-                    <FormInput
+                    <Text style={labelStyle}>{latitude}</Text>
+                    <Input
+                        containerStyle={formInputStyle}
                         placeholder={latitude_placeholder}
                         value={latitudeText}
                         onChangeText={this.onUpdateLatitudeText}
                         required
                     />
 
-                    <FormLabel>{longitude}</FormLabel>
-                    <FormInput
+                    <Text style={labelStyle}>{longitude}</Text>
+                    <Input
+                        containerStyle={formInputStyle}
                         placeholder={longitude_placeholder}
                         value={longitudeText}
                         onChangeText={this.onUpdateLongitudeText}
@@ -335,67 +337,75 @@ class AddSiteFormScreen extends Component {
                         {site_info}
                     </Text>
 
-                    <FormLabel>{title}</FormLabel>
-                    <FormInput
+                    <Text style={labelStyle}>{title}</Text>
+                    <Input
+                        autoCapitalize={'words'}
+                        containerStyle={formInputStyle}
                         placeholder={add_site_title}
                         value={siteTitleText}
                         onChangeText={this.onUpdateSiteTitleText}
                     />
 
-                    <FormLabel>{description}</FormLabel>
-                    <FormInput
+                    <Text style={labelStyle}>{description}</Text>
+                    <Input
+                        containerStyle={formInputStyle}
                         placeholder={description_placeholder}
                         value={siteDescriptionText}
                         onChangeText={this.onUpdateSiteDescriptionText}
                         containerStyle={largeTextInput}
+                        blurOnSubmit={true}
                         multiline={true}
-                        maxHeight={50}
+                        autoGrow={true}
                         editable={true}
                     />
 
-                    <FormLabel>{directions}</FormLabel>
-                    <FormInput
+                    <Text style={labelStyle}>{directions}</Text>
+                    <Input
+                        containerStyle={formInputStyle}
                         placeholder={directions_placeholder}
                         value={siteDirectionsText}
                         onChangeText={this.onUpdateSiteDirectionsText}
                         containerStyle={largeTextInput}
+                        blurOnSubmit={true}
                         multiline={true}
-                        maxLength={40}
-                        maxHeight={50}
+                        autoGrow={true}
                         editable={true}
                     />
 
-                    <FormLabel>{nearest_town}</FormLabel>
-                    <FormInput
+                    <Text style={labelStyle}>{nearest_town}</Text>
+                    <Input
+                        containerStyle={formInputStyle}
                         placeholder={nearest_town_placeholder}
                         value={siteNearestTownText}
                         onChangeText={this.onUpdateSiteNearestTownText}
                         editable={true}
                     />
 
-                    <FormLabel>{accessibility}</FormLabel>
+                    <Text style={labelStyle}>{accessibility}</Text>
                     <Picker
+                        style={[formInputStyle, pickerStyle]}
                         selectedValue={accessibilityOption}
                         onValueChange={this.onUpdateAccessibilityOption}
                     >
                         {this.accessibilityOptions()}
                     </Picker>
 
-                    <FormLabel>{price}</FormLabel>
+                    <Text style={labelStyle}>{price}</Text>
                     <Picker
+                        style={[formInputStyle, pickerStyle]}
                         selectedValue={priceOption}
                         onValueChange={this.onUpdatePriceOption}
                     >
                         {this.priceOptions()}
                     </Picker>
 
-                    <FormLabel>{facilities}</FormLabel>
-                    <View>
+                    <Text style={labelStyle}>{facilities}</Text>
+                    <View style={formInputStyle}>
                         {this.renderCheckboxes(facilities_options)}
                     </View>
 
-                    <FormLabel>{features}</FormLabel>
-                    <View>
+                    <Text style={labelStyle}>{features}</Text>
+                    <View style={formInputStyle}>
                         {this.renderCheckboxes(features_options)}
                     </View>
 
@@ -407,6 +417,14 @@ class AddSiteFormScreen extends Component {
 }
 
 const styles = {
+    formInputStyle: {
+        marginBottom: 30
+    },
+    labelStyle: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#86939e'
+    },
     descriptionStyle: {
         color: darkBlue,
         fontSize: 15
@@ -414,7 +432,13 @@ const styles = {
     sectionStyle: {
         backgroundColor: grey
     },
-    buttonStyle: {
+    submitButtonStyle: {
+        marginTop: 10,
+        marginBottom: 10,
+        backgroundColor: navyBlueButton,
+        marginBottom: 100
+    },
+    iAmHereButtonStyle: {
         marginTop: 10,
         marginBottom: 10,
         backgroundColor: navyBlueButton
@@ -465,6 +489,10 @@ const styles = {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-around'
+    },
+    pickerStyle: {
+        width: 250,
+        alignSelf: 'center'
     }
 
 };

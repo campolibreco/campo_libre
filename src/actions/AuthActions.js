@@ -163,8 +163,7 @@ export const checkAndSetToken = ({token, currentUser, navigate}) => {
                 })
             }
 
-            //TODO - change this back to SEARCH
-            navigate(navKeys.MORE);
+            navigate(navKeys.SEARCH);
         } else {
             dispatch({
                 type: APP_READY
