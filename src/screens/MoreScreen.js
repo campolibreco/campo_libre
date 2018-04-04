@@ -4,6 +4,8 @@ import {Platform, Text, View, ScrollView, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import {Icon, Button, Card, ListItem, Divider} from 'react-native-elements';
 
+import NavbarButton from '../components/common/NavbarButton';
+
 import {logUserOutOfFacebook} from '../actions';
 import {badgeGreen, limeGreenTitle, linkColorBlue} from '../styles/index';
 
@@ -24,11 +26,9 @@ class MoreScreen extends Component {
     static renderRightNavButton = ({onLogout}) => {
         if (Platform.OS === 'ios') {
             return (
-                <Button
+                <NavbarButton
                     title={more_screen.right_nav}
                     onPress={onLogout}
-                    backgroundColor="rgba(0,0,0,0)"
-                    color={linkColorBlue}
                 />
             );
         } else if (Platform.OS === 'android') {

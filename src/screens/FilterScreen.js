@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import {Text, ScrollView, View, StyleSheet, Platform, Switch} from 'react-native';
 import {connect} from "react-redux";
+import Accordion from 'react-native-collapsible/Accordion';
+import {CheckBox, Button, Icon} from 'react-native-elements';
 
 import _ from 'lodash';
 
-import {CheckBox, Button, Icon} from 'react-native-elements';
-import Accordion from 'react-native-collapsible/Accordion';
-import { badgeGreen, limeGreenTitle, linkColorBlue, blueGreenNav } from '../styles/index';
+import NavbarButton from '../components/common/NavbarButton';
+
 import {checkboxWasClicked, resetAllFilters, filterToggleLogicUpdated} from "../actions";
 
 import {map, navKeys} from '../constants';
@@ -70,11 +71,9 @@ class FilterScreen extends Component {
     static renderHeaderTitleButton = (navigate, {siteCount}) => {
         if (Platform.OS === 'ios') {
             return (
-                <Button
+                <NavbarButton
                     title={_.isUndefined(siteCount) ? '' : `${siteCount} ${results}`}
                     onPress={() => navigate(navKeys.SEARCH)}
-                    backgroundColor="rgba(0,0,0,0)"
-                    color={linkColorBlue}
                 />
             );
         } else if (Platform.OS === 'android') {
@@ -85,11 +84,9 @@ class FilterScreen extends Component {
     static renderRightNavButton = (navigate, {onClickReset}) => {
         if (Platform.OS === 'ios') {
             return (
-                <Button
+                <NavbarButton
                     title={reset}
                     onPress={onClickReset}
-                    backgroundColor="rgba(0,0,0,0)"
-                    color={linkColorBlue}
                 />
             );
         } else if (Platform.OS === 'android') {

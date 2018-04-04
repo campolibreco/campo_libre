@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 
 import _ from 'lodash';
 
+import NavbarButton from '../components/common/NavbarButton';
 import SearchList from '../components/SearchList';
 import SearchMap from '../components/SearchMap';
 
@@ -50,11 +51,9 @@ class SearchScreen extends Component {
 
         if (Platform.OS === 'ios') {
             return (
-                <Button
+                <NavbarButton
                     title={preparedName}
                     onPress={toggleButton}
-                    backgroundColor="rgba(0,0,0,0)"
-                    color={linkColorBlue}
                 />
             );
         } else if (Platform.OS === 'android') {
@@ -65,11 +64,9 @@ class SearchScreen extends Component {
     static renderRightNavButton = (navigate) => {
         if (Platform.OS === 'ios') {
             return (
-                <Button
+                <NavbarButton
                     title={filter}
                     onPress={() => navigate(navKeys.FILTER)}
-                    backgroundColor="rgba(0,0,0,0)"
-                    color={linkColorBlue}
                 />
             );
         } else if (Platform.OS === 'android') {

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {View, ScrollView, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
-import {Icon, List, Text, Card, Button} from 'react-native-elements';
+import {Icon, Text, Card, Button} from 'react-native-elements';
 
 import _ from 'lodash';
 
@@ -75,13 +75,13 @@ class FavoritesScreen extends Component {
 
             return (
                 <ScrollView>
-                    <List>
+                    <View>
                         {this.renderFavorites({
                             sites: currentUser.favorites,
                             getSiteDetail: this.props.getSiteDetail,
                             navigate
                         })}
-                    </List>
+                    </View>
                 </ScrollView>
             );
         } else {
