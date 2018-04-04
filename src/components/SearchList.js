@@ -1,7 +1,6 @@
 // 3rd party libraries - core
 import React from 'react';
-import {Text, StyleSheet, ScrollView} from 'react-native';
-import {List} from 'react-native-elements';
+import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import CampsiteListItem from './CampsiteListItem';
 // 3rd party libraries - additional
 // styles and language
@@ -30,9 +29,9 @@ const SearchList = ({sites, getSiteDetail, navigate}) => {
     } else {
         return (
             <ScrollView>
-                <List>
+                <View>
                     {renderCampsiteListItemList({sites, getSiteDetail, navigate})}
-                </List>
+                </View>
             </ScrollView>
         );
     }

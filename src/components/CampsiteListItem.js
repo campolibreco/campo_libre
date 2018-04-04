@@ -36,19 +36,18 @@ const renderIcons = ({features, facilities}) => {
 };
 
 const CampsiteListItem = ({site, getSiteDetail, navigate}) => {
-    const {textStyle, IconContainer, subtitleView, siteAvatarStyle, siteAvatarContainerStyle, titleView, nearestTownStyle, badgeWrapperStyle, badgeContainerStyle, accessibilityStyle} = styles
+    const {textStyle, IconContainer, subtitleView, titleContainerStyle, siteAvatarContainerStyle, titleView, nearestTownStyle, badgeWrapperStyle, badgeContainerStyle, accessibilityStyle} = styles
     const {campsite_form: {accessibility_options}} = campsite;
     const {id, title, description, nearestTown, accessibility, siteImageData, features, facilities} = site;
     const preparedDescription = description && description.length > 57 ?  `${description.substring(0, 57)}...` : description;
 
     return (
         <ListItem
+            bottomDivider={true}
             onPress={() => getSiteDetail({selectedSite: site, navigate})}
-            avatar={siteImageData ? {uri: `data:image/png;base64,${siteImageData}`} : require('../../assets/starTent.jpg')}
-            avatarContainerStyle={siteAvatarContainerStyle}
-            avatarStyle={siteAvatarStyle}
+            leftAvatar={{avatarStyle: siteAvatarContainerStyle, source: siteImageData ? {uri: `data:image/png;base64,${siteImageData}`} : require('../../assets/starTent.jpg')}}
             title={
-                <View>
+                <View style={titleContainerStyle}>
                     <Text style={titleView}>{title}</Text>
                     <Badge
                         wrapperStyle={badgeWrapperStyle}
@@ -75,25 +74,26 @@ const CampsiteListItem = ({site, getSiteDetail, navigate}) => {
 };
 
 const styles = StyleSheet.create({
+    titleContainerStyle:{
+        paddingLeft: 65
+    },
     IconContainer: {
         flexDirection: 'row',
-        paddingLeft: 10,
+        paddingLeft: 75,
         paddingTop: 5
     },
     badgeWrapperStyle: {
-        width: 100,
         marginLeft: 10
     },
     badgeContainerStyle: {
         backgroundColor: blueGreenNav
     },
-    siteAvatarStyle: {
-        flex: 1,
-        width: 120
-    },
     siteAvatarContainerStyle: {
+        marginLeft: 50,
+        borderRadius: 0,
+        paddingLeft: 0,
         height: 150,
-        width: 120
+        width: 150
     },
     nearestTownStyle: {
         color: 'white'
