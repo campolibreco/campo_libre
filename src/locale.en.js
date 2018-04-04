@@ -101,7 +101,25 @@ export const add_site_screen = {
 };
 
 export const more_screen = {
-    right_nav: 'Log Out'
+    title: 'More',
+    header_title: 'More Info',
+    right_nav: 'Log Out',
+    camping_tips: {
+        title: 'Camping Tips',
+        car_camping_checklist: 'Car Camping Checklist',
+    },
+    fire_safety_section: {
+        title: 'Fire Safety',
+        co_fire_bans: 'Colorado Fire Bans',
+        build_a_safe_fire: 'Make a Great (and Safe!) Bonfire',
+    },
+    wilderness_safety: {
+        title: 'Wilderness Safety',
+        general_safety_guidelines: 'General Camping Safety Tips',
+        camping_bear_safe: 'Camping Bear Safe',
+        safe_winter_camping: 'Guide to Safe Winter Camping',
+        forest_service_contact_info: 'U.S. Forest Service Contact Information'
+    }
 };
 
 export const submit_form = {
@@ -129,3 +147,4 @@ export const favorites = {
     no_favorites_detail: 'Add some Favorite Sites and they\'ll appear here!',
     must_log_in_detail: 'Only logged in users can save Favorite Sites. Log in and start saving all your favorites!'
 };
+

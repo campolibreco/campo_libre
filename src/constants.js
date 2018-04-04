@@ -54,3 +54,13 @@ export const featureIconDetails = {
     winter_access: {name: 'snowflake-o', type: 'font-awesome'},
     easy_access: {name: 'road', type: 'font-awesome'},
 };
+
+export const external_links = {
+    co_fire_bans_url: 'http://www.coemergency.com/p/fire-bans-danger.html',
+    build_a_safe_fire_url: 'https://www.nps.gov/articles/campfires.htm',
+    camping_bear_safe_url: 'http://www.campoutcolorado.com/camping-with-bears-in-colorado/',
+    general_safety_guidelines_url: 'https://www.fs.fed.us/visit/know-before-you-go/camping',
+    winter_camping_safely_url: 'https://www.reserveamerica.com/outdoors/what-you-need-to-know-for-winter-camping.htm',
+    car_camping_checklist_url: 'https://www.uncovercolorado.com/car-camping-checklist/',
+    forest_service_contact_url: 'http://cpw.state.co.us/thingstodo/Pages/USFSContactInfo.aspx'
+};
