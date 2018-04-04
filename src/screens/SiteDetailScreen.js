@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, ScrollView, Platform, TouchableOpacity} from 'react-native';
-import {Card, Text, List, ListItem} from 'react-native-elements';
+import {Card, Text, ListItem} from 'react-native-elements';
 import {Icon} from 'react-native-elements';
 import {connect} from 'react-redux';
 import {MapView} from 'expo';
@@ -203,16 +203,16 @@ class SiteDetailScreen extends Component {
                         <Text style={sectionTitleStyle}>
                             {campsite_form.facilities}
                         </Text>
-                        <List>
+                        <View>
                             {this.renderFacilities(facilities)}
-                        </List>
+                        </View>
 
                         <Text style={sectionTitleStyle}>
                             {campsite_form.features}
                         </Text>
-                        <List>
+                        <View>
                             {this.renderFeatures(features)}
-                        </List>
+                        </View>
 
                     </Card>
                 </ScrollView>
