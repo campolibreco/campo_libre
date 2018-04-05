@@ -67,7 +67,7 @@ import {map, permissionResponses} from '../constants';
 
 const {GRANTED, DENIED, UNDETERMINED} = permissionResponses;
 
-import {navyBlueButton, grey, darkBlue} from '../styles/index';
+import {navyBlueButton, grey, darkBlue, inputLabel} from '../styles/index';
 
 class AddSiteFormScreen extends Component {
 
@@ -488,7 +488,7 @@ const styles = {
     labelStyle: {
         fontSize: 16,
         fontWeight: 'bold',
-        color: '#86939e'
+        color: inputLabel
     },
     descriptionStyle: {
         color: darkBlue,
