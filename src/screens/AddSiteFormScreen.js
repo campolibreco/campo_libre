@@ -4,11 +4,10 @@ import {connect} from 'react-redux';
 import {Icon, Text, CheckBox, Input} from 'react-native-elements';
 
 import _ from 'lodash';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import LargeButton from '../components/common/LargeButton';
 import NavbarButton from '../components/common/NavbarButton';
-
-import {inputLabel} from '../styles/index';
 
 import {
     updateLatitudeText,
@@ -265,8 +264,8 @@ class AddSiteFormScreen extends Component {
         const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, priceOption} = this.props;
 
         return (
-            <View>
-                <ScrollView style={modalStyle}>
+            <KeyboardAwareScrollView>
+                <View style={modalStyle}>
                     <Text h2
                           style={headerTitle}
                     >
@@ -410,8 +409,8 @@ class AddSiteFormScreen extends Component {
                     </View>
 
                     {this.renderSubmitButton()}
-                </ScrollView>
-            </View>
+                </View>
+            </KeyboardAwareScrollView>
         );
     }
 }
