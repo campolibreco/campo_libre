@@ -55,7 +55,7 @@ export const campsite = {
             paved_road: "Paved Road",
             dirt_road: "Dirt Road",
             uneven_terrain: "Uneven Terrain",
-            fourbyfour: "4x4 Recommended",
+            fourbyfour: "High Clearance",
             fourbyfour_clearence: "4X4 Required",
             hike_access: "Hike Access"
         },
@@ -66,7 +66,7 @@ export const campsite = {
             river_view: 'River/Creek View',
             secluded: 'Secluded',
             mountain_views: 'Mountain Views',
-            winter_access: 'Accessible in Winter',
+            winter_access: 'Accessible in Spring',
             easy_access: 'Easy Access'
         },
         filter: {
@@ -107,6 +107,7 @@ export const more_screen = {
     camping_tips: {
         title: 'Camping Tips',
         car_camping_checklist: 'Car Camping Checklist',
+        google_maps_offline: 'Google Maps Offline Access'
     },
     fire_safety_section: {
         title: 'Fire Safety',
@@ -117,7 +118,7 @@ export const more_screen = {
         title: 'Wilderness Safety',
         general_safety_guidelines: 'General Camping Safety Tips',
         camping_bear_safe: 'Camping Bear Safe',
-        safe_winter_camping: 'Guide to Safe Winter Camping',
+        safe_winter_camping: 'Guide to Safe Snow Camping',
         forest_service_contact_info: 'U.S. Forest Service Contact Information'
     }
 };

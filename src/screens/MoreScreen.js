@@ -13,7 +13,7 @@ import {more_screen} from '../locale.en';
 const {fire_safety_section, wilderness_safety, camping_tips} = more_screen;
 
 import {external_links} from '../constants';
-const {co_fire_bans_url, build_a_safe_fire_url, camping_bear_safe_url, general_safety_guidelines_url, winter_camping_safely_url, car_camping_checklist_url, forest_service_contact_url} = external_links;
+const {co_fire_bans_url, build_a_safe_fire_url, camping_bear_safe_url, general_safety_guidelines_url, winter_camping_safely_url, car_camping_checklist_url, forest_service_contact_url, google_maps_offline_url} = external_links;
 
 class MoreScreen extends Component {
     componentDidMount() {
@@ -71,6 +71,13 @@ class MoreScreen extends Component {
                         containerStyle={listItemStyle}
                         title={camping_tips.car_camping_checklist}
                         leftIcon={{name: 'car-estate', type: 'material-community'}}
+                    />
+
+                    <ListItem
+                        onPress={()=>Expo.WebBrowser.openBrowserAsync(google_maps_offline_url)}
+                        containerStyle={listItemStyle}
+                        title={camping_tips.google_maps_offline}
+                        leftIcon={{name: 'globe', type: 'font-awesome'}}
                     />
                 </View>
 

@@ -62,5 +62,6 @@ export const external_links = {
     general_safety_guidelines_url: 'https://www.fs.fed.us/visit/know-before-you-go/camping',
     winter_camping_safely_url: 'https://www.reserveamerica.com/outdoors/what-you-need-to-know-for-winter-camping.htm',
     car_camping_checklist_url: 'https://www.uncovercolorado.com/car-camping-checklist/',
-    forest_service_contact_url: 'http://cpw.state.co.us/thingstodo/Pages/USFSContactInfo.aspx'
+    forest_service_contact_url: 'http://cpw.state.co.us/thingstodo/Pages/USFSContactInfo.aspx',
+    google_maps_offline_url: 'https://support.google.com/maps/answer/6291838'
 };
