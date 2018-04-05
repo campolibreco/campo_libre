@@ -11,7 +11,15 @@ import NavbarButton from '../components/common/NavbarButton';
 import SearchList from '../components/SearchList';
 import SearchMap from '../components/SearchMap';
 
-import {initializeMap, updateViewStyle, mapHasLoaded, updateRegion, getSiteDetail} from "../actions";
+import {
+    initializeMap,
+    updateViewStyle,
+    mapHasLoaded,
+    updateRegion,
+    getSiteDetail,
+    attemptToAddFavorite,
+    attemptToRemoveFavorite
+} from "../actions";
 import {badgeGreen, limeGreenTitle, linkColorBlue, blueGreenNav} from '../styles/index';
 
 import {map, navKeys} from '../constants';
@@ -87,8 +95,25 @@ class SearchScreen extends Component {
         }
     };
 
+    selectedSiteIsFavorite = () => {
+        const {currentUser, selectedSite} = this.props;
+
+        return !!_.find(currentUser.favorites, favorite => favorite.id === selectedSite.id);
+    };
+
+    toggleSiteFavorite = () => {
+        const {currentUser, selectedSite} = this.props;
+
+        if (!this.selectedSiteIsFavorite()) {
+            this.props.attemptToAddFavorite({selectedSite, currentUser});
+        } else {
+            this.props.attemptToRemoveFavorite({selectedSite, currentUser});
+        }
+
+    };
+
     renderSearchScreen = () => {
-        const {viewStyle, lastKnownRegion, mapLoaded, displaySites, selectedSite, navigation: {navigate}} = this.props;
+        const {viewStyle, lastKnownRegion, mapLoaded, displaySites, selectedSite, currentUser, navigation: {navigate}} = this.props;
 
         if (viewStyle === map.SearchOptions.MAP) {
             return (
@@ -100,6 +125,8 @@ class SearchScreen extends Component {
                     navigate={navigate}
                     getSiteDetail={this.props.getSiteDetail}
                     selectedSite={selectedSite}
+                    isFavorite={this.selectedSiteIsFavorite()}
+                    toggleSiteFavorite={this.toggleSiteFavorite}
                 />
             );
         } else if (viewStyle === map.SearchOptions.LIST) {
@@ -156,5 +183,7 @@ export default connect(mapStateToProps, {
     updateViewStyle,
     mapHasLoaded,
     updateRegion,
-    getSiteDetail
+    getSiteDetail,
+    attemptToAddFavorite,
+    attemptToRemoveFavorite
 })(SearchScreen);

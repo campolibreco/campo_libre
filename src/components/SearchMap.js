@@ -16,11 +16,11 @@ const {campsite_form: {accessibility_options}} = campsite;
 
 import {featureIconDetails, facilityIconDetails} from "../constants";
 
-import {campsiteIcon, selectedCampsiteIcon, navyBlueButton} from '../styles';
+import {campsiteIcon, selectedCampsiteIcon, navyBlueButton, linkColorBlue} from '../styles';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
-const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites, navigate, selectedSite, getSiteDetail}) => {
+const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites, navigate, selectedSite, getSiteDetail, isFavorite, toggleSiteFavorite}) => {
     const {fillScreen, spinnerContainerStyle} = styles;
 
     const newRegionIsAcceptable = (newRegion) => {
@@ -107,12 +107,20 @@ const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites, navigate, s
                     <TouchableOpacity style={touchableMainContainerStyle} onPress={() => getSiteDetail({selectedSite: selectedSite, navigate})}>
                         <View style={mainInnerContainerStyle}>
                             <View style={topRowInfoStyle}>
-                                <View>
-
-                                </View>
-                                <Icon style={closeIconStyle} type='ionicon' name='md-close-circle' size={40}
+                                <Icon style={closeIconStyle}
+                                      type='ionicon'
+                                      name='md-close-circle'
+                                      size={40}
                                       color={'white'}
-                                      onPress={() => getSiteDetail({selectedSite: null})}/>
+                                      onPress={() => getSiteDetail({selectedSite: null})}
+                                />
+
+                                <Icon type='ionicon'
+                                      name={isFavorite ? 'ios-heart' : 'ios-heart-outline'}
+                                      size={40}
+                                      color={'white'}
+                                      onPress={toggleSiteFavorite}
+                                />
                             </View>
 
                             <View style={bottomRowInfoStyle}>
@@ -222,7 +230,10 @@ const styles = StyleSheet.create({
     bottomRowText: {
         color: 'white',
         fontWeight: 'bold',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowOffset: {width: 1, height: 1},
+        textShadowRadius: 3
     },
     IconContainer: {
         flexDirection: 'row',
