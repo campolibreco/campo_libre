@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, ScrollView, Platform, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, ScrollView, Platform, TouchableOpacity, Image} from 'react-native';
 import {Card, Text, ListItem} from 'react-native-elements';
 import {Icon} from 'react-native-elements';
 import {connect} from 'react-redux';
@@ -133,6 +133,7 @@ class SiteDetailScreen extends Component {
                         titleStyle={mainTitleStyle}
                         image={siteImageData ? {uri: `data:image/png;base64,${siteImageData}`} : require('../../assets/starTent.jpg')}
                         imageProps={{resizeMode: 'cover'}}
+                        imageStyle={{height: 250}}
                     >
                         <Text style={[textStyle, bottomMargin]}>
                             {description}
