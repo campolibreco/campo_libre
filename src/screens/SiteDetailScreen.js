@@ -114,6 +114,25 @@ class SiteDetailScreen extends Component {
         });
     };
 
+    renderAlternateSites = () =>{
+        const {selectedSite} = this.props;
+        const {sectionTitleStyle, textStyle, bottomMargin} = styles;
+
+        if(selectedSite.alternateSites && selectedSite.alternateSites !== ''){
+            return(
+                <View>
+                    <Text style={sectionTitleStyle}>
+                        {campsite_form.alternate_sites}
+                    </Text>
+                    <Text style={[textStyle, bottomMargin]}>
+                        {selectedSite.alternateSites}
+                    </Text>
+                </View>
+            );
+        }
+
+    };
+
     onClickSiteDetailMapThumb = () => {
         const {navigation: {navigate}} = this.props;
 
@@ -166,6 +185,8 @@ class SiteDetailScreen extends Component {
                         <Text style={[textStyle, bottomMargin]}>
                             {directions}
                         </Text>
+
+                        {this.renderAlternateSites()}
 
                         <Text style={sectionTitleStyle}>
                             {location}

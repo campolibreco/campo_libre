@@ -30,6 +30,9 @@ export const campsite = {
         description_placeholder: 'Add Description',
         directions: 'Directions',
         directions_placeholder: 'Add descriptive directions',
+        optional: '(Optional)',
+        alternate_sites: 'Alternate Sites',
+        alternate_sites_placeholder: 'Any good backup sites nearby?',
         nearest_town: 'Nearest town',
         nearest_town_placeholder: 'Enter nearest town',
         here_now: 'I am here now',
@@ -37,6 +40,7 @@ export const campsite = {
         facilities: 'Facilities',
         price: 'Price',
         features: 'Features',
+        cell_service: 'Cell Service',
         price_options: {
             free: 'Free',
             paid: 'Paid',
@@ -72,6 +76,18 @@ export const campsite = {
         filter: {
             any_of_these: 'Any of these',
             exactly_these: 'Exactly these'
+        },
+        cell_service_options: {
+            att: 'AT&T',
+            sprint: 'Sprint',
+            verizon: 'Verizon',
+            other: 'Other'
+        },
+        cell_service_bars: {
+            none: 'none',
+            low: '1-2',
+            mid: '2-3',
+            high: '3+'
         }
     }
 };

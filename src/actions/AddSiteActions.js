@@ -17,7 +17,8 @@ import {
     ADD_SITE_SUCCESS,
     ADD_SITE_FAILURE,
     CHECK_IF_SITE_IS_READY,
-    SITE_DETAIL_CHECKBOX_UPDATED
+    SITE_DETAIL_CHECKBOX_UPDATED,
+    ALTERNATE_SITES_TEXT_CHANGED
 } from './types';
 
 import {navKeys} from '../constants';
@@ -54,6 +55,14 @@ export const updateSiteDirectionsText = ({siteDirectionsText}) => {
     return {
         type: SITE_DIRECTIONS_TEXT_CHANGED,
         payload: {siteDirectionsText}
+    }
+};
+
+
+export const updateAlternateSitesText = ({alternateSitesText}) => {
+    return {
+        type: ALTERNATE_SITES_TEXT_CHANGED,
+        payload: {alternateSitesText}
     }
 };
 
@@ -105,7 +114,7 @@ export const siteDetailCheckboxWasClicked = ({siteDetailCheckboxKey}) => {
 };
 
 
-export const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData}, navigate) => {
+export const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData, alternateSites}, navigate) => {
     const {longitude, latitude} = coordinate;
     const uniqueTitle = _(`${title}${longitude}${latitude}`)
         .replace(/ /g, '')
@@ -117,6 +126,7 @@ export const attemptToUploadSite = ({title, description, directions, nearestTown
                 title,
                 description,
                 directions,
+                alternateSites,
                 nearestTown,
                 accessibility,
                 facilities,

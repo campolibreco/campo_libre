@@ -18,7 +18,8 @@ import {
     MAP_IS_INITIALIZING,
     SITE_DETAIL_CHECKBOX_UPDATED,
     FACEBOOK_LOGOUT_COMPLETE,
-    ADDSITE_IMAGE_UPDATED
+    ADDSITE_IMAGE_UPDATED,
+    ALTERNATE_SITES_TEXT_CHANGED
 } from '../actions/types';
 
 import {campsite, reducerAlerts} from '../locale.en';
@@ -100,6 +101,10 @@ export default (state = INITIAL_STATE, action) => {
         case SITE_DIRECTIONS_TEXT_CHANGED:
             const {siteDirectionsText} = payload;
             return {...state, siteDirectionsText};
+
+        case ALTERNATE_SITES_TEXT_CHANGED:
+            const {alternateSitesText} = payload;
+            return {...state, alternateSitesText};
 
         case SITE_NEAREST_TOWN_TEXT_CHANGED:
             const {siteNearestTownText} = payload;

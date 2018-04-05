@@ -28,7 +28,8 @@ import {
     getCurrentUserLocation,
     checkIfSiteIsReadyForUpload,
     attemptToUploadSite,
-    siteDetailCheckboxWasClicked
+    siteDetailCheckboxWasClicked,
+    updateAlternateSitesText
 } from '../actions';
 
 import {campsite, submit_form, common, more_screen} from '../locale.en';
@@ -42,13 +43,17 @@ const {
         add_site, add_a_campsite, add_site_title, site_info,
         description, description_placeholder,
         directions, directions_placeholder,
+        optional,
+        alternate_sites, alternate_sites_placeholder,
         nearest_town, nearest_town_placeholder,
         here_now,
-        accessibility, facilities, price, features,
+        accessibility, facilities, price, features, cell_service,
         accessibility_options,
         facilities_options,
         features_options,
-        price_options
+        price_options,
+        cell_service_options,
+        cell_service_bars
     }
 } = campsite;
 
@@ -136,6 +141,10 @@ class AddSiteFormScreen extends Component {
         this.props.updateSiteDescriptionText({siteDescriptionText: newDescriptionText})
     };
 
+    onUpdateAlternateSitesText = (newAlternateSitesText) => {
+        this.props.updateAlternateSitesText({alternateSitesText: newAlternateSitesText})
+    };
+
     onUpdateSiteDirectionsText = (newDirectionsText) => {
         this.props.updateSiteDirectionsText({siteDirectionsText: newDirectionsText})
     };
@@ -220,6 +229,7 @@ class AddSiteFormScreen extends Component {
             title: this.props.siteTitleText,
             description: this.props.siteDescriptionText,
             directions: this.props.siteDirectionsText,
+            alternateSites: this.props.alternateSitesText,
             nearestTown: this.props.siteNearestTownText,
             accessibility: this.props.accessibilityOption,
             facilities: this.props.siteDetailCheckboxesKeys.facilities,
@@ -261,7 +271,7 @@ class AddSiteFormScreen extends Component {
 
     render() {
         const {iAmHereButtonStyle, headerTitle, largeTextInput, modalStyle, imageRowStyle, labelStyle, formInputStyle, pickerStyle} = styles;
-        const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, priceOption} = this.props;
+        const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, priceOption, alternateSitesText} = this.props;
 
         return (
             <KeyboardAwareScrollView>
@@ -408,6 +418,19 @@ class AddSiteFormScreen extends Component {
                         {this.renderCheckboxes(features_options)}
                     </View>
 
+                    <Text style={labelStyle}>{alternate_sites} {optional}</Text>
+                    <Input
+                        containerStyle={formInputStyle}
+                        placeholder={alternate_sites_placeholder}
+                        value={alternateSitesText}
+                        onChangeText={this.onUpdateAlternateSitesText}
+                        containerStyle={largeTextInput}
+                        blurOnSubmit={true}
+                        multiline={true}
+                        autoGrow={true}
+                        editable={true}
+                    />
+
                     {this.renderSubmitButton()}
                 </View>
             </KeyboardAwareScrollView>
@@ -497,7 +520,7 @@ const styles = {
 };
 
 function mapStateToProps(state) {
-    const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, priceOption, siteReadyForUpload, readyLatitude, readyLongitude, siteDetailCheckboxesKeys, siteImageData} = state.addSite;
+    const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, priceOption, siteReadyForUpload, readyLatitude, readyLongitude, siteDetailCheckboxesKeys, siteImageData, alternateSitesText} = state.addSite;
     const {locationServicesPermission, cameraPermission, cameraRollPermission} = state.permissions;
 
 
@@ -518,7 +541,8 @@ function mapStateToProps(state) {
         readyLatitude,
         readyLongitude,
         siteDetailCheckboxesKeys,
-        siteImageData
+        siteImageData,
+        alternateSitesText
     };
 }
 
@@ -541,5 +565,6 @@ export default connect(mapStateToProps, {
     getCurrentUserLocation,
     checkIfSiteIsReadyForUpload,
     attemptToUploadSite,
-    siteDetailCheckboxWasClicked
+    siteDetailCheckboxWasClicked,
+    updateAlternateSitesText
 })(AddSiteFormScreen);

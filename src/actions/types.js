@@ -19,6 +19,7 @@ export const LONGITUDE_TEXT_UPDATED = 'longitude_text_updated';
 export const SITE_TITLE_TEXT_CHANGED = 'site_title_text_changed';
 export const SITE_DESCRIPTION_TEXT_CHANGED = 'site_description_text_changed';
 export const SITE_DIRECTIONS_TEXT_CHANGED = 'site_directions_text_changed';
+export const ALTERNATE_SITES_TEXT_CHANGED = 'alternate_sites_text_changed';
 export const SITE_NEAREST_TOWN_TEXT_CHANGED = 'site_nearest_town_text_changed';
 export const SITE_ACCESSIBILITY_OPTION_CHANGED = 'site_accessibility_option_changed';
 export const SITE_FACILITIES_OPTION_CHANGED = 'site_facilities_option_changed';
