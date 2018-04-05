@@ -41,7 +41,7 @@ class SiteDetailScreen extends Component {
             const {currentUser, selectedSite} = nextProps;
             const willBeFavorite = !!_.find(currentUser.favorites, favorite => favorite.id === selectedSite.id);
 
-            if(willBeFavorite !== params.isFavorite){
+            if (willBeFavorite !== params.isFavorite) {
                 setParams({isFavorite: willBeFavorite});
             }
         }
@@ -114,12 +114,12 @@ class SiteDetailScreen extends Component {
         });
     };
 
-    renderAlternateSites = () =>{
+    renderAlternateSites = () => {
         const {selectedSite} = this.props;
         const {sectionTitleStyle, textStyle, bottomMargin} = styles;
 
-        if(selectedSite.alternateSites && selectedSite.alternateSites !== ''){
-            return(
+        if (selectedSite && selectedSite.alternateSites) {
+            return (
                 <View>
                     <Text style={sectionTitleStyle}>
                         {campsite_form.alternate_sites}
@@ -131,6 +131,55 @@ class SiteDetailScreen extends Component {
             );
         }
 
+    };
+
+    renderCellProvider = ({cellProvider}) => {
+        if (cellProvider) {
+            const {textStyle, bottomMargin} = styles;
+
+            return (
+                <Text style={[textStyle, bottomMargin]}>
+                    {campsite_form.cell_provider_options[cellProvider]}
+                </Text>
+            );
+        }
+    };
+
+    renderCellStrength = ({cellProvider, cellStrength}) => {
+        if (cellStrength) {
+            const {textStyle, bottomMargin, leftPad} = styles;
+            const stylesList = cellProvider ? [textStyle, bottomMargin, leftPad] : [textStyle, bottomMargin];
+
+            return (
+                <Text style={stylesList}>
+                    {campsite_form.cell_strength_options[cellStrength]}
+                </Text>
+            );
+        }
+    };
+
+    renderCellCoverageInfo = () => {
+        const {selectedSite} = this.props;
+
+        if (selectedSite) {
+            const {cellProvider, cellStrength} = selectedSite;
+            if (cellProvider || cellStrength) {
+                const {sectionTitleStyle, cellServiceContainerStyle} = styles;
+
+                return (
+                    <View>
+                        <Text style={sectionTitleStyle}>
+                            {campsite_form.cell_service}
+                        </Text>
+                        <View style={cellServiceContainerStyle}>
+                            {this.renderCellProvider({cellProvider})}
+                            {this.renderCellStrength({cellProvider, cellStrength})}
+                        </View>
+                    </View>
+                );
+            }
+
+        }
     };
 
     onClickSiteDetailMapThumb = () => {
@@ -236,6 +285,8 @@ class SiteDetailScreen extends Component {
                             {this.renderFeatures(features)}
                         </View>
 
+                        {this.renderCellCoverageInfo()}
+
                     </Card>
                 </ScrollView>
             );
@@ -286,6 +337,15 @@ const styles = StyleSheet.create({
         borderRadius: 50
     }, topRightIconStyle: {
         paddingRight: 20
+    },
+    cellServiceContainerStyle: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignContent: 'center'
+    },
+    leftPad: {
+        marginLeft: 10
     }
 });
 

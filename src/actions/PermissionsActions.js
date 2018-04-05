@@ -59,7 +59,6 @@ const getImage = async (dispatch, imageSourceType) => {
     let result = {cancelled: true};
 
     if (imageSourceType === imageSourceTypes.CAMERA_ROLL) {
-        console.log("In the CAMERA_ROLL area: ",imageSourceType);
 
         result = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
@@ -67,7 +66,6 @@ const getImage = async (dispatch, imageSourceType) => {
             quality: 0.4
         });
     } else if (imageSourceType === imageSourceTypes.CAMERA) {
-        console.log("In the CAMERA area: ",imageSourceType);
 
         result = await ImagePicker.launchCameraAsync({
             allowsEditing: true,

@@ -19,12 +19,14 @@ import {
     SITE_DETAIL_CHECKBOX_UPDATED,
     FACEBOOK_LOGOUT_COMPLETE,
     ADDSITE_IMAGE_UPDATED,
-    ALTERNATE_SITES_TEXT_CHANGED
+    ALTERNATE_SITES_TEXT_CHANGED,
+    SITE_CELL_PROVIDER_CHANGED,
+    SITE_CELL_STRENGTH_CHANGED
 } from '../actions/types';
 
 import {campsite, reducerAlerts} from '../locale.en';
 
-const {campsite_form: {accessibility_options, facilities_options, price_options, features_options}} = campsite;
+const {campsite_form: {accessibility_options, facilities_options, price_options, features_options, cell_provider_options, cell_strength_options}} = campsite;
 
 const INITIAL_STATE = {
     latitudeText: '',
@@ -35,9 +37,12 @@ const INITIAL_STATE = {
     siteImageData: '',
     siteDescriptionText: '',
     siteDirectionsText: '',
+    siteAlternateSitesText: '',
     siteNearestTownText: '',
-    accessibilityOption: accessibility_options.paved_road,
-    priceOption: price_options.free,
+    accessibilityOption: accessibility_options.blank,
+    priceOption: price_options.blank,
+    cellProviderOption: cell_provider_options.blank,
+    cellStrengthOption: cell_strength_options.blank,
     siteReadyForUpload: false,
     siteDetailCheckboxesKeys: {facilities: [], features: []}
 };
@@ -103,8 +108,8 @@ export default (state = INITIAL_STATE, action) => {
             return {...state, siteDirectionsText};
 
         case ALTERNATE_SITES_TEXT_CHANGED:
-            const {alternateSitesText} = payload;
-            return {...state, alternateSitesText};
+            const {siteAlternateSitesText} = payload;
+            return {...state, siteAlternateSitesText};
 
         case SITE_NEAREST_TOWN_TEXT_CHANGED:
             const {siteNearestTownText} = payload;
@@ -121,6 +126,14 @@ export default (state = INITIAL_STATE, action) => {
         case SITE_PRICE_OPTION_CHANGED:
             const {priceOption} = payload;
             return {...state, priceOption};
+
+        case SITE_CELL_PROVIDER_CHANGED:
+            const {cellProviderOption} = payload;
+            return {...state, cellProviderOption};
+
+        case SITE_CELL_STRENGTH_CHANGED:
+            const {cellStrengthOption} = payload;
+            return {...state, cellStrengthOption};
 
         case ADD_SITE_FIELDS_RESET:
             return {...INITIAL_STATE};

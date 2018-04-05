@@ -18,7 +18,9 @@ import {
     ADD_SITE_FAILURE,
     CHECK_IF_SITE_IS_READY,
     SITE_DETAIL_CHECKBOX_UPDATED,
-    ALTERNATE_SITES_TEXT_CHANGED
+    ALTERNATE_SITES_TEXT_CHANGED,
+    SITE_CELL_PROVIDER_CHANGED,
+    SITE_CELL_STRENGTH_CHANGED
 } from './types';
 
 import {navKeys} from '../constants';
@@ -59,10 +61,10 @@ export const updateSiteDirectionsText = ({siteDirectionsText}) => {
 };
 
 
-export const updateAlternateSitesText = ({alternateSitesText}) => {
+export const updateAlternateSitesText = ({siteAlternateSitesText}) => {
     return {
         type: ALTERNATE_SITES_TEXT_CHANGED,
-        payload: {alternateSitesText}
+        payload: {siteAlternateSitesText}
     }
 };
 
@@ -94,6 +96,20 @@ export const updatePriceOption = ({priceOption}) => {
     }
 };
 
+export const updateCellProviderOption = ({cellProviderOption}) => {
+    return {
+        type: SITE_CELL_PROVIDER_CHANGED,
+        payload: {cellProviderOption}
+    }
+};
+
+export const updateCellStrengthOption = ({cellStrengthOption}) => {
+    return {
+        type: SITE_CELL_STRENGTH_CHANGED,
+        payload: {cellStrengthOption}
+    }
+};
+
 export const resetAddScreenFields = () => {
     return {
         type: ADD_SITE_FIELDS_RESET
@@ -107,18 +123,18 @@ export const checkIfSiteIsReadyForUpload = () => {
 };
 
 export const siteDetailCheckboxWasClicked = ({siteDetailCheckboxKey}) => {
-    return{
+    return {
         type: SITE_DETAIL_CHECKBOX_UPDATED,
         payload: {siteDetailCheckboxKey}
     }
 };
 
 
-export const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData, alternateSites}, navigate) => {
+export const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData, alternateSites, cellProvider, cellStrength}, navigate) => {
     const {longitude, latitude} = coordinate;
     const uniqueTitle = _(`${title}${longitude}${latitude}`)
         .replace(/ /g, '')
-        .slice(0,30);
+        .slice(0, 30);
 
     return (dispatch) => {
         firebase.firestore().doc(`campsites/${uniqueTitle}`)
@@ -133,7 +149,9 @@ export const attemptToUploadSite = ({title, description, directions, nearestTown
                 features,
                 price,
                 coordinate,
-                siteImageData
+                siteImageData,
+                cellProvider,
+                cellStrength
             })
             .then(() => {
                 dispatch({

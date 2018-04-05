@@ -42,6 +42,7 @@ export const campsite = {
         features: 'Features',
         cell_service: 'Cell Service',
         price_options: {
+            blank: '',
             free: 'Free',
             paid: 'Paid',
             paid_reservable: 'Paid & Reservable',
@@ -56,6 +57,7 @@ export const campsite = {
             none: 'None'
         },
         accessibility_options: {
+            blank: '',
             paved_road: "Paved Road",
             dirt_road: "Dirt Road",
             uneven_terrain: "Uneven Terrain",
@@ -77,17 +79,19 @@ export const campsite = {
             any_of_these: 'Any of these',
             exactly_these: 'Exactly these'
         },
-        cell_service_options: {
+        cell_provider_options: {
+            blank: '',
             att: 'AT&T',
             sprint: 'Sprint',
             verizon: 'Verizon',
             other: 'Other'
         },
-        cell_service_bars: {
-            none: 'none',
-            low: '1-2',
-            mid: '2-3',
-            high: '3+'
+        cell_strength_options: {
+            blank: '',
+            none: 'No Service',
+            low: '1x',
+            mid: '3G',
+            high: 'LTE'
         }
     }
 };

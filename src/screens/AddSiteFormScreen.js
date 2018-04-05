@@ -29,7 +29,9 @@ import {
     checkIfSiteIsReadyForUpload,
     attemptToUploadSite,
     siteDetailCheckboxWasClicked,
-    updateAlternateSitesText
+    updateAlternateSitesText,
+    updateCellProviderOption,
+    updateCellStrengthOption
 } from '../actions';
 
 import {campsite, submit_form, common, more_screen} from '../locale.en';
@@ -52,8 +54,8 @@ const {
         facilities_options,
         features_options,
         price_options,
-        cell_service_options,
-        cell_service_bars
+        cell_provider_options,
+        cell_strength_options
     }
 } = campsite;
 
@@ -125,6 +127,18 @@ class AddSiteFormScreen extends Component {
         })
     }
 
+    cellProviderOptions() {
+        return Object.keys(cell_provider_options).map((key) => {
+            return <Picker.Item key={key} label={cell_provider_options[key]} value={key}/>;
+        })
+    }
+
+    cellStrengthOptions() {
+        return Object.keys(cell_strength_options).map((key) => {
+            return <Picker.Item key={key} label={cell_strength_options[key]} value={key}/>;
+        })
+    }
+
     onUpdateLatitudeText = (newLatText) => {
         this.props.updateLatitudeText({latitudeText: newLatText})
     };
@@ -142,7 +156,7 @@ class AddSiteFormScreen extends Component {
     };
 
     onUpdateAlternateSitesText = (newAlternateSitesText) => {
-        this.props.updateAlternateSitesText({alternateSitesText: newAlternateSitesText})
+        this.props.updateAlternateSitesText({siteAlternateSitesText: newAlternateSitesText})
     };
 
     onUpdateSiteDirectionsText = (newDirectionsText) => {
@@ -159,6 +173,14 @@ class AddSiteFormScreen extends Component {
 
     onUpdatePriceOption = (newPriceOption) => {
         this.props.updatePriceOption({priceOption: newPriceOption})
+    };
+
+    onUpdateCellProviderOption = (newCellProviderOption) => {
+        this.props.updateCellProviderOption({cellProviderOption: newCellProviderOption})
+    };
+
+    onUpdateCellStrengthOption = (newCellStrengthOption) => {
+        this.props.updateCellStrengthOption({cellStrengthOption: newCellStrengthOption})
     };
 
     onClickCheckbox = (key) => {
@@ -229,7 +251,7 @@ class AddSiteFormScreen extends Component {
             title: this.props.siteTitleText,
             description: this.props.siteDescriptionText,
             directions: this.props.siteDirectionsText,
-            alternateSites: this.props.alternateSitesText,
+            alternateSites: this.props.siteAlternateSitesText,
             nearestTown: this.props.siteNearestTownText,
             accessibility: this.props.accessibilityOption,
             facilities: this.props.siteDetailCheckboxesKeys.facilities,
@@ -239,7 +261,9 @@ class AddSiteFormScreen extends Component {
                 longitude: this.props.readyLongitude,
                 latitude: this.props.readyLatitude
             },
-            siteImageData: this.props.siteImageData
+            siteImageData: this.props.siteImageData,
+            cellProvider: this.props.cellProviderOption,
+            cellStrength: this.props.cellStrengthOption
         };
 
         this.props.attemptToUploadSite(newSite, navigate);
@@ -270,8 +294,8 @@ class AddSiteFormScreen extends Component {
     };
 
     render() {
-        const {iAmHereButtonStyle, headerTitle, largeTextInput, modalStyle, imageRowStyle, labelStyle, formInputStyle, pickerStyle} = styles;
-        const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, priceOption, alternateSitesText} = this.props;
+        const {iAmHereButtonStyle, headerTitle, largeTextInput, modalStyle, imageRowStyle, labelStyle, formInputStyle, pickerStyle, cellServiceContainerStyle, cellProviderPickerStyle, cellStrengthPickerStyle} = styles;
+        const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, priceOption, siteAlternateSitesText, cellProviderOption, cellStrengthOption} = this.props;
 
         return (
             <KeyboardAwareScrollView>
@@ -422,7 +446,7 @@ class AddSiteFormScreen extends Component {
                     <Input
                         containerStyle={formInputStyle}
                         placeholder={alternate_sites_placeholder}
-                        value={alternateSitesText}
+                        value={siteAlternateSitesText}
                         onChangeText={this.onUpdateAlternateSitesText}
                         containerStyle={largeTextInput}
                         blurOnSubmit={true}
@@ -430,6 +454,25 @@ class AddSiteFormScreen extends Component {
                         autoGrow={true}
                         editable={true}
                     />
+
+                    <Text style={labelStyle}>{cell_service} {optional}</Text>
+                    <View style={cellServiceContainerStyle}>
+                        <Picker
+                            style={[formInputStyle, cellProviderPickerStyle]}
+                            selectedValue={cellProviderOption}
+                            onValueChange={this.onUpdateCellProviderOption}
+                        >
+                            {this.cellProviderOptions()}
+                        </Picker>
+
+                        <Picker
+                            style={[formInputStyle, cellStrengthPickerStyle]}
+                            selectedValue={cellStrengthOption}
+                            onValueChange={this.onUpdateCellStrengthOption}
+                        >
+                            {this.cellStrengthOptions()}
+                        </Picker>
+                    </View>
 
                     {this.renderSubmitButton()}
                 </View>
@@ -515,12 +558,25 @@ const styles = {
     pickerStyle: {
         width: 250,
         alignSelf: 'center'
+    },
+    cellProviderPickerStyle:{
+        width: 90
+    },
+    cellStrengthPickerStyle:{
+        width: 130
+    },
+    cellServiceContainerStyle: {
+        width: 250,
+        alignSelf: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignContent: 'center'
     }
 
 };
 
 function mapStateToProps(state) {
-    const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, priceOption, siteReadyForUpload, readyLatitude, readyLongitude, siteDetailCheckboxesKeys, siteImageData, alternateSitesText} = state.addSite;
+    const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, priceOption, siteReadyForUpload, readyLatitude, readyLongitude, siteDetailCheckboxesKeys, siteImageData, siteAlternateSitesText, cellProviderOption, cellStrengthOption} = state.addSite;
     const {locationServicesPermission, cameraPermission, cameraRollPermission} = state.permissions;
 
 
@@ -542,7 +598,9 @@ function mapStateToProps(state) {
         readyLongitude,
         siteDetailCheckboxesKeys,
         siteImageData,
-        alternateSitesText
+        siteAlternateSitesText,
+        cellProviderOption,
+        cellStrengthOption
     };
 }
 
@@ -566,5 +624,7 @@ export default connect(mapStateToProps, {
     checkIfSiteIsReadyForUpload,
     attemptToUploadSite,
     siteDetailCheckboxWasClicked,
-    updateAlternateSitesText
+    updateAlternateSitesText,
+    updateCellProviderOption,
+    updateCellStrengthOption
 })(AddSiteFormScreen);
