@@ -137,8 +137,10 @@ class FilterScreen extends Component {
 
     renderCheckboxes = (checkboxObject) => {
         const {checkBoxRowStyle} = styles;
+        let clonedCheckboxObject = _.cloneDeep(checkboxObject);
+        delete clonedCheckboxObject.blank;
 
-        return _.map(checkboxObject, (value, key) => {
+        return _.map(clonedCheckboxObject, (value, key) => {
             return (
                 <CheckBox
                     containerStyle={checkBoxRowStyle}
