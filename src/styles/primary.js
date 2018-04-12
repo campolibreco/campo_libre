@@ -31,3 +31,5 @@ export const campsiteIcon = navyBlueButton;
 
 // AddSiteForm
 export const inputLabel = '#86939e';
+
+export const hyperlinkBlue = '#3366BB';

@@ -41,6 +41,9 @@ export const campsite = {
         price: 'Price',
         features: 'Features',
         cell_service: 'Cell Service',
+        county: 'County',
+        mvum: 'Motor Vehicle Use Map',
+        fire_ban_info: 'Fire Ban Info',
         price_options: {
             blank: '',
             free: 'Free',
@@ -169,3 +172,19 @@ export const favorites = {
     must_log_in_detail: 'Only logged in users can save Favorite Sites. Log in and start saving all your favorites!'
 };
 
+export const counties = {
+    chaffee: 'Chaffee',
+    lake: 'Lake',
+    el_paso: 'El Paso'
+};
+
+export const forest = {
+  san_isabel: 'San Isabel',
+  pike: 'Pike'
+};
+
+export const mvum_names = {
+    leadville: 'Leadville Ranger District',
+    salida: 'Salida Ranger District',
+    pike: 'Pikes Peak Ranger District'
+};

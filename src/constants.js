@@ -66,3 +66,9 @@ export const external_links = {
     forest_service_contact_url: 'http://cpw.state.co.us/thingstodo/Pages/USFSContactInfo.aspx',
     google_maps_offline_url: 'https://support.google.com/maps/answer/6291838'
 };
+
+export const mvum_links = {
+    leadville: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd496303.pdf',
+    salida: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd555441.pdf',
+    pike: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd574083.pdf'
+};

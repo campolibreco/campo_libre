@@ -11,10 +11,10 @@ import _ from 'lodash';
 
 import {attemptToAddFavorite, attemptToRemoveFavorite} from '../actions';
 
-import {linkColorBlue, navyBlueButton} from '../styles/index';
+import {linkColorBlue, navyBlueButton, hyperlinkBlue} from '../styles/index';
 
-import {navKeys, facilityIconDetails, featureIconDetails, map, tokens} from '../constants';
-import {site_detail_screen, campsite, common} from '../locale.en';
+import {navKeys, facilityIconDetails, featureIconDetails, map, tokens, mvum_links, external_links} from '../constants';
+import {site_detail_screen, campsite, common, counties, mvum_names} from '../locale.en';
 import {campsiteIcon} from "../styles";
 
 const {campsite_form} = campsite;
@@ -133,6 +133,60 @@ class SiteDetailScreen extends Component {
 
     };
 
+    renderMVUMInfo = () => {
+        const {selectedSite} = this.props;
+        const {sectionTitleStyle, textStyle, bottomMargin, hyperlinkStyle} = styles;
+
+        if (selectedSite && selectedSite.mvum) {
+            return (
+                <View>
+                    <Text style={sectionTitleStyle}>
+                        {campsite_form.mvum}
+                    </Text>
+                    <TouchableOpacity
+                        onPress={() => Expo.WebBrowser.openBrowserAsync(mvum_links[selectedSite.mvum])}
+                    >
+                        <Text style={[textStyle, bottomMargin, hyperlinkStyle]}>
+                            {mvum_names[selectedSite.mvum]}
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            );
+        }
+
+    };
+
+    renderCountyInfo = () => {
+        const {selectedSite} = this.props;
+        const {sectionTitleStyle, textStyle, bottomMargin, hyperlinkStyle, countyInlineStyle} = styles;
+
+        if (selectedSite && selectedSite.county) {
+            return (
+                <View>
+                    <Text style={sectionTitleStyle}>
+                        {campsite_form.county}
+                    </Text>
+                    <View style={countyInlineStyle}>
+                        <Text style={[textStyle, bottomMargin]}>
+                            {counties[selectedSite.county]}
+                        </Text>
+                        <Text>
+                            {' - '}
+                        </Text>
+                        <TouchableOpacity
+                            onPress={() => Expo.WebBrowser.openBrowserAsync(external_links.co_fire_bans_url)}
+                        >
+                            <Text style={hyperlinkStyle}>
+                                {campsite_form.fire_ban_info}
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            );
+        }
+
+    };
+
     renderCellProvider = ({cellProvider}) => {
         if (cellProvider) {
             const {textStyle, bottomMargin} = styles;
@@ -197,7 +251,7 @@ class SiteDetailScreen extends Component {
     renderSiteDetailScreen = () => {
         const {textStyle, sectionTitleStyle, mainTitleStyle, locationMainContainerStyle, mapThumbnailStyle, bottomMargin, cardContainerStyle, contentContainerStyle, siteImageStyle, touchableContainerStyle} = styles;
         const {selectedSite} = this.props;
-        const {accessibility, coordinate, description, directions, facilities, features, nearestTown, price, siteImageData, title} = selectedSite;
+        const {accessibility, coordinate, description, directions, facilities, features, nearestTown, price, siteImageData, title, county} = selectedSite;
 
         if (selectedSite) {
             return (
@@ -206,8 +260,10 @@ class SiteDetailScreen extends Component {
                         title={title}
                         titleStyle={mainTitleStyle}
                         containerStyle={cardContainerStyle}
-                        dividerStyle={{margin: 0, padding: 0,
-                            borderBottomWidth: 0}}
+                        dividerStyle={{
+                            margin: 0, padding: 0,
+                            borderBottomWidth: 0
+                        }}
                     >
 
                         <TouchableOpacity
@@ -247,6 +303,8 @@ class SiteDetailScreen extends Component {
                                 {campsite_form.price_options[price]}
                             </Text>
 
+                            {this.renderCountyInfo()}
+
                             <Text style={sectionTitleStyle}>
                                 {campsite_form.directions}
                             </Text>
@@ -254,12 +312,10 @@ class SiteDetailScreen extends Component {
                                 {directions}
                             </Text>
 
-                            {this.renderAlternateSites()}
-
                             <Text style={sectionTitleStyle}>
                                 {location}
                             </Text>
-                            <View style={locationMainContainerStyle}>
+                            <View style={[bottomMargin, locationMainContainerStyle]}>
                                 <View>
                                     <Text style={textStyle}>
                                         {campsite_form.latitude}: {coordinate.latitude}
@@ -289,6 +345,10 @@ class SiteDetailScreen extends Component {
                                     </Marker>
                                 </MapView>
                             </View>
+
+                            {this.renderMVUMInfo()}
+
+                            {this.renderAlternateSites()}
 
                             <Text style={sectionTitleStyle}>
                                 {campsite_form.facilities}
@@ -379,11 +439,18 @@ const styles = StyleSheet.create({
         height: 250
     },
     contentContainerStyle: {
-        paddingLeft: 10,
-        paddingRight: 10
+        paddingLeft: 15,
+        paddingRight: 15
     },
-    touchableContainerStyle:{
+    touchableContainerStyle: {
         marginTop: -15
+    },
+    hyperlinkStyle: {
+        color: hyperlinkBlue,
+        textDecorationLine: 'underline'
+    },
+    countyInlineStyle: {
+        flexDirection: 'row'
     }
 });
 
