@@ -195,7 +195,7 @@ class SiteDetailScreen extends Component {
     };
 
     renderSiteDetailScreen = () => {
-        const {textStyle, sectionTitleStyle, mainTitleStyle, locationMainContainerStyle, mapThumbnailStyle, bottomMargin, cardContainerStyle, contentContainerStyle, siteImageStyle} = styles;
+        const {textStyle, sectionTitleStyle, mainTitleStyle, locationMainContainerStyle, mapThumbnailStyle, bottomMargin, cardContainerStyle, contentContainerStyle, siteImageStyle, touchableContainerStyle} = styles;
         const {selectedSite} = this.props;
         const {accessibility, coordinate, description, directions, facilities, features, nearestTown, price, siteImageData, title} = selectedSite;
 
@@ -206,10 +206,12 @@ class SiteDetailScreen extends Component {
                         title={title}
                         titleStyle={mainTitleStyle}
                         containerStyle={cardContainerStyle}
-                        dividerStyle={{margin: 0, padding: 0}}
+                        dividerStyle={{margin: 0, padding: 0,
+                            borderBottomWidth: 0}}
                     >
 
                         <TouchableOpacity
+                            style={touchableContainerStyle}
                             onPress={this.onClickSiteImage}
                         >
                             <Image
@@ -341,8 +343,10 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 30,
         color: navyBlueButton,
-        marginBottom: 0,
-        paddingBottom: 0
+        marginTop: 15,
+        borderBottomWidth: 0,
+        paddingLeft: 5,
+        paddingRight: 5
     },
     sectionTitleStyle: {
         fontWeight: 'bold',
@@ -377,6 +381,9 @@ const styles = StyleSheet.create({
     contentContainerStyle: {
         paddingLeft: 10,
         paddingRight: 10
+    },
+    touchableContainerStyle:{
+        marginTop: -15
     }
 });
 
