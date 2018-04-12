@@ -188,8 +188,14 @@ class SiteDetailScreen extends Component {
         navigate(navKeys.SITE_DETAIL_MAP_VIEW);
     };
 
+    onClickSiteImage = () => {
+        const {navigation: {navigate}} = this.props;
+
+        navigate(navKeys.SITE_IMAGE_GALLERY);
+    };
+
     renderSiteDetailScreen = () => {
-        const {textStyle, sectionTitleStyle, mainTitleStyle, locationMainContainerStyle, mapThumbnailStyle, bottomMargin} = styles;
+        const {textStyle, sectionTitleStyle, mainTitleStyle, locationMainContainerStyle, mapThumbnailStyle, bottomMargin, cardContainerStyle, contentContainerStyle, siteImageStyle} = styles;
         const {selectedSite} = this.props;
         const {accessibility, coordinate, description, directions, facilities, features, nearestTown, price, siteImageData, title} = selectedSite;
 
@@ -199,93 +205,106 @@ class SiteDetailScreen extends Component {
                     <Card
                         title={title}
                         titleStyle={mainTitleStyle}
-                        image={siteImageData ? {uri: `data:image/png;base64,${siteImageData}`} : require('../../assets/starTent.jpg')}
-                        imageProps={{resizeMode: 'cover'}}
-                        imageStyle={{height: 250}}
+                        containerStyle={cardContainerStyle}
+                        dividerStyle={{margin: 0, padding: 0}}
                     >
-                        <Text style={[textStyle, bottomMargin]}>
-                            {description}
-                        </Text>
 
-                        <Text style={sectionTitleStyle}>
-                            {campsite_form.accessibility}
-                        </Text>
-                        <Text style={[textStyle, bottomMargin]}>
-                            {campsite_form.accessibility_options[accessibility]}
-                        </Text>
+                        <TouchableOpacity
+                            onPress={this.onClickSiteImage}
+                        >
+                            <Image
+                                style={siteImageStyle}
+                                resizeMode={'cover'}
+                                source={siteImageData ? {uri: `data:image/png;base64,${siteImageData}`} : require('../../assets/starTent.jpg')}
+                            />
+                        </TouchableOpacity>
 
-                        <Text style={sectionTitleStyle}>
-                            {campsite_form.nearest_town}
-                        </Text>
-                        <Text style={[textStyle, bottomMargin]}>
-                            {nearestTown}
-                        </Text>
+                        <View style={contentContainerStyle}>
+                            <Text style={[textStyle, bottomMargin]}>
+                                {description}
+                            </Text>
 
-                        <Text style={sectionTitleStyle}>
-                            {campsite_form.price}
-                        </Text>
-                        <Text style={[textStyle, bottomMargin]}>
-                            {campsite_form.price_options[price]}
-                        </Text>
+                            <Text style={sectionTitleStyle}>
+                                {campsite_form.accessibility}
+                            </Text>
+                            <Text style={[textStyle, bottomMargin]}>
+                                {campsite_form.accessibility_options[accessibility]}
+                            </Text>
 
-                        <Text style={sectionTitleStyle}>
-                            {campsite_form.directions}
-                        </Text>
-                        <Text style={[textStyle, bottomMargin]}>
-                            {directions}
-                        </Text>
+                            <Text style={sectionTitleStyle}>
+                                {campsite_form.nearest_town}
+                            </Text>
+                            <Text style={[textStyle, bottomMargin]}>
+                                {nearestTown}
+                            </Text>
 
-                        {this.renderAlternateSites()}
+                            <Text style={sectionTitleStyle}>
+                                {campsite_form.price}
+                            </Text>
+                            <Text style={[textStyle, bottomMargin]}>
+                                {campsite_form.price_options[price]}
+                            </Text>
 
-                        <Text style={sectionTitleStyle}>
-                            {location}
-                        </Text>
-                        <View style={locationMainContainerStyle}>
-                            <View>
-                                <Text style={textStyle}>
-                                    {campsite_form.latitude}: {coordinate.latitude}
-                                </Text>
-                                <Text style={[textStyle, bottomMargin]}>
-                                    {campsite_form.longitude}: {coordinate.longitude}
-                                </Text>
+                            <Text style={sectionTitleStyle}>
+                                {campsite_form.directions}
+                            </Text>
+                            <Text style={[textStyle, bottomMargin]}>
+                                {directions}
+                            </Text>
+
+                            {this.renderAlternateSites()}
+
+                            <Text style={sectionTitleStyle}>
+                                {location}
+                            </Text>
+                            <View style={locationMainContainerStyle}>
+                                <View>
+                                    <Text style={textStyle}>
+                                        {campsite_form.latitude}: {coordinate.latitude}
+                                    </Text>
+                                    <Text style={[textStyle, bottomMargin]}>
+                                        {campsite_form.longitude}: {coordinate.longitude}
+                                    </Text>
+                                </View>
+
+                                <MapView
+                                    style={mapThumbnailStyle}
+                                    cacheEnabled={true}
+                                    onPress={this.onClickSiteDetailMapThumb}
+                                    region={{
+                                        longitude: coordinate.longitude,
+                                        latitude: coordinate.latitude,
+                                        longitudeDelta: 1,
+                                        latitudeDelta: 1
+                                    }}
+                                >
+                                    <Marker
+                                        coordinate={coordinate}
+                                    >
+
+                                        <Icon type='material-community' name='tent' size={25} color={campsiteIcon}/>
+
+                                    </Marker>
+                                </MapView>
                             </View>
 
-                            <MapView
-                                style={mapThumbnailStyle}
-                                cacheEnabled={true}
-                                onPress={this.onClickSiteDetailMapThumb}
-                                region={{
-                                    longitude: coordinate.longitude,
-                                    latitude: coordinate.latitude,
-                                    longitudeDelta: 1,
-                                    latitudeDelta: 1
-                                }}
-                            >
-                                <Marker
-                                    coordinate={coordinate}
-                                >
+                            <Text style={sectionTitleStyle}>
+                                {campsite_form.facilities}
+                            </Text>
+                            <View>
+                                {this.renderFacilities(facilities)}
+                            </View>
 
-                                    <Icon type='material-community' name='tent' size={25} color={campsiteIcon}/>
+                            <Text style={sectionTitleStyle}>
+                                {campsite_form.features}
+                            </Text>
+                            <View>
+                                {this.renderFeatures(features)}
+                            </View>
 
-                                </Marker>
-                            </MapView>
+                            {this.renderCellCoverageInfo()}
+
                         </View>
-
-                        <Text style={sectionTitleStyle}>
-                            {campsite_form.facilities}
-                        </Text>
-                        <View>
-                            {this.renderFacilities(facilities)}
-                        </View>
-
-                        <Text style={sectionTitleStyle}>
-                            {campsite_form.features}
-                        </Text>
-                        <View>
-                            {this.renderFeatures(features)}
-                        </View>
-
-                        {this.renderCellCoverageInfo()}
 
                     </Card>
                 </ScrollView>
@@ -315,10 +334,15 @@ const styles = StyleSheet.create({
     bottomMargin: {
         marginBottom: 20
     },
+    cardContainerStyle: {
+        padding: 0
+    },
     mainTitleStyle: {
         fontWeight: 'bold',
         fontSize: 30,
-        color: navyBlueButton
+        color: navyBlueButton,
+        marginBottom: 0,
+        paddingBottom: 0
     },
     sectionTitleStyle: {
         fontWeight: 'bold',
@@ -346,6 +370,13 @@ const styles = StyleSheet.create({
     },
     leftPad: {
         marginLeft: 10
+    },
+    siteImageStyle: {
+        height: 250
+    },
+    contentContainerStyle: {
+        paddingLeft: 10,
+        paddingRight: 10
     }
 });
 

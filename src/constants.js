@@ -21,7 +21,8 @@ export const navKeys = {
     MORE: 'more',
     FILTER: 'filter',
     SITE_DETAIL: 'siteDetail',
-    SITE_DETAIL_MAP_VIEW: 'siteDetailMapView'
+    SITE_DETAIL_MAP_VIEW: 'siteDetailMapView',
+    SITE_IMAGE_GALLERY: 'siteImageGallery'
 };
 
 export const permissionResponses = {

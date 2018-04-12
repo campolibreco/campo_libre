@@ -21,6 +21,7 @@ import MoreScreen from './src/screens/MoreScreen';
 import AuthScreen from "./src/screens/AuthScreen";
 import SiteDetailScreen from "./src/screens/SiteDetailScreen";
 import SiteDetailMapViewScreen from "./src/screens/SiteDetailMapViewScreen";
+import SiteImageGalleryScreen from "./src/screens/SiteImageGalleryScreen";
 
 import {store, persistor} from './src/store';
 import {blueGreenNav, linkColorBlue} from "./src/styles";
@@ -76,6 +77,12 @@ class App extends Component {
             },
             [navKeys.SITE_DETAIL_MAP_VIEW]: {
                 screen: SiteDetailMapViewScreen,
+                navigationOptions: {
+                    tabBarVisible: false
+                }
+            },
+            [navKeys.SITE_IMAGE_GALLERY]: {
+                screen: SiteImageGalleryScreen,
                 navigationOptions: {
                     tabBarVisible: false
                 }

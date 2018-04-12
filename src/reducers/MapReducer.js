@@ -21,10 +21,10 @@ const {campsite_form: {accessibility_options, facilities_options, features_optio
 
 const INITIAL_STATE = {
     lastKnownRegion: {
-        latitude: 39.50650368421296,
-        latitudeDelta: 1.9622561912834797,
-        longitude: -105.97962943486341,
-        longitudeDelta: 1.721545855432879
+        latitude: 39.45920664966847,
+        latitudeDelta: 2.032473192672093,
+        longitude: -105.7341373487853,
+        longitudeDelta: 1.781939358781671
     },
     mapLoaded: false,
     viewStyle: map.SearchOptions.MAP,
@@ -147,7 +147,10 @@ export default (state = INITIAL_STATE, action) => {
                 lastKnownRegion: lastKnownRegionIncludingSelectedSite,
                 sites: sites,
                 filterCriteriaKeys: state.filterCriteriaKeys,
-                displaySites: filterSites({sites, filterResultsScrutinyLoose: state.filterResultsScrutinyLoose}, state.filterCriteriaKeys),
+                displaySites: filterSites({
+                    sites,
+                    filterResultsScrutinyLoose: state.filterResultsScrutinyLoose
+                }, state.filterCriteriaKeys),
                 mapLoaded: existingMapLoadedState,
                 filterResultsScrutinyLoose: state.filterResultsScrutinyLoose,
                 selectedSite: state.selectedSite
