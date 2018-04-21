@@ -318,10 +318,10 @@ class SiteDetailScreen extends Component {
                             <View style={[bottomMargin, locationMainContainerStyle]}>
                                 <View>
                                     <Text style={textStyle}>
-                                        {campsite_form.latitude}: {coordinate.latitude}
+                                        {campsite_form.latitude}: {coordinate.latitude.toFixed(5)}
                                     </Text>
                                     <Text style={[textStyle, bottomMargin]}>
-                                        {campsite_form.longitude}: {coordinate.longitude}
+                                        {campsite_form.longitude}: {coordinate.longitude.toFixed(5)}
                                     </Text>
                                 </View>
 
