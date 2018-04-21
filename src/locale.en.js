@@ -42,6 +42,7 @@ export const campsite = {
         features: 'Features',
         cell_service: 'Cell Service',
         county: 'County',
+        forest: 'Forest',
         mvum: 'Motor Vehicle Use Map',
         fire_ban_info: 'Fire Ban Info',
         price_options: {
@@ -173,18 +174,89 @@ export const favorites = {
 };
 
 export const counties = {
+    adams: 'Adams',
+    alamosa: 'Alamosa',
+    arapahoe: 'Arapahoe',
+    archuleta: 'Archuleta',
+    baca: 'Baca',
+    bent: 'Bent',
+    boulder: 'Boulder',
+    broomfield: 'Broomfield',
     chaffee: 'Chaffee',
+    cheyenne: 'Cheyenne',
+    clear_creek: 'Clear Creek',
+    conejos: 'Conejos',
+    costilla: 'Costilla',
+    crowley: 'Crowley',
+    custer: 'Custer',
+    delta: 'Delta',
+    denver: 'Denver',
+    dolores: 'Dolores',
+    douglas: 'Douglas',
+    eagle: 'Eagle',
+    el_paso: 'El Paso',
+    elbert: 'Elbert',
+    fremont: 'Fremont',
+    garfield: 'Garfield',
+    gilpin: 'Gilpin',
+    grand: 'Grand',
+    gunnison: 'Gunnison',
+    hinsdale: 'Hinsdale',
+    huerfano: 'Huerfano',
+    jackson: 'Jackson',
+    jefferson: 'Jefferson',
+    kiowa: 'Kiowa',
+    kit_carson: 'Kit Carson',
     lake: 'Lake',
-    el_paso: 'El Paso'
+    la_plata: 'La Plata',
+    larimer: 'Larimer',
+    las_animas: 'Las Animas',
+    lincoln: 'Lincoln',
+    logan: 'Logan',
+    mesa: 'Mesa',
+    mineral: 'Mineral',
+    moffat: 'Moffat',
+    montezuma: 'Montezuma',
+    montrose: 'Montrose',
+    morgan: 'Morgan',
+    otero: 'Otero',
+    ouray: 'Ouray',
+    park: 'Park',
+    phillips: 'Phillips',
+    pitkin: 'Pitkin',
+    prowers: 'Prowers',
+    pueblo: 'Pueblo',
+    rio_blanco: 'Rio Blanco',
+    rio_grande: 'Rio Grande',
+    routt: 'Routt',
+    saguache: 'Saguache',
+    san_juan: 'San Juan',
+    san_miguel: 'San Miguel',
+    sedgwick: 'Sedgwick',
+    summit: 'Summit',
+    teller: 'Teller',
+    washington: 'Washington',
+    weld: 'Weld',
+    yuma: 'Yuma'
+
 };
 
 export const forest = {
-  san_isabel: 'San Isabel',
-  pike: 'Pike'
+    arapaho: 'Arapaho',
+    grand_mesa: 'Grand Mesa',
+    gunnison: 'Gunnison',
+    pike: 'Pike',
+    rio_grande: 'Rio Grande',
+    roosevelt: 'Roosevelt',
+    routt: 'Routt',
+    san_isabel: 'San Isabel',
+    san_juan: 'San Juan',
+    uncompahgre: 'Uncompahgre',
+    white_river: 'White River'
 };
 
 export const mvum_names = {
     leadville: 'Leadville Ranger District',
-    salida: 'Salida Ranger District',
-    pike: 'Pikes Peak Ranger District'
+    pike: 'Pikes Peak Ranger District',
+    salida: 'Salida Ranger District'
 };

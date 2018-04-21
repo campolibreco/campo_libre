@@ -14,7 +14,7 @@ import {attemptToAddFavorite, attemptToRemoveFavorite} from '../actions';
 import {linkColorBlue, navyBlueButton, hyperlinkBlue} from '../styles/index';
 
 import {navKeys, facilityIconDetails, featureIconDetails, map, tokens, mvum_links, external_links} from '../constants';
-import {site_detail_screen, campsite, common, counties, mvum_names} from '../locale.en';
+import {site_detail_screen, campsite, common, counties, forest, mvum_names} from '../locale.en';
 import {campsiteIcon} from "../styles";
 
 const {campsite_form} = campsite;
@@ -187,6 +187,26 @@ class SiteDetailScreen extends Component {
 
     };
 
+    renderForestInfo = () => {
+        const {selectedSite} = this.props;
+        const {sectionTitleStyle, textStyle, bottomMargin, hyperlinkStyle, countyInlineStyle} = styles;
+
+        if (selectedSite && selectedSite.forest) {
+            return (
+                <View>
+                    <Text style={sectionTitleStyle}>
+                        {campsite_form.forest}
+                    </Text>
+                    <View style={countyInlineStyle}>
+                        <Text style={[textStyle, bottomMargin]}>
+                            {forest[selectedSite.forest]}
+                        </Text>
+                    </View>
+                </View>
+            );
+        }
+    };
+
     renderCellProvider = ({cellProvider}) => {
         if (cellProvider) {
             const {textStyle, bottomMargin} = styles;
@@ -304,6 +324,8 @@ class SiteDetailScreen extends Component {
                             </Text>
 
                             {this.renderCountyInfo()}
+
+                            {this.renderForestInfo()}
 
                             <Text style={sectionTitleStyle}>
                                 {campsite_form.directions}
