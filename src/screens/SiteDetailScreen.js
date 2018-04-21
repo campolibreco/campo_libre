@@ -134,7 +134,7 @@ class SiteDetailScreen extends Component {
     };
 
     renderMVUMInfo = () => {
-        const {selectedSite} = this.props;
+        const {selectedSite, navigation: {navigate}} = this.props;
         const {sectionTitleStyle, textStyle, bottomMargin, hyperlinkStyle} = styles;
 
         if (selectedSite && selectedSite.mvum) {
@@ -145,6 +145,7 @@ class SiteDetailScreen extends Component {
                     </Text>
                     <TouchableOpacity
                         onPress={() => Expo.WebBrowser.openBrowserAsync(mvum_links[selectedSite.mvum])}
+                        // onPress={() => navigate(navKeys.MVUM_INSPECTOR)}
                     >
                         <Text style={[textStyle, bottomMargin, hyperlinkStyle]}>
                             {mvum_names[selectedSite.mvum]}

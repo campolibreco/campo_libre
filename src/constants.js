@@ -22,7 +22,8 @@ export const navKeys = {
     FILTER: 'filter',
     SITE_DETAIL: 'siteDetail',
     SITE_DETAIL_MAP_VIEW: 'siteDetailMapView',
-    SITE_IMAGE_GALLERY: 'siteImageGallery'
+    SITE_IMAGE_GALLERY: 'siteImageGallery',
+    MVUM_INSPECTOR: 'mvumInspector'
 };
 
 export const permissionResponses = {

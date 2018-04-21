@@ -22,6 +22,7 @@ import AuthScreen from "./src/screens/AuthScreen";
 import SiteDetailScreen from "./src/screens/SiteDetailScreen";
 import SiteDetailMapViewScreen from "./src/screens/SiteDetailMapViewScreen";
 import SiteImageGalleryScreen from "./src/screens/SiteImageGalleryScreen";
+import MVUMInspectorScreen from "./src/screens/MVUMInspectorScreen";
 
 import {store, persistor} from './src/store';
 import {blueGreenNav, linkColorBlue} from "./src/styles";
@@ -83,6 +84,12 @@ class App extends Component {
             },
             [navKeys.SITE_IMAGE_GALLERY]: {
                 screen: SiteImageGalleryScreen,
+                navigationOptions: {
+                    tabBarVisible: false
+                }
+            },
+            [navKeys.MVUM_INSPECTOR]: {
+                screen: MVUMInspectorScreen,
                 navigationOptions: {
                     tabBarVisible: false
                 }

@@ -238,7 +238,6 @@ export const counties = {
     washington: 'Washington',
     weld: 'Weld',
     yuma: 'Yuma'
-
 };
 
 export const forest = {
@@ -258,5 +257,6 @@ export const forest = {
 export const mvum_names = {
     leadville: 'Leadville Ranger District',
     pike: 'Pikes Peak Ranger District',
-    salida: 'Salida Ranger District'
+    salida: 'Salida Ranger District',
+    south_park: 'South Park Ranger District'
 };
