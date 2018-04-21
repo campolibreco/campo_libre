@@ -303,11 +303,20 @@ class SiteDetailScreen extends Component {
                             </Text>
 
                             <Text style={sectionTitleStyle}>
+                                {campsite_form.price}
+                            </Text>
+                            <Text style={[textStyle, bottomMargin]}>
+                                {campsite_form.price_options[price]}
+                            </Text>
+
+                            <Text style={sectionTitleStyle}>
                                 {campsite_form.accessibility}
                             </Text>
                             <Text style={[textStyle, bottomMargin]}>
                                 {campsite_form.accessibility_options[accessibility]}
                             </Text>
+
+                            {this.renderForestInfo()}
 
                             <Text style={sectionTitleStyle}>
                                 {campsite_form.nearest_town}
@@ -316,16 +325,7 @@ class SiteDetailScreen extends Component {
                                 {nearestTown}
                             </Text>
 
-                            <Text style={sectionTitleStyle}>
-                                {campsite_form.price}
-                            </Text>
-                            <Text style={[textStyle, bottomMargin]}>
-                                {campsite_form.price_options[price]}
-                            </Text>
-
                             {this.renderCountyInfo()}
-
-                            {this.renderForestInfo()}
 
                             <Text style={sectionTitleStyle}>
                                 {campsite_form.directions}

@@ -242,17 +242,17 @@ export const counties = {
 };
 
 export const forest = {
-    arapaho: 'Arapaho',
-    grand_mesa: 'Grand Mesa',
-    gunnison: 'Gunnison',
-    pike: 'Pike',
-    rio_grande: 'Rio Grande',
-    roosevelt: 'Roosevelt',
-    routt: 'Routt',
-    san_isabel: 'San Isabel',
-    san_juan: 'San Juan',
-    uncompahgre: 'Uncompahgre',
-    white_river: 'White River'
+    arapaho: 'Arapaho National Forest',
+    grand_mesa: 'Grand Mesa National Forest',
+    gunnison: 'Gunnison National Forest',
+    pike: 'Pike National Forest',
+    rio_grande: 'Rio Grande National Forest',
+    roosevelt: 'Roosevelt National Forest',
+    routt: 'Routt National Forest',
+    san_isabel: 'San Isabel National Forest',
+    san_juan: 'San Juan National Forest',
+    uncompahgre: 'Uncompahgre National Forest',
+    white_river: 'White River National Forest'
 };
 
 export const mvum_names = {
