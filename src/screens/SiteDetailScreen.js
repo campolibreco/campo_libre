@@ -269,7 +269,7 @@ class SiteDetailScreen extends Component {
     };
 
     renderSiteDetailScreen = () => {
-        const {textStyle, sectionTitleStyle, mainTitleStyle, locationMainContainerStyle, mapThumbnailStyle, bottomMargin, cardContainerStyle, contentContainerStyle, siteImageStyle, touchableContainerStyle} = styles;
+        const {textStyle, sectionTitleStyle, mainTitleStyle, locationMainContainerStyle, mapThumbnailStyle, bottomMargin, topMargin, cardContainerStyle, contentContainerStyle, siteImageStyle, touchableContainerStyle} = styles;
         const {selectedSite} = this.props;
         const {accessibility, coordinate, description, directions, facilities, features, nearestTown, price, siteImageData, title, county} = selectedSite;
 
@@ -298,7 +298,7 @@ class SiteDetailScreen extends Component {
                         </TouchableOpacity>
 
                         <View style={contentContainerStyle}>
-                            <Text style={[textStyle, bottomMargin]}>
+                            <Text style={[textStyle, bottomMargin, topMargin]}>
                                 {description}
                             </Text>
 
@@ -417,6 +417,9 @@ const styles = StyleSheet.create({
     },
     bottomMargin: {
         marginBottom: 20
+    },
+    topMargin: {
+        marginTop: 20
     },
     cardContainerStyle: {
         padding: 0
