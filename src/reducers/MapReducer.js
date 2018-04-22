@@ -162,7 +162,8 @@ export default (state = INITIAL_STATE, action) => {
                 }, state.filterCriteriaKeys),
                 mapLoaded: existingMapLoadedState,
                 filterResultsScrutinyLoose: state.filterResultsScrutinyLoose,
-                selectedSite: state.selectedSite
+                selectedSite: state.selectedSite,
+                viewStyle: state.viewStyle
             } : INITIAL_STATE;
 
         case VIEW_STYLE_UPDATE:

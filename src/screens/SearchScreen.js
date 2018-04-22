@@ -37,18 +37,28 @@ class SearchScreen extends Component {
     }
 
     componentDidMount() {
-        const {lastKnownRegion, navigation: {setParams}} = this.props;
+        const {lastKnownRegion, viewStyle, navigation: {setParams}} = this.props;
 
-        setParams({buttonName: map.SearchOptions.LIST, toggleButton: this.toggleButton});
+        const newViewStyle = this.getNextViewStyle();
+
+        setParams({buttonName: newViewStyle, toggleButton: this.toggleButton});
 
         this.props.mapHasLoaded();
     }
+
+    getNextViewStyle = () => {
+        const {viewStyle} = this.props;
+
+        const newViewStyle = viewStyle === map.SearchOptions.MAP ? map.SearchOptions.LIST : map.SearchOptions.MAP;
+
+        return newViewStyle;
+    };
 
     toggleButton = () => {
         const {viewStyle} = this.props;
 
         const nextButtonName = viewStyle;
-        const newViewStyle = viewStyle === map.SearchOptions.MAP ? map.SearchOptions.LIST : map.SearchOptions.MAP;
+        const newViewStyle = this.getNextViewStyle();
 
         this.props.navigation.setParams({buttonName: nextButtonName});
         this.props.updateViewStyle(newViewStyle);
