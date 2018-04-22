@@ -77,7 +77,7 @@ export const campsite = {
             secluded: 'Secluded',
             mountain_views: 'Mountain Views',
             winter_access: 'Accessible in Spring',
-            easy_access: 'Easy Access'
+            easy_access: 'Easy Access from Town'
         },
         filter: {
             any_of_these: 'Any of these',
