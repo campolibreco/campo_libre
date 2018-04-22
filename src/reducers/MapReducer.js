@@ -15,7 +15,7 @@ import {
 } from '../actions/types';
 
 import {map} from "../constants";
-import {campsite} from '../locale.en';
+import {campsite, forest_names} from '../locale.en';
 
 const {campsite_form: {accessibility_options, facilities_options, features_options, price_options}} = campsite;
 
@@ -31,7 +31,7 @@ const INITIAL_STATE = {
     sites: [],
     displaySites: [],
     filterResultsScrutinyLoose: {facilities: true, features: true},
-    filterCriteriaKeys: {accessibility: [], facilities: [], price: [], features: []},
+    filterCriteriaKeys: {accessibility: [], facilities: [], price: [], features: [], forest: []},
     selectedSite: {}
 };
 
@@ -54,6 +54,8 @@ const updateFilterKeys = ({filterCriteriaKeys}, filterKey) => {
         filterCriteriaSubKey = 'features';
     } else if (_.includes(_.keys(price_options), filterKey)) {
         filterCriteriaSubKey = 'price';
+    } else if (_.includes(_.keys(forest_names), filterKey)) {
+        filterCriteriaSubKey = 'forest';
     }
 
     const keyIsAlreadyInList = _.includes(filterCriteriaKeys[filterCriteriaSubKey], filterKey);
@@ -69,16 +71,17 @@ const updateFilterKeys = ({filterCriteriaKeys}, filterKey) => {
 };
 
 const filterSites = ({sites, filterResultsScrutinyLoose}, updatedFilterKeys) => {
-    if (updatedFilterKeys.accessibility.length === 0 && updatedFilterKeys.facilities.length === 0 && updatedFilterKeys.features.length === 0 && updatedFilterKeys.price.length === 0) {
+    if (updatedFilterKeys.accessibility.length === 0 && updatedFilterKeys.facilities.length === 0 && updatedFilterKeys.features.length === 0 && updatedFilterKeys.price.length === 0 && updatedFilterKeys.forest.length === 0) {
         return sites;
     }
 
     const filteredSites = _.filter(sites, site => {
-        const {accessibility, price, facilities, features} = site;
+        const {accessibility, price, facilities, features, forest} = site;
         let accessibilityMatch = false;
         let facilitiesMatch = false;
         let featuresMatch = false;
         let priceMatch = false;
+        let forestMatch = false;
 
         if (updatedFilterKeys.accessibility.length === 0) {
             accessibilityMatch = true;
@@ -120,7 +123,13 @@ const filterSites = ({sites, filterResultsScrutinyLoose}, updatedFilterKeys) => 
             priceMatch = _.includes(updatedFilterKeys.price, price);
         }
 
-        return accessibilityMatch && facilitiesMatch && priceMatch && featuresMatch;
+        if (updatedFilterKeys.forest.length === 0) {
+            forestMatch = true;
+        } else {
+            forestMatch = _.includes(updatedFilterKeys.forest, forest);
+        }
+
+        return accessibilityMatch && facilitiesMatch && priceMatch && featuresMatch && forestMatch;
     });
 
     return filteredSites;

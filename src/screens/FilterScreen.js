@@ -12,10 +12,10 @@ import {checkboxWasClicked, resetAllFilters, filterToggleLogicUpdated} from "../
 
 import {map, navKeys} from '../constants';
 import {campsiteIcon, grey} from "../styles";
-import {campsite, filter_screen} from '../locale.en';
+import {campsite, filter_screen, forest_names} from '../locale.en';
 const {results} = filter_screen;
 
-const {campsite_form: {accessibility, facilities, price, features, accessibility_options, facilities_options, price_options, features_options, reset, filter}} = campsite;
+const {campsite_form: {accessibility, facilities, price, features, accessibility_options, facilities_options, price_options, features_options, reset, filter, forest}} = campsite;
 
 
 const ACCESSIBILITY = [
@@ -43,6 +43,13 @@ const PRICE = [
     {
         title: price,
         content: price_options
+    }
+];
+
+const FOREST = [
+    {
+        title: forest,
+        content: forest_names
     }
 ];
 
@@ -231,6 +238,15 @@ class FilterScreen extends Component {
                     initiallyActiveSection={collapsedState}
                     style={accordionFilterStyle}
                     sections={FEATURES}
+                    renderHeader={this.renderHeader}
+                    renderContent={this.renderContent}
+                />
+
+                <Accordion
+                    underlayColor={'#00000000'}
+                    initiallyActiveSection={collapsedState}
+                    style={accordionFilterStyle}
+                    sections={FOREST}
                     renderHeader={this.renderHeader}
                     renderContent={this.renderContent}
                 />
