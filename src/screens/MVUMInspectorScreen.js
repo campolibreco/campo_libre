@@ -10,7 +10,6 @@ class MVUMInspectorScreen extends Component {
     render() {
         const {fillScreen} = styles;
         const {selectedSite: {mvum}} = this.props;
-        console.log(mvum);
 
         return (
             <View style={fillScreen}>

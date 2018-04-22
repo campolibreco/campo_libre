@@ -21,10 +21,13 @@ import {
     ADDSITE_IMAGE_UPDATED,
     ALTERNATE_SITES_TEXT_CHANGED,
     SITE_CELL_PROVIDER_CHANGED,
-    SITE_CELL_STRENGTH_CHANGED
+    SITE_CELL_STRENGTH_CHANGED,
+    SITE_COUNTY_OPTION_CHANGED,
+    SITE_FOREST_OPTION_CHANGED,
+    SITE_MVUM_OPTION_CHANGED
 } from '../actions/types';
 
-import {campsite, reducerAlerts} from '../locale.en';
+import {campsite, reducerAlerts, counties, forest_names, mvum_names} from '../locale.en';
 
 const {campsite_form: {accessibility_options, facilities_options, price_options, features_options, cell_provider_options, cell_strength_options}} = campsite;
 
@@ -41,6 +44,9 @@ const INITIAL_STATE = {
     siteNearestTownText: '',
     accessibilityOption: accessibility_options.blank,
     priceOption: price_options.blank,
+    countyOption: counties.blank,
+    forestOption: forest_names.blank,
+    mvumOption: mvum_names.blank,
     cellProviderOption: cell_provider_options.blank,
     cellStrengthOption: cell_strength_options.blank,
     siteReadyForUpload: false,
@@ -119,13 +125,21 @@ export default (state = INITIAL_STATE, action) => {
             const {accessibilityOption} = payload;
             return {...state, accessibilityOption};
 
-        case SITE_FACILITIES_OPTION_CHANGED:
-            const {facilitiesOption} = payload;
-            return {...state, facilitiesOption};
-
         case SITE_PRICE_OPTION_CHANGED:
             const {priceOption} = payload;
             return {...state, priceOption};
+
+        case SITE_COUNTY_OPTION_CHANGED:
+            const {countyOption} = payload;
+            return {...state, countyOption};
+
+        case SITE_FOREST_OPTION_CHANGED:
+            const {forestOption} = payload;
+            return {...state, forestOption};
+
+        case SITE_MVUM_OPTION_CHANGED:
+            const {mvumOption} = payload;
+            return {...state, mvumOption};
 
         case SITE_CELL_PROVIDER_CHANGED:
             const {cellProviderOption} = payload;

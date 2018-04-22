@@ -20,7 +20,10 @@ import {
     SITE_DETAIL_CHECKBOX_UPDATED,
     ALTERNATE_SITES_TEXT_CHANGED,
     SITE_CELL_PROVIDER_CHANGED,
-    SITE_CELL_STRENGTH_CHANGED
+    SITE_CELL_STRENGTH_CHANGED,
+    SITE_COUNTY_OPTION_CHANGED,
+    SITE_FOREST_OPTION_CHANGED,
+    SITE_MVUM_OPTION_CHANGED
 } from './types';
 
 import {navKeys} from '../constants';
@@ -82,17 +85,31 @@ export const updateAccessibilityOption = ({accessibilityOption}) => {
     }
 };
 
-export const updateFacilitiesOption = ({facilitiesOption}) => {
-    return {
-        type: SITE_FACILITIES_OPTION_CHANGED,
-        payload: {facilitiesOption}
-    }
-};
-
 export const updatePriceOption = ({priceOption}) => {
     return {
         type: SITE_PRICE_OPTION_CHANGED,
         payload: {priceOption}
+    }
+};
+
+export const updateCountyOption = ({countyOption}) => {
+    return {
+        type: SITE_COUNTY_OPTION_CHANGED,
+        payload: {countyOption}
+    }
+};
+
+export const updateForestOption = ({forestOption}) => {
+    return {
+        type: SITE_FOREST_OPTION_CHANGED,
+        payload: {forestOption}
+    }
+};
+
+export const updateMVUMOption = ({mvumOption}) => {
+    return {
+        type: SITE_MVUM_OPTION_CHANGED,
+        payload: {mvumOption}
     }
 };
 
@@ -130,7 +147,7 @@ export const siteDetailCheckboxWasClicked = ({siteDetailCheckboxKey}) => {
 };
 
 
-export const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData, alternateSites, cellProvider, cellStrength}, navigate) => {
+export const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData, alternateSites, cellProvider, cellStrength, county, forest, mvum}, navigate) => {
     const {longitude, latitude} = coordinate;
     const uniqueTitle = _(`${title}${longitude}${latitude}`)
         .replace(/ /g, '')
@@ -151,7 +168,10 @@ export const attemptToUploadSite = ({title, description, directions, nearestTown
                 coordinate,
                 siteImageData,
                 cellProvider,
-                cellStrength
+                cellStrength,
+                county,
+                forest,
+                mvum
             })
             .then(() => {
                 dispatch({

@@ -69,7 +69,8 @@ export const external_links = {
 };
 
 export const mvum_links = {
-    leadville: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd496303.pdf',
-    salida: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd555441.pdf',
-    pike: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd574083.pdf'
+    leadville: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd496304.pdf',
+    salida: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd555442.pdf',
+    pike: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd574084.pdf',
+    south_park: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd544977.pdf'
 };

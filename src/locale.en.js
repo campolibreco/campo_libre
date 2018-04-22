@@ -174,6 +174,7 @@ export const favorites = {
 };
 
 export const counties = {
+    blank: '',
     adams: 'Adams',
     alamosa: 'Alamosa',
     arapahoe: 'Arapahoe',
@@ -240,7 +241,8 @@ export const counties = {
     yuma: 'Yuma'
 };
 
-export const forest = {
+export const forest_names = {
+    blank: '',
     arapaho: 'Arapaho National Forest',
     grand_mesa: 'Grand Mesa National Forest',
     gunnison: 'Gunnison National Forest',
@@ -255,6 +257,7 @@ export const forest = {
 };
 
 export const mvum_names = {
+    blank: '',
     leadville: 'Leadville Ranger District',
     pike: 'Pikes Peak Ranger District',
     salida: 'Salida Ranger District',

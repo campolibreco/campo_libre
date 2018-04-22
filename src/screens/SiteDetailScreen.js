@@ -14,7 +14,7 @@ import {attemptToAddFavorite, attemptToRemoveFavorite} from '../actions';
 import {linkColorBlue, navyBlueButton, hyperlinkBlue} from '../styles/index';
 
 import {navKeys, facilityIconDetails, featureIconDetails, map, tokens, mvum_links, external_links} from '../constants';
-import {site_detail_screen, campsite, common, counties, forest, mvum_names} from '../locale.en';
+import {site_detail_screen, campsite, common, counties, forest_names, mvum_names} from '../locale.en';
 import {campsiteIcon} from "../styles";
 
 const {campsite_form} = campsite;
@@ -200,7 +200,7 @@ class SiteDetailScreen extends Component {
                     </Text>
                     <View style={countyInlineStyle}>
                         <Text style={[textStyle, bottomMargin]}>
-                            {forest[selectedSite.forest]}
+                            {forest_names[selectedSite.forest]}
                         </Text>
                     </View>
                 </View>

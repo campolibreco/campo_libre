@@ -17,7 +17,6 @@ import {
     updateSiteDirectionsText,
     updateSiteNearestTownText,
     updateAccessibilityOption,
-    updateFacilitiesOption,
     updatePriceOption,
     resetAddScreenFields,
     promptForLocationServicesPermission,
@@ -31,10 +30,13 @@ import {
     siteDetailCheckboxWasClicked,
     updateAlternateSitesText,
     updateCellProviderOption,
-    updateCellStrengthOption
+    updateCellStrengthOption,
+    updateCountyOption,
+    updateForestOption,
+    updateMVUMOption
 } from '../actions';
 
-import {campsite, submit_form, common, more_screen} from '../locale.en';
+import {campsite, submit_form, common, more_screen, counties, mvum_names, forest_names} from '../locale.en';
 
 const {
     campsite_form: {
@@ -49,7 +51,7 @@ const {
         alternate_sites, alternate_sites_placeholder,
         nearest_town, nearest_town_placeholder,
         here_now,
-        accessibility, facilities, price, features, cell_service,
+        accessibility, facilities, price, features, cell_service, county, forest, mvum,
         accessibility_options,
         facilities_options,
         features_options,
@@ -127,6 +129,84 @@ class AddSiteFormScreen extends Component {
         })
     }
 
+    countyOptions() {
+        return Object.keys(counties).map((key) => {
+            return <Picker.Item key={key} label={counties[key]} value={key}/>;
+        })
+    }
+
+    renderCountyOptions() {
+        const {labelStyle, formInputStyle, pickerStyle} = styles;
+        const {countyOption, currentUser} = this.props;
+
+        if(currentUser.isAdmin){
+            return (
+                <View>
+                    <Text style={labelStyle}>{county} {optional}</Text>
+                    <Picker
+                        style={[formInputStyle, pickerStyle]}
+                        selectedValue={countyOption}
+                        onValueChange={this.onUpdateCountyOption}
+                    >
+                        {this.countyOptions()}
+                    </Picker>
+                </View>
+            );
+        }
+    }
+
+    forestOptions() {
+        return Object.keys(forest_names).map((key) => {
+            return <Picker.Item key={key} label={forest_names[key]} value={key}/>;
+        })
+    }
+
+    renderForestOptions() {
+        const {labelStyle, formInputStyle, pickerStyle} = styles;
+        const {forestOption, currentUser} = this.props;
+
+        if(currentUser.isAdmin){
+            return (
+                <View>
+                    <Text style={labelStyle}>{forest} {optional}</Text>
+                    <Picker
+                        style={[formInputStyle, pickerStyle]}
+                        selectedValue={forestOption}
+                        onValueChange={this.onUpdateForestOption}
+                    >
+                        {this.forestOptions()}
+                    </Picker>
+                </View>
+            );
+        }
+    }
+
+    mvumOptions() {
+        return Object.keys(mvum_names).map((key) => {
+            return <Picker.Item key={key} label={mvum_names[key]} value={key}/>;
+        })
+    }
+
+    renderMVUMOptions() {
+        const {labelStyle, formInputStyle, pickerStyle} = styles;
+        const {mvumOption, currentUser} = this.props;
+
+        if(currentUser.isAdmin){
+            return (
+                <View>
+                    <Text style={labelStyle}>{mvum} {optional}</Text>
+                    <Picker
+                        style={[formInputStyle, pickerStyle]}
+                        selectedValue={mvumOption}
+                        onValueChange={this.onUpdateMVUMOption}
+                    >
+                        {this.mvumOptions()}
+                    </Picker>
+                </View>
+            );
+        }
+    }
+
     cellProviderOptions() {
         return Object.keys(cell_provider_options).map((key) => {
             return <Picker.Item key={key} label={cell_provider_options[key]} value={key}/>;
@@ -140,51 +220,63 @@ class AddSiteFormScreen extends Component {
     }
 
     onUpdateLatitudeText = (newLatText) => {
-        this.props.updateLatitudeText({latitudeText: newLatText})
+        this.props.updateLatitudeText({latitudeText: newLatText});
     };
 
     onUpdateLongitudeText = (newLongText) => {
-        this.props.updateLongitudeText({longitudeText: newLongText})
+        this.props.updateLongitudeText({longitudeText: newLongText});
     };
 
     onUpdateSiteTitleText = (newTitleText) => {
-        this.props.updateSiteTitleText({siteTitleText: newTitleText})
+        this.props.updateSiteTitleText({siteTitleText: newTitleText});
     };
 
     onUpdateSiteDescriptionText = (newDescriptionText) => {
-        this.props.updateSiteDescriptionText({siteDescriptionText: newDescriptionText})
+        this.props.updateSiteDescriptionText({siteDescriptionText: newDescriptionText});
     };
 
     onUpdateAlternateSitesText = (newAlternateSitesText) => {
-        this.props.updateAlternateSitesText({siteAlternateSitesText: newAlternateSitesText})
+        this.props.updateAlternateSitesText({siteAlternateSitesText: newAlternateSitesText});
     };
 
     onUpdateSiteDirectionsText = (newDirectionsText) => {
-        this.props.updateSiteDirectionsText({siteDirectionsText: newDirectionsText})
+        this.props.updateSiteDirectionsText({siteDirectionsText: newDirectionsText});
     };
 
     onUpdateSiteNearestTownText = (newNearestTownText) => {
-        this.props.updateSiteNearestTownText({siteNearestTownText: newNearestTownText})
+        this.props.updateSiteNearestTownText({siteNearestTownText: newNearestTownText});
     };
 
     onUpdateAccessibilityOption = (newAccessibilityOption) => {
-        this.props.updateAccessibilityOption({accessibilityOption: newAccessibilityOption})
+        this.props.updateAccessibilityOption({accessibilityOption: newAccessibilityOption});
     };
 
     onUpdatePriceOption = (newPriceOption) => {
-        this.props.updatePriceOption({priceOption: newPriceOption})
+        this.props.updatePriceOption({priceOption: newPriceOption});
+    };
+
+    onUpdateCountyOption = (newCountyOption) => {
+        this.props.updateCountyOption({countyOption: newCountyOption});
+    };
+
+    onUpdateForestOption = (newForestOption) => {
+        this.props.updateForestOption({forestOption: newForestOption});
+    };
+
+    onUpdateMVUMOption = (newMVUMOption) => {
+        this.props.updateMVUMOption({mvumOption: newMVUMOption});
     };
 
     onUpdateCellProviderOption = (newCellProviderOption) => {
-        this.props.updateCellProviderOption({cellProviderOption: newCellProviderOption})
+        this.props.updateCellProviderOption({cellProviderOption: newCellProviderOption});
     };
 
     onUpdateCellStrengthOption = (newCellStrengthOption) => {
-        this.props.updateCellStrengthOption({cellStrengthOption: newCellStrengthOption})
+        this.props.updateCellStrengthOption({cellStrengthOption: newCellStrengthOption});
     };
 
     onClickCheckbox = (key) => {
-        this.props.siteDetailCheckboxWasClicked({siteDetailCheckboxKey: key})
+        this.props.siteDetailCheckboxWasClicked({siteDetailCheckboxKey: key});
     };
 
     renderCheckedState = (key) => {
@@ -263,7 +355,10 @@ class AddSiteFormScreen extends Component {
             },
             siteImageData: this.props.siteImageData,
             cellProvider: this.props.cellProviderOption,
-            cellStrength: this.props.cellStrengthOption
+            cellStrength: this.props.cellStrengthOption,
+            county: this.props.countyOption,
+            forest: this.props.forestOption,
+            mvum: this.props.mvumOption,
         };
 
         this.props.attemptToUploadSite(newSite, navigate);
@@ -295,7 +390,7 @@ class AddSiteFormScreen extends Component {
 
     render() {
         const {iAmHereButtonStyle, headerTitle, largeTextInput, modalStyle, imageRowStyle, labelStyle, formInputStyle, pickerStyle, cellServiceContainerStyle, cellProviderPickerStyle, cellStrengthPickerStyle} = styles;
-        const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, priceOption, siteAlternateSitesText, cellProviderOption, cellStrengthOption} = this.props;
+        const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, priceOption, siteAlternateSitesText, cellProviderOption, cellStrengthOption} = this.props;
 
         return (
             <KeyboardAwareScrollView>
@@ -474,6 +569,12 @@ class AddSiteFormScreen extends Component {
                         </Picker>
                     </View>
 
+                    {this.renderCountyOptions()}
+
+                    {this.renderForestOptions()}
+
+                    {this.renderMVUMOptions()}
+
                     {this.renderSubmitButton()}
                 </View>
             </KeyboardAwareScrollView>
@@ -559,10 +660,10 @@ const styles = {
         width: 250,
         alignSelf: 'center'
     },
-    cellProviderPickerStyle:{
+    cellProviderPickerStyle: {
         width: 90
     },
-    cellStrengthPickerStyle:{
+    cellStrengthPickerStyle: {
         width: 130
     },
     cellServiceContainerStyle: {
@@ -576,11 +677,12 @@ const styles = {
 };
 
 function mapStateToProps(state) {
-    const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, facilitiesOption, priceOption, siteReadyForUpload, readyLatitude, readyLongitude, siteDetailCheckboxesKeys, siteImageData, siteAlternateSitesText, cellProviderOption, cellStrengthOption} = state.addSite;
+    const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, priceOption, countyOption, forestOption, mvumOption, siteReadyForUpload, readyLatitude, readyLongitude, siteDetailCheckboxesKeys, siteImageData, siteAlternateSitesText, cellProviderOption, cellStrengthOption} = state.addSite;
     const {locationServicesPermission, cameraPermission, cameraRollPermission} = state.permissions;
-
+    const {currentUser} = state.auth;
 
     return {
+        currentUser,
         latitudeText,
         longitudeText,
         siteTitleText,
@@ -588,7 +690,6 @@ function mapStateToProps(state) {
         siteDirectionsText,
         siteNearestTownText,
         accessibilityOption,
-        facilitiesOption,
         priceOption,
         locationServicesPermission,
         cameraPermission,
@@ -600,7 +701,10 @@ function mapStateToProps(state) {
         siteImageData,
         siteAlternateSitesText,
         cellProviderOption,
-        cellStrengthOption
+        cellStrengthOption,
+        countyOption,
+        forestOption,
+        mvumOption
     };
 }
 
@@ -612,7 +716,6 @@ export default connect(mapStateToProps, {
     updateSiteDirectionsText,
     updateSiteNearestTownText,
     updateAccessibilityOption,
-    updateFacilitiesOption,
     updatePriceOption,
     resetAddScreenFields,
     promptForLocationServicesPermission,
@@ -626,5 +729,8 @@ export default connect(mapStateToProps, {
     siteDetailCheckboxWasClicked,
     updateAlternateSitesText,
     updateCellProviderOption,
-    updateCellStrengthOption
+    updateCellStrengthOption,
+    updateCountyOption,
+    updateForestOption,
+    updateMVUMOption
 })(AddSiteFormScreen);
