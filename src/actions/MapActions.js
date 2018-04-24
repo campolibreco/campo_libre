@@ -27,6 +27,7 @@ export const initializeMap = ({region}) => {
                 const sites = _.map(querySnapshot.docs, (doc, index) => {
                     let preparedSite = _.clone(doc.data());
                     preparedSite.id = doc.id;
+                    preparedSite.key = preparedSite.id;
 
                     return preparedSite;
                 });
