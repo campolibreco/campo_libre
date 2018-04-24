@@ -141,19 +141,12 @@ export default (state = INITIAL_STATE, action) => {
     switch (type) {
 
         case INITIALIZE_MAP:
-            const {region, sites} = payload;
+            const {sites} = payload;
             const existingMapLoadedState = state.mapLoaded;
-            const selectedSiteIsEmpty = _.isEmpty(state.selectedSite);
-            const lastKnownRegionIncludingSelectedSite = selectedSiteIsEmpty ? region : {
-                longitudeDelta: 0.25,
-                latitudeDelta: 0.25,
-                longitude: state.selectedSite.coordinate.longitude,
-                latitude: state.selectedSite.coordinate.latitude
-            };
 
             return payload ? {
                 ...INITIAL_STATE,
-                lastKnownRegion: lastKnownRegionIncludingSelectedSite,
+                lastKnownRegion: state.lastKnownRegion,
                 sites: sites,
                 filterCriteriaKeys: state.filterCriteriaKeys,
                 displaySites: filterSites({
@@ -211,17 +204,10 @@ export default (state = INITIAL_STATE, action) => {
 
         case SELECTED_SITE_UPDATE:
             const {selectedSite} = payload;
-            const updatedRegionFromSelectedSite = {
-                longitudeDelta: 0.25,
-                latitudeDelta: 0.25,
-                longitude: selectedSite.coordinate.longitude,
-                latitude: selectedSite.coordinate.latitude
-            };
 
-            return {...state, selectedSite, lastKnownRegion: updatedRegionFromSelectedSite};
+            return {...state, selectedSite};
 
-        case
-        SELECTED_SITE_CLEARED:
+        case SELECTED_SITE_CLEARED:
             return {...state, selectedSite: INITIAL_STATE.selectedSite};
 
         default:
