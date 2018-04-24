@@ -35,6 +35,26 @@ const INITIAL_STATE = {
     selectedSite: {}
 };
 
+const getBoundingBoxForRegion = ({region}) => {
+    return {
+        west: region.longitude - (region.longitudeDelta / 2), // westLng - min lng
+        south: region.latitude - (region.latitudeDelta / 2), // southLat - min lat
+        east: region.longitude + (region.longitudeDelta / 2), // eastLng - max lng
+        north: region.latitude + (region.latitudeDelta / 2) // northLat - max lat
+    }
+};
+
+const siteIsInBoundingBox = ({site, boundingBox}) => {
+    const {coordinate: {longitude, latitude}} = site;
+
+    const westOK = longitude > boundingBox.west;
+    const eastOK = longitude < boundingBox.east;
+    const northOK = latitude < boundingBox.north;
+    const southOK = latitude > boundingBox.south;
+
+    return westOK && eastOK && northOK && southOK;
+};
+
 const updateFilterResultsScrutiny = ({filterResultsScrutinyLoose}, filterToggleKey) => {
     let filterResultsScrutinyClone = _.cloneDeep(filterResultsScrutinyLoose);
 
@@ -70,10 +90,8 @@ const updateFilterKeys = ({filterCriteriaKeys}, filterKey) => {
     return updatedFilterKeyList;
 };
 
-const filterSites = ({sites, filterResultsScrutinyLoose}, updatedFilterKeys) => {
-    if (updatedFilterKeys.accessibility.length === 0 && updatedFilterKeys.facilities.length === 0 && updatedFilterKeys.features.length === 0 && updatedFilterKeys.price.length === 0 && updatedFilterKeys.forest.length === 0) {
-        return sites;
-    }
+const filterSites = ({sites, filterResultsScrutinyLoose, lastKnownRegion}, updatedFilterKeys) => {
+    const boundingBox = getBoundingBoxForRegion({region: lastKnownRegion});
 
     const filteredSites = _.filter(sites, site => {
         const {accessibility, price, facilities, features, forest} = site;
@@ -82,6 +100,12 @@ const filterSites = ({sites, filterResultsScrutinyLoose}, updatedFilterKeys) => 
         let featuresMatch = false;
         let priceMatch = false;
         let forestMatch = false;
+
+        const siteIsInView = siteIsInBoundingBox({site, boundingBox});
+
+        if(!siteIsInView){
+            return false;
+        }
 
         if (updatedFilterKeys.accessibility.length === 0) {
             accessibilityMatch = true;
@@ -151,7 +175,8 @@ export default (state = INITIAL_STATE, action) => {
                 filterCriteriaKeys: state.filterCriteriaKeys,
                 displaySites: filterSites({
                     sites,
-                    filterResultsScrutinyLoose: state.filterResultsScrutinyLoose
+                    filterResultsScrutinyLoose: state.filterResultsScrutinyLoose,
+                    lastKnownRegion: state.lastKnownRegion
                 }, state.filterCriteriaKeys),
                 mapLoaded: existingMapLoadedState,
                 filterResultsScrutinyLoose: state.filterResultsScrutinyLoose,
@@ -166,7 +191,10 @@ export default (state = INITIAL_STATE, action) => {
             return {...state, mapLoaded: true};
 
         case MAP_REGION_CHANGE:
-            return {...state, lastKnownRegion: payload};
+            const {newRegion} = payload;
+            const sitesFromRegionChange = filterSites({...state, lastKnownRegion: newRegion}, state.filterCriteriaKeys);
+
+            return {...state, lastKnownRegion: newRegion, displaySites: sitesFromRegionChange};
 
         case FACEBOOK_LOGOUT_COMPLETE:
             return INITIAL_STATE;
@@ -193,7 +221,8 @@ export default (state = INITIAL_STATE, action) => {
             const updatedFilterResultsScrutinyLooseObject = updateFilterResultsScrutiny(state, filterToggleKey);
             const newlyFiteredSitesWithNewToggleLogic = filterSites({
                 sites: state.sites,
-                filterResultsScrutinyLoose: updatedFilterResultsScrutinyLooseObject
+                filterResultsScrutinyLoose: updatedFilterResultsScrutinyLooseObject,
+                lastKnownRegion: state.lastKnownRegion
             }, state.filterCriteriaKeys);
 
             return {

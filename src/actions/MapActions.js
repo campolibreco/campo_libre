@@ -58,7 +58,7 @@ export const mapHasLoaded = () => {
 export const updateRegion = (newRegion) => {
     return {
         type: MAP_REGION_CHANGE,
-        payload: newRegion
+        payload: {newRegion}
     }
 };
 
