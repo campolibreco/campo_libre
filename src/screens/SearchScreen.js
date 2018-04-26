@@ -105,23 +105,6 @@ class SearchScreen extends Component {
         }
     };
 
-    selectedSiteIsFavorite = () => {
-        const {currentUser, selectedSite} = this.props;
-
-        return !!_.find(currentUser.favorites, favorite => favorite.id === selectedSite.id);
-    };
-
-    toggleSiteFavorite = () => {
-        const {currentUser, selectedSite} = this.props;
-
-        if (!this.selectedSiteIsFavorite()) {
-            this.props.attemptToAddFavorite({selectedSite, currentUser});
-        } else {
-            this.props.attemptToRemoveFavorite({selectedSite, currentUser});
-        }
-
-    };
-
     renderSearchScreen = () => {
         const {viewStyle, lastKnownRegion, mapLoaded, displaySites, selectedSite, currentUser, navigation: {navigate}} = this.props;
 
@@ -135,8 +118,6 @@ class SearchScreen extends Component {
                     navigate={navigate}
                     getSiteDetail={this.props.getSiteDetail}
                     selectedSite={selectedSite}
-                    isFavorite={this.selectedSiteIsFavorite()}
-                    toggleSiteFavorite={this.toggleSiteFavorite}
                 />
             );
         } else if (viewStyle === map.SearchOptions.LIST) {
