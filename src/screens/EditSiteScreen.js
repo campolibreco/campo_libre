@@ -60,10 +60,12 @@ class EditSiteScreen extends Component {
     };
 
     render() {
+        const {selectedSite} = this.props;
 
         return (
             <SiteInfoInputForm
                 siteFormType={site_form_type.EDIT}
+                siteToEdit={selectedSite}
             />
         );
     }
@@ -79,5 +81,11 @@ const styles = {
     }
 };
 
+function mapStateToProps(state) {
+    const {selectedSite} = state.map;
 
-export default connect(null, {resetScreenFields})(EditSiteScreen);
+    return {selectedSite}
+}
+
+
+export default connect(mapStateToProps, {resetScreenFields})(EditSiteScreen);

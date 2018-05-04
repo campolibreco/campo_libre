@@ -26,7 +26,8 @@ import {
     SITE_CELL_STRENGTH_CHANGED,
     SITE_COUNTY_OPTION_CHANGED,
     SITE_FOREST_OPTION_CHANGED,
-    SITE_MVUM_OPTION_CHANGED
+    SITE_MVUM_OPTION_CHANGED,
+    NEW_SITE_TO_EDIT
 } from '../actions/types';
 
 import {campsite, reducerAlerts, counties, forest_names, mvum_names} from '../locale.en';
@@ -54,6 +55,36 @@ const INITIAL_STATE = {
     cellStrengthOption: cell_strength_options.blank,
     siteReadyForUpload: false,
     siteDetailCheckboxesKeys: {facilities: [], features: []}
+};
+
+const setInitialEditStateFromSite = ({siteToEdit}) => {
+    const {accessibility, alternateSites, approvalState, cellProvider, cellStrength, coordinate, county, description, directions, facilities, features, forest, mvum, nearestTown, price, siteImageData, title} = siteToEdit;
+    const {latitude, longitude} = coordinate;
+
+    const siteStateToDispatch = {
+        accessibilityOption: accessibility,
+        siteAlternateSitesText: alternateSites,
+        approvalState: approvalState,
+        cellProviderOption: cellProvider,
+        cellStrengthOption: cellStrength,
+        latitudeText: latitude.toString(),
+        longitudeText: longitude.toString(),
+        countyOption: county,
+        siteDescriptionText: description,
+        siteDirectionsText: directions,
+        siteDetailCheckboxesKeys: {
+            facilities,
+            features
+        },
+        forestOption: forest,
+        mvumOption: mvum,
+        siteNearestTownText: nearestTown,
+        priceOption: price,
+        siteImageData,
+        siteTitleText: title
+    };
+
+    return siteStateToDispatch;
 };
 
 const updateSiteDetailCheckboxesKeys = ({siteDetailCheckboxesKeys}, siteDetailCheckboxKey) => {
@@ -89,6 +120,16 @@ const formReducer = prefix => (state = INITIAL_STATE, action) => {
     const {type, payload} = action;
 
     switch (type) {
+
+        case NEW_SITE_TO_EDIT:
+            if (prefix === site_form_type.EDIT) {
+                const {siteToEdit} = payload;
+                const siteStateToDispatch = setInitialEditStateFromSite({siteToEdit});
+
+                return {...siteStateToDispatch};
+            } else {
+                return state;
+            }
 
         case `${prefix}_${LATITUDE_TEXT_UPDATED}`:
             const {latitudeText} = payload;

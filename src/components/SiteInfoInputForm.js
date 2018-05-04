@@ -31,7 +31,8 @@ import {
     updateCellStrengthOption,
     updateCountyOption,
     updateForestOption,
-    updateMVUMOption
+    updateMVUMOption,
+    newSiteToEditAvailable
 } from '../actions';
 
 import {campsite, submit_form, common, more_screen, counties, mvum_names, forest_names} from '../locale.en';
@@ -75,6 +76,12 @@ class SiteInfoInputForm extends Component {
         const {siteFormType} = this.props;
 
         this.props.checkIfSiteIsReadyForUpload({siteFormType});
+
+        if(siteFormType === site_form_type.EDIT){
+            const {siteToEdit} = this.props;
+
+            this.props.newSiteToEditAvailable({siteToEdit});
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -766,7 +773,8 @@ const mapActions = {
     updateCellStrengthOption,
     updateCountyOption,
     updateForestOption,
-    updateMVUMOption
+    updateMVUMOption,
+    newSiteToEditAvailable
 };
 
 export default connect(mapStateToProps, mapActions)(SiteInfoInputForm);

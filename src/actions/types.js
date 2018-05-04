@@ -36,6 +36,7 @@ export const ADD_SITE_SUCCESS = 'add_site_success';
 export const ADD_SITE_FAILURE = 'add_site_failure';
 export const CHECK_IF_SITE_IS_READY = 'check_if_site_is_ready';
 export const SITE_DETAIL_CHECKBOX_UPDATED = 'site_detail_checkbox_updated';
+export const NEW_SITE_TO_EDIT = 'new_site_to_edit';
 
 export const FILTER_CRITERIA_UPDATED = 'filter_criteria_updated';
 export const FILTER_TOGGLE_LOGIC_UPDATED = 'filter_toggle_logic_updated';

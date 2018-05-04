@@ -23,7 +23,8 @@ import {
     SITE_CELL_STRENGTH_CHANGED,
     SITE_COUNTY_OPTION_CHANGED,
     SITE_FOREST_OPTION_CHANGED,
-    SITE_MVUM_OPTION_CHANGED
+    SITE_MVUM_OPTION_CHANGED,
+    NEW_SITE_TO_EDIT
 } from './types';
 
 import {navKeys} from '../constants';
@@ -143,6 +144,13 @@ export const siteDetailCheckboxWasClicked = ({siteDetailCheckboxKey, siteFormTyp
     return {
         type: `${siteFormType}_${SITE_DETAIL_CHECKBOX_UPDATED}`,
         payload: {siteDetailCheckboxKey}
+    }
+};
+
+export const newSiteToEditAvailable = ({siteToEdit}) => {
+    return {
+        type: NEW_SITE_TO_EDIT,
+        payload: {siteToEdit}
     }
 };
 
