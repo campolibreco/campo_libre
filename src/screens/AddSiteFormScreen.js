@@ -6,8 +6,7 @@ import {Icon, Text, CheckBox, Input} from 'react-native-elements';
 import _ from 'lodash';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-import LargeButton from '../components/common/LargeButton';
-import NavbarButton from '../components/common/NavbarButton';
+import {LargeButton, NavbarButton} from '../components/common/';
 
 import {
     updateLatitudeText,

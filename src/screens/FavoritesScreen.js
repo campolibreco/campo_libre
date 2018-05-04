@@ -6,7 +6,7 @@ import {Icon, Text, Card, Button} from 'react-native-elements';
 import _ from 'lodash';
 
 import CampsiteListItem from '../components/CampsiteListItem';
-import LargeButton from '../components/common/LargeButton';
+import {LargeButton} from '../components/common';
 
 
 import {getSiteDetail, logUserIntoFacebook} from '../actions';

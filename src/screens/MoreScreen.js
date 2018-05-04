@@ -4,7 +4,7 @@ import {Platform, Text, View, ScrollView, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import {Icon, Button, Card, ListItem, Divider} from 'react-native-elements';
 
-import NavbarButton from '../components/common/NavbarButton';
+import {NavbarButton} from '../components/common';
 
 import {logUserOutOfFacebook} from '../actions';
 import {badgeGreen, limeGreenTitle, linkColorBlue} from '../styles/index';

@@ -9,6 +9,8 @@ const {Marker} = MapView;
 
 import _ from 'lodash';
 
+import {SmallButton} from '../components/common';
+
 import {attemptToAddFavorite, attemptToRemoveFavorite} from '../actions';
 
 import {linkColorBlue, navyBlueButton, hyperlinkBlue} from '../styles/index';
@@ -257,6 +259,35 @@ class SiteDetailScreen extends Component {
         }
     };
 
+    renderAdminEditButton = () => {
+
+        return (
+            <Icon
+                  reverse={true}
+                  name='edit'
+                  size={30}
+                  color={navyBlueButton}
+                  onPress={() => console.log('Clicked!')}
+            />
+        );
+
+    };
+
+    renderAdminOptions = () => {
+        const {adminOptionsContainerStyle} = styles;
+        const {currentUser} = this.props;
+
+        if (!currentUser || !currentUser.isAdmin) {
+            return null;
+        }
+
+        return (
+            <View style={adminOptionsContainerStyle}>
+                {this.renderAdminEditButton()}
+            </View>
+        )
+    };
+
     onClickSiteDetailMapThumb = () => {
         const {navigation: {navigate}} = this.props;
 
@@ -389,6 +420,8 @@ class SiteDetailScreen extends Component {
 
                             {this.renderCellCoverageInfo()}
 
+                            {this.renderAdminOptions()}
+
                         </View>
 
                     </Card>
@@ -477,6 +510,11 @@ const styles = StyleSheet.create({
     },
     countyInlineStyle: {
         flexDirection: 'row'
+    },
+    adminOptionsContainerStyle:{
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-end'
     }
 });
 
