@@ -28,126 +28,126 @@ import {
 
 import {navKeys} from '../constants';
 
-export const updateLatitudeText = ({latitudeText}) => {
+export const updateLatitudeText = ({latitudeText, siteFormType}) => {
     return {
-        type: LATITUDE_TEXT_UPDATED,
+        type: `${siteFormType}_${LATITUDE_TEXT_UPDATED}`,
         payload: {latitudeText}
     }
 };
 
-export const updateLongitudeText = ({longitudeText}) => {
+export const updateLongitudeText = ({longitudeText, siteFormType}) => {
     return {
-        type: LONGITUDE_TEXT_UPDATED,
+        type: `${siteFormType}_${LONGITUDE_TEXT_UPDATED}`,
         payload: {longitudeText}
     }
 };
 
-export const updateSiteTitleText = ({siteTitleText}) => {
+export const updateSiteTitleText = ({siteTitleText, siteFormType}) => {
     return {
-        type: SITE_TITLE_TEXT_CHANGED,
+        type: `${siteFormType}_${SITE_TITLE_TEXT_CHANGED}`,
         payload: {siteTitleText}
     }
 };
 
-export const updateSiteDescriptionText = ({siteDescriptionText}) => {
+export const updateSiteDescriptionText = ({siteDescriptionText, siteFormType}) => {
     return {
-        type: SITE_DESCRIPTION_TEXT_CHANGED,
+        type: `${siteFormType}_${SITE_DESCRIPTION_TEXT_CHANGED}`,
         payload: {siteDescriptionText}
     }
 };
 
-export const updateSiteDirectionsText = ({siteDirectionsText}) => {
+export const updateSiteDirectionsText = ({siteDirectionsText, siteFormType}) => {
     return {
-        type: SITE_DIRECTIONS_TEXT_CHANGED,
+        type: `${siteFormType}_${SITE_DIRECTIONS_TEXT_CHANGED}`,
         payload: {siteDirectionsText}
     }
 };
 
 
-export const updateAlternateSitesText = ({siteAlternateSitesText}) => {
+export const updateAlternateSitesText = ({siteAlternateSitesText, siteFormType}) => {
     return {
-        type: ALTERNATE_SITES_TEXT_CHANGED,
+        type: `${siteFormType}_${ALTERNATE_SITES_TEXT_CHANGED}`,
         payload: {siteAlternateSitesText}
     }
 };
 
-export const updateSiteNearestTownText = ({siteNearestTownText}) => {
+export const updateSiteNearestTownText = ({siteNearestTownText, siteFormType}) => {
     return {
-        type: SITE_NEAREST_TOWN_TEXT_CHANGED,
+        type: `${siteFormType}_${SITE_NEAREST_TOWN_TEXT_CHANGED}`,
         payload: {siteNearestTownText}
     }
 };
 
-export const updateAccessibilityOption = ({accessibilityOption}) => {
+export const updateAccessibilityOption = ({accessibilityOption, siteFormType}) => {
     return {
-        type: SITE_ACCESSIBILITY_OPTION_CHANGED,
+        type: `${siteFormType}_${SITE_ACCESSIBILITY_OPTION_CHANGED}`,
         payload: {accessibilityOption}
     }
 };
 
-export const updatePriceOption = ({priceOption}) => {
+export const updatePriceOption = ({priceOption, siteFormType}) => {
     return {
-        type: SITE_PRICE_OPTION_CHANGED,
+        type: `${siteFormType}_${SITE_PRICE_OPTION_CHANGED}`,
         payload: {priceOption}
     }
 };
 
-export const updateCountyOption = ({countyOption}) => {
+export const updateCountyOption = ({countyOption, siteFormType}) => {
     return {
-        type: SITE_COUNTY_OPTION_CHANGED,
+        type: `${siteFormType}_${SITE_COUNTY_OPTION_CHANGED}`,
         payload: {countyOption}
     }
 };
 
-export const updateForestOption = ({forestOption}) => {
+export const updateForestOption = ({forestOption, siteFormType}) => {
     return {
-        type: SITE_FOREST_OPTION_CHANGED,
+        type: `${siteFormType}_${SITE_FOREST_OPTION_CHANGED}`,
         payload: {forestOption}
     }
 };
 
-export const updateMVUMOption = ({mvumOption}) => {
+export const updateMVUMOption = ({mvumOption, siteFormType}) => {
     return {
-        type: SITE_MVUM_OPTION_CHANGED,
+        type: `${siteFormType}_${SITE_MVUM_OPTION_CHANGED}`,
         payload: {mvumOption}
     }
 };
 
-export const updateCellProviderOption = ({cellProviderOption}) => {
+export const updateCellProviderOption = ({cellProviderOption, siteFormType}) => {
     return {
-        type: SITE_CELL_PROVIDER_CHANGED,
+        type: `${siteFormType}_${SITE_CELL_PROVIDER_CHANGED}`,
         payload: {cellProviderOption}
     }
 };
 
-export const updateCellStrengthOption = ({cellStrengthOption}) => {
+export const updateCellStrengthOption = ({cellStrengthOption, siteFormType}) => {
     return {
-        type: SITE_CELL_STRENGTH_CHANGED,
+        type: `${siteFormType}_${SITE_CELL_STRENGTH_CHANGED}`,
         payload: {cellStrengthOption}
     }
 };
 
-export const resetAddScreenFields = () => {
+export const resetScreenFields = ({siteFormType}) => {
     return {
-        type: ADD_SITE_FIELDS_RESET
+        type: `${siteFormType}_${ADD_SITE_FIELDS_RESET}`
     }
 };
 
-export const checkIfSiteIsReadyForUpload = () => {
+export const checkIfSiteIsReadyForUpload = ({siteFormType}) => {
     return {
-        type: CHECK_IF_SITE_IS_READY
+        type: `${siteFormType}_${CHECK_IF_SITE_IS_READY}`
     }
 };
 
-export const siteDetailCheckboxWasClicked = ({siteDetailCheckboxKey}) => {
+export const siteDetailCheckboxWasClicked = ({siteDetailCheckboxKey, siteFormType}) => {
     return {
-        type: SITE_DETAIL_CHECKBOX_UPDATED,
+        type: `${siteFormType}_${SITE_DETAIL_CHECKBOX_UPDATED}`,
         payload: {siteDetailCheckboxKey}
     }
 };
 
-
-export const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData, alternateSites, cellProvider, cellStrength, county, forest, mvum}, navigate) => {
+// TODO need to fix this logic for URL and redirect
+export const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData, alternateSites, cellProvider, cellStrength, county, forest, mvum}, navigate, siteFormType) => {
     const {longitude, latitude} = coordinate;
     const uniqueTitle = _(`${title}${longitude}${latitude}`)
         .replace(/ /g, '')

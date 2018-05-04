@@ -1,3 +1,4 @@
+import {combineReducers} from 'redux';
 import _ from 'lodash';
 
 import {
@@ -11,6 +12,7 @@ import {
     SITE_FACILITIES_OPTION_CHANGED,
     SITE_PRICE_OPTION_CHANGED,
     ADD_SITE_FIELDS_RESET,
+    EDIT_SITE_FIELDS_RESET,
     CURRENT_LOCATION_UPDATED,
     CHECK_IF_SITE_IS_READY,
     ADD_SITE_SUCCESS,
@@ -28,6 +30,7 @@ import {
 } from '../actions/types';
 
 import {campsite, reducerAlerts, counties, forest_names, mvum_names} from '../locale.en';
+import {site_form_type} from '../constants';
 
 const {campsite_form: {accessibility_options, facilities_options, price_options, features_options, cell_provider_options, cell_strength_options}} = campsite;
 
@@ -82,77 +85,77 @@ const siteIsReadyForUpload = ({latitudeText, longitudeText, siteTitleText, siteD
     return latitudeText && longitudeText && siteTitleText && siteDescriptionText && siteDirectionsText && siteNearestTownText && accessibilityOption && priceOption && siteDetailCheckboxesKeys.facilities.length > 0 && siteDetailCheckboxesKeys.features.length > 0;
 };
 
-export default (state = INITIAL_STATE, action) => {
+const formReducer = prefix => (state = INITIAL_STATE, action) => {
     const {type, payload} = action;
 
     switch (type) {
 
-        case LATITUDE_TEXT_UPDATED:
+        case `${prefix}_${LATITUDE_TEXT_UPDATED}`:
             const {latitudeText} = payload;
             const cleanLatText = removeNonNumbers(latitudeText);
             const readyLatitude = _.toNumber(cleanLatText);
 
             return {...state, latitudeText: cleanLatText, readyLatitude};
 
-        case LONGITUDE_TEXT_UPDATED:
+        case `${prefix}_${LONGITUDE_TEXT_UPDATED}`:
             const {longitudeText} = payload;
             const cleanLongText = removeNonNumbers(longitudeText);
             const readyLongitude = _.toNumber(cleanLongText);
 
             return {...state, longitudeText: cleanLongText, readyLongitude};
 
-        case SITE_TITLE_TEXT_CHANGED:
+        case `${prefix}_${SITE_TITLE_TEXT_CHANGED}`:
             const {siteTitleText} = payload;
             return {...state, siteTitleText};
 
-        case SITE_DESCRIPTION_TEXT_CHANGED:
+        case `${prefix}_${SITE_DESCRIPTION_TEXT_CHANGED}`:
             const {siteDescriptionText} = payload;
             return {...state, siteDescriptionText};
 
-        case SITE_DIRECTIONS_TEXT_CHANGED:
+        case `${prefix}_${SITE_DIRECTIONS_TEXT_CHANGED}`:
             const {siteDirectionsText} = payload;
             return {...state, siteDirectionsText};
 
-        case ALTERNATE_SITES_TEXT_CHANGED:
+        case `${prefix}_${ALTERNATE_SITES_TEXT_CHANGED}`:
             const {siteAlternateSitesText} = payload;
             return {...state, siteAlternateSitesText};
 
-        case SITE_NEAREST_TOWN_TEXT_CHANGED:
+        case `${prefix}_${SITE_NEAREST_TOWN_TEXT_CHANGED}`:
             const {siteNearestTownText} = payload;
             return {...state, siteNearestTownText};
 
-        case SITE_ACCESSIBILITY_OPTION_CHANGED:
+        case `${prefix}_${SITE_ACCESSIBILITY_OPTION_CHANGED}`:
             const {accessibilityOption} = payload;
             return {...state, accessibilityOption};
 
-        case SITE_PRICE_OPTION_CHANGED:
+        case `${prefix}_${SITE_PRICE_OPTION_CHANGED}`:
             const {priceOption} = payload;
             return {...state, priceOption};
 
-        case SITE_COUNTY_OPTION_CHANGED:
+        case `${prefix}_${SITE_COUNTY_OPTION_CHANGED}`:
             const {countyOption} = payload;
             return {...state, countyOption};
 
-        case SITE_FOREST_OPTION_CHANGED:
+        case `${prefix}_${SITE_FOREST_OPTION_CHANGED}`:
             const {forestOption} = payload;
             return {...state, forestOption};
 
-        case SITE_MVUM_OPTION_CHANGED:
+        case `${prefix}_${SITE_MVUM_OPTION_CHANGED}`:
             const {mvumOption} = payload;
             return {...state, mvumOption};
 
-        case SITE_CELL_PROVIDER_CHANGED:
+        case `${prefix}_${SITE_CELL_PROVIDER_CHANGED}`:
             const {cellProviderOption} = payload;
             return {...state, cellProviderOption};
 
-        case SITE_CELL_STRENGTH_CHANGED:
+        case `${prefix}_${SITE_CELL_STRENGTH_CHANGED}`:
             const {cellStrengthOption} = payload;
             return {...state, cellStrengthOption};
 
-        case ADD_SITE_FIELDS_RESET:
+        case `${prefix}_${ADD_SITE_FIELDS_RESET}`:
             return {...INITIAL_STATE};
 
-        case CURRENT_LOCATION_UPDATED:
+        case `${prefix}_${CURRENT_LOCATION_UPDATED}`:
             const {currentLocation: {longitude, latitude}} = payload;
             const stringLong = _.toString(longitude);
             const stringLat = _.toString(latitude);
@@ -165,36 +168,41 @@ export default (state = INITIAL_STATE, action) => {
                 readyLongitude: longitude
             };
 
-        case ADDSITE_IMAGE_UPDATED:
+        case `${prefix}_${ADDSITE_IMAGE_UPDATED}`:
             const {updatedImage} = payload;
             const siteImageData = updatedImage.hasImage ? updatedImage.base64 : '';
 
             return {...state, siteImageData};
 
-        case SITE_DETAIL_CHECKBOX_UPDATED:
+        case `${prefix}_${SITE_DETAIL_CHECKBOX_UPDATED}`:
             const {siteDetailCheckboxKey} = payload;
             const updatedSiteDetailCheckboxesKeys = updateSiteDetailCheckboxesKeys(state, siteDetailCheckboxKey);
 
             return {...state, siteDetailCheckboxesKeys: updatedSiteDetailCheckboxesKeys};
 
-        case CHECK_IF_SITE_IS_READY:
+        case `${prefix}_${CHECK_IF_SITE_IS_READY}`:
             const siteReadyForUpload = siteIsReadyForUpload(state);
 
             return {...state, siteReadyForUpload};
 
-        case ADD_SITE_SUCCESS:
+        case `${prefix}_${ADD_SITE_SUCCESS}`:
             return {...INITIAL_STATE};
 
-        case ADD_SITE_FAILURE:
+        case `${prefix}_${ADD_SITE_FAILURE}`:
             return {...state};
 
-        case MAP_IS_INITIALIZING:
+        case `${prefix}_${MAP_IS_INITIALIZING}`:
             return {...state};
 
-        case FACEBOOK_LOGOUT_COMPLETE:
+        case `${prefix}_${FACEBOOK_LOGOUT_COMPLETE}`:
             return INITIAL_STATE;
 
         default:
             return state;
     }
-}
+};
+
+export default combineReducers({
+    add: formReducer(site_form_type.ADD),
+    edit: formReducer(site_form_type.EDIT)
+});

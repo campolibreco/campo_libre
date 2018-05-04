@@ -33,3 +33,8 @@ export const campsiteIcon = navyBlueButton;
 export const inputLabel = '#86939e';
 
 export const hyperlinkBlue = '#3366BB';
+
+
+// Icons
+export const approveGreen = '#228B22';
+export const rejectRed = '#FF0000';

@@ -30,6 +30,7 @@ export const SITE_MVUM_OPTION_CHANGED = 'site_mvum_option_changed';
 export const SITE_CELL_PROVIDER_CHANGED = 'site_cell_provider_changed';
 export const SITE_CELL_STRENGTH_CHANGED = 'site_cell_strength_changed';
 export const ADD_SITE_FIELDS_RESET = 'add_site_fields_reset';
+export const EDIT_SITE_FIELDS_RESET = 'edit_site_fields_reset';
 export const CURRENT_LOCATION_UPDATED = 'current_location_updated';
 export const ADD_SITE_SUCCESS = 'add_site_success';
 export const ADD_SITE_FAILURE = 'add_site_failure';

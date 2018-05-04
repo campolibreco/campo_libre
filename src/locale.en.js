@@ -26,6 +26,8 @@ export const campsite = {
         add_site_title: 'Add Site Title',
         add_site: 'Add a Site',
         add_a_campsite: 'Add a Campsite',
+        edit_site: 'Edit Site',
+        edit_this_campsite: 'Edit this Campsite',
         site_info: 'Site Info',
         description: 'Description',
         description_placeholder: 'Add Description',

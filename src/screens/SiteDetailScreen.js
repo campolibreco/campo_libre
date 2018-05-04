@@ -260,6 +260,7 @@ class SiteDetailScreen extends Component {
     };
 
     renderAdminEditButton = () => {
+        const {navigation: {navigate}} = this.props;
 
         return (
             <Icon
@@ -267,7 +268,7 @@ class SiteDetailScreen extends Component {
                 name='edit'
                 size={30}
                 color={navyBlueButton}
-                onPress={() => console.log('Clicked!')}
+                onPress={() => navigate(navKeys.EDIT_SITE)}
             />
         );
 
