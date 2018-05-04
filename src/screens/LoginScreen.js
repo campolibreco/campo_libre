@@ -8,7 +8,7 @@ import {Button, Icon} from 'react-native-elements'
 import _ from 'lodash';
 
 // actions
-import {checkAndSetToken, setGuestToken, logUserIntoFacebook} from '../actions/index';
+import {checkAndSetToken, setGuestToken, logUserIntoFacebook, logUserOutOfFacebook} from '../actions/index';
 
 // language and styles
 import {
@@ -159,4 +159,4 @@ const mapStateToProps = (state, ownProps) => {
     return {token, appReady, currentUser};
 };
 
-export default connect(mapStateToProps, {checkAndSetToken, setGuestToken, logUserIntoFacebook})(LoginScreen);
+export default connect(mapStateToProps, {checkAndSetToken, setGuestToken, logUserIntoFacebook, logUserOutOfFacebook})(LoginScreen);

@@ -50,9 +50,9 @@ class SiteDetailScreen extends Component {
     toggleSiteFavorite = ({isFavorite, selectedSite, currentUser}) => {
 
         if (!isFavorite) {
-            this.props.attemptToAddFavorite({selectedSite, currentUser});
+            this.props.attemptToAddFavorite({favoriteSiteToAdd: selectedSite, currentUser});
         } else {
-            this.props.attemptToRemoveFavorite({selectedSite, currentUser});
+            this.props.attemptToRemoveFavorite({favoriteSiteToRemove: selectedSite, currentUser});
         }
 
     };

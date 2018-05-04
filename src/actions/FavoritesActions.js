@@ -8,20 +8,20 @@ import {
     FAVORITE_REMOVE_FAILED
 } from './types';
 
-export const attemptToAddFavorite = ({selectedSite, currentUser}) => {
+export const attemptToAddFavorite = ({favoriteSiteToAdd, currentUser}) => {
 
     return async (dispatch) => {
         const favoriteMetadata = {
-            title: selectedSite.title,
-            id: selectedSite.id,
+            title: favoriteSiteToAdd.title,
+            id: favoriteSiteToAdd.id,
         };
 
-        return firebase.firestore().doc(`users/${currentUser.email}/favorites/${selectedSite.title}`)
+        return firebase.firestore().doc(`users/${currentUser.email}/favorites/${favoriteSiteToAdd.title}`)
             .set(favoriteMetadata)
             .then(() => {
                 dispatch({
                     type: FAVORITE_ADDED,
-                    payload: {favoriteToAdd: selectedSite}
+                    payload: {favoriteToAdd: favoriteSiteToAdd}
                 });
             })
             .catch(error => {
@@ -35,20 +35,20 @@ export const attemptToAddFavorite = ({selectedSite, currentUser}) => {
 };
 
 
-export const attemptToRemoveFavorite = ({selectedSite, currentUser}) => {
+export const attemptToRemoveFavorite = ({favoriteSiteToRemove, currentUser}) => {
 
     return async (dispatch) => {
         const favoriteMetadata = {
-            title: selectedSite.title,
-            id: selectedSite.id,
+            title: favoriteSiteToRemove.title,
+            id: favoriteSiteToRemove.id,
         };
 
-        return firebase.firestore().doc(`users/${currentUser.email}/favorites/${selectedSite.title}`)
+        return firebase.firestore().doc(`users/${currentUser.email}/favorites/${favoriteSiteToRemove.title}`)
             .delete()
             .then(() => {
                 dispatch({
                     type: FAVORITE_REMOVED,
-                    payload: {favoriteToRemove: selectedSite}
+                    payload: {favoriteToRemove: favoriteSiteToRemove}
                 });
             })
             .catch(error => {

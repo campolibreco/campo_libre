@@ -7,7 +7,8 @@ import {MapView} from 'expo';
 const {Marker} = MapView;
 import _ from 'lodash';
 
-// 3rd party libraries - additional
+import SiteCarousel from './SiteCarousel';
+
 
 // styles and language
 import {campsite} from '../locale.en';
@@ -20,7 +21,7 @@ import {campsiteIcon, selectedCampsiteIcon, navyBlueButton, linkColorBlue} from 
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
-const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites, navigate, selectedSite, getSiteDetail, isFavorite, toggleSiteFavorite}) => {
+const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites, navigate, selectedSite, getSiteDetail}) => {
     const {fillScreen, spinnerContainerStyle} = styles;
 
     const newRegionIsAcceptable = (newRegion) => {
@@ -46,6 +47,7 @@ const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites, navigate, s
                     coordinate={coordinate}
                 >
 
+
                     <Icon type='material-community' name='tent' size={25}
                           color={isSelectedSite ? selectedCampsiteIcon : campsiteIcon}/>
 
@@ -65,82 +67,6 @@ const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites, navigate, s
         updateRegion(newRegion);
     };
 
-    const renderIcons = ({features, facilities}) => {
-        const featureIcons = _.map(features, feature => {
-            return (
-                <Icon
-                    key={feature}
-                    reverse
-                    size={15}
-                    name={featureIconDetails[feature].name}
-                    type={featureIconDetails[feature].type}
-                />
-            )
-        });
-
-        const facilityIcons = _.map(facilities, facility => {
-            return (
-                <Icon
-                    key={facility}
-                    reverse
-                    size={15}
-                    name={facilityIconDetails[facility].name}
-                    type={facilityIconDetails[facility].type}
-                />
-            );
-        });
-
-        return _.concat(featureIcons, facilityIcons);
-    };
-
-    const renderSelectedSitePreview = () => {
-        if (selectedSite && !_.isEmpty(selectedSite)) {
-            const {id, title, description, nearestTown, accessibility, siteImageData, features, facilities} = selectedSite;
-            const {sitePreviewContainerStyle, touchableMainContainerStyle, mainInnerContainerStyle, topRowInfoStyle, topRowText, titleRowStyle, bottomRowInfoStyle, bottomRowText, closeIconStyle, IconContainer} = styles;
-
-            return (
-                <ImageBackground
-                    pointerEvents="none"
-                    source={siteImageData ? {uri: `data:image/png;base64,${siteImageData}`} : require('../../assets/starTent.jpg')}
-                    style={sitePreviewContainerStyle}
-                >
-                    <TouchableOpacity style={touchableMainContainerStyle} onPress={() => getSiteDetail({selectedSite: selectedSite, navigate})}>
-                        <View style={mainInnerContainerStyle}>
-                            <View style={topRowInfoStyle}>
-                                <Icon style={closeIconStyle}
-                                      type='ionicon'
-                                      name='md-close-circle'
-                                      size={40}
-                                      color={'white'}
-                                      onPress={() => getSiteDetail({selectedSite: null})}
-                                />
-
-                                <Icon type='ionicon'
-                                      name={isFavorite ? 'ios-heart' : 'ios-heart-outline'}
-                                      size={40}
-                                      color={'white'}
-                                      onPress={toggleSiteFavorite}
-                                />
-                            </View>
-
-                            <View style={bottomRowInfoStyle}>
-                                <View style={titleRowStyle}>
-                                    <Text h4 style={bottomRowText}>{title}</Text>
-                                    <Text style={bottomRowText}> - </Text>
-                                    <Text style={bottomRowText}>{accessibility_options[accessibility]}</Text>
-                                </View>
-
-                                <View style={IconContainer}>
-                                    {renderIcons({features, facilities})}
-                                </View>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-
-                </ImageBackground>
-            );
-        }
-    };
 
     const renderMap = () => {
         if (mapLoaded) {
@@ -157,7 +83,9 @@ const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites, navigate, s
 
                     </MapView>
 
-                    {renderSelectedSitePreview()}
+                    <SiteCarousel
+                        navigate={navigate}
+                    />
 
                 </View>
             );
@@ -184,60 +112,6 @@ const styles = StyleSheet.create({
     },
     spinnerContainerStyle: {
         justifyContent: 'center'
-    },
-    sitePreviewContainerStyle: {
-        position: 'absolute',
-        bottom: 0,
-        width: SCREEN_WIDTH,
-        display: 'flex',
-        alignContent: 'center',
-        justifyContent: 'center',
-        height: 200
-    },
-    sitePreviewStyle: {
-        width: SCREEN_WIDTH,
-        height: 200
-    },
-    touchableMainContainerStyle: {
-        flex: 1
-    },
-    mainInnerContainerStyle: {
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        backgroundColor: 'transparent'
-    },
-    topRowInfoStyle: {
-        margin: 5,
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-    },
-    titleRowStyle: {
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap'
-    },
-    closeIconStyle: {},
-    topRowText: {
-        color: 'white',
-        fontWeight: 'bold'
-    },
-    bottomRowInfoStyle: {
-        margin: 10,
-    },
-    bottomRowText: {
-        color: 'white',
-        fontWeight: 'bold',
-        alignSelf: 'center',
-        textShadowColor: 'rgba(0, 0, 0, 0.75)',
-        textShadowOffset: {width: 1, height: 1},
-        textShadowRadius: 3
-    },
-    IconContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap'
     }
 });
 
