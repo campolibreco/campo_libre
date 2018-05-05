@@ -374,7 +374,7 @@ class SiteInfoInputForm extends Component {
     };
 
     renderSubmitOptions = () => {
-        const {siteReadyForUpload, siteFormType, navigate} = this.props;
+        const {siteReadyForUpload, siteFormType, navigate, goBack} = this.props;
         const {submitButtonStyle, lastElementStyle, adminOptionsButtonContainerStyle, iconButtonStyle, approveButtonStyle, cancelButtonStyle} = styles;
 
         if (siteReadyForUpload && siteFormType === site_form_type.ADD) {
@@ -398,7 +398,7 @@ class SiteInfoInputForm extends Component {
                         iconName={'md-close-circle'}
                         iconColor={'white'}
                         buttonStyleOverride={cancelButtonStyle}
-                        onPress={() => navigate(navKeys.SITE_DETAIL)}
+                        onPress={() => goBack()}
                     />
 
                     <SmallButton
