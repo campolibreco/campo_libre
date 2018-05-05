@@ -398,6 +398,7 @@ class SiteInfoInputForm extends Component {
                         iconName={'md-close-circle'}
                         iconColor={'white'}
                         buttonStyleOverride={cancelButtonStyle}
+                        iconSizeOverride={35}
                         onPress={() => goBack()}
                     />
 
@@ -407,6 +408,7 @@ class SiteInfoInputForm extends Component {
                         iconName={'md-checkmark-circle'}
                         iconColor={'white'}
                         buttonStyleOverride={approveButtonStyle}
+                        iconSizeOverride={35}
                         onPress={this.onClickSubmit}
                     />
 
