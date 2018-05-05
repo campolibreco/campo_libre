@@ -6,7 +6,7 @@ import {Icon, Text, CheckBox, Input} from 'react-native-elements';
 import _ from 'lodash';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-import {LargeButton} from './common';
+import {LargeButton, SmallButton} from './common';
 
 import {
     updateLatitudeText,
@@ -64,7 +64,7 @@ const {submit} = submit_form;
 
 const {title, location} = common;
 
-import {map, permissionResponses, site_form_type} from '../constants';
+import {map, navKeys, permissionResponses, site_form_type} from '../constants';
 
 const {GRANTED, DENIED, UNDETERMINED} = permissionResponses;
 
@@ -346,9 +346,7 @@ class SiteInfoInputForm extends Component {
     };
 
     onClickSubmit = () => {
-        const {siteFormType} = this.props;
-
-        const {navigation: {navigate}} = this.props;
+        const {siteFormType, navigate, goBack} = this.props;
 
         const newSite = {
             title: this.props.siteTitleText,
@@ -372,12 +370,12 @@ class SiteInfoInputForm extends Component {
             mvum: this.props.mvumOption,
         };
 
-        this.props.attemptToUploadSite(newSite, navigate, siteFormType);
+        this.props.attemptToUploadSite(newSite, {navigate, goBack}, siteFormType);
     };
 
     renderSubmitOptions = () => {
-        const {siteReadyForUpload, siteFormType} = this.props;
-        const {submitButtonStyle, lastElementStyle, adminOptionsButtonContainerStyle, iconButtonStyle} = styles;
+        const {siteReadyForUpload, siteFormType, navigate} = this.props;
+        const {submitButtonStyle, lastElementStyle, adminOptionsButtonContainerStyle, iconButtonStyle, approveButtonStyle, cancelButtonStyle} = styles;
 
         if (siteReadyForUpload && siteFormType === site_form_type.ADD) {
             return (
@@ -393,23 +391,25 @@ class SiteInfoInputForm extends Component {
         } else if (siteReadyForUpload && siteFormType === site_form_type.EDIT) {
             return (
                 <View style={[lastElementStyle, adminOptionsButtonContainerStyle]}>
-                    <Icon
-                        type='ionicon'
-                        name='md-close-circle'
-                        size={100}
-                        color={rejectRed}
-                        onPress={() => console.log('REJECTED!')}
-                        iconStyle={iconButtonStyle}
+
+                    <SmallButton
+                        title={'Cancel'}
+                        iconType={'ionicon'}
+                        iconName={'md-close-circle'}
+                        iconColor={'white'}
+                        buttonStyleOverride={cancelButtonStyle}
+                        onPress={() => navigate(navKeys.SITE_DETAIL)}
                     />
 
-                    <Icon
-                        type='ionicon'
-                        name='md-checkmark-circle'
-                        size={100}
-                        color={approveGreen}
-                        onPress={() => console.log('APPROVED!')}
-                        iconStyle={iconButtonStyle}
+                    <SmallButton
+                        title={'Update'}
+                        iconType={'ionicon'}
+                        iconName={'md-checkmark-circle'}
+                        iconColor={'white'}
+                        buttonStyleOverride={approveButtonStyle}
+                        onPress={this.onClickSubmit}
                     />
+
                 </View>
             );
         } else {
@@ -513,7 +513,7 @@ class SiteInfoInputForm extends Component {
                         placeholder={description_placeholder}
                         value={siteDescriptionText}
                         onChangeText={this.onUpdateSiteDescriptionText}
-                        containerStyle={largeTextInput}
+                        inputContainerStyle={largeTextInput}
                         blurOnSubmit={true}
                         multiline={true}
                         autoGrow={true}
@@ -526,7 +526,7 @@ class SiteInfoInputForm extends Component {
                         placeholder={directions_placeholder}
                         value={siteDirectionsText}
                         onChangeText={this.onUpdateSiteDirectionsText}
-                        containerStyle={largeTextInput}
+                        inputContainerStyle={largeTextInput}
                         blurOnSubmit={true}
                         multiline={true}
                         autoGrow={true}
@@ -576,7 +576,7 @@ class SiteInfoInputForm extends Component {
                         placeholder={alternate_sites_placeholder}
                         value={siteAlternateSitesText}
                         onChangeText={this.onUpdateAlternateSitesText}
-                        containerStyle={largeTextInput}
+                        inputContainerStyle={largeTextInput}
                         blurOnSubmit={true}
                         multiline={true}
                         autoGrow={true}
@@ -709,10 +709,16 @@ const styles = {
     adminOptionsButtonContainerStyle: {
         flex: 1,
         flexDirection: 'row',
-        justifyContent: 'flex-end'
+        justifyContent: 'space-around'
     },
     iconButtonStyle: {
         margin: 20
+    },
+    approveButtonStyle: {
+        backgroundColor: approveGreen
+    },
+    cancelButtonStyle: {
+        backgroundColor: rejectRed
     }
 
 };

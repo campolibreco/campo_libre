@@ -60,12 +60,14 @@ class EditSiteScreen extends Component {
     };
 
     render() {
-        const {selectedSite} = this.props;
+        const {selectedSite, navigation: {navigate, goBack}} = this.props;
 
         return (
             <SiteInfoInputForm
                 siteFormType={site_form_type.EDIT}
                 siteToEdit={selectedSite}
+                navigate={navigate}
+                goBack={goBack}
             />
         );
     }

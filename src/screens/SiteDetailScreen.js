@@ -9,8 +9,6 @@ const {Marker} = MapView;
 
 import _ from 'lodash';
 
-import {SmallButton} from '../components/common';
-
 import {attemptToAddFavorite, attemptToRemoveFavorite} from '../actions';
 
 import {linkColorBlue, navyBlueButton, hyperlinkBlue} from '../styles/index';

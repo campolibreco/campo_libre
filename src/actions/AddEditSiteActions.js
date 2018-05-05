@@ -27,7 +27,7 @@ import {
     NEW_SITE_TO_EDIT
 } from './types';
 
-import {navKeys} from '../constants';
+import {navKeys, site_form_type} from '../constants';
 
 export const updateLatitudeText = ({latitudeText, siteFormType}) => {
     return {
@@ -155,7 +155,7 @@ export const newSiteToEditAvailable = ({siteToEdit}) => {
 };
 
 // TODO need to fix this logic for URL and redirect
-export const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData, alternateSites, cellProvider, cellStrength, county, forest, mvum}, navigate, siteFormType) => {
+export const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData, alternateSites, cellProvider, cellStrength, county, forest, mvum}, {navigate, goBack}, siteFormType) => {
     const {longitude, latitude} = coordinate;
     const uniqueTitle = _(`${title}${longitude}${latitude}`)
         .replace(/ /g, '')
@@ -182,20 +182,35 @@ export const attemptToUploadSite = ({title, description, directions, nearestTown
                 mvum
             })
             .then(() => {
-                dispatch({
-                    type: ADD_SITE_SUCCESS
-                });
+                if (siteFormType === site_form_type.ADD) {
+                    dispatch({
+                        type: ADD_SITE_SUCCESS
+                    });
 
-                navigate(navKeys.ADD_SITE);
+                    navigate(navKeys.ADD_SITE);
+                } else if (siteFormType === site_form_type.EDIT) {
+
+                    goBack();
+                }
             })
             .catch(error => {
-                dispatch({
-                    type: ADD_SITE_FAILURE,
-                    payload: {error}
-                });
+                if (siteFormType === site_form_type.ADD) {
+                    dispatch({
+                        type: ADD_SITE_FAILURE,
+                        payload: {error}
+                    });
 
-                navigate(navKeys.ADD_SITE);
+                    navigate(navKeys.ADD_SITE);
+                } else if (siteFormType === site_form_type.EDIT) {
+                    dispatch({
+                        type: ADD_SITE_FAILURE,
+                        payload: {error}
+                    });
+
+                    goBack();
+                }
             });
+
 
     }
 

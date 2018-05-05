@@ -27,7 +27,6 @@ const SmallButton = ({iconType, iconName, iconColor, iconSizeOverride, buttonSty
 
 const styles = StyleSheet.create({
     buttonStyle: {
-        margin: 30,
         height: 70,
         borderRadius: 40,
         width: 150

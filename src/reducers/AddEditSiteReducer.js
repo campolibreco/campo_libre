@@ -58,7 +58,7 @@ const INITIAL_STATE = {
 };
 
 const setInitialEditStateFromSite = ({siteToEdit}) => {
-    const {accessibility, alternateSites, approvalState, cellProvider, cellStrength, coordinate, county, description, directions, facilities, features, forest, mvum, nearestTown, price, siteImageData, title} = siteToEdit;
+    const {accessibility, alternateSites = '', approvalState, cellProvider = '', cellStrength = '', coordinate, county = '', description, directions, facilities, features, forest = '', mvum = '', nearestTown, price, siteImageData, title} = siteToEdit;
     const {latitude, longitude} = coordinate;
 
     const siteStateToDispatch = {
@@ -68,7 +68,9 @@ const setInitialEditStateFromSite = ({siteToEdit}) => {
         cellProviderOption: cellProvider,
         cellStrengthOption: cellStrength,
         latitudeText: latitude.toString(),
+        readyLatitude: latitude,
         longitudeText: longitude.toString(),
+        readyLongitude: longitude,
         countyOption: county,
         siteDescriptionText: description,
         siteDirectionsText: directions,
