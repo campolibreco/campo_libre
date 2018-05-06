@@ -330,19 +330,19 @@ class SiteInfoInputForm extends Component {
     onClickCameraButton = () => {
         const {siteFormType} = this.props;
 
-        this.props.promptForCameraPermission();
+        this.props.promptForCameraPermission({siteFormType});
     };
 
     onClickGalleryButton = () => {
         const {siteFormType} = this.props;
 
-        this.props.promptForGalleryPermission();
+        this.props.promptForGalleryPermission({siteFormType});
     };
 
     onClickIAmHere = () => {
         const {siteFormType} = this.props;
 
-        this.props.promptForLocationServicesPermission();
+        this.props.promptForLocationServicesPermission({siteFormType});
     };
 
     onClickSubmit = () => {

@@ -12,14 +12,14 @@ import {permissionResponses, imageSourceTypes} from '../constants';
 
 const {GRANTED, DENIED} = permissionResponses;
 
-const getLocation = async (dispatch) => {
+const getLocation = async ({dispatch, siteFormType}) => {
 
     try {
         let location = await Location.getCurrentPositionAsync({enableHighAccuracy: true});
         const {coords: {longitude, latitude}} = location;
 
         return dispatch({
-            type: CURRENT_LOCATION_UPDATED,
+            type: `${siteFormType}_${CURRENT_LOCATION_UPDATED}`,
             payload: {currentLocation: {longitude, latitude}}
         })
 
@@ -33,19 +33,19 @@ const getLocation = async (dispatch) => {
 
 };
 
-export const getCurrentUserLocation = () => {
+export const getCurrentUserLocation = ({siteFormType}) => {
     return async (dispatch) => {
-        getLocation(dispatch);
+        getLocation({dispatch, siteFormType});
     };
 };
 
-export const promptForLocationServicesPermission = () => {
+export const promptForLocationServicesPermission = ({siteFormType}) => {
 
     return async (dispatch) => {
         let {status} = await Permissions.askAsync(Permissions.LOCATION);
 
         if (status === GRANTED) {
-            getLocation(dispatch);
+            getLocation({dispatch, siteFormType});
         }
 
         dispatch({
@@ -55,7 +55,7 @@ export const promptForLocationServicesPermission = () => {
     };
 };
 
-const getImage = async (dispatch, imageSourceType) => {
+const getImage = async ({dispatch, imageSourceType, siteFormType}) => {
     let result = {cancelled: true};
 
     if (imageSourceType === imageSourceTypes.CAMERA_ROLL) {
@@ -77,24 +77,24 @@ const getImage = async (dispatch, imageSourceType) => {
     result.hasImage = !result.cancelled;
 
     return dispatch({
-        type: ADDSITE_IMAGE_UPDATED,
+        type: `${siteFormType}_${ADDSITE_IMAGE_UPDATED}`,
         payload: {updatedImage: result}
     });
 };
 
-export const launchPhotoGallery = () => {
+export const launchPhotoGallery = ({siteFormType}) => {
     return async (dispatch) => {
-        getImage(dispatch, imageSourceTypes.CAMERA_ROLL);
+        getImage({dispatch, imageSourceType: imageSourceTypes.CAMERA_ROLL, siteFormType});
     };
 };
 
 
-export const promptForGalleryPermission = () => {
+export const promptForGalleryPermission = ({siteFormType}) => {
     return async (dispatch) => {
         let {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
         if (status === GRANTED) {
-            getImage(dispatch, imageSourceTypes.CAMERA_ROLL);
+            getImage({dispatch, imageSourceType: imageSourceTypes.CAMERA_ROLL, siteFormType});
         } else {
             return dispatch({
                 type: CAMERA_ROLL_PERMISSION_UPDATED,
@@ -104,19 +104,19 @@ export const promptForGalleryPermission = () => {
     };
 };
 
-export const launchCamera = () => {
+export const launchCamera = ({siteFormType}) => {
     return async (dispatch) => {
-        getImage(dispatch, imageSourceTypes.CAMERA);
+        getImage({dispatch, imageSourceType: imageSourceTypes.CAMERA, siteFormType});
     };
 };
 
-export const promptForCameraPermission = () => {
+export const promptForCameraPermission = ({siteFormType}) => {
 
     return async (dispatch) => {
         let {status} = await Permissions.askAsync(Permissions.CAMERA);
 
         if (status === GRANTED) {
-            getImage(dispatch, imageSourceTypes.CAMERA);
+            getImage({dispatch, imageSourceType: imageSourceTypes.CAMERA, siteFormType});
         } else {
             return dispatch({
                 type: CAMERA_PERMISSION_UPDATED,
