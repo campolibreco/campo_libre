@@ -346,7 +346,7 @@ class SiteInfoInputForm extends Component {
     };
 
     onClickSubmit = () => {
-        const {siteFormType, navigate, goBack} = this.props;
+        const {siteFormType, navigate, goBack, currentUser} = this.props;
 
         const newSite = {
             title: this.props.siteTitleText,
@@ -370,7 +370,7 @@ class SiteInfoInputForm extends Component {
             mvum: this.props.mvumOption,
         };
 
-        this.props.attemptToUploadSite(newSite, {navigate, goBack}, siteFormType);
+        this.props.attemptToUploadSite(newSite, {navigate, goBack}, {siteFormType, currentUser});
     };
 
     renderSubmitOptions = () => {

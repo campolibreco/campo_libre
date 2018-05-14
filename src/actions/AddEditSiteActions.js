@@ -27,7 +27,7 @@ import {
     NEW_SITE_TO_EDIT
 } from './types';
 
-import {navKeys, site_form_type} from '../constants';
+import {navKeys, site_form_type, campsite_collections} from '../constants';
 
 export const updateLatitudeText = ({latitudeText, siteFormType}) => {
     return {
@@ -155,14 +155,16 @@ export const newSiteToEditAvailable = ({siteToEdit}) => {
 };
 
 // TODO need to fix this logic for URL and redirect
-export const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData, alternateSites, cellProvider, cellStrength, county, forest, mvum}, {navigate, goBack}, siteFormType) => {
+export const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData, alternateSites, cellProvider, cellStrength, county, forest, mvum}, {navigate, goBack}, {siteFormType, currentUser}) => {
     const {longitude, latitude} = coordinate;
     const uniqueTitle = _(`${title}${longitude}${latitude}`)
         .replace(/ /g, '')
         .slice(0, 30);
 
+    const correctCollection = currentUser.isAdmin ? campsite_collections.APPROVED: campsite_collections.PENDING;
+
     return (dispatch) => {
-        firebase.firestore().doc(`campsites/${uniqueTitle}`)
+        firebase.firestore().doc(`${correctCollection}/${uniqueTitle}`)
             .set({
                 title,
                 description,
@@ -179,7 +181,8 @@ export const attemptToUploadSite = ({title, description, directions, nearestTown
                 cellStrength,
                 county,
                 forest,
-                mvum
+                mvum,
+                uploadedBy: currentUser
             })
             .then(() => {
                 if (siteFormType === site_form_type.ADD) {

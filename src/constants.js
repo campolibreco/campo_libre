@@ -86,3 +86,9 @@ export const site_form_type = {
   ADD: 'add',
   EDIT: 'edit'
 };
+
+export const campsite_collections = {
+    APPROVED: 'campsites',
+    PENDING: 'pending_campsites',
+    REJECTED: 'not_approved_campsites'
+};
