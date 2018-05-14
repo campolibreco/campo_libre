@@ -35,7 +35,7 @@ const hydrateFavorites = ({currentUser, sites}) => {
                 return matchedFavorite;
             }
         })
-        .uniq('id')
+        .uniqBy('id')
         .compact()
         .valueOf();
 
@@ -72,7 +72,7 @@ export default (state = INITIAL_STATE, action) => {
             let updatedUserWithNewFavorite = _.cloneDeep(state.currentUser);
             updatedUserWithNewFavorite.favorites = _(updatedUserWithNewFavorite.favorites)
                 .concat(favoriteToAdd)
-                .uniq('id')
+                .uniqBy('id')
                 .valueOf();
 
             return ({...state, currentUser: updatedUserWithNewFavorite});
