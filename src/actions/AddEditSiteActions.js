@@ -155,13 +155,22 @@ export const newSiteToEditAvailable = ({siteToEdit}) => {
 };
 
 // TODO need to fix this logic for URL and redirect
-export const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData, alternateSites, cellProvider, cellStrength, county, forest, mvum}, {navigate, goBack}, {siteFormType, currentUser}) => {
+export const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData, alternateSites, cellProvider, cellStrength, county, forest, mvum, id}, {navigate, goBack}, {siteFormType, currentUser}) => {
     const {longitude, latitude} = coordinate;
-    const uniqueTitle = _(`${title}${longitude}${latitude}`)
-        .replace(/ /g, '')
-        .slice(0, 30);
+    let uniqueTitle = id;
 
-    const correctCollection = currentUser.isAdmin ? campsite_collections.APPROVED: campsite_collections.PENDING;
+    if (!uniqueTitle) {
+        uniqueTitle = _(`${title}${longitude}${latitude}`)
+            .replace(/[\W_]+/g, '')
+            .slice(0, 30);
+    }
+
+    const userCredits = {
+        name: currentUser.name,
+        email: currentUser.email
+    };
+
+    const correctCollection = currentUser.isAdmin ? campsite_collections.APPROVED : campsite_collections.PENDING;
 
     return (dispatch) => {
         firebase.firestore().doc(`${correctCollection}/${uniqueTitle}`)
@@ -182,31 +191,30 @@ export const attemptToUploadSite = ({title, description, directions, nearestTown
                 county,
                 forest,
                 mvum,
-                uploadedBy: currentUser
+                // uploadedBy: userCredits
             })
             .then(() => {
                 if (siteFormType === site_form_type.ADD) {
                     dispatch({
-                        type: ADD_SITE_SUCCESS
+                        type: `${siteFormType}_${ADD_SITE_SUCCESS}`
                     });
 
                     navigate(navKeys.ADD_SITE);
                 } else if (siteFormType === site_form_type.EDIT) {
-
                     goBack();
                 }
             })
             .catch(error => {
                 if (siteFormType === site_form_type.ADD) {
                     dispatch({
-                        type: ADD_SITE_FAILURE,
+                        type: `${siteFormType}_${ADD_SITE_FAILURE}`,
                         payload: {error}
                     });
 
                     navigate(navKeys.ADD_SITE);
                 } else if (siteFormType === site_form_type.EDIT) {
                     dispatch({
-                        type: ADD_SITE_FAILURE,
+                        type: `${siteFormType}_${ADD_SITE_FAILURE}`,
                         payload: {error}
                     });
 

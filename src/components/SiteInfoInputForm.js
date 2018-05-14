@@ -368,6 +368,7 @@ class SiteInfoInputForm extends Component {
             county: this.props.countyOption,
             forest: this.props.forestOption,
             mvum: this.props.mvumOption,
+            id: this.props.id
         };
 
         this.props.attemptToUploadSite(newSite, {navigate, goBack}, {siteFormType, currentUser});
@@ -727,7 +728,7 @@ const styles = {
 
 function mapStateToProps(state, ownProps) {
     const {siteFormType} = ownProps;
-    const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, priceOption, countyOption, forestOption, mvumOption, siteReadyForUpload, readyLatitude, readyLongitude, siteDetailCheckboxesKeys, siteImageData, siteAlternateSitesText, cellProviderOption, cellStrengthOption} = state.addEditSite[siteFormType];
+    const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, priceOption, countyOption, forestOption, mvumOption, siteReadyForUpload, readyLatitude, readyLongitude, siteDetailCheckboxesKeys, siteImageData, siteAlternateSitesText, cellProviderOption, cellStrengthOption, id} = state.addEditSite[siteFormType];
     const {locationServicesPermission, cameraPermission, cameraRollPermission} = state.permissions;
     const {currentUser} = state.auth;
 
@@ -754,7 +755,8 @@ function mapStateToProps(state, ownProps) {
         cellStrengthOption,
         countyOption,
         forestOption,
-        mvumOption
+        mvumOption,
+        id
     };
 }
 

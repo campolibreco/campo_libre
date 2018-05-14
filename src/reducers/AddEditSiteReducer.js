@@ -54,11 +54,12 @@ const INITIAL_STATE = {
     cellProviderOption: cell_provider_options.blank,
     cellStrengthOption: cell_strength_options.blank,
     siteReadyForUpload: false,
-    siteDetailCheckboxesKeys: {facilities: [], features: []}
+    siteDetailCheckboxesKeys: {facilities: [], features: []},
+    id: ''
 };
 
 const setInitialEditStateFromSite = ({siteToEdit}) => {
-    const {accessibility, alternateSites = '', approvalState, cellProvider = '', cellStrength = '', coordinate, county = '', description, directions, facilities, features, forest = '', mvum = '', nearestTown, price, siteImageData, title} = siteToEdit;
+    const {accessibility, alternateSites = '', approvalState, cellProvider = '', cellStrength = '', coordinate, county = '', description, directions, facilities, features, forest = '', mvum = '', nearestTown, price, siteImageData, title, id} = siteToEdit;
     const {latitude, longitude} = coordinate;
 
     const siteStateToDispatch = {
@@ -83,7 +84,8 @@ const setInitialEditStateFromSite = ({siteToEdit}) => {
         siteNearestTownText: nearestTown,
         priceOption: price,
         siteImageData,
-        siteTitleText: title
+        siteTitleText: title,
+        id
     };
 
     return siteStateToDispatch;
