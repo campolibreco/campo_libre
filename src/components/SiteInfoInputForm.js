@@ -24,7 +24,8 @@ import {
     promptForCameraPermission,
     getCurrentUserLocation,
     checkIfSiteIsReadyForUpload,
-    attemptToUploadSite,
+    attemptToUploadNewSite,
+    attemptToEditExistingSite,
     siteDetailCheckboxWasClicked,
     updateAlternateSitesText,
     updateCellProviderOption,
@@ -77,7 +78,7 @@ class SiteInfoInputForm extends Component {
 
         this.props.checkIfSiteIsReadyForUpload({siteFormType});
 
-        if(siteFormType === site_form_type.EDIT){
+        if (siteFormType === site_form_type.EDIT) {
             const {siteToEdit} = this.props;
 
             this.props.newSiteToEditAvailable({siteToEdit});
@@ -371,7 +372,11 @@ class SiteInfoInputForm extends Component {
             id: this.props.id
         };
 
-        this.props.attemptToUploadSite(newSite, {navigate, goBack}, {siteFormType, currentUser});
+        if (siteFormType === site_form_type.ADD) {
+            this.props.attemptToUploadNewSite(newSite, {navigate, goBack}, {siteFormType, currentUser});
+        } else if (siteFormType === site_form_type.EDIT) {
+            this.props.attemptToEditExistingSite(newSite, {navigate, goBack}, {siteFormType, currentUser});
+        }
     };
 
     renderSubmitOptions = () => {
@@ -776,7 +781,8 @@ const mapActions = {
     promptForCameraPermission,
     getCurrentUserLocation,
     checkIfSiteIsReadyForUpload,
-    attemptToUploadSite,
+    attemptToUploadNewSite,
+    attemptToEditExistingSite,
     siteDetailCheckboxWasClicked,
     updateAlternateSitesText,
     updateCellProviderOption,

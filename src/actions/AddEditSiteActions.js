@@ -154,76 +154,173 @@ export const newSiteToEditAvailable = ({siteToEdit}) => {
     }
 };
 
-// TODO need to fix this logic for URL and redirect
-export const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData, alternateSites, cellProvider, cellStrength, county, forest, mvum, id}, {navigate, goBack}, {siteFormType, currentUser}) => {
-    const {longitude, latitude} = coordinate;
-    let uniqueTitle = id;
-
-    if (!uniqueTitle) {
-        uniqueTitle = _(`${title}${longitude}${latitude}`)
-            .replace(/[\W_]+/g, '')
-            .slice(0, 30);
-    }
+const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData, alternateSites, cellProvider, cellStrength, county, forest, mvum, id}, {navigate, goBack}, {siteFormType, currentUser, correctCollection, uniqueTitle}) => {
 
     const userCredits = {
         name: currentUser.name,
         email: currentUser.email
     };
 
+    return firebase.firestore().doc(`${correctCollection}/${uniqueTitle}`)
+        .set({
+            title,
+            description,
+            directions,
+            alternateSites,
+            nearestTown,
+            accessibility,
+            facilities,
+            features,
+            price,
+            coordinate,
+            siteImageData,
+            cellProvider,
+            cellStrength,
+            county,
+            forest,
+            mvum,
+            // uploadedBy: userCredits
+        });
+};
+
+const attemptToDeleteSite = () => {
+
+};
+
+
+export const attemptToUploadNewSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData, alternateSites, cellProvider, cellStrength, county, forest, mvum, id}, {navigate, goBack}, {siteFormType, currentUser}) => {
     const correctCollection = currentUser.isAdmin ? campsite_collections.APPROVED : campsite_collections.PENDING;
+    const {longitude, latitude} = coordinate;
+
+    const uniqueTitle = _(`${title}${longitude}${latitude}`)
+        .replace(/[\W_]+/g, '')
+        .slice(0, 30);
 
     return (dispatch) => {
-        firebase.firestore().doc(`${correctCollection}/${uniqueTitle}`)
-            .set({
-                title,
-                description,
-                directions,
-                alternateSites,
-                nearestTown,
-                accessibility,
-                facilities,
-                features,
-                price,
-                coordinate,
-                siteImageData,
-                cellProvider,
-                cellStrength,
-                county,
-                forest,
-                mvum,
-                // uploadedBy: userCredits
-            })
+        return attemptToUploadSite({
+            title,
+            description,
+            directions,
+            nearestTown,
+            accessibility,
+            facilities,
+            features,
+            price,
+            coordinate,
+            siteImageData,
+            alternateSites,
+            cellProvider,
+            cellStrength,
+            county,
+            forest,
+            mvum
+        }, {navigate, goBack}, {siteFormType, currentUser, correctCollection, uniqueTitle})
             .then(() => {
-                if (siteFormType === site_form_type.ADD) {
-                    dispatch({
-                        type: `${siteFormType}_${ADD_SITE_SUCCESS}`
-                    });
+                dispatch({
+                    type: `${siteFormType}_${ADD_SITE_SUCCESS}`
+                });
 
-                    navigate(navKeys.ADD_SITE);
-                } else if (siteFormType === site_form_type.EDIT) {
-                    goBack();
-                }
+                navigate(navKeys.ADD_SITE);
             })
             .catch(error => {
-                if (siteFormType === site_form_type.ADD) {
-                    dispatch({
-                        type: `${siteFormType}_${ADD_SITE_FAILURE}`,
-                        payload: {error}
-                    });
+                dispatch({
+                    type: `${siteFormType}_${ADD_SITE_FAILURE}`,
+                    payload: {error}
+                });
 
-                    navigate(navKeys.ADD_SITE);
-                } else if (siteFormType === site_form_type.EDIT) {
-                    dispatch({
-                        type: `${siteFormType}_${ADD_SITE_FAILURE}`,
-                        payload: {error}
-                    });
-
-                    goBack();
-                }
+                navigate(navKeys.ADD_SITE);
             });
-
 
     }
 
 
 };
+
+export const attemptToEditExistingSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData, alternateSites, cellProvider, cellStrength, county, forest, mvum, id}, {navigate, goBack}, {siteFormType, currentUser}) => {
+    if (!currentUser || !currentUser.isAdmin) {
+        return;
+    }
+
+    const correctCollection = campsite_collections.APPROVED;
+
+    const uniqueTitle = id;
+
+    return (dispatch) => {
+        return attemptToUploadSite({
+            title,
+            description,
+            directions,
+            nearestTown,
+            accessibility,
+            facilities,
+            features,
+            price,
+            coordinate,
+            siteImageData,
+            alternateSites,
+            cellProvider,
+            cellStrength,
+            county,
+            forest,
+            mvum
+        }, {navigate, goBack}, {siteFormType, currentUser, correctCollection, uniqueTitle})
+            .then(() => {
+                goBack();
+            })
+            .catch(error => {
+                dispatch({
+                    type: `${siteFormType}_${ADD_SITE_FAILURE}`,
+                    payload: {error}
+                });
+
+                goBack();
+            });
+
+    }
+};
+
+export const attemptToAcceptSubmittedSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData, alternateSites, cellProvider, cellStrength, county, forest, mvum, id}, {navigate, goBack}, {siteFormType, currentUser}) => {
+    if (!currentUser || !currentUser.isAdmin) {
+        return;
+    }
+
+    const correctCollection = campsite_collections.APPROVED;
+    const {longitude, latitude} = coordinate;
+
+    const uniqueTitle = _(`${title}${longitude}${latitude}`)
+        .replace(/[\W_]+/g, '')
+        .slice(0, 30);
+
+    return (dispatch) => {
+        return attemptToUploadSite({
+            title,
+            description,
+            directions,
+            nearestTown,
+            accessibility,
+            facilities,
+            features,
+            price,
+            coordinate,
+            siteImageData,
+            alternateSites,
+            cellProvider,
+            cellStrength,
+            county,
+            forest,
+            mvum
+        }, {navigate, goBack}, {siteFormType, currentUser, correctCollection, uniqueTitle})
+            .then(() => {
+                // if it worked, call DELETE for existing site in PENDING list
+            })
+            .catch(error => {
+                // if it didn't send off an error
+            });
+    }
+
+};
+
+export const attemptToRejectSite = () => {
+
+};
+
