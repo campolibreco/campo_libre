@@ -61,7 +61,7 @@ const {
     }
 } = campsite;
 
-const {submit} = submit_form;
+const {submit, give_me_credit_title, give_me_credit_detail, give_me_credit_example, uploaded_by_title} = submit_form;
 
 const {title, location} = common;
 
@@ -326,6 +326,63 @@ class SiteInfoInputForm extends Component {
                 </View>
             );
         }
+    };
+
+    returnCreditName = ({uploadedBy, siteFormType}) => {
+        if (siteFormType === site_form_type.EDIT && uploadedBy.giveCredit === false) {
+            return 'Anonymous user';
+        }
+
+        const [firstName, lastName] = _.split(uploadedBy.name, ' ', 2);
+        const lastNameLetter = lastName ? lastName[0] : '';
+        const creditName = `${firstName} ${lastNameLetter}.`
+
+        return creditName;
+    };
+
+    // TODO - finish this logic of both submitting and pulling down
+
+    renderGiveMeCreditButton = () => {
+        const {siteFormType, currentUser} = this.props;
+        const {labelStyle, toggleContainerStyle} = styles;
+
+        if (siteFormType === site_form_type.ADD) {
+            return (
+                <View>
+                    <Text style={labelStyle}>{give_me_credit_title}</Text>
+                    <View style={toggleContainerStyle}>
+                        <Text>{give_me_credit_detail}</Text>
+                        <Switch
+                            onValueChange={() => this.onFilterScrutinyToggleChange({filterToggleKey: lowercaseTitle})}
+                            value={filterResultsScrutinyLoose[lowercaseTitle]}
+                        />
+                    </View>
+                    <Text>{give_me_credit_example}{this.returnCreditName({uploadedBy: currentUser, siteFormType})}</Text>
+                </View>
+            )
+
+
+        } else if (siteFormType === site_form_type.EDIT) {
+            const {siteToEdit: {uploadedBy}} = this.props;
+
+            return (
+                <View>
+                    <Text style={labelStyle}>{uploaded_by_title}</Text>
+                    <View style={toggleContainerStyle}>
+                        <Text>{give_me_credit_detail}</Text>
+                        <Switch
+                            onValueChange={() => this.onFilterScrutinyToggleChange({filterToggleKey: lowercaseTitle})}
+                            value={filterResultsScrutinyLoose[lowercaseTitle]}
+                        />
+                    </View>
+                    <Text>{give_me_credit_example}{this.returnCreditName({uploadedBy, siteFormType})}</Text>
+                </View>
+            )
+
+        } else {
+            return null;
+        }
+
     };
 
     onClickCameraButton = () => {
@@ -616,6 +673,8 @@ class SiteInfoInputForm extends Component {
 
                     {this.renderMVUMOptions()}
 
+                    {this.renderGiveMeCreditButton()}
+
                     {this.renderSubmitOptions()}
                 </View>
             </KeyboardAwareScrollView>
@@ -727,6 +786,14 @@ const styles = {
     },
     cancelButtonStyle: {
         backgroundColor: rejectRed
+    },
+    toggleContainerStyle: {
+        marginTop: 20,
+        marginBottom: 10,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignContent: 'center'
     }
 
 };

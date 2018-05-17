@@ -154,12 +154,16 @@ export const newSiteToEditAvailable = ({siteToEdit}) => {
     }
 };
 
-const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData, alternateSites, cellProvider, cellStrength, county, forest, mvum, id}, {navigate, goBack}, {siteFormType, currentUser, correctCollection, uniqueTitle}) => {
+const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData, alternateSites, cellProvider, cellStrength, county, forest, mvum, id, userCredits = {}}, {navigate, goBack}, {siteFormType, currentUser, correctCollection, uniqueTitle, giveMeCredit}) => {
 
-    const userCredits = {
-        name: currentUser.name,
-        email: currentUser.email
-    };
+    if (siteFormType === site_form_type.ADD) {
+        userCredits = {
+            name: currentUser.name,
+            email: currentUser.email,
+            giveCredit: giveMeCredit
+        };
+    }
+
 
     return firebase.firestore().doc(`${correctCollection}/${uniqueTitle}`)
         .set({
@@ -179,7 +183,7 @@ const attemptToUploadSite = ({title, description, directions, nearestTown, acces
             county,
             forest,
             mvum,
-            // uploadedBy: userCredits
+            uploadedBy: userCredits
         });
 };
 
@@ -188,33 +192,27 @@ const attemptToDeleteSite = () => {
 };
 
 
-export const attemptToUploadNewSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData, alternateSites, cellProvider, cellStrength, county, forest, mvum, id}, {navigate, goBack}, {siteFormType, currentUser}) => {
-    const correctCollection = currentUser.isAdmin ? campsite_collections.APPROVED : campsite_collections.PENDING;
-    const {longitude, latitude} = coordinate;
+export const attemptToUploadNewSite = (newSite, navigationOptions, {siteFormType, currentUser, giveMeCredit}) => {
+    const {title, coordinate: {longitude, latitude}} = newSite;
 
     const uniqueTitle = _(`${title}${longitude}${latitude}`)
         .replace(/[\W_]+/g, '')
         .slice(0, 30);
 
+    const contextOptions = {
+        siteFormType,
+        currentUser,
+        giveMeCredit,
+        correctCollection,
+        uniqueTitle
+    };
+
+    const correctCollection = currentUser.isAdmin ? campsite_collections.APPROVED : campsite_collections.PENDING;
+    const isPending = correctCollection === campsite_collections.APPROVED ? false : true;
+    newSite.isPending = isPending;
+
     return (dispatch) => {
-        return attemptToUploadSite({
-            title,
-            description,
-            directions,
-            nearestTown,
-            accessibility,
-            facilities,
-            features,
-            price,
-            coordinate,
-            siteImageData,
-            alternateSites,
-            cellProvider,
-            cellStrength,
-            county,
-            forest,
-            mvum
-        }, {navigate, goBack}, {siteFormType, currentUser, correctCollection, uniqueTitle})
+        return attemptToUploadSite(newSite, navigationOptions, contextOptions)
             .then(() => {
                 dispatch({
                     type: `${siteFormType}_${ADD_SITE_SUCCESS}`
@@ -236,7 +234,7 @@ export const attemptToUploadNewSite = ({title, description, directions, nearestT
 
 };
 
-export const attemptToEditExistingSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData, alternateSites, cellProvider, cellStrength, county, forest, mvum, id}, {navigate, goBack}, {siteFormType, currentUser}) => {
+export const attemptToEditExistingSite = (newSite, navigationOptions, {siteFormType, currentUser}) => {
     if (!currentUser || !currentUser.isAdmin) {
         return;
     }
@@ -245,25 +243,15 @@ export const attemptToEditExistingSite = ({title, description, directions, neare
 
     const uniqueTitle = id;
 
+    const contextOptions = {
+        siteFormType,
+        currentUser,
+        correctCollection,
+        uniqueTitle
+    };
+
     return (dispatch) => {
-        return attemptToUploadSite({
-            title,
-            description,
-            directions,
-            nearestTown,
-            accessibility,
-            facilities,
-            features,
-            price,
-            coordinate,
-            siteImageData,
-            alternateSites,
-            cellProvider,
-            cellStrength,
-            county,
-            forest,
-            mvum
-        }, {navigate, goBack}, {siteFormType, currentUser, correctCollection, uniqueTitle})
+        return attemptToUploadSite(newSite, navigationOptions, contextOptions)
             .then(() => {
                 goBack();
             })
@@ -279,37 +267,29 @@ export const attemptToEditExistingSite = ({title, description, directions, neare
     }
 };
 
-export const attemptToAcceptSubmittedSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData, alternateSites, cellProvider, cellStrength, county, forest, mvum, id}, {navigate, goBack}, {siteFormType, currentUser}) => {
+export const attemptToAcceptSubmittedSite = (newSite, navigationOptions, {siteFormType, currentUser}) => {
     if (!currentUser || !currentUser.isAdmin) {
         return;
     }
 
+    newSite.isPending = false;
+
     const correctCollection = campsite_collections.APPROVED;
-    const {longitude, latitude} = coordinate;
+    const {title, coordinate: {longitude, latitude}} = newSite;
 
     const uniqueTitle = _(`${title}${longitude}${latitude}`)
         .replace(/[\W_]+/g, '')
         .slice(0, 30);
 
+    const contextOptions = {
+        siteFormType,
+        currentUser,
+        correctCollection,
+        uniqueTitle
+    };
+
     return (dispatch) => {
-        return attemptToUploadSite({
-            title,
-            description,
-            directions,
-            nearestTown,
-            accessibility,
-            facilities,
-            features,
-            price,
-            coordinate,
-            siteImageData,
-            alternateSites,
-            cellProvider,
-            cellStrength,
-            county,
-            forest,
-            mvum
-        }, {navigate, goBack}, {siteFormType, currentUser, correctCollection, uniqueTitle})
+        return attemptToUploadSite(newSite, navigationOptions, contextOptions)
             .then(() => {
                 // if it worked, call DELETE for existing site in PENDING list
             })

@@ -77,14 +77,15 @@ export const mvum_links = {
 };
 
 export const approval_state = {
-  APPROVED: 'approved',
-  PENDING: 'pending',
-  DENIED: 'denied'
+    APPROVED: 'approved',
+    PENDING: 'pending',
+    DENIED: 'denied'
 };
 
 export const site_form_type = {
-  ADD: 'add',
-  EDIT: 'edit'
+    ADD: 'add',
+    EDIT: 'edit',
+    APPROVE: 'approve'
 };
 
 export const campsite_collections = {

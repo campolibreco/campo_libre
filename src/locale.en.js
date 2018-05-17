@@ -12,7 +12,6 @@ export const login = {
 
 export const campsite = {
     nav_header: 'Share a site, Get a site',
-    site_description: "Your submitted sites will go here. Why don't you give it a try by submitting a site above?",
     click_for_maps: 'Click to open me in Google Maps',
     upload: 'Upload Campsite',
     admin_options: 'Admin Options',
@@ -124,7 +123,11 @@ export const filter_screen = {
 
 export const add_site_screen = {
     title: 'Add a Site',
-    header_title: 'Your Submitted Sites'
+    header_title: 'Your Submitted Sites',
+    must_log_in_detail: 'Only logged in users can upload new sites. Log in and start sharing your favorites!',
+    no_pending_sites_header: 'No Submitted Sites',
+    no_pending_sites_detail: 'Your submitted sites will go here. Why don\'t you give it a try by submitting a site above?',
+    pending_sites_header: 'Sites Pending Review'
 };
 
 export const more_screen = {
@@ -152,7 +155,11 @@ export const more_screen = {
 
 export const submit_form = {
     submit: 'submit',
-    submitted: 'submitted'
+    submitted: 'submitted',
+    give_me_credit_title: 'Give You Credit?',
+    give_me_credit_detail: 'Can we give you credit for your campsite? An example of the credit is below',
+    give_me_credit_example: 'Uploaded By: ',
+    uploaded_by_title: 'Uploaded By'
 };
 
 export const common = {

@@ -6,6 +6,7 @@ export const FACEBOOK_LOGIN_FAILURE = 'fb_login_failure';
 export const FACEBOOK_LOGOUT_COMPLETE = 'fb_logout_complete';
 
 export const INITIALIZE_MAP = 'initialize_map';
+export const PENDING_SITES_UPDATE = 'pending_sites_update';
 export const MAP_IS_INITIALIZING = 'map_is_initializing';
 export const MAP_READY = 'map_ready';
 export const MAP_NOT_READY = 'map_not_ready';
