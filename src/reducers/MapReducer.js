@@ -184,7 +184,8 @@ export default (state = INITIAL_STATE, action) => {
                 mapLoaded: existingMapLoadedState,
                 filterResultsScrutinyLoose: state.filterResultsScrutinyLoose,
                 selectedSite: state.selectedSite,
-                viewStyle: state.viewStyle
+                viewStyle: state.viewStyle,
+                pendingSites: state.pendingSites
             } : INITIAL_STATE;
 
         case PENDING_SITES_UPDATE:

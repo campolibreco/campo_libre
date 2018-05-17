@@ -156,10 +156,11 @@ export const more_screen = {
 export const submit_form = {
     submit: 'submit',
     submitted: 'submitted',
-    give_me_credit_title: 'Give You Credit?',
-    give_me_credit_detail: 'Can we give you credit for your campsite? An example of the credit is below',
+    give_me_credit_title: 'Can We Give You Credit?',
+    give_me_credit_detail: 'An example of the credit is below',
     give_me_credit_example: 'Uploaded By: ',
-    uploaded_by_title: 'Uploaded By'
+    uploaded_by_title: 'Uploaded By',
+    anonymous_user: 'Anonymous user'
 };
 
 export const common = {

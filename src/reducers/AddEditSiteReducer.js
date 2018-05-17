@@ -27,7 +27,7 @@ import {
     SITE_COUNTY_OPTION_CHANGED,
     SITE_FOREST_OPTION_CHANGED,
     SITE_MVUM_OPTION_CHANGED,
-    NEW_SITE_TO_EDIT
+    NEW_SITE_TO_EDIT, GIVE_ME_CREDIT_TOGGLE_UPDATED
 } from '../actions/types';
 
 import {campsite, reducerAlerts, counties, forest_names, mvum_names} from '../locale.en';
@@ -55,7 +55,8 @@ const INITIAL_STATE = {
     cellStrengthOption: cell_strength_options.blank,
     siteReadyForUpload: false,
     siteDetailCheckboxesKeys: {facilities: [], features: []},
-    id: ''
+    id: '',
+    giveCredit: true
 };
 
 const setInitialEditStateFromSite = ({siteToEdit}) => {
@@ -238,6 +239,10 @@ const formReducer = prefix => (state = INITIAL_STATE, action) => {
 
         case `${prefix}_${MAP_IS_INITIALIZING}`:
             return {...state};
+
+        case `${prefix}_${GIVE_ME_CREDIT_TOGGLE_UPDATED}`:
+            const {newGiveMeCreditValue} = payload;
+            return {...state, giveCredit: newGiveMeCreditValue};
 
         case `${prefix}_${FACEBOOK_LOGOUT_COMPLETE}`:
             return INITIAL_STATE;

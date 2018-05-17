@@ -103,9 +103,10 @@ class AddSiteScreen extends Component {
         }
         else if (pendingSites.length > 0) {
             const {navigation: {navigate}} = this.props;
+            const {fillScreen} = styles;
 
             return (
-                <View>
+                <View style={fillScreen}>
                     <Text style={headerTitleStyle}>{pending_sites_header}</Text>
 
                     <ScrollView>

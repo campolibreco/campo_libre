@@ -24,7 +24,8 @@ import {
     SITE_COUNTY_OPTION_CHANGED,
     SITE_FOREST_OPTION_CHANGED,
     SITE_MVUM_OPTION_CHANGED,
-    NEW_SITE_TO_EDIT
+    NEW_SITE_TO_EDIT,
+    GIVE_ME_CREDIT_TOGGLE_UPDATED
 } from './types';
 
 import {navKeys, site_form_type, campsite_collections} from '../constants';
@@ -154,16 +155,14 @@ export const newSiteToEditAvailable = ({siteToEdit}) => {
     }
 };
 
-const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData, alternateSites, cellProvider, cellStrength, county, forest, mvum, id, userCredits = {}}, {navigate, goBack}, {siteFormType, currentUser, correctCollection, uniqueTitle, giveMeCredit}) => {
-
-    if (siteFormType === site_form_type.ADD) {
-        userCredits = {
-            name: currentUser.name,
-            email: currentUser.email,
-            giveCredit: giveMeCredit
-        };
+export const giveMeCreditToggleUpdated = ({newGiveMeCreditValue, siteFormType}) => {
+    return {
+        type: `${siteFormType}_${GIVE_ME_CREDIT_TOGGLE_UPDATED}`,
+        payload: {newGiveMeCreditValue}
     }
+};
 
+const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData, alternateSites, cellProvider, cellStrength, county, forest, mvum, id, uploadedBy}, {navigate, goBack}, {siteFormType, currentUser, correctCollection, uniqueTitle}) => {
 
     return firebase.firestore().doc(`${correctCollection}/${uniqueTitle}`)
         .set({
@@ -183,7 +182,7 @@ const attemptToUploadSite = ({title, description, directions, nearestTown, acces
             county,
             forest,
             mvum,
-            uploadedBy: userCredits
+            uploadedBy
         });
 };
 
@@ -192,27 +191,27 @@ const attemptToDeleteSite = () => {
 };
 
 
-export const attemptToUploadNewSite = (newSite, navigationOptions, {siteFormType, currentUser, giveMeCredit}) => {
+export const attemptToUploadNewSite = (newSite, {navigate, goBack}, {siteFormType, currentUser}) => {
     const {title, coordinate: {longitude, latitude}} = newSite;
 
     const uniqueTitle = _(`${title}${longitude}${latitude}`)
         .replace(/[\W_]+/g, '')
         .slice(0, 30);
 
+    const correctCollection = currentUser.isAdmin ? campsite_collections.APPROVED : campsite_collections.PENDING;
+    const isPending = correctCollection === campsite_collections.APPROVED ? false : true;
+
     const contextOptions = {
         siteFormType,
         currentUser,
-        giveMeCredit,
         correctCollection,
         uniqueTitle
     };
 
-    const correctCollection = currentUser.isAdmin ? campsite_collections.APPROVED : campsite_collections.PENDING;
-    const isPending = correctCollection === campsite_collections.APPROVED ? false : true;
     newSite.isPending = isPending;
 
     return (dispatch) => {
-        return attemptToUploadSite(newSite, navigationOptions, contextOptions)
+        return attemptToUploadSite(newSite, {navigate, goBack}, contextOptions)
             .then(() => {
                 dispatch({
                     type: `${siteFormType}_${ADD_SITE_SUCCESS}`
@@ -234,7 +233,7 @@ export const attemptToUploadNewSite = (newSite, navigationOptions, {siteFormType
 
 };
 
-export const attemptToEditExistingSite = (newSite, navigationOptions, {siteFormType, currentUser}) => {
+export const attemptToEditExistingSite = (newSite, {navigate, goBack}, {siteFormType, currentUser}) => {
     if (!currentUser || !currentUser.isAdmin) {
         return;
     }
@@ -251,7 +250,7 @@ export const attemptToEditExistingSite = (newSite, navigationOptions, {siteFormT
     };
 
     return (dispatch) => {
-        return attemptToUploadSite(newSite, navigationOptions, contextOptions)
+        return attemptToUploadSite(newSite, {navigate, goBack}, contextOptions)
             .then(() => {
                 goBack();
             })
@@ -267,7 +266,7 @@ export const attemptToEditExistingSite = (newSite, navigationOptions, {siteFormT
     }
 };
 
-export const attemptToAcceptSubmittedSite = (newSite, navigationOptions, {siteFormType, currentUser}) => {
+export const attemptToAcceptSubmittedSite = (newSite, {navigate, goBack}, {siteFormType, currentUser}) => {
     if (!currentUser || !currentUser.isAdmin) {
         return;
     }
@@ -289,7 +288,7 @@ export const attemptToAcceptSubmittedSite = (newSite, navigationOptions, {siteFo
     };
 
     return (dispatch) => {
-        return attemptToUploadSite(newSite, navigationOptions, contextOptions)
+        return attemptToUploadSite(newSite, {navigate, goBack}, contextOptions)
             .then(() => {
                 // if it worked, call DELETE for existing site in PENDING list
             })

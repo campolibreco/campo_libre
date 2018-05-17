@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, Picker, Platform, ScrollView, View, Image} from 'react-native';
+import {Alert, Picker, Platform, ScrollView, View, Image, Switch} from 'react-native';
 import {connect} from 'react-redux';
 import {Icon, Text, CheckBox, Input} from 'react-native-elements';
 
@@ -33,7 +33,8 @@ import {
     updateCountyOption,
     updateForestOption,
     updateMVUMOption,
-    newSiteToEditAvailable
+    newSiteToEditAvailable,
+    giveMeCreditToggleUpdated
 } from '../actions';
 
 import {campsite, submit_form, common, more_screen, counties, mvum_names, forest_names} from '../locale.en';
@@ -44,7 +45,7 @@ const {
         site_image,
         latitude, longitude,
         longitude_placeholder, latitude_placeholder,
-        add_site, add_a_campsite, add_site_title, site_info,
+        add_site_title, site_info,
         description, description_placeholder,
         directions, directions_placeholder,
         optional,
@@ -61,7 +62,7 @@ const {
     }
 } = campsite;
 
-const {submit, give_me_credit_title, give_me_credit_detail, give_me_credit_example, uploaded_by_title} = submit_form;
+const {submit, give_me_credit_title, give_me_credit_detail, give_me_credit_example, uploaded_by_title, anonymous_user} = submit_form;
 
 const {title, location} = common;
 
@@ -328,22 +329,29 @@ class SiteInfoInputForm extends Component {
         }
     };
 
-    returnCreditName = ({uploadedBy, siteFormType}) => {
-        if (siteFormType === site_form_type.EDIT && uploadedBy.giveCredit === false) {
-            return 'Anonymous user';
+    onGiveMeCreditToggleChange = () => {
+        const {giveCredit, siteFormType} = this.props;
+        const newGiveMeCreditValue = !giveCredit;
+
+        this.props.giveMeCreditToggleUpdated({newGiveMeCreditValue, siteFormType});
+    };
+
+    returnCreditName = ({uploadedBy}) => {
+        const {siteFormType, giveCredit} = this.props;
+
+        if (giveCredit === false || (siteFormType === site_form_type.EDIT && uploadedBy.giveCredit === false)) {
+            return anonymous_user;
         }
 
         const [firstName, lastName] = _.split(uploadedBy.name, ' ', 2);
         const lastNameLetter = lastName ? lastName[0] : '';
-        const creditName = `${firstName} ${lastNameLetter}.`
+        const creditName = `${firstName} ${lastNameLetter}.`;
 
         return creditName;
     };
 
-    // TODO - finish this logic of both submitting and pulling down
-
     renderGiveMeCreditButton = () => {
-        const {siteFormType, currentUser} = this.props;
+        const {siteFormType, currentUser, giveCredit} = this.props;
         const {labelStyle, toggleContainerStyle} = styles;
 
         if (siteFormType === site_form_type.ADD) {
@@ -353,11 +361,11 @@ class SiteInfoInputForm extends Component {
                     <View style={toggleContainerStyle}>
                         <Text>{give_me_credit_detail}</Text>
                         <Switch
-                            onValueChange={() => this.onFilterScrutinyToggleChange({filterToggleKey: lowercaseTitle})}
-                            value={filterResultsScrutinyLoose[lowercaseTitle]}
+                            onValueChange={() => this.onGiveMeCreditToggleChange()}
+                            value={giveCredit}
                         />
                     </View>
-                    <Text>{give_me_credit_example}{this.returnCreditName({uploadedBy: currentUser, siteFormType})}</Text>
+                    <Text>{give_me_credit_example}{this.returnCreditName({uploadedBy: currentUser})}</Text>
                 </View>
             )
 
@@ -404,9 +412,9 @@ class SiteInfoInputForm extends Component {
     };
 
     onClickSubmit = () => {
-        const {siteFormType, navigate, goBack, currentUser} = this.props;
+        const {siteFormType, navigate, goBack, currentUser, giveCredit} = this.props;
 
-        const newSite = {
+        let newSite = {
             title: this.props.siteTitleText,
             description: this.props.siteDescriptionText,
             directions: this.props.siteDirectionsText,
@@ -430,6 +438,14 @@ class SiteInfoInputForm extends Component {
         };
 
         if (siteFormType === site_form_type.ADD) {
+            const uploadedBy = {
+                name: currentUser.name,
+                email: currentUser.email,
+                giveCredit
+            };
+
+            newSite.uploadedBy = uploadedBy;
+
             this.props.attemptToUploadNewSite(newSite, {navigate, goBack}, {siteFormType, currentUser});
         } else if (siteFormType === site_form_type.EDIT) {
             this.props.attemptToEditExistingSite(newSite, {navigate, goBack}, {siteFormType, currentUser});
@@ -437,7 +453,7 @@ class SiteInfoInputForm extends Component {
     };
 
     renderSubmitOptions = () => {
-        const {siteReadyForUpload, siteFormType, navigate, goBack} = this.props;
+        const {siteReadyForUpload, siteFormType, goBack} = this.props;
         const {submitButtonStyle, lastElementStyle, adminOptionsButtonContainerStyle, iconButtonStyle, approveButtonStyle, cancelButtonStyle} = styles;
 
         if (siteReadyForUpload && siteFormType === site_form_type.ADD) {
@@ -792,7 +808,7 @@ const styles = {
         marginBottom: 10,
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'space-around',
+        justifyContent: 'space-between',
         alignContent: 'center'
     }
 
@@ -800,7 +816,7 @@ const styles = {
 
 function mapStateToProps(state, ownProps) {
     const {siteFormType} = ownProps;
-    const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, priceOption, countyOption, forestOption, mvumOption, siteReadyForUpload, readyLatitude, readyLongitude, siteDetailCheckboxesKeys, siteImageData, siteAlternateSitesText, cellProviderOption, cellStrengthOption, id} = state.addEditSite[siteFormType];
+    const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, priceOption, countyOption, forestOption, mvumOption, siteReadyForUpload, readyLatitude, readyLongitude, siteDetailCheckboxesKeys, siteImageData, siteAlternateSitesText, cellProviderOption, cellStrengthOption, id, giveCredit} = state.addEditSite[siteFormType];
     const {locationServicesPermission, cameraPermission, cameraRollPermission} = state.permissions;
     const {currentUser} = state.auth;
 
@@ -828,7 +844,8 @@ function mapStateToProps(state, ownProps) {
         countyOption,
         forestOption,
         mvumOption,
-        id
+        id,
+        giveCredit
     };
 }
 
@@ -857,7 +874,8 @@ const mapActions = {
     updateCountyOption,
     updateForestOption,
     updateMVUMOption,
-    newSiteToEditAvailable
+    newSiteToEditAvailable,
+    giveMeCreditToggleUpdated
 };
 
 export default connect(mapStateToProps, mapActions)(SiteInfoInputForm);
