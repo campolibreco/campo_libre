@@ -25,7 +25,7 @@ import {
     SITE_FOREST_OPTION_CHANGED,
     SITE_MVUM_OPTION_CHANGED,
     NEW_SITE_TO_EDIT,
-    GIVE_ME_CREDIT_TOGGLE_UPDATED
+    GIVE_ME_CREDIT_TOGGLE_UPDATED, PENDING_SELECTED_SITE_UPDATE
 } from './types';
 
 import {navKeys, site_form_type, campsite_collections} from '../constants';

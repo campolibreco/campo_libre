@@ -17,7 +17,7 @@ import {add_site_screen} from '../locale.en';
 
 const {title, header_title, must_log_in_detail, no_pending_sites_header, no_pending_sites_detail, pending_sites_header} = add_site_screen;
 
-import {getPendingCampsites, getSiteDetail, logUserIntoFacebook} from '../actions';
+import {getPendingCampsites, logUserIntoFacebook, getPendingSiteDetail} from '../actions';
 import {facebookBlueButtonTransparent, navyBlueButton} from "../styles";
 
 class AddSiteScreen extends Component {
@@ -61,13 +61,13 @@ class AddSiteScreen extends Component {
         }
     };
 
-    renderPendingSites = ({sites, getSiteDetail, navigate}) => {
+    renderPendingSites = ({sites, getPendingSiteDetail, navigate}) => {
         return _.map(sites, (site, index) => {
             return (
                 <CampsiteListItem
                     key={index}
                     site={site}
-                    getSiteDetail={getSiteDetail}
+                    getSiteDetail={getPendingSiteDetail}
                     navigate={navigate}
                 />
             );
@@ -113,7 +113,7 @@ class AddSiteScreen extends Component {
 
                         {this.renderPendingSites({
                             sites: pendingSites,
-                            getSiteDetail: this.props.getSiteDetail,
+                            getPendingSiteDetail: this.props.getPendingSiteDetail,
                             navigate
                         })}
                     </ScrollView>
@@ -173,4 +173,4 @@ const mapStateToProps = (state, ownProps) => {
     return {currentUser, pendingSites};
 };
 
-export default connect(mapStateToProps, {getPendingCampsites, getSiteDetail, logUserIntoFacebook})(AddSiteScreen);
+export default connect(mapStateToProps, {getPendingCampsites, logUserIntoFacebook, getPendingSiteDetail})(AddSiteScreen);

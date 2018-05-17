@@ -10,7 +10,9 @@ import {
     FILTER_TOGGLE_LOGIC_UPDATED,
     FILTER_CRITERIA_RESET,
     SELECTED_SITE_UPDATE,
-    SELECTED_SITE_CLEARED, PENDING_SITES_UPDATE
+    SELECTED_SITE_CLEARED,
+    PENDING_SITES_UPDATE,
+    PENDING_SELECTED_SITE_UPDATE
 
 } from '../actions/types';
 
@@ -35,7 +37,8 @@ const INITIAL_STATE = {
     displaySites: [],
     filterResultsScrutinyLoose: {facilities: true, features: true},
     filterCriteriaKeys: {accessibility: [], facilities: [], price: [], features: [], forest: []},
-    selectedSite: {}
+    selectedSite: {},
+    selectedPendingSite : {}
 };
 
 const getBoundingBoxForRegion = ({region}) => {
@@ -184,6 +187,7 @@ export default (state = INITIAL_STATE, action) => {
                 mapLoaded: existingMapLoadedState,
                 filterResultsScrutinyLoose: state.filterResultsScrutinyLoose,
                 selectedSite: state.selectedSite,
+                selectedPendingSite: state.selectedPendingSite,
                 viewStyle: state.viewStyle,
                 pendingSites: state.pendingSites
             } : INITIAL_STATE;
@@ -248,6 +252,12 @@ export default (state = INITIAL_STATE, action) => {
 
         case SELECTED_SITE_CLEARED:
             return {...state, selectedSite: INITIAL_STATE.selectedSite};
+
+        case PENDING_SELECTED_SITE_UPDATE:
+            const {selectedPendingSite} = payload;
+
+            return {...state, selectedSite: INITIAL_STATE.selectedSite, selectedPendingSite};
+
 
         default:
             return state;

@@ -11,7 +11,8 @@ import {
     MAP_REGION_CHANGE,
     VIEW_STYLE_UPDATE,
     SELECTED_SITE_UPDATE,
-    SELECTED_SITE_CLEARED
+    SELECTED_SITE_CLEARED,
+    PENDING_SELECTED_SITE_UPDATE
 } from './types';
 
 import {navKeys} from '../constants';
@@ -102,4 +103,13 @@ export const getSiteDetail = ({selectedSite, navigate}) => {
         }
     }
 
+};
+
+export const getPendingSiteDetail = ({selectedPendingSite, navigate}) => {
+    navigate(navKeys.SITE_DETAIL);
+
+    return {
+        type: PENDING_SELECTED_SITE_UPDATE,
+        payload: {selectedPendingSite}
+    }
 };

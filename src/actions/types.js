@@ -14,6 +14,7 @@ export const MAP_REGION_CHANGE = 'map_region_change';
 export const VIEW_STYLE_UPDATE = 'view_style_update';
 export const SELECTED_SITE_UPDATE = 'selected_site_update';
 export const SELECTED_SITE_CLEARED = 'selected_site_cleared';
+export const PENDING_SELECTED_SITE_UPDATE = 'pending_selected_site_update';
 
 export const LATITUDE_TEXT_UPDATED = 'latitude_text_updated';
 export const LONGITUDE_TEXT_UPDATED = 'longitude_text_updated';

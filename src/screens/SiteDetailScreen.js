@@ -23,7 +23,7 @@ const {location} = common;
 class SiteDetailScreen extends Component {
 
     componentDidMount() {
-        const {selectedSite, currentUser, navigation: {setParams}} = this.props;
+        const {selectedSite, selectedPendingSite, currentUser, navigation: {setParams}} = this.props;
 
         if (currentUser.name === tokens.GUEST) {
             return;
@@ -31,7 +31,7 @@ class SiteDetailScreen extends Component {
 
         const isFavorite = !!_.find(currentUser.favorites, favorite => favorite.id === selectedSite.id);
 
-        setParams({selectedSite, isFavorite, currentUser, toggleSiteFavorite: this.toggleSiteFavorite});
+        setParams({selectedSite, selectedPendingSite, isFavorite, currentUser, toggleSiteFavorite: this.toggleSiteFavorite});
     }
 
     componentWillReceiveProps(nextProps) {
@@ -57,8 +57,8 @@ class SiteDetailScreen extends Component {
 
     };
 
-    static renderRightNavButton = ({selectedSite, isFavorite, currentUser, toggleSiteFavorite}) => {
-        if (!currentUser) {
+    static renderRightNavButton = ({selectedSite, selectedPendingSite, isFavorite, currentUser, toggleSiteFavorite}) => {
+        if (!currentUser || !selectedSite) {
             return;
         }
 
@@ -115,17 +115,19 @@ class SiteDetailScreen extends Component {
     };
 
     renderAlternateSites = () => {
-        const {selectedSite} = this.props;
+        const {selectedSite, selectedPendingSite} = this.props;
+        const siteToShow = selectedSite || selectedPendingSite;
+
         const {sectionTitleStyle, textStyle, bottomMargin} = styles;
 
-        if (selectedSite && selectedSite.alternateSites) {
+        if (siteToShow && siteToShow.alternateSites) {
             return (
                 <View>
                     <Text style={sectionTitleStyle}>
                         {campsite_form.alternate_sites}
                     </Text>
                     <Text style={[textStyle, bottomMargin]}>
-                        {selectedSite.alternateSites}
+                        {siteToShow.alternateSites}
                     </Text>
                 </View>
             );
@@ -134,21 +136,22 @@ class SiteDetailScreen extends Component {
     };
 
     renderMVUMInfo = () => {
-        const {selectedSite, navigation: {navigate}} = this.props;
+        const {selectedSite, selectedPendingSite, navigation: {navigate}} = this.props;
+        const siteToShow = selectedSite || selectedPendingSite;
         const {sectionTitleStyle, textStyle, bottomMargin, hyperlinkStyle} = styles;
 
-        if (selectedSite && selectedSite.mvum) {
+        if (siteToShow && siteToShow.mvum) {
             return (
                 <View>
                     <Text style={sectionTitleStyle}>
                         {campsite_form.mvum}
                     </Text>
                     <TouchableOpacity
-                        onPress={() => Expo.WebBrowser.openBrowserAsync(mvum_links[selectedSite.mvum])}
+                        onPress={() => Expo.WebBrowser.openBrowserAsync(mvum_links[siteToShow.mvum])}
                         // onPress={() => navigate(navKeys.MVUM_INSPECTOR)}
                     >
                         <Text style={[textStyle, bottomMargin, hyperlinkStyle]}>
-                            {mvum_names[selectedSite.mvum]}
+                            {mvum_names[siteToShow.mvum]}
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -158,10 +161,11 @@ class SiteDetailScreen extends Component {
     };
 
     renderCountyInfo = () => {
-        const {selectedSite} = this.props;
+        const {selectedSite, selectedPendingSite} = this.props;
+        const siteToShow = selectedSite || selectedPendingSite;
         const {sectionTitleStyle, textStyle, bottomMargin, hyperlinkStyle, countyInlineStyle} = styles;
 
-        if (selectedSite && selectedSite.county) {
+        if (siteToShow && siteToShow.county) {
             return (
                 <View>
                     <Text style={sectionTitleStyle}>
@@ -169,7 +173,7 @@ class SiteDetailScreen extends Component {
                     </Text>
                     <View style={countyInlineStyle}>
                         <Text style={[textStyle, bottomMargin]}>
-                            {counties[selectedSite.county]}
+                            {counties[siteToShow.county]}
                         </Text>
                         <Text>
                             {' - '}
@@ -189,10 +193,11 @@ class SiteDetailScreen extends Component {
     };
 
     renderForestInfo = () => {
-        const {selectedSite} = this.props;
+        const {selectedSite, selectedPendingSite} = this.props;
+        const siteToShow = selectedSite || selectedPendingSite;
         const {sectionTitleStyle, textStyle, bottomMargin, hyperlinkStyle, countyInlineStyle} = styles;
 
-        if (selectedSite && selectedSite.forest) {
+        if (siteToShow && siteToShow.forest) {
             return (
                 <View>
                     <Text style={sectionTitleStyle}>
@@ -200,7 +205,7 @@ class SiteDetailScreen extends Component {
                     </Text>
                     <View style={countyInlineStyle}>
                         <Text style={[textStyle, bottomMargin]}>
-                            {forest_names[selectedSite.forest]}
+                            {forest_names[siteToShow.forest]}
                         </Text>
                     </View>
                 </View>
@@ -234,10 +239,11 @@ class SiteDetailScreen extends Component {
     };
 
     renderCellCoverageInfo = () => {
-        const {selectedSite} = this.props;
+        const {selectedSite, selectedPendingSite} = this.props;
+        const siteToShow = selectedSite || selectedPendingSite;
 
-        if (selectedSite) {
-            const {cellProvider, cellStrength} = selectedSite;
+        if (siteToShow) {
+            const {cellProvider, cellStrength} = siteToShow;
             if (cellProvider || cellStrength) {
                 const {sectionTitleStyle, cellServiceContainerStyle} = styles;
 
@@ -307,10 +313,12 @@ class SiteDetailScreen extends Component {
 
     renderSiteDetailScreen = () => {
         const {textStyle, sectionTitleStyle, mainTitleStyle, locationMainContainerStyle, mapThumbnailStyle, bottomMargin, topMargin, cardContainerStyle, contentContainerStyle, siteImageStyle, touchableContainerStyle} = styles;
-        const {selectedSite} = this.props;
-        const {accessibility, coordinate, description, directions, facilities, features, nearestTown, price, siteImageData, title, county} = selectedSite;
+        const {selectedSite, selectedPendingSite} = this.props;
+        const siteToShow = selectedSite || selectedPendingSite;
 
-        if (selectedSite) {
+        const {accessibility, coordinate, description, directions, facilities, features, nearestTown, price, siteImageData, title, county} = siteToShow;
+
+        if (siteToShow) {
             return (
                 <ScrollView>
                     <Card
@@ -526,10 +534,10 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-    const {selectedSite} = state.map;
+    const {selectedSite, selectedPendingSite} = state.map;
     const {currentUser} = state.auth;
 
-    return {selectedSite, currentUser};
+    return {selectedSite, selectedPendingSite, currentUser};
 }
 
 export default connect(mapStateToProps, {attemptToAddFavorite, attemptToRemoveFavorite})(SiteDetailScreen);
