@@ -14,11 +14,13 @@ import {attemptToAddFavorite, attemptToRemoveFavorite} from '../actions';
 import {linkColorBlue, navyBlueButton, hyperlinkBlue} from '../styles/index';
 
 import {navKeys, facilityIconDetails, featureIconDetails, map, tokens, mvum_links, external_links} from '../constants';
-import {site_detail_screen, campsite, common, counties, forest_names, mvum_names} from '../locale.en';
+import {submit_form, campsite, common, counties, forest_names, mvum_names} from '../locale.en';
 import {campsiteIcon} from "../styles";
 
 const {campsite_form, admin_options} = campsite;
 const {location} = common;
+
+import {getUserCreditName} from '../services/SiteInfoService';
 
 class SiteDetailScreen extends Component {
 
@@ -91,7 +93,7 @@ class SiteDetailScreen extends Component {
         const {selectedPendingSite} = params;
 
         return {
-            headerTitle: !!selectedPendingSite && !_.isEmpty(selectedPendingSite) ? 'Pending Review': '',
+            headerTitle: !!selectedPendingSite && !_.isEmpty(selectedPendingSite) ? 'Pending Review' : '',
             headerRight: SiteDetailScreen.renderRightNavButton(params)
         }
     };
@@ -293,6 +295,31 @@ class SiteDetailScreen extends Component {
 
     };
 
+    renderUserCreditIfApplicable = () => {
+        const {sectionTitleStyle, textStyle, bottomMargin} = styles;
+        const siteToShow = this.getSiteToShow();
+
+        if (!siteToShow || _.isEmpty(siteToShow)) {
+            return null;
+        } else {
+            const uploadedBy = siteToShow.uploadedBy;
+            const giveCredit = siteToShow.uploadedBy.giveCredit;
+
+            return (
+                <View>
+                    <Text style={sectionTitleStyle}>
+                        {submit_form.uploaded_by_title}
+                    </Text>
+                    <Text style={[textStyle, bottomMargin]}>
+                        {getUserCreditName({uploadedBy, giveCredit})}
+                    </Text>
+                </View>
+            );
+        }
+
+
+    };
+
     renderAdminOptions = () => {
         const {sectionTitleStyle, adminOptionsButtonContainerStyle} = styles;
         const {currentUser} = this.props;
@@ -450,6 +477,8 @@ class SiteDetailScreen extends Component {
                             </View>
 
                             {this.renderCellCoverageInfo()}
+
+                            {this.renderUserCreditIfApplicable()}
 
                             {this.renderAdminOptions()}
 

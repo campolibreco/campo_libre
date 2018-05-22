@@ -7,6 +7,7 @@ import _ from 'lodash';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import {LargeButton, SmallButton} from './common';
+import {getUserCreditName} from '../services/SiteInfoService';
 
 import {
     updateLatitudeText,
@@ -62,7 +63,7 @@ const {
     }
 } = campsite;
 
-const {submit, give_me_credit_title, give_me_credit_detail, give_me_credit_example, uploaded_by_title, anonymous_user} = submit_form;
+const {submit, give_me_credit_title, give_me_credit_detail, give_me_credit_example, uploaded_by_title} = submit_form;
 
 const {title, location} = common;
 
@@ -336,20 +337,6 @@ class SiteInfoInputForm extends Component {
         this.props.giveMeCreditToggleUpdated({newGiveMeCreditValue, siteFormType});
     };
 
-    returnCreditName = ({uploadedBy}) => {
-        const {siteFormType, giveCredit} = this.props;
-
-        if (giveCredit === false || (siteFormType === site_form_type.EDIT && uploadedBy.giveCredit === false)) {
-            return anonymous_user;
-        }
-
-        const [firstName, lastName] = _.split(uploadedBy.name, ' ', 2);
-        const lastNameLetter = lastName ? lastName[0] : '';
-        const creditName = `${firstName} ${lastNameLetter}.`;
-
-        return creditName;
-    };
-
     renderGiveMeCreditButton = () => {
         const {siteFormType, currentUser, giveCredit} = this.props;
         const {labelStyle, toggleContainerStyle} = styles;
@@ -365,7 +352,7 @@ class SiteInfoInputForm extends Component {
                             value={giveCredit}
                         />
                     </View>
-                    <Text>{give_me_credit_example}{this.returnCreditName({uploadedBy: currentUser})}</Text>
+                    <Text>{give_me_credit_example}{getUserCreditName({uploadedBy: currentUser, siteFormType, giveCredit})}</Text>
                 </View>
             )
 
@@ -383,7 +370,7 @@ class SiteInfoInputForm extends Component {
                             value={filterResultsScrutinyLoose[lowercaseTitle]}
                         />
                     </View>
-                    <Text>{give_me_credit_example}{this.returnCreditName({uploadedBy, siteFormType})}</Text>
+                    <Text>{give_me_credit_example}{getUserCreditName({uploadedBy, siteFormType, giveCredit})}</Text>
                 </View>
             )
 
