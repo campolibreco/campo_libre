@@ -248,13 +248,13 @@ export default (state = INITIAL_STATE, action) => {
         case SELECTED_SITE_UPDATE:
             const {selectedSite} = payload;
 
-            return {...state, selectedSite};
+            return {...state, selectedSite, selectedPendingSite: INITIAL_STATE.selectedPendingSite};
 
         case SELECTED_SITE_CLEARED:
             return {...state, selectedSite: INITIAL_STATE.selectedSite};
 
         case PENDING_SELECTED_SITE_UPDATE:
-            const {selectedPendingSite} = payload;
+            const selectedPendingSite = payload.selectedSite;
 
             return {...state, selectedSite: INITIAL_STATE.selectedSite, selectedPendingSite};
 

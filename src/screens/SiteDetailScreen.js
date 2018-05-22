@@ -31,7 +31,13 @@ class SiteDetailScreen extends Component {
 
         const isFavorite = !!_.find(currentUser.favorites, favorite => favorite.id === selectedSite.id);
 
-        setParams({selectedSite, selectedPendingSite, isFavorite, currentUser, toggleSiteFavorite: this.toggleSiteFavorite});
+        setParams({
+            selectedSite,
+            selectedPendingSite,
+            isFavorite,
+            currentUser,
+            toggleSiteFavorite: this.toggleSiteFavorite
+        });
     }
 
     componentWillReceiveProps(nextProps) {
@@ -58,7 +64,7 @@ class SiteDetailScreen extends Component {
     };
 
     static renderRightNavButton = ({selectedSite, selectedPendingSite, isFavorite, currentUser, toggleSiteFavorite}) => {
-        if (!currentUser || !selectedSite) {
+        if (!currentUser || !selectedSite || _.isEmpty(selectedSite)) {
             return;
         }
 
@@ -82,9 +88,23 @@ class SiteDetailScreen extends Component {
 
     static navigationOptions = (props) => {
         const {navigation: {state: {params = {}}}} = props;
+        const {selectedPendingSite} = params;
 
         return {
+            headerTitle: !!selectedPendingSite && !_.isEmpty(selectedPendingSite) ? 'Pending Review': '',
             headerRight: SiteDetailScreen.renderRightNavButton(params)
+        }
+    };
+
+    getSiteToShow = () => {
+        const {selectedSite, selectedPendingSite} = this.props;
+
+        if (!!selectedSite && !_.isEmpty(selectedSite)) {
+            return selectedSite;
+        } else if (!!selectedPendingSite && !_.isEmpty(selectedPendingSite)) {
+            return selectedPendingSite;
+        } else {
+            return null;
         }
     };
 
@@ -115,8 +135,7 @@ class SiteDetailScreen extends Component {
     };
 
     renderAlternateSites = () => {
-        const {selectedSite, selectedPendingSite} = this.props;
-        const siteToShow = selectedSite || selectedPendingSite;
+        const siteToShow = this.getSiteToShow();
 
         const {sectionTitleStyle, textStyle, bottomMargin} = styles;
 
@@ -136,8 +155,7 @@ class SiteDetailScreen extends Component {
     };
 
     renderMVUMInfo = () => {
-        const {selectedSite, selectedPendingSite, navigation: {navigate}} = this.props;
-        const siteToShow = selectedSite || selectedPendingSite;
+        const siteToShow = this.getSiteToShow();
         const {sectionTitleStyle, textStyle, bottomMargin, hyperlinkStyle} = styles;
 
         if (siteToShow && siteToShow.mvum) {
@@ -161,8 +179,7 @@ class SiteDetailScreen extends Component {
     };
 
     renderCountyInfo = () => {
-        const {selectedSite, selectedPendingSite} = this.props;
-        const siteToShow = selectedSite || selectedPendingSite;
+        const siteToShow = this.getSiteToShow();
         const {sectionTitleStyle, textStyle, bottomMargin, hyperlinkStyle, countyInlineStyle} = styles;
 
         if (siteToShow && siteToShow.county) {
@@ -193,8 +210,7 @@ class SiteDetailScreen extends Component {
     };
 
     renderForestInfo = () => {
-        const {selectedSite, selectedPendingSite} = this.props;
-        const siteToShow = selectedSite || selectedPendingSite;
+        const siteToShow = this.getSiteToShow();
         const {sectionTitleStyle, textStyle, bottomMargin, hyperlinkStyle, countyInlineStyle} = styles;
 
         if (siteToShow && siteToShow.forest) {
@@ -239,8 +255,7 @@ class SiteDetailScreen extends Component {
     };
 
     renderCellCoverageInfo = () => {
-        const {selectedSite, selectedPendingSite} = this.props;
-        const siteToShow = selectedSite || selectedPendingSite;
+        const siteToShow = this.getSiteToShow();
 
         if (siteToShow) {
             const {cellProvider, cellStrength} = siteToShow;
@@ -313,8 +328,11 @@ class SiteDetailScreen extends Component {
 
     renderSiteDetailScreen = () => {
         const {textStyle, sectionTitleStyle, mainTitleStyle, locationMainContainerStyle, mapThumbnailStyle, bottomMargin, topMargin, cardContainerStyle, contentContainerStyle, siteImageStyle, touchableContainerStyle} = styles;
-        const {selectedSite, selectedPendingSite} = this.props;
-        const siteToShow = selectedSite || selectedPendingSite;
+        const siteToShow = this.getSiteToShow();
+
+        if (!siteToShow) {
+            return null;
+        }
 
         const {accessibility, coordinate, description, directions, facilities, features, nearestTown, price, siteImageData, title, county} = siteToShow;
 

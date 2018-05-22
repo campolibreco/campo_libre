@@ -105,11 +105,11 @@ export const getSiteDetail = ({selectedSite, navigate}) => {
 
 };
 
-export const getPendingSiteDetail = ({selectedPendingSite, navigate}) => {
+export const getPendingSiteDetail = ({selectedSite, navigate}) => {
     navigate(navKeys.SITE_DETAIL);
 
     return {
         type: PENDING_SELECTED_SITE_UPDATE,
-        payload: {selectedPendingSite}
+        payload: {selectedSite}
     }
 };
