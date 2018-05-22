@@ -2,18 +2,19 @@ import {AppLoading, WebBrowser} from 'expo';
 import React, {Component} from 'react';
 import {Platform, Text, View, ScrollView, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
-import {Icon, Button, Card, ListItem, Divider} from 'react-native-elements';
+import {Icon, ListItem} from 'react-native-elements';
 
 import {NavbarButton} from '../components/common';
 
 import {logUserOutOfFacebook} from '../actions';
-import {badgeGreen, limeGreenTitle, linkColorBlue} from '../styles/index';
 
 import {more_screen} from '../locale.en';
-const {fire_safety_section, wilderness_safety, camping_tips} = more_screen;
+const {fire_safety_section, wilderness_safety, camping_tips, app_info, user_info} = more_screen;
 
 import {external_links} from '../constants';
 const {co_fire_bans_url, build_a_safe_fire_url, camping_bear_safe_url, general_safety_guidelines_url, winter_camping_safely_url, car_camping_checklist_url, forest_service_contact_url, google_maps_offline_url} = external_links;
+
+import {APP_VERSION} from '../../env';
 
 class MoreScreen extends Component {
     componentDidMount() {
@@ -56,7 +57,7 @@ class MoreScreen extends Component {
     renderScreen() {
         const {headingStyle, cardStyle, listItemStyle} = styles;
 
-        const {appReady} = this.props;
+        const {appReady, currentUser} = this.props;
 
         if (!appReady) {
             return <AppLoading/>
@@ -124,6 +125,14 @@ class MoreScreen extends Component {
                     />
                 </View>
 
+                <Text style={headingStyle}>{app_info.title}</Text>
+                <View>
+                    <ListItem
+                        title={`${app_info.version} ${APP_VERSION}`}
+                        leftIcon={{name: 'code', type: 'font-awesome'}}
+                    />
+                </View>
+
             </ScrollView>
         );
     }
@@ -154,9 +163,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state, ownProps) => {
-    const {token, appReady} = state.auth;
+    const {token, appReady, currentUser} = state.auth;
 
-    return {token, appReady};
+    return {token, appReady, currentUser};
 };
 
 export default connect(mapStateToProps, {logUserOutOfFacebook})(MoreScreen);

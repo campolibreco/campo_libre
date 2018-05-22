@@ -150,6 +150,15 @@ export const more_screen = {
         camping_bear_safe: 'Camping Bear Safe',
         safe_winter_camping: 'Guide to Safe Snow Camping',
         forest_service_contact_info: 'U.S. Forest Service Contact Information'
+    },
+    app_info: {
+        title: 'Application Info',
+        version: 'Version'
+    },
+    user_info: {
+        title: 'User Info',
+        name: 'Name:',
+        email: 'Email:'
     }
 };
 
