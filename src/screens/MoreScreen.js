@@ -125,6 +125,19 @@ class MoreScreen extends Component {
                     />
                 </View>
 
+                <Text style={headingStyle}>{user_info.title}</Text>
+                <View>
+                    <ListItem
+                        title={currentUser.name}
+                        leftIcon={{name: 'user', type: 'font-awesome'}}
+                    />
+
+                    <ListItem
+                        title={currentUser.email}
+                        leftIcon={{name: 'email', type: 'entypo'}}
+                    />
+                </View>
+
                 <Text style={headingStyle}>{app_info.title}</Text>
                 <View>
                     <ListItem
