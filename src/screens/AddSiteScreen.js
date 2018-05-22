@@ -28,9 +28,19 @@ class AddSiteScreen extends Component {
         this.props.getPendingCampsites({currentUser});
     }
 
+    componentDidMount() {
+        const {currentUser, navigation: {setParams}} = this.props;
 
-    static renderRightNavButton = (navigate) => {
+        setParams({currentUser});
+    }
+
+    static renderRightNavButton = ({navigate, params}) => {
         const {topRightIconStyle} = styles;
+        const {currentUser} = params;
+
+        if (!currentUser || currentUser.name === tokens.GUEST) {
+            return null;
+        }
 
         if (Platform.OS === 'ios') {
             return (
@@ -49,13 +59,13 @@ class AddSiteScreen extends Component {
     };
 
     static navigationOptions = (props) => {
-        const {navigation: {navigate}} = props;
+        const {navigation: {navigate, state: {params = {}}}} = props;
 
         return {
             title: title,
             headerTitle: header_title,
             headerLeft: null,
-            headerRight: AddSiteScreen.renderRightNavButton(navigate),
+            headerRight: AddSiteScreen.renderRightNavButton(({navigate, params})),
             tabBarIcon: ({focused, tintColor}) => (
                 <Icon type='material-community' name={focused ? 'tent' : 'tent'} size={25} color={tintColor}/>)
         }
@@ -150,7 +160,6 @@ const styles = {
     },
     headerTitleStyle: {
         fontSize: 30,
-        marginTop: 20,
         marginBottom: 20,
         color: navyBlueButton,
         alignSelf: 'center'
