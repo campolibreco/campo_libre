@@ -60,7 +60,7 @@ const INITIAL_STATE = {
 };
 
 const setInitialEditStateFromSite = ({siteToEdit}) => {
-    const {accessibility, alternateSites = '', approvalState, cellProvider = '', cellStrength = '', coordinate, county = '', description, directions, facilities, features, forest = '', mvum = '', nearestTown, price, siteImageData, title, id} = siteToEdit;
+    const {accessibility, alternateSites = '', approvalState, cellProvider = '', cellStrength = '', coordinate, county = '', description, directions, facilities, features, forest = '', mvum = '', nearestTown, price, siteImageData, title, id, uploadedBy = {giveCredit: false}} = siteToEdit;
     const {latitude, longitude} = coordinate;
 
     const siteStateToDispatch = {
@@ -86,7 +86,9 @@ const setInitialEditStateFromSite = ({siteToEdit}) => {
         priceOption: price,
         siteImageData,
         siteTitleText: title,
-        id
+        id,
+        uploadedBy,
+        giveCredit: uploadedBy.giveCredit
     };
 
     return siteStateToDispatch;

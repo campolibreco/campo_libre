@@ -352,7 +352,11 @@ class SiteInfoInputForm extends Component {
                             value={giveCredit}
                         />
                     </View>
-                    <Text>{give_me_credit_example}{getUserCreditName({uploadedBy: currentUser, siteFormType, giveCredit})}</Text>
+                    <Text>{give_me_credit_example}{getUserCreditName({
+                        uploadedBy: currentUser,
+                        siteFormType,
+                        giveCredit
+                    })}</Text>
                 </View>
             )
 
@@ -366,8 +370,8 @@ class SiteInfoInputForm extends Component {
                     <View style={toggleContainerStyle}>
                         <Text>{give_me_credit_detail}</Text>
                         <Switch
-                            onValueChange={() => this.onFilterScrutinyToggleChange({filterToggleKey: lowercaseTitle})}
-                            value={filterResultsScrutinyLoose[lowercaseTitle]}
+                            onValueChange={() => this.onGiveMeCreditToggleChange()}
+                            value={giveCredit}
                         />
                     </View>
                     <Text>{give_me_credit_example}{getUserCreditName({uploadedBy, siteFormType, giveCredit})}</Text>
@@ -399,7 +403,7 @@ class SiteInfoInputForm extends Component {
     };
 
     onClickSubmit = () => {
-        const {siteFormType, navigate, goBack, currentUser, giveCredit} = this.props;
+        const {siteFormType, navigate, goBack, currentUser, siteToEdit, giveCredit} = this.props;
 
         let newSite = {
             title: this.props.siteTitleText,
@@ -421,20 +425,22 @@ class SiteInfoInputForm extends Component {
             county: this.props.countyOption,
             forest: this.props.forestOption,
             mvum: this.props.mvumOption,
-            id: this.props.id
+            id: this.props.id,
+            uploadedBy: {}
         };
 
         if (siteFormType === site_form_type.ADD) {
-            const uploadedBy = {
+            newSite.uploadedBy = {
                 name: currentUser.name,
                 email: currentUser.email,
                 giveCredit
             };
 
-            newSite.uploadedBy = uploadedBy;
-
             this.props.attemptToUploadNewSite(newSite, {navigate, goBack}, {siteFormType, currentUser});
         } else if (siteFormType === site_form_type.EDIT) {
+            newSite.uploadedBy = siteToEdit.uploadedBy;
+            newSite.uploadedBy.giveCredit = giveCredit;
+
             this.props.attemptToEditExistingSite(newSite, {navigate, goBack}, {siteFormType, currentUser});
         }
     };

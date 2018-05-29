@@ -70,6 +70,8 @@ export const external_links = {
 };
 
 export const mvum_links = {
+    gunnison_north: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd514897.pdf',
+    gunnison_south: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd514900.pdf',
     leadville: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd496304.pdf',
     salida: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd555442.pdf',
     pike: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd574084.pdf',

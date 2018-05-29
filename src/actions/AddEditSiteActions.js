@@ -240,7 +240,7 @@ export const attemptToEditExistingSite = (newSite, {navigate, goBack}, {siteForm
 
     const correctCollection = campsite_collections.APPROVED;
 
-    const uniqueTitle = id;
+    const uniqueTitle = newSite.id;
 
     const contextOptions = {
         siteFormType,

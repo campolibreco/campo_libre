@@ -278,6 +278,8 @@ export const forest_names = {
 
 export const mvum_names = {
     blank: '',
+    gunnison_north: 'Gunnison Ranger District - North',
+    gunnison_south: 'Gunnison Ranger District - South',
     leadville: 'Leadville Ranger District',
     pike: 'Pikes Peak Ranger District',
     salida: 'Salida Ranger District',
