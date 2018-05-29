@@ -45,23 +45,44 @@ export const initializeMap = ({region}) => {
 
 export const getPendingCampsites = ({currentUser}) => {
 
-    return (dispatch) => {
-        firebase.firestore().collection('pending_campsites').where('uploadedBy.email', '==', `${currentUser.email}`)
-            .onSnapshot(querySnapshot => {
-                const pendingSites = _.map(querySnapshot.docs, (doc, index) => {
-                    let preparedSite = _.clone(doc.data());
-                    preparedSite.id = doc.id;
-                    preparedSite.key = preparedSite.id;
+    if (currentUser.isAdmin) {
+        return (dispatch) => {
+            firebase.firestore().collection('pending_campsites')
+                .onSnapshot(querySnapshot => {
+                    const pendingSites = _.map(querySnapshot.docs, (doc, index) => {
+                        let preparedSite = _.clone(doc.data());
+                        preparedSite.id = doc.id;
+                        preparedSite.key = preparedSite.id;
 
-                    return preparedSite;
+                        return preparedSite;
+                    });
+
+                    dispatch({
+                        type: PENDING_SITES_UPDATE,
+                        payload: {pendingSites}
+                    });
                 });
+        }
 
-                dispatch({
-                    type: PENDING_SITES_UPDATE,
-                    payload: {pendingSites}
+    } else {
+
+        return (dispatch) => {
+            firebase.firestore().collection('pending_campsites').where('uploadedBy.email', '==', `${currentUser.email}`)
+                .onSnapshot(querySnapshot => {
+                    const pendingSites = _.map(querySnapshot.docs, (doc, index) => {
+                        let preparedSite = _.clone(doc.data());
+                        preparedSite.id = doc.id;
+                        preparedSite.key = preparedSite.id;
+
+                        return preparedSite;
+                    });
+
+                    dispatch({
+                        type: PENDING_SITES_UPDATE,
+                        payload: {pendingSites}
+                    });
                 });
-            });
-
+        }
     }
 
 };
