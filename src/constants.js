@@ -95,3 +95,17 @@ export const campsite_collections = {
     PENDING: 'pending_campsites',
     REJECTED: 'not_approved_campsites'
 };
+
+export const connection_type = {
+    NONE: 'none',
+    WIFI: 'wifi',
+    CELL: 'cellular',
+    UNKNOWN: 'unknown'
+};
+
+export const effective_connection_type = {
+    TWO_G: '2g',
+    THREE_G: '3g',
+    FOUR_G: '4g',
+    UNKNOWN: 'unknown'
+};

@@ -17,7 +17,7 @@ import {add_site_screen} from '../locale.en';
 
 const {title, header_title, must_log_in_detail, no_pending_sites_header, no_pending_sites_detail, pending_sites_header} = add_site_screen;
 
-import {getPendingCampsites, logUserIntoFacebook, getPendingSiteDetail} from '../actions';
+import {getPendingCampsites, logUserIntoFacebook, getPendingSiteDetail, setUpConnectionListener} from '../actions';
 import {facebookBlueButtonTransparent, navyBlueButton} from "../styles";
 
 class AddSiteScreen extends Component {
@@ -26,6 +26,7 @@ class AddSiteScreen extends Component {
         const {currentUser} = this.props;
 
         this.props.getPendingCampsites({currentUser});
+        this.props.setUpConnectionListener();
     }
 
     componentDidMount() {
@@ -178,8 +179,9 @@ const styles = {
 const mapStateToProps = (state, ownProps) => {
     const {currentUser} = state.auth;
     const {pendingSites} = state.map;
+    const {connectionInfo} = state.network;
 
-    return {currentUser, pendingSites};
+    return {currentUser, pendingSites, connectionInfo};
 };
 
-export default connect(mapStateToProps, {getPendingCampsites, logUserIntoFacebook, getPendingSiteDetail})(AddSiteScreen);
+export default connect(mapStateToProps, {getPendingCampsites, logUserIntoFacebook, getPendingSiteDetail, setUpConnectionListener})(AddSiteScreen);
