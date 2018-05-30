@@ -10,7 +10,6 @@ import {
 
 const getCurrentConnectionInfo = ({dispatch}) => {
     return NetInfo.getConnectionInfo().then((connectionInfo) => {
-        console.log('Current connection, type: ' + connectionInfo.type + ', effectiveType: ' + connectionInfo.effectiveType);
 
         dispatch({
             type: CONNECTION_INFO_UPDATED,

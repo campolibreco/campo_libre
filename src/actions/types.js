@@ -36,6 +36,7 @@ export const EDIT_SITE_FIELDS_RESET = 'edit_site_fields_reset';
 export const CURRENT_LOCATION_UPDATED = 'current_location_updated';
 export const ADD_SITE_SUCCESS = 'add_site_success';
 export const ADD_SITE_FAILURE = 'add_site_failure';
+export const SITE_UPLOAD_IN_PROGRESS = 'site_upload_in_progress';
 export const CHECK_IF_SITE_IS_READY = 'check_if_site_is_ready';
 export const SITE_DETAIL_CHECKBOX_UPDATED = 'site_detail_checkbox_updated';
 export const NEW_SITE_TO_EDIT = 'new_site_to_edit';

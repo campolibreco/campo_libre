@@ -12,12 +12,18 @@ import CampsiteListItem from '../components/CampsiteListItem';
 import {LargeButton} from '../components/common';
 
 
-import {navKeys, tokens} from '../constants';
+import {connection_type, effective_connection_type, navKeys, site_form_type, tokens} from '../constants';
 import {add_site_screen} from '../locale.en';
 
 const {title, header_title, must_log_in_detail, no_pending_sites_header, no_pending_sites_detail, pending_sites_header, pending_upload_sites_header} = add_site_screen;
 
-import {getPendingCampsites, logUserIntoFacebook, getPendingSiteDetail, setUpConnectionListener} from '../actions';
+import {
+    getPendingCampsites,
+    logUserIntoFacebook,
+    getPendingSiteDetail,
+    setUpConnectionListener,
+    attemptToUploadNewSite
+} from '../actions';
 import {facebookBlueButtonTransparent, navyBlueButton} from "../styles";
 
 class AddSiteScreen extends Component {
@@ -33,6 +39,28 @@ class AddSiteScreen extends Component {
         const {currentUser, navigation: {setParams}} = this.props;
 
         setParams({currentUser});
+    }
+
+    connectionIsStrongEnough = (nextProps) => {
+        const {connectionInfo: {type, effectiveType}} = nextProps;
+
+        const connectionIsWifi = type === connection_type.WIFI;
+        const connectionIsStrongCell = type === connection_type.CELL && effectiveType === effective_connection_type.FOUR_G;
+
+        return connectionIsWifi || connectionIsStrongCell;
+    };
+
+    componentWillReceiveProps(nextProps) {
+        const {pendingUploadSites, uploadInProgress} = nextProps;
+
+        const thereAreSitesToUpload = !!pendingUploadSites && pendingUploadSites.length > 0;
+
+        if (thereAreSitesToUpload && !uploadInProgress && this.connectionIsStrongEnough(nextProps)) {
+            console.log("Time to upload!");
+            // this.props.attemptToUploadNewSite(siteToShow, {navigate, goBack}, {siteFormType: site_form_type.ADD, currentUser});
+        } else {
+            console.log("NOTHING to upload!");
+        }
     }
 
     static renderRightNavButton = ({navigate, params}) => {
@@ -233,14 +261,15 @@ const styles = {
 const mapStateToProps = (state, ownProps) => {
     const {currentUser} = state.auth;
     const {pendingSites} = state.map;
-    const {connectionInfo, pendingUploadSites} = state.network;
+    const {connectionInfo, pendingUploadSites, uploadInProgress} = state.network;
 
-    return {currentUser, pendingSites, connectionInfo, pendingUploadSites};
+    return {currentUser, pendingSites, connectionInfo, pendingUploadSites, uploadInProgress};
 };
 
 export default connect(mapStateToProps, {
     getPendingCampsites,
     logUserIntoFacebook,
     getPendingSiteDetail,
-    setUpConnectionListener
+    setUpConnectionListener,
+    attemptToUploadNewSite
 })(AddSiteScreen);

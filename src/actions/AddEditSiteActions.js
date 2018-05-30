@@ -27,9 +27,9 @@ import {
     SITE_FOREST_OPTION_CHANGED,
     SITE_MVUM_OPTION_CHANGED,
     NEW_SITE_TO_EDIT,
-    GIVE_ME_CREDIT_TOGGLE_UPDATED, PENDING_SELECTED_SITE_UPDATE,
-    CONNECTION_INFO_UPDATED,
-    SITE_ADDED_TO_PENDING_UPLOAD
+    GIVE_ME_CREDIT_TOGGLE_UPDATED,
+    SITE_ADDED_TO_PENDING_UPLOAD,
+    SITE_UPLOAD_IN_PROGRESS
 } from './types';
 
 import {navKeys, site_form_type, campsite_collections, approval_state} from '../constants';
@@ -207,6 +207,10 @@ export const attemptToUploadNewSite = (newSite, {navigate, goBack}, {siteFormTyp
     };
 
     newSite.approvalState = approvalState;
+
+    dispatch({
+        type: SITE_UPLOAD_IN_PROGRESS
+    });
 
     return (dispatch) => {
         return attemptToUploadSite(newSite, {navigate, goBack}, contextOptions)
