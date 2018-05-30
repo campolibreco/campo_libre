@@ -166,7 +166,7 @@ export const giveMeCreditToggleUpdated = ({newGiveMeCreditValue, siteFormType}) 
     }
 };
 
-const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData, alternateSites, cellProvider, cellStrength, county, forest, mvum, id, uploadedBy}, {navigate, goBack}, {siteFormType, currentUser, correctCollection, uniqueTitle}) => {
+const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData, alternateSites, cellProvider, cellStrength, county, forest, mvum, uploadedBy}, {navigate, goBack}, {siteFormType, currentUser, correctCollection, uniqueTitle}) => {
 
     return firebase.firestore().doc(`${correctCollection}/${uniqueTitle}`)
         .set({
@@ -196,12 +196,6 @@ const attemptToDeleteSite = () => {
 
 
 export const attemptToUploadNewSite = (newSite, {navigate, goBack}, {siteFormType, currentUser}) => {
-    const {title, coordinate: {longitude, latitude}} = newSite;
-
-    const uniqueTitle = _(`${title}${longitude}${latitude}`)
-        .replace(/[\W_]+/g, '')
-        .slice(0, 30);
-
     const correctCollection = currentUser.isAdmin ? campsite_collections.APPROVED : campsite_collections.PENDING;
     const approvalState = correctCollection === campsite_collections.APPROVED ? approval_state.APPROVED : approval_state.PENDING_APPROVAL;
 
@@ -209,7 +203,7 @@ export const attemptToUploadNewSite = (newSite, {navigate, goBack}, {siteFormTyp
         siteFormType,
         currentUser,
         correctCollection,
-        uniqueTitle
+        uniqueTitle: newSite.id
     };
 
     newSite.approvalState = approvalState;
@@ -218,18 +212,19 @@ export const attemptToUploadNewSite = (newSite, {navigate, goBack}, {siteFormTyp
         return attemptToUploadSite(newSite, {navigate, goBack}, contextOptions)
             .then(() => {
                 dispatch({
-                    type: `${siteFormType}_${ADD_SITE_SUCCESS}`
+                    type: ADD_SITE_SUCCESS,
+                    payload: {uploadedSite: newSite}
                 });
 
-                navigate(navKeys.ADD_SITE);
+                goBack();
             })
             .catch(error => {
                 dispatch({
-                    type: `${siteFormType}_${ADD_SITE_FAILURE}`,
+                    type: ADD_SITE_FAILURE,
                     payload: {error}
                 });
 
-                navigate(navKeys.ADD_SITE);
+                goBack();
             });
 
     }
@@ -240,6 +235,14 @@ export const attemptToUploadNewSite = (newSite, {navigate, goBack}, {siteFormTyp
 export const addNewSiteToPendingUploadQueue = (newSite, {navigate, goBack}) => {
     navigate(navKeys.ADD_SITE);
     newSite.approvalState = approval_state.PENDING_UPLOAD;
+
+    const {title, coordinate: {longitude, latitude}} = newSite;
+
+    const uniqueTitle = _(`${title}${longitude}${latitude}`)
+        .replace(/[\W_]+/g, '')
+        .slice(0, 30);
+
+    newSite.id = uniqueTitle;
 
     return (
         {

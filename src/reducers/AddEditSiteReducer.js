@@ -240,12 +240,6 @@ const formReducer = prefix => (state = INITIAL_STATE, action) => {
 
             return {...state, siteReadyForUpload};
 
-        case `${prefix}_${ADD_SITE_SUCCESS}`:
-            return {...INITIAL_STATE};
-
-        case `${prefix}_${ADD_SITE_FAILURE}`:
-            return {...state};
-
         case `${prefix}_${MAP_IS_INITIALIZING}`:
             return {...state};
 

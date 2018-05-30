@@ -1,4 +1,7 @@
+import _ from 'lodash';
+
 import {
+    ADD_SITE_SUCCESS,
     CONNECTION_INFO_UPDATED,
     FACEBOOK_LOGOUT_COMPLETE,
     SITE_ADDED_TO_PENDING_UPLOAD
@@ -12,6 +15,12 @@ const INITIAL_STATE = {
         effectiveConnectionType: effective_connection_type.UNKNOWN
     },
     pendingUploadSites: []
+};
+
+const pendingUploadSitesWithUploadedRemoved = ({pendingUploadSites}, {uploadedSite}) => {
+    const pendingUploadSitesWithUploadedSite =  _.reject(pendingUploadSites, site => site.id === uploadedSite.id);
+
+    return pendingUploadSitesWithUploadedSite;
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -28,6 +37,12 @@ export default (state = INITIAL_STATE, action) => {
             const {newSite} = payload;
 
             return {...state, pendingUploadSites: state.pendingUploadSites.concat(newSite)};
+
+        case ADD_SITE_SUCCESS:
+            const {uploadedSite} = payload;
+            const newPendingUploadSites = pendingUploadSitesWithUploadedRemoved(state, {uploadedSite});
+
+            return {...state, pendingUploadSites: newPendingUploadSites};
 
         case FACEBOOK_LOGOUT_COMPLETE:
             return INITIAL_STATE;

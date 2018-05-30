@@ -166,6 +166,7 @@ export const more_screen = {
 
 export const submit_form = {
     submit: 'submit',
+    force_submit: 'Force Submit',
     submitted: 'submitted',
     give_me_credit_title: 'Can We Give You Credit?',
     give_me_credit_detail: 'An example of the credit is below',

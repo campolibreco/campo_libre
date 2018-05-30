@@ -7,13 +7,18 @@ import {MapView} from 'expo';
 
 const {Marker} = MapView;
 
+import {LargeButton} from '../components/common';
+
 import _ from 'lodash';
 
-import {attemptToAddFavorite, attemptToRemoveFavorite} from '../actions';
+import {attemptToAddFavorite, attemptToRemoveFavorite, attemptToUploadNewSite} from '../actions';
 
 import {linkColorBlue, navyBlueButton, hyperlinkBlue} from '../styles/index';
 
-import {navKeys, facilityIconDetails, featureIconDetails, map, tokens, mvum_links, external_links} from '../constants';
+import {
+    navKeys, facilityIconDetails, featureIconDetails, map, tokens, mvum_links, external_links,
+    approval_state, site_form_type
+} from '../constants';
 import {submit_form, campsite, common, counties, forest_names, mvum_names, site_detail_screen} from '../locale.en';
 import {campsiteIcon} from "../styles";
 
@@ -282,6 +287,7 @@ class SiteDetailScreen extends Component {
 
     renderAdminEditButton = () => {
         const {navigation: {navigate}} = this.props;
+        const siteToShow = this.getSiteToShow();
 
         return (
             <Icon
@@ -290,6 +296,31 @@ class SiteDetailScreen extends Component {
                 size={30}
                 color={navyBlueButton}
                 onPress={() => navigate(navKeys.EDIT_SITE)}
+            />
+        );
+
+    };
+
+    onClickForceSubmit = () => {
+        const {currentUser, navigation: {navigate, goBack}} = this.props;
+        const siteToShow = this.getSiteToShow();
+
+        this.props.attemptToUploadNewSite(siteToShow, {navigate, goBack}, {siteFormType: site_form_type.ADD, currentUser});
+    };
+
+    renderAdminForceSubmitButton = () => {
+        const {navigation: {navigate}} = this.props;
+        const siteToShow = this.getSiteToShow();
+
+        const {submitButtonStyle} = styles;
+
+        return (
+            <LargeButton
+                title={submit_form.force_submit}
+                iconName={'file-upload'}
+                iconColor={'white'}
+                buttonStyleOverride={submitButtonStyle}
+                onPress={this.onClickForceSubmit}
             />
         );
 
@@ -320,6 +351,28 @@ class SiteDetailScreen extends Component {
 
     };
 
+    renderAdminButtons = () => {
+        const siteToShow = this.getSiteToShow();
+        const {approvalState} = siteToShow;
+
+        const {adminOptionsButtonContainerStyle} = styles;
+
+        if (approvalState === approval_state.APPROVED || approvalState === approval_state.PENDING_APPROVAL) {
+            return (
+                <View style={adminOptionsButtonContainerStyle}>
+                    {this.renderAdminEditButton()}
+                </View>
+            );
+
+        } else if (approvalState === approval_state.PENDING_UPLOAD) {
+            return this.renderAdminForceSubmitButton();
+
+        } else {
+            return null;
+        }
+
+    };
+
     renderAdminOptions = () => {
         const {sectionTitleStyle, adminOptionsButtonContainerStyle} = styles;
         const {currentUser} = this.props;
@@ -334,9 +387,7 @@ class SiteDetailScreen extends Component {
                     {admin_options}
                 </Text>
 
-                <View style={adminOptionsButtonContainerStyle}>
-                    {this.renderAdminEditButton()}
-                </View>
+                {this.renderAdminButtons()}
             </View>
         )
     };
@@ -577,7 +628,13 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-end'
-    }
+    },
+    submitButtonStyle: {
+        marginTop: 10,
+        marginBottom: 10,
+        backgroundColor: navyBlueButton,
+        marginBottom: 100
+    },
 });
 
 function mapStateToProps(state) {
@@ -587,4 +644,4 @@ function mapStateToProps(state) {
     return {selectedSite, selectedPendingSite, currentUser};
 }
 
-export default connect(mapStateToProps, {attemptToAddFavorite, attemptToRemoveFavorite})(SiteDetailScreen);
+export default connect(mapStateToProps, {attemptToAddFavorite, attemptToRemoveFavorite, attemptToUploadNewSite})(SiteDetailScreen);
