@@ -14,7 +14,7 @@ import {attemptToAddFavorite, attemptToRemoveFavorite} from '../actions';
 import {linkColorBlue, navyBlueButton, hyperlinkBlue} from '../styles/index';
 
 import {navKeys, facilityIconDetails, featureIconDetails, map, tokens, mvum_links, external_links} from '../constants';
-import {submit_form, campsite, common, counties, forest_names, mvum_names} from '../locale.en';
+import {submit_form, campsite, common, counties, forest_names, mvum_names, site_detail_screen} from '../locale.en';
 import {campsiteIcon} from "../styles";
 
 const {campsite_form, admin_options} = campsite;
@@ -93,7 +93,7 @@ class SiteDetailScreen extends Component {
         const {selectedPendingSite} = params;
 
         return {
-            headerTitle: !!selectedPendingSite && !_.isEmpty(selectedPendingSite) ? 'Pending Review' : '',
+            headerTitle: !!selectedPendingSite && !_.isEmpty(selectedPendingSite) ? site_detail_screen[selectedPendingSite.approvalState] : '',
             headerRight: SiteDetailScreen.renderRightNavButton(params)
         }
     };

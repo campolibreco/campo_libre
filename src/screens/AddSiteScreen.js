@@ -15,7 +15,7 @@ import {LargeButton} from '../components/common';
 import {navKeys, tokens} from '../constants';
 import {add_site_screen} from '../locale.en';
 
-const {title, header_title, must_log_in_detail, no_pending_sites_header, no_pending_sites_detail, pending_sites_header} = add_site_screen;
+const {title, header_title, must_log_in_detail, no_pending_sites_header, no_pending_sites_detail, pending_sites_header, pending_upload_sites_header} = add_site_screen;
 
 import {getPendingCampsites, logUserIntoFacebook, getPendingSiteDetail, setUpConnectionListener} from '../actions';
 import {facebookBlueButtonTransparent, navyBlueButton} from "../styles";
@@ -91,9 +91,71 @@ class AddSiteScreen extends Component {
         this.props.logUserIntoFacebook({navigate});
     };
 
+    renderPendingUploadSites() {
+        const {pendingUploadSites} = this.props;
+        const {headerTitleStyle} = styles;
+
+        if (pendingUploadSites.length > 0) {
+            const {navigation: {navigate}} = this.props;
+            const {listContainerStyle} = styles;
+
+            return (
+                <View style={listContainerStyle}>
+                    <Text style={headerTitleStyle}>{pending_upload_sites_header}</Text>
+
+                    {this.renderPendingSites({
+                        sites: pendingUploadSites,
+                        getPendingSiteDetail: this.props.getPendingSiteDetail,
+                        navigate
+                    })}
+                </View>
+            );
+        } else {
+            return null;
+        }
+    }
+
+    renderPendingApprovalSites() {
+        const {pendingSites} = this.props;
+        const {headerTitleStyle} = styles;
+
+        if (pendingSites.length > 0) {
+            const {navigation: {navigate}} = this.props;
+            const {listContainerStyle} = styles;
+
+            return (
+                <View style={listContainerStyle}>
+                    <Text style={headerTitleStyle}>{pending_sites_header}</Text>
+
+                    {this.renderPendingSites({
+                        sites: pendingSites,
+                        getPendingSiteDetail: this.props.getPendingSiteDetail,
+                        navigate
+                    })}
+                </View>
+            );
+        } else {
+            return null;
+        }
+    }
+
+    renderAllPendingSites() {
+        const {navigation: {navigate}} = this.props;
+        const {fillScreen} = styles;
+
+        return (
+            <ScrollView style={fillScreen}>
+                {this.renderPendingUploadSites()}
+                {this.renderPendingApprovalSites()}
+            </ScrollView>
+        );
+
+
+    }
+
     renderAddSiteScreen() {
-        const {currentUser, pendingSites} = this.props;
-        const {headerTitleStyle, infoTextStyle, facebookStyle} = styles;
+        const {currentUser, pendingSites, pendingUploadSites} = this.props;
+        const {fillScreen, headerTitleStyle, infoTextStyle, facebookStyle} = styles;
 
         if (!currentUser || currentUser.name === tokens.GUEST) {
             return (
@@ -112,30 +174,18 @@ class AddSiteScreen extends Component {
                 </Card>
             );
         }
-        else if (pendingSites.length > 0) {
-            const {navigation: {navigate}} = this.props;
-            const {fillScreen} = styles;
-
-            return (
-                <View style={fillScreen}>
-                    <Text style={headerTitleStyle}>{pending_sites_header}</Text>
-
-                    <ScrollView>
-
-                        {this.renderPendingSites({
-                            sites: pendingSites,
-                            getPendingSiteDetail: this.props.getPendingSiteDetail,
-                            navigate
-                        })}
-                    </ScrollView>
-                </View>
-            );
-        } else {
+        else if (pendingSites.length === 0 && pendingUploadSites.length === 0) {
             return (
                 <Card>
                     <Text style={headerTitleStyle}>{no_pending_sites_header}</Text>
                     <Text style={infoTextStyle}>{no_pending_sites_detail}</Text>
                 </Card>
+            );
+        } else {
+            return (
+                <View style={fillScreen}>
+                    {this.renderAllPendingSites()}
+                </View>
             );
         }
 
@@ -173,15 +223,24 @@ const styles = {
         margin: 0,
         marginTop: 40
     },
+    listContainerStyle: {
+        flex: 1,
+        marginTop: 20
+    }
 
 };
 
 const mapStateToProps = (state, ownProps) => {
     const {currentUser} = state.auth;
     const {pendingSites} = state.map;
-    const {connectionInfo} = state.network;
+    const {connectionInfo, pendingUploadSites} = state.network;
 
-    return {currentUser, pendingSites, connectionInfo};
+    return {currentUser, pendingSites, connectionInfo, pendingUploadSites};
 };
 
-export default connect(mapStateToProps, {getPendingCampsites, logUserIntoFacebook, getPendingSiteDetail, setUpConnectionListener})(AddSiteScreen);
+export default connect(mapStateToProps, {
+    getPendingCampsites,
+    logUserIntoFacebook,
+    getPendingSiteDetail,
+    setUpConnectionListener
+})(AddSiteScreen);

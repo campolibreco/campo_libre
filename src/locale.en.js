@@ -114,7 +114,8 @@ export const search_screen = {
 };
 
 export const site_detail_screen = {
-    header_title: 'Site Detail'
+    pending_upload: 'Pending Upload',
+    pending_approval: 'Pending Approval'
 };
 
 export const filter_screen = {
@@ -127,7 +128,8 @@ export const add_site_screen = {
     must_log_in_detail: 'Only logged in users can upload new sites. Log in and start sharing your favorites!',
     no_pending_sites_header: 'No Submitted Sites',
     no_pending_sites_detail: 'Your submitted sites will go here. Why don\'t you give it a try by submitting a site above?',
-    pending_sites_header: 'Sites Pending Review'
+    pending_sites_header: 'Pending Review',
+    pending_upload_sites_header: 'Pending Upload'
 };
 
 export const more_screen = {

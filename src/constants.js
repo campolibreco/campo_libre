@@ -80,7 +80,8 @@ export const mvum_links = {
 
 export const approval_state = {
     APPROVED: 'approved',
-    PENDING: 'pending',
+    PENDING_UPLOAD: 'pending_upload',
+    PENDING_APPROVAL: 'pending_approval',
     DENIED: 'denied'
 };
 

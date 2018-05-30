@@ -27,7 +27,7 @@ import {
     SITE_COUNTY_OPTION_CHANGED,
     SITE_FOREST_OPTION_CHANGED,
     SITE_MVUM_OPTION_CHANGED,
-    NEW_SITE_TO_EDIT, GIVE_ME_CREDIT_TOGGLE_UPDATED
+    NEW_SITE_TO_EDIT, GIVE_ME_CREDIT_TOGGLE_UPDATED, SITE_ADDED_TO_PENDING_UPLOAD
 } from '../actions/types';
 
 import {campsite, reducerAlerts, counties, forest_names, mvum_names} from '../locale.en';
@@ -134,6 +134,13 @@ const formReducer = prefix => (state = INITIAL_STATE, action) => {
                 const siteStateToDispatch = setInitialEditStateFromSite({siteToEdit});
 
                 return {...siteStateToDispatch};
+            } else {
+                return state;
+            }
+
+        case SITE_ADDED_TO_PENDING_UPLOAD:
+            if (prefix === site_form_type.ADD) {
+                return {...INITIAL_STATE};
             } else {
                 return state;
             }

@@ -15,7 +15,6 @@ export const VIEW_STYLE_UPDATE = 'view_style_update';
 export const SELECTED_SITE_UPDATE = 'selected_site_update';
 export const SELECTED_SITE_CLEARED = 'selected_site_cleared';
 export const PENDING_SELECTED_SITE_UPDATE = 'pending_selected_site_update';
-export const CONNECTION_INFO_UPDATED = 'connection_info_updated';
 
 export const LATITUDE_TEXT_UPDATED = 'latitude_text_updated';
 export const LONGITUDE_TEXT_UPDATED = 'longitude_text_updated';
@@ -55,3 +54,6 @@ export const FAVORITE_ADDED = 'favorite_added';
 export const FAVORITE_ADD_FAILED = 'favorite_add_failed';
 export const FAVORITE_REMOVED = 'favorite_removed';
 export const FAVORITE_REMOVE_FAILED = 'favorite_remove_failed';
+
+export const CONNECTION_INFO_UPDATED = 'connection_info_updated';
+export const SITE_ADDED_TO_PENDING_UPLOAD = 'site_added_to_pending_upload';

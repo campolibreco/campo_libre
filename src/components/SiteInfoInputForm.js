@@ -35,7 +35,8 @@ import {
     updateForestOption,
     updateMVUMOption,
     newSiteToEditAvailable,
-    giveMeCreditToggleUpdated
+    giveMeCreditToggleUpdated,
+    addNewSiteToPendingUploadQueue
 } from '../actions';
 
 import {campsite, submit_form, common, more_screen, counties, mvum_names, forest_names} from '../locale.en';
@@ -436,7 +437,7 @@ class SiteInfoInputForm extends Component {
                 giveCredit
             };
 
-            this.props.attemptToUploadNewSite(newSite, {navigate, goBack}, {siteFormType, currentUser});
+            this.props.addNewSiteToPendingUploadQueue(newSite, {navigate, goBack});
         } else if (siteFormType === site_form_type.EDIT) {
             newSite.uploadedBy = siteToEdit.uploadedBy;
             newSite.uploadedBy.giveCredit = giveCredit;
@@ -868,7 +869,8 @@ const mapActions = {
     updateForestOption,
     updateMVUMOption,
     newSiteToEditAvailable,
-    giveMeCreditToggleUpdated
+    giveMeCreditToggleUpdated,
+    addNewSiteToPendingUploadQueue
 };
 
 export default connect(mapStateToProps, mapActions)(SiteInfoInputForm);

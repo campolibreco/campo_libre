@@ -28,10 +28,11 @@ import {
     SITE_MVUM_OPTION_CHANGED,
     NEW_SITE_TO_EDIT,
     GIVE_ME_CREDIT_TOGGLE_UPDATED, PENDING_SELECTED_SITE_UPDATE,
-    CONNECTION_INFO_UPDATED
+    CONNECTION_INFO_UPDATED,
+    SITE_ADDED_TO_PENDING_UPLOAD
 } from './types';
 
-import {navKeys, site_form_type, campsite_collections} from '../constants';
+import {navKeys, site_form_type, campsite_collections, approval_state} from '../constants';
 
 export const updateLatitudeText = ({latitudeText, siteFormType}) => {
     return {
@@ -202,7 +203,7 @@ export const attemptToUploadNewSite = (newSite, {navigate, goBack}, {siteFormTyp
         .slice(0, 30);
 
     const correctCollection = currentUser.isAdmin ? campsite_collections.APPROVED : campsite_collections.PENDING;
-    const isPending = correctCollection === campsite_collections.APPROVED ? false : true;
+    const approvalState = correctCollection === campsite_collections.APPROVED ? approval_state.APPROVED : approval_state.PENDING_APPROVAL;
 
     const contextOptions = {
         siteFormType,
@@ -211,7 +212,7 @@ export const attemptToUploadNewSite = (newSite, {navigate, goBack}, {siteFormTyp
         uniqueTitle
     };
 
-    newSite.isPending = isPending;
+    newSite.approvalState = approvalState;
 
     return (dispatch) => {
         return attemptToUploadSite(newSite, {navigate, goBack}, contextOptions)
@@ -233,6 +234,19 @@ export const attemptToUploadNewSite = (newSite, {navigate, goBack}, {siteFormTyp
 
     }
 
+
+};
+
+export const addNewSiteToPendingUploadQueue = (newSite, {navigate, goBack}) => {
+    navigate(navKeys.ADD_SITE);
+    newSite.approvalState = approval_state.PENDING_UPLOAD;
+
+    return (
+        {
+            type: SITE_ADDED_TO_PENDING_UPLOAD,
+            payload: {newSite}
+        }
+    )
 
 };
 
