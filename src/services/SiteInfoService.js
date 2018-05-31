@@ -17,3 +17,13 @@ export const getUserCreditName = ({uploadedBy, siteFormType, giveCredit}) => {
 
     return creditName;
 };
+
+export const getSiteToShow = ({selectedSite, selectedPendingSite}) => {
+    if (!!selectedSite && !_.isEmpty(selectedSite)) {
+        return selectedSite;
+    } else if (!!selectedPendingSite && !_.isEmpty(selectedPendingSite)) {
+        return selectedPendingSite;
+    } else {
+        return null;
+    }
+};

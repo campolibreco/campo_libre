@@ -14,6 +14,10 @@ export const campsite = {
     nav_header: 'Share a site, Get a site',
     click_for_maps: 'Click to open me in Google Maps',
     upload: 'Upload Campsite',
+    cancel: 'Cancel',
+    update: 'Update',
+    reject: 'Reject',
+    approve: 'Approve',
     admin_options: 'Admin Options',
     campsite_form: {
         reset: 'Reset',
@@ -26,7 +30,10 @@ export const campsite = {
         add_site: 'Add a Site',
         add_a_campsite: 'Add a Campsite',
         edit_site: 'Edit Site',
-        edit_this_campsite: 'Edit this Campsite',
+        edit_campsite: {
+            approved: 'Edit Existing',
+            pending_approval: 'Approve or Reject'
+        },
         site_info: 'Site Info',
         description: 'Description',
         description_placeholder: 'Add Description',

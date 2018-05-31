@@ -82,7 +82,7 @@ export const approval_state = {
     APPROVED: 'approved',
     PENDING_UPLOAD: 'pending_upload',
     PENDING_APPROVAL: 'pending_approval',
-    DENIED: 'denied'
+    REJECTED: 'rejected'
 };
 
 export const site_form_type = {

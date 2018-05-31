@@ -66,7 +66,7 @@ const setInitialEditStateFromSite = ({siteToEdit}) => {
     const siteStateToDispatch = {
         accessibilityOption: accessibility,
         siteAlternateSitesText: alternateSites,
-        approvalState: approvalState,
+        approvalState,
         cellProviderOption: cellProvider,
         cellStrengthOption: cellStrength,
         latitudeText: latitude.toString(),

@@ -203,20 +203,3 @@ export const logUserOutOfFacebook = ({navigate}) => {
         navigate(navKeys.LOGIN);
     };
 };
-
-//
-// function userIsAdminInDB() {
-//     return get(/databases/$(database)/documents/users/$(request.auth.email)).data.isAdmin == true
-// }
-//
-// function userHasValidUID() {
-//     return get(/databases/$(database)/documents/users/$(request.auth.email)).data.uid == request.auth.uid;
-// }
-//
-// function requestedUserIsSameAsRequester(userId) {
-//     return userHasValidUID() && request.auth.email == userId;
-// }
-//
-// function userIsValidatedAdmin(){
-//     return userHasValidUID() && userIsAdminInDB();
-// }

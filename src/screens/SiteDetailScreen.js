@@ -25,7 +25,7 @@ import {campsiteIcon} from "../styles";
 const {campsite_form, admin_options} = campsite;
 const {location} = common;
 
-import {getUserCreditName} from '../services/SiteInfoService';
+import {getUserCreditName, getSiteToShow} from '../services/SiteInfoService';
 
 class SiteDetailScreen extends Component {
 
@@ -103,18 +103,6 @@ class SiteDetailScreen extends Component {
         }
     };
 
-    getSiteToShow = () => {
-        const {selectedSite, selectedPendingSite} = this.props;
-
-        if (!!selectedSite && !_.isEmpty(selectedSite)) {
-            return selectedSite;
-        } else if (!!selectedPendingSite && !_.isEmpty(selectedPendingSite)) {
-            return selectedPendingSite;
-        } else {
-            return null;
-        }
-    };
-
     renderFacilities = (facilities) => {
         return _.map(facilities, (facility, index) => {
             return (
@@ -142,7 +130,7 @@ class SiteDetailScreen extends Component {
     };
 
     renderAlternateSites = () => {
-        const siteToShow = this.getSiteToShow();
+        const siteToShow = getSiteToShow(this.props);
 
         const {sectionTitleStyle, textStyle, bottomMargin} = styles;
 
@@ -162,7 +150,7 @@ class SiteDetailScreen extends Component {
     };
 
     renderMVUMInfo = () => {
-        const siteToShow = this.getSiteToShow();
+        const siteToShow = getSiteToShow(this.props);
         const {sectionTitleStyle, textStyle, bottomMargin, hyperlinkStyle} = styles;
 
         if (siteToShow && siteToShow.mvum) {
@@ -186,7 +174,7 @@ class SiteDetailScreen extends Component {
     };
 
     renderCountyInfo = () => {
-        const siteToShow = this.getSiteToShow();
+        const siteToShow = getSiteToShow(this.props);
         const {sectionTitleStyle, textStyle, bottomMargin, hyperlinkStyle, countyInlineStyle} = styles;
 
         if (siteToShow && siteToShow.county) {
@@ -217,7 +205,7 @@ class SiteDetailScreen extends Component {
     };
 
     renderForestInfo = () => {
-        const siteToShow = this.getSiteToShow();
+        const siteToShow = getSiteToShow(this.props);
         const {sectionTitleStyle, textStyle, bottomMargin, hyperlinkStyle, countyInlineStyle} = styles;
 
         if (siteToShow && siteToShow.forest) {
@@ -262,7 +250,7 @@ class SiteDetailScreen extends Component {
     };
 
     renderCellCoverageInfo = () => {
-        const siteToShow = this.getSiteToShow();
+        const siteToShow = getSiteToShow(this.props);
 
         if (siteToShow) {
             const {cellProvider, cellStrength} = siteToShow;
@@ -287,7 +275,7 @@ class SiteDetailScreen extends Component {
 
     renderAdminEditButton = () => {
         const {navigation: {navigate}} = this.props;
-        const siteToShow = this.getSiteToShow();
+        const siteToShow = getSiteToShow(this.props);
 
         return (
             <Icon
@@ -303,14 +291,14 @@ class SiteDetailScreen extends Component {
 
     onClickForceSubmit = () => {
         const {currentUser, navigation: {navigate, goBack}} = this.props;
-        const siteToShow = this.getSiteToShow();
+        const siteToShow = getSiteToShow(this.props);
 
-        this.props.attemptToUploadNewSite(siteToShow, {navigate, goBack}, {siteFormType: site_form_type.ADD, currentUser});
+        this.props.attemptToUploadNewSite(siteToShow, {navigate, goBack}, {currentUser});
     };
 
     renderAdminForceSubmitButton = () => {
         const {navigation: {navigate}} = this.props;
-        const siteToShow = this.getSiteToShow();
+        const siteToShow = getSiteToShow(this.props);
 
         const {submitButtonStyle} = styles;
 
@@ -328,7 +316,7 @@ class SiteDetailScreen extends Component {
 
     renderUserCreditIfApplicable = () => {
         const {sectionTitleStyle, textStyle, bottomMargin} = styles;
-        const siteToShow = this.getSiteToShow();
+        const siteToShow = getSiteToShow(this.props);
 
         if (!siteToShow || _.isEmpty(siteToShow)) {
             return null;
@@ -352,7 +340,7 @@ class SiteDetailScreen extends Component {
     };
 
     renderAdminButtons = () => {
-        const siteToShow = this.getSiteToShow();
+        const siteToShow = getSiteToShow(this.props);
         const {approvalState} = siteToShow;
 
         const {adminOptionsButtonContainerStyle} = styles;
@@ -406,7 +394,7 @@ class SiteDetailScreen extends Component {
 
     renderSiteDetailScreen = () => {
         const {textStyle, sectionTitleStyle, mainTitleStyle, locationMainContainerStyle, mapThumbnailStyle, bottomMargin, topMargin, cardContainerStyle, contentContainerStyle, siteImageStyle, touchableContainerStyle} = styles;
-        const siteToShow = this.getSiteToShow();
+        const siteToShow = getSiteToShow(this.props);
 
         if (!siteToShow) {
             return null;

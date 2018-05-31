@@ -59,10 +59,7 @@ class AddSiteScreen extends Component {
             const {navigation: {navigate, goBack}, currentUser} = this.props;
 
             const siteToUpload = _.first(pendingUploadSites);
-            this.props.attemptToUploadNewSite(siteToUpload, {navigate, goBack}, {
-                siteFormType: site_form_type.ADD,
-                currentUser
-            });
+            this.props.attemptToUploadNewSite(siteToUpload, {navigate, goBack}, {currentUser});
         }
     }
 

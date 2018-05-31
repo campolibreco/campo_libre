@@ -36,7 +36,9 @@ import {
     updateMVUMOption,
     newSiteToEditAvailable,
     giveMeCreditToggleUpdated,
-    addNewSiteToPendingUploadQueue
+    addNewSiteToPendingUploadQueue,
+    attemptToAcceptSubmittedSite,
+    attemptToRejectSite
 } from '../actions';
 
 import {campsite, submit_form, common, more_screen, counties, mvum_names, forest_names} from '../locale.en';
@@ -68,7 +70,7 @@ const {submit, give_me_credit_title, give_me_credit_detail, give_me_credit_examp
 
 const {title, location} = common;
 
-import {map, navKeys, permissionResponses, site_form_type} from '../constants';
+import {approval_state, map, navKeys, permissionResponses, site_form_type} from '../constants';
 
 const {GRANTED, DENIED, UNDETERMINED} = permissionResponses;
 
@@ -403,7 +405,7 @@ class SiteInfoInputForm extends Component {
         this.props.promptForLocationServicesPermission({siteFormType});
     };
 
-    onClickSubmit = () => {
+    onClickSubmit = ({approveOrReject}) => {
         const {siteFormType, navigate, goBack, currentUser, siteToEdit, giveCredit} = this.props;
 
         let newSite = {
@@ -441,13 +443,25 @@ class SiteInfoInputForm extends Component {
         } else if (siteFormType === site_form_type.EDIT) {
             newSite.uploadedBy = siteToEdit.uploadedBy;
             newSite.uploadedBy.giveCredit = giveCredit;
+            newSite.approvalState = siteToEdit.approvalState;
 
-            this.props.attemptToEditExistingSite(newSite, {navigate, goBack}, {siteFormType, currentUser});
+            if (newSite.approvalState === approval_state.APPROVED) {
+                this.props.attemptToEditExistingSite(newSite, {navigate, goBack}, {currentUser});
+
+            } else if (newSite.approvalState === approval_state.PENDING_APPROVAL) {
+                if (approveOrReject === approval_state.APPROVED) {
+                    this.props.attemptToAcceptSubmittedSite(newSite, {navigate, goBack}, {currentUser});
+
+                } else if (approveOrReject === approval_state.REJECTED) {
+                    this.props.attemptToRejectSite(newSite, {navigate, goBack}, {currentUser});
+
+                }
+            }
         }
     };
 
     renderSubmitOptions = () => {
-        const {siteReadyForUpload, siteFormType, goBack} = this.props;
+        const {siteReadyForUpload, siteFormType, goBack, approvalState} = this.props;
         const {submitButtonStyle, lastElementStyle, adminOptionsButtonContainerStyle, iconButtonStyle, approveButtonStyle, cancelButtonStyle} = styles;
 
         if (siteReadyForUpload && siteFormType === site_form_type.ADD) {
@@ -462,27 +476,47 @@ class SiteInfoInputForm extends Component {
                 />
             );
         } else if (siteReadyForUpload && siteFormType === site_form_type.EDIT) {
+
+            let redButtonText = '';
+            let redButtonOnPress = null;
+            let greenButtonText = '';
+            let greenButtonOnPress = null;
+
+            if (approvalState === approval_state.APPROVED) {
+                redButtonText = campsite.cancel;
+                greenButtonText = campsite.update;
+                redButtonOnPress = () => goBack();
+                greenButtonOnPress = this.onClickSubmit;
+
+            } else if (approvalState === approval_state.PENDING_APPROVAL) {
+                redButtonText = campsite.reject;
+                greenButtonText = campsite.approve;
+                redButtonOnPress = () => this.onClickSubmit({approveOrReject: approval_state.REJECTED});
+                greenButtonOnPress = () => this.onClickSubmit({approveOrReject: approval_state.APPROVED});
+
+            }
+
             return (
                 <View style={[lastElementStyle, adminOptionsButtonContainerStyle]}>
 
                     <SmallButton
-                        title={'Cancel'}
+                        title={redButtonText}
                         iconType={'ionicon'}
                         iconName={'md-close-circle'}
                         iconColor={'white'}
                         buttonStyleOverride={cancelButtonStyle}
                         iconSizeOverride={35}
-                        onPress={() => goBack()}
+                        onPress={redButtonOnPress}
                     />
 
                     <SmallButton
-                        title={'Update'}
+                        title={greenButtonText}
                         iconType={'ionicon'}
                         iconName={'md-checkmark-circle'}
                         iconColor={'white'}
                         buttonStyleOverride={approveButtonStyle}
                         iconSizeOverride={35}
-                        onPress={this.onClickSubmit}
+                        onPress={greenButtonOnPress}
                     />
 
                 </View>
@@ -784,6 +818,7 @@ const styles = {
         alignContent: 'center'
     },
     adminOptionsButtonContainerStyle: {
+        marginTop: 20,
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-around'
@@ -810,11 +845,12 @@ const styles = {
 
 function mapStateToProps(state, ownProps) {
     const {siteFormType} = ownProps;
-    const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, priceOption, countyOption, forestOption, mvumOption, siteReadyForUpload, readyLatitude, readyLongitude, siteDetailCheckboxesKeys, siteImageData, siteAlternateSitesText, cellProviderOption, cellStrengthOption, id, giveCredit} = state.addEditSite[siteFormType];
+    const {approvalState, latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, priceOption, countyOption, forestOption, mvumOption, siteReadyForUpload, readyLatitude, readyLongitude, siteDetailCheckboxesKeys, siteImageData, siteAlternateSitesText, cellProviderOption, cellStrengthOption, id, giveCredit} = state.addEditSite[siteFormType];
     const {locationServicesPermission, cameraPermission, cameraRollPermission} = state.permissions;
     const {currentUser} = state.auth;
 
     return {
+        approvalState,
         currentUser,
         latitudeText,
         longitudeText,
@@ -870,7 +906,9 @@ const mapActions = {
     updateMVUMOption,
     newSiteToEditAvailable,
     giveMeCreditToggleUpdated,
-    addNewSiteToPendingUploadQueue
+    addNewSiteToPendingUploadQueue,
+    attemptToAcceptSubmittedSite,
+    attemptToRejectSite
 };
 
 export default connect(mapStateToProps, mapActions)(SiteInfoInputForm);
