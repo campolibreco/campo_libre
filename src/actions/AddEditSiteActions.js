@@ -208,11 +208,11 @@ export const attemptToUploadNewSite = (newSite, {navigate, goBack}, {siteFormTyp
 
     newSite.approvalState = approvalState;
 
-    dispatch({
-        type: SITE_UPLOAD_IN_PROGRESS
-    });
-
     return (dispatch) => {
+        dispatch({
+            type: SITE_UPLOAD_IN_PROGRESS
+        });
+
         return attemptToUploadSite(newSite, {navigate, goBack}, contextOptions)
             .then(() => {
                 dispatch({

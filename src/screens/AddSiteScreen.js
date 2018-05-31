@@ -56,10 +56,13 @@ class AddSiteScreen extends Component {
         const thereAreSitesToUpload = !!pendingUploadSites && pendingUploadSites.length > 0;
 
         if (thereAreSitesToUpload && !uploadInProgress && this.connectionIsStrongEnough(nextProps)) {
-            console.log("Time to upload!");
-            // this.props.attemptToUploadNewSite(siteToShow, {navigate, goBack}, {siteFormType: site_form_type.ADD, currentUser});
-        } else {
-            console.log("NOTHING to upload!");
+            const {navigation: {navigate, goBack}, currentUser} = this.props;
+
+            const siteToUpload = _.first(pendingUploadSites);
+            this.props.attemptToUploadNewSite(siteToUpload, {navigate, goBack}, {
+                siteFormType: site_form_type.ADD,
+                currentUser
+            });
         }
     }
 
