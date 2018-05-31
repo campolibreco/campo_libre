@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "Campo Libre",
+    "name": "Campo Libre CO",
     "description": "Get out there...",
     "slug": "campo-libre",
     "privacy": "unlisted",
     "sdkVersion": "24.0.0",
     "platforms": ["ios", "android"],
-    "version": "0.0.36",
+    "version": "0.0.37",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
