@@ -10,7 +10,9 @@ import {
     FILTER_TOGGLE_LOGIC_UPDATED,
     FILTER_CRITERIA_RESET,
     SELECTED_SITE_UPDATE,
-    SELECTED_SITE_CLEARED
+    SELECTED_SITE_CLEARED,
+    PENDING_SITES_UPDATE,
+    PENDING_SELECTED_SITE_UPDATE
 
 } from '../actions/types';
 
@@ -29,10 +31,14 @@ const INITIAL_STATE = {
     mapLoaded: false,
     viewStyle: map.SearchOptions.MAP,
     sites: [],
+    pendingSites: [],
+    rejectedSites: [],
+    approvedSites: [],
     displaySites: [],
     filterResultsScrutinyLoose: {facilities: true, features: true},
     filterCriteriaKeys: {accessibility: [], facilities: [], price: [], features: [], forest: []},
-    selectedSite: {}
+    selectedSite: {},
+    selectedPendingSite : {}
 };
 
 const getBoundingBoxForRegion = ({region}) => {
@@ -103,7 +109,7 @@ const filterSites = ({sites, filterResultsScrutinyLoose, lastKnownRegion}, updat
 
         const siteIsInView = siteIsInBoundingBox({site, boundingBox});
 
-        if(!siteIsInView){
+        if (!siteIsInView) {
             return false;
         }
 
@@ -181,8 +187,16 @@ export default (state = INITIAL_STATE, action) => {
                 mapLoaded: existingMapLoadedState,
                 filterResultsScrutinyLoose: state.filterResultsScrutinyLoose,
                 selectedSite: state.selectedSite,
-                viewStyle: state.viewStyle
+                selectedPendingSite: state.selectedPendingSite,
+                viewStyle: state.viewStyle,
+                pendingSites: state.pendingSites
             } : INITIAL_STATE;
+
+        case PENDING_SITES_UPDATE:
+            const {pendingSites} = payload;
+
+            return {...state, pendingSites};
+
 
         case VIEW_STYLE_UPDATE:
             return {...state, viewStyle: payload};
@@ -234,10 +248,16 @@ export default (state = INITIAL_STATE, action) => {
         case SELECTED_SITE_UPDATE:
             const {selectedSite} = payload;
 
-            return {...state, selectedSite};
+            return {...state, selectedSite, selectedPendingSite: INITIAL_STATE.selectedPendingSite};
 
         case SELECTED_SITE_CLEARED:
             return {...state, selectedSite: INITIAL_STATE.selectedSite};
+
+        case PENDING_SELECTED_SITE_UPDATE:
+            const selectedPendingSite = payload.selectedSite;
+
+            return {...state, selectedSite: INITIAL_STATE.selectedSite, selectedPendingSite};
+
 
         default:
             return state;

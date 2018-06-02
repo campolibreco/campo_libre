@@ -21,16 +21,23 @@ const INITIAL_STATE = {
 import {tokens} from '../constants';
 
 const hydrateFavorites = ({currentUser, sites}) => {
-    const preparedFavorites = _.map(currentUser.favorites, favorite => {
-        if (favorite.favoriteIsComplete) {
-            return favorite;
-        } else {
-            let matchedFavorite = _.find(sites, site => site.id === favorite.id);
-            matchedFavorite.favoriteIsComplete = true;
+    const preparedFavorites = _(currentUser.favorites)
+        .map(favorite => {
+            if (favorite.favoriteIsComplete) {
+                return favorite;
+            } else {
+                let matchedFavorite = _.find(sites, site => site.id === favorite.id);
 
-            return matchedFavorite;
-        }
-    });
+                if (matchedFavorite) {
+                    matchedFavorite.favoriteIsComplete = true;
+                }
+
+                return matchedFavorite;
+            }
+        })
+        .uniqBy('id')
+        .compact()
+        .valueOf();
 
     return preparedFavorites;
 };
@@ -63,7 +70,10 @@ export default (state = INITIAL_STATE, action) => {
             const {favoriteToAdd} = payload;
 
             let updatedUserWithNewFavorite = _.cloneDeep(state.currentUser);
-            updatedUserWithNewFavorite.favorites = _.concat(updatedUserWithNewFavorite.favorites, favoriteToAdd);
+            updatedUserWithNewFavorite.favorites = _(updatedUserWithNewFavorite.favorites)
+                .concat(favoriteToAdd)
+                .uniqBy('id')
+                .valueOf();
 
             return ({...state, currentUser: updatedUserWithNewFavorite});
 

@@ -7,23 +7,30 @@ import {MapView} from 'expo';
 
 const {Marker} = MapView;
 
+import {LargeButton} from '../components/common';
+
 import _ from 'lodash';
 
-import {attemptToAddFavorite, attemptToRemoveFavorite} from '../actions';
+import {attemptToAddFavorite, attemptToRemoveFavorite, attemptToUploadNewSite} from '../actions';
 
 import {linkColorBlue, navyBlueButton, hyperlinkBlue} from '../styles/index';
 
-import {navKeys, facilityIconDetails, featureIconDetails, map, tokens, mvum_links, external_links} from '../constants';
-import {site_detail_screen, campsite, common, counties, forest_names, mvum_names} from '../locale.en';
+import {
+    navKeys, facilityIconDetails, featureIconDetails, map, tokens, mvum_links, external_links,
+    approval_state, site_form_type
+} from '../constants';
+import {submit_form, campsite, common, counties, forest_names, mvum_names, site_detail_screen} from '../locale.en';
 import {campsiteIcon} from "../styles";
 
 const {campsite_form, admin_options} = campsite;
 const {location} = common;
 
+import {getUserCreditName, getSiteToShow} from '../services/SiteInfoService';
+
 class SiteDetailScreen extends Component {
 
     componentDidMount() {
-        const {selectedSite, currentUser, navigation: {setParams}} = this.props;
+        const {selectedSite, selectedPendingSite, currentUser, navigation: {setParams}} = this.props;
 
         if (currentUser.name === tokens.GUEST) {
             return;
@@ -31,7 +38,13 @@ class SiteDetailScreen extends Component {
 
         const isFavorite = !!_.find(currentUser.favorites, favorite => favorite.id === selectedSite.id);
 
-        setParams({selectedSite, isFavorite, currentUser, toggleSiteFavorite: this.toggleSiteFavorite});
+        setParams({
+            selectedSite,
+            selectedPendingSite,
+            isFavorite,
+            currentUser,
+            toggleSiteFavorite: this.toggleSiteFavorite
+        });
     }
 
     componentWillReceiveProps(nextProps) {
@@ -57,8 +70,8 @@ class SiteDetailScreen extends Component {
 
     };
 
-    static renderRightNavButton = ({selectedSite, isFavorite, currentUser, toggleSiteFavorite}) => {
-        if (!currentUser) {
+    static renderRightNavButton = ({selectedSite, selectedPendingSite, isFavorite, currentUser, toggleSiteFavorite}) => {
+        if (!currentUser || !selectedSite || _.isEmpty(selectedSite)) {
             return;
         }
 
@@ -82,8 +95,10 @@ class SiteDetailScreen extends Component {
 
     static navigationOptions = (props) => {
         const {navigation: {state: {params = {}}}} = props;
+        const {selectedPendingSite} = params;
 
         return {
+            headerTitle: !!selectedPendingSite && !_.isEmpty(selectedPendingSite) ? site_detail_screen[selectedPendingSite.approvalState] : '',
             headerRight: SiteDetailScreen.renderRightNavButton(params)
         }
     };
@@ -115,17 +130,18 @@ class SiteDetailScreen extends Component {
     };
 
     renderAlternateSites = () => {
-        const {selectedSite} = this.props;
+        const siteToShow = getSiteToShow(this.props);
+
         const {sectionTitleStyle, textStyle, bottomMargin} = styles;
 
-        if (selectedSite && selectedSite.alternateSites) {
+        if (siteToShow && siteToShow.alternateSites) {
             return (
                 <View>
                     <Text style={sectionTitleStyle}>
                         {campsite_form.alternate_sites}
                     </Text>
                     <Text style={[textStyle, bottomMargin]}>
-                        {selectedSite.alternateSites}
+                        {siteToShow.alternateSites}
                     </Text>
                 </View>
             );
@@ -134,21 +150,21 @@ class SiteDetailScreen extends Component {
     };
 
     renderMVUMInfo = () => {
-        const {selectedSite, navigation: {navigate}} = this.props;
+        const siteToShow = getSiteToShow(this.props);
         const {sectionTitleStyle, textStyle, bottomMargin, hyperlinkStyle} = styles;
 
-        if (selectedSite && selectedSite.mvum) {
+        if (siteToShow && siteToShow.mvum) {
             return (
                 <View>
                     <Text style={sectionTitleStyle}>
                         {campsite_form.mvum}
                     </Text>
                     <TouchableOpacity
-                        onPress={() => Expo.WebBrowser.openBrowserAsync(mvum_links[selectedSite.mvum])}
+                        onPress={() => Expo.WebBrowser.openBrowserAsync(mvum_links[siteToShow.mvum])}
                         // onPress={() => navigate(navKeys.MVUM_INSPECTOR)}
                     >
                         <Text style={[textStyle, bottomMargin, hyperlinkStyle]}>
-                            {mvum_names[selectedSite.mvum]}
+                            {mvum_names[siteToShow.mvum]}
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -158,10 +174,10 @@ class SiteDetailScreen extends Component {
     };
 
     renderCountyInfo = () => {
-        const {selectedSite} = this.props;
+        const siteToShow = getSiteToShow(this.props);
         const {sectionTitleStyle, textStyle, bottomMargin, hyperlinkStyle, countyInlineStyle} = styles;
 
-        if (selectedSite && selectedSite.county) {
+        if (siteToShow && siteToShow.county) {
             return (
                 <View>
                     <Text style={sectionTitleStyle}>
@@ -169,7 +185,7 @@ class SiteDetailScreen extends Component {
                     </Text>
                     <View style={countyInlineStyle}>
                         <Text style={[textStyle, bottomMargin]}>
-                            {counties[selectedSite.county]}
+                            {counties[siteToShow.county]}
                         </Text>
                         <Text>
                             {' - '}
@@ -189,10 +205,10 @@ class SiteDetailScreen extends Component {
     };
 
     renderForestInfo = () => {
-        const {selectedSite} = this.props;
+        const siteToShow = getSiteToShow(this.props);
         const {sectionTitleStyle, textStyle, bottomMargin, hyperlinkStyle, countyInlineStyle} = styles;
 
-        if (selectedSite && selectedSite.forest) {
+        if (siteToShow && siteToShow.forest) {
             return (
                 <View>
                     <Text style={sectionTitleStyle}>
@@ -200,7 +216,7 @@ class SiteDetailScreen extends Component {
                     </Text>
                     <View style={countyInlineStyle}>
                         <Text style={[textStyle, bottomMargin]}>
-                            {forest_names[selectedSite.forest]}
+                            {forest_names[siteToShow.forest]}
                         </Text>
                     </View>
                 </View>
@@ -234,10 +250,10 @@ class SiteDetailScreen extends Component {
     };
 
     renderCellCoverageInfo = () => {
-        const {selectedSite} = this.props;
+        const siteToShow = getSiteToShow(this.props);
 
-        if (selectedSite) {
-            const {cellProvider, cellStrength} = selectedSite;
+        if (siteToShow) {
+            const {cellProvider, cellStrength} = siteToShow;
             if (cellProvider || cellStrength) {
                 const {sectionTitleStyle, cellServiceContainerStyle} = styles;
 
@@ -259,6 +275,7 @@ class SiteDetailScreen extends Component {
 
     renderAdminEditButton = () => {
         const {navigation: {navigate}} = this.props;
+        const siteToShow = getSiteToShow(this.props);
 
         return (
             <Icon
@@ -269,6 +286,78 @@ class SiteDetailScreen extends Component {
                 onPress={() => navigate(navKeys.EDIT_SITE)}
             />
         );
+
+    };
+
+    onClickForceSubmit = () => {
+        const {currentUser, navigation: {navigate, goBack}} = this.props;
+        const siteToShow = getSiteToShow(this.props);
+
+        this.props.attemptToUploadNewSite(siteToShow, {navigate, goBack}, {currentUser});
+    };
+
+    renderAdminForceSubmitButton = () => {
+        const {navigation: {navigate}} = this.props;
+        const siteToShow = getSiteToShow(this.props);
+
+        const {submitButtonStyle} = styles;
+
+        return (
+            <LargeButton
+                title={submit_form.force_submit}
+                iconName={'file-upload'}
+                iconColor={'white'}
+                buttonStyleOverride={submitButtonStyle}
+                onPress={this.onClickForceSubmit}
+            />
+        );
+
+    };
+
+    renderUserCreditIfApplicable = () => {
+        const {sectionTitleStyle, textStyle, bottomMargin} = styles;
+        const siteToShow = getSiteToShow(this.props);
+
+        if (!siteToShow || _.isEmpty(siteToShow)) {
+            return null;
+        } else {
+            const uploadedBy = siteToShow.uploadedBy;
+            const giveCredit = siteToShow.uploadedBy.giveCredit;
+
+            return (
+                <View>
+                    <Text style={sectionTitleStyle}>
+                        {submit_form.uploaded_by_title}
+                    </Text>
+                    <Text style={[textStyle, bottomMargin]}>
+                        {getUserCreditName({uploadedBy, giveCredit})}
+                    </Text>
+                </View>
+            );
+        }
+
+
+    };
+
+    renderAdminButtons = () => {
+        const siteToShow = getSiteToShow(this.props);
+        const {approvalState} = siteToShow;
+
+        const {adminOptionsButtonContainerStyle} = styles;
+
+        if (approvalState === approval_state.APPROVED || approvalState === approval_state.PENDING_APPROVAL) {
+            return (
+                <View style={adminOptionsButtonContainerStyle}>
+                    {this.renderAdminEditButton()}
+                </View>
+            );
+
+        } else if (approvalState === approval_state.PENDING_UPLOAD) {
+            return this.renderAdminForceSubmitButton();
+
+        } else {
+            return null;
+        }
 
     };
 
@@ -286,9 +375,7 @@ class SiteDetailScreen extends Component {
                     {admin_options}
                 </Text>
 
-                <View style={adminOptionsButtonContainerStyle}>
-                    {this.renderAdminEditButton()}
-                </View>
+                {this.renderAdminButtons()}
             </View>
         )
     };
@@ -307,10 +394,15 @@ class SiteDetailScreen extends Component {
 
     renderSiteDetailScreen = () => {
         const {textStyle, sectionTitleStyle, mainTitleStyle, locationMainContainerStyle, mapThumbnailStyle, bottomMargin, topMargin, cardContainerStyle, contentContainerStyle, siteImageStyle, touchableContainerStyle} = styles;
-        const {selectedSite} = this.props;
-        const {accessibility, coordinate, description, directions, facilities, features, nearestTown, price, siteImageData, title, county} = selectedSite;
+        const siteToShow = getSiteToShow(this.props);
 
-        if (selectedSite) {
+        if (!siteToShow) {
+            return null;
+        }
+
+        const {accessibility, coordinate, description, directions, facilities, features, nearestTown, price, siteImageData, title, county} = siteToShow;
+
+        if (siteToShow) {
             return (
                 <ScrollView>
                     <Card
@@ -425,6 +517,8 @@ class SiteDetailScreen extends Component {
 
                             {this.renderCellCoverageInfo()}
 
+                            {this.renderUserCreditIfApplicable()}
+
                             {this.renderAdminOptions()}
 
                         </View>
@@ -522,14 +616,20 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-end'
-    }
+    },
+    submitButtonStyle: {
+        marginTop: 10,
+        marginBottom: 10,
+        backgroundColor: navyBlueButton,
+        marginBottom: 100
+    },
 });
 
 function mapStateToProps(state) {
-    const {selectedSite} = state.map;
+    const {selectedSite, selectedPendingSite} = state.map;
     const {currentUser} = state.auth;
 
-    return {selectedSite, currentUser};
+    return {selectedSite, selectedPendingSite, currentUser};
 }
 
-export default connect(mapStateToProps, {attemptToAddFavorite, attemptToRemoveFavorite})(SiteDetailScreen);
+export default connect(mapStateToProps, {attemptToAddFavorite, attemptToRemoveFavorite, attemptToUploadNewSite})(SiteDetailScreen);

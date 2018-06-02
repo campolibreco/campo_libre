@@ -82,7 +82,7 @@ class SiteCarousel extends Component {
 
 
     renderSlides = () => {
-        const {navigate, displaySites} = this.props;
+        const {navigate, displaySites, currentUser} = this.props;
 
         return _.map(displaySites, site => {
             return (
@@ -93,6 +93,7 @@ class SiteCarousel extends Component {
                     getSiteDetail={this.props.getSiteDetail}
                     isFavorite={this.selectedSiteIsFavorite()}
                     toggleSiteFavorite={this.toggleSiteFavorite}
+                    currentUser={currentUser}
                 />
             );
         });

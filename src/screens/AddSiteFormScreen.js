@@ -60,10 +60,12 @@ class AddSiteFormScreen extends Component {
     };
 
     render() {
+        const {navigation: {navigate}} = this.props;
 
         return (
             <SiteInfoInputForm
                 siteFormType={site_form_type.ADD}
+                navigate={navigate}
             />
         );
     }

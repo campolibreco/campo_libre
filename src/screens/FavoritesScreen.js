@@ -14,6 +14,7 @@ import {getSiteDetail, logUserIntoFacebook} from '../actions';
 import {tokens} from '../constants';
 import {facebookBlueButtonTransparent, navyBlueButton} from '../styles';
 import {common, favorites, login} from '../locale.en';
+
 const {no_favorites_header, no_favorites_detail, must_log_in_detail} = favorites;
 
 class FavoritesScreen extends Component {
@@ -72,17 +73,19 @@ class FavoritesScreen extends Component {
         }
         else if (currentUser && currentUser.favorites && currentUser.favorites.length > 0) {
             const {navigation: {navigate}} = this.props;
+            const {fillScreen} = styles;
 
             return (
-                <ScrollView>
-                    <View>
+                <View style={fillScreen}>
+                    <ScrollView>
+
                         {this.renderFavorites({
                             sites: currentUser.favorites,
                             getSiteDetail: this.props.getSiteDetail,
                             navigate
                         })}
-                    </View>
-                </ScrollView>
+                    </ScrollView>
+                </View>
             );
         } else {
             return (
@@ -95,8 +98,10 @@ class FavoritesScreen extends Component {
     };
 
     render() {
+        const {fillScreen} = styles;
+
         return (
-            <View>
+            <View style={fillScreen}>
                 {this.renderFavoritesScreen()}
             </View>
         );
@@ -104,11 +109,14 @@ class FavoritesScreen extends Component {
 }
 
 const styles = StyleSheet.create({
+    fillScreen: {
+        flex: 1,
+    },
     headerTitleStyle: {
         fontSize: 30,
         marginBottom: 20,
         color: navyBlueButton,
-        alignSelf:'center'
+        alignSelf: 'center'
     },
     infoTextStyle: {
         fontSize: 15

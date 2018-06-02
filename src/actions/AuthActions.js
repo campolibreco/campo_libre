@@ -59,11 +59,12 @@ const getUserFavorites = ({dispatch, currentUser, navigate}) => {
 };
 
 const createUserInFirestore = ({dispatch, user, navigate}) => {
-    const {name, email, imageUrl} = user;
+    const {name, email, imageUrl, uid} = user;
     const currentUser = {
         name,
         email,
-        imageUrl
+        imageUrl,
+        uid
     };
 
     firebase.firestore().doc(`users/${email}`)
@@ -80,6 +81,7 @@ const createUserInFirestore = ({dispatch, user, navigate}) => {
 
 const getFirestoreUserObject = ({dispatch, user, navigate}) => {
     const {name, email, imageUrl} = user;
+    const currentUser = firebase.auth().currentUser;
 
     firebase.firestore().collection('users').doc(`${email}`)
         .get()
@@ -104,7 +106,7 @@ const attemptFacebookLogin = async ({dispatch, navigate}) => {
 
     if (type === 'success') {
         let {data: {email, name, picture: {data: {url}}}} = await axios.get(`https://graph.facebook.com/me?fields=id,name,email,picture&access_token=${token}`);
-        const preparedUser = {
+        let preparedUser = {
             name,
             email,
             imageUrl: url
@@ -112,6 +114,7 @@ const attemptFacebookLogin = async ({dispatch, navigate}) => {
 
         firebase.auth().signInWithEmailAndPassword(email, FIREBASE_USER_PASSWORD)
             .then(user => {
+                preparedUser.uid = user.uid;
                 getFirestoreUserObject({dispatch, user: preparedUser, navigate});
             })
             .catch(err => {
@@ -120,6 +123,7 @@ const attemptFacebookLogin = async ({dispatch, navigate}) => {
                 if (errorCode === 'auth/user-not-found') {
                     firebase.auth().createUserWithEmailAndPassword(email, FIREBASE_USER_PASSWORD)
                         .then(user => {
+                            preparedUser.uid = user.uid;
                             getFirestoreUserObject({dispatch, user: preparedUser, navigate});
                         })
                         .catch(err => {

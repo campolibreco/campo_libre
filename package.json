@@ -4,7 +4,7 @@
   "dependencies": {
     "@firebase/firestore": "~0.3.4",
     "axios": "~0.17.1",
-    "expo": "24.0.0",
+    "expo": "24.0.3",
     "firebase": "~4.10.1",
     "ionicons": "~3.0.0",
     "react": "16.0.0",

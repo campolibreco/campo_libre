@@ -11,11 +11,11 @@ import {campsite} from '../locale.en';
 
 const {campsite_form: {accessibility_options}} = campsite;
 
-import {featureIconDetails, facilityIconDetails} from "../constants";
+import {featureIconDetails, facilityIconDetails, tokens} from "../constants";
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
-const SitePreview = ({navigate, siteToPreview, getSiteDetail, isFavorite, toggleSiteFavorite}) => {
+const SitePreview = ({navigate, siteToPreview, getSiteDetail, isFavorite, toggleSiteFavorite, currentUser}) => {
 
     const renderIcons = ({features, facilities}) => {
         const featureIcons = _.map(features, feature => {
@@ -45,6 +45,21 @@ const SitePreview = ({navigate, siteToPreview, getSiteDetail, isFavorite, toggle
         return _.concat(featureIcons, facilityIcons);
     };
 
+    const renderFavoriteIcon = () => {
+        if (currentUser.name === tokens.GUEST) {
+            return;
+        }
+
+        return (
+            <Icon type='ionicon'
+                  name={isFavorite ? 'ios-heart' : 'ios-heart-outline'}
+                  size={40}
+                  color={'white'}
+                  onPress={() => toggleSiteFavorite({siteToToggle: siteToPreview})}
+            />
+        );
+    };
+
     const renderSelectedSitePreview = () => {
         if (siteToPreview && !_.isEmpty(siteToPreview)) {
             const {title, accessibility, siteImageData, features, facilities} = siteToPreview;
@@ -68,12 +83,8 @@ const SitePreview = ({navigate, siteToPreview, getSiteDetail, isFavorite, toggle
                                       onPress={() => getSiteDetail({selectedSite: null})}
                                 />
 
-                                <Icon type='ionicon'
-                                      name={isFavorite ? 'ios-heart' : 'ios-heart-outline'}
-                                      size={40}
-                                      color={'white'}
-                                      onPress={() => toggleSiteFavorite({siteToToggle: siteToPreview})}
-                                />
+                                {renderFavoriteIcon()}
+
                             </View>
 
                             <View style={bottomRowInfoStyle}>

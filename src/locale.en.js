@@ -12,9 +12,12 @@ export const login = {
 
 export const campsite = {
     nav_header: 'Share a site, Get a site',
-    site_description: "Your submitted sites will go here. Why don't you give it a try by submitting a site above?",
     click_for_maps: 'Click to open me in Google Maps',
     upload: 'Upload Campsite',
+    cancel: 'Cancel',
+    update: 'Update',
+    reject: 'Reject',
+    approve: 'Approve',
     admin_options: 'Admin Options',
     campsite_form: {
         reset: 'Reset',
@@ -27,7 +30,10 @@ export const campsite = {
         add_site: 'Add a Site',
         add_a_campsite: 'Add a Campsite',
         edit_site: 'Edit Site',
-        edit_this_campsite: 'Edit this Campsite',
+        edit_campsite: {
+            approved: 'Edit Existing',
+            pending_approval: 'Approve or Reject'
+        },
         site_info: 'Site Info',
         description: 'Description',
         description_placeholder: 'Add Description',
@@ -115,7 +121,8 @@ export const search_screen = {
 };
 
 export const site_detail_screen = {
-    header_title: 'Site Detail'
+    pending_upload: 'Pending Upload',
+    pending_approval: 'Pending Approval'
 };
 
 export const filter_screen = {
@@ -124,7 +131,12 @@ export const filter_screen = {
 
 export const add_site_screen = {
     title: 'Add a Site',
-    header_title: 'Your Submitted Sites'
+    header_title: 'Your Submitted Sites',
+    must_log_in_detail: 'Only logged in users can upload new sites. Log in and start sharing your favorites!',
+    no_pending_sites_header: 'No Submitted Sites',
+    no_pending_sites_detail: 'Your submitted sites will go here. Why don\'t you give it a try by submitting a site above?',
+    pending_sites_header: 'Pending Review',
+    pending_upload_sites_header: 'Pending Upload'
 };
 
 export const more_screen = {
@@ -147,12 +159,27 @@ export const more_screen = {
         camping_bear_safe: 'Camping Bear Safe',
         safe_winter_camping: 'Guide to Safe Snow Camping',
         forest_service_contact_info: 'U.S. Forest Service Contact Information'
+    },
+    app_info: {
+        title: 'Application Info',
+        version: 'Version'
+    },
+    user_info: {
+        title: 'User Info',
+        name: 'Name:',
+        email: 'Email:'
     }
 };
 
 export const submit_form = {
     submit: 'submit',
-    submitted: 'submitted'
+    force_submit: 'Force Submit',
+    submitted: 'submitted',
+    give_me_credit_title: 'Can We Give You Credit?',
+    give_me_credit_detail: 'An example of the credit is below',
+    give_me_credit_example: 'Uploaded By: ',
+    uploaded_by_title: 'Uploaded By',
+    anonymous_user: 'Anonymous user'
 };
 
 export const common = {
@@ -261,6 +288,8 @@ export const forest_names = {
 
 export const mvum_names = {
     blank: '',
+    gunnison_north: 'Gunnison Ranger District - North',
+    gunnison_south: 'Gunnison Ranger District - South',
     leadville: 'Leadville Ranger District',
     pike: 'Pikes Peak Ranger District',
     salida: 'Salida Ranger District',

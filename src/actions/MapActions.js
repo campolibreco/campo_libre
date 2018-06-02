@@ -5,12 +5,14 @@ import _ from 'lodash';
 
 import {
     INITIALIZE_MAP,
+    PENDING_SITES_UPDATE,
     MAP_IS_INITIALIZING,
     MAP_READY,
     MAP_REGION_CHANGE,
     VIEW_STYLE_UPDATE,
     SELECTED_SITE_UPDATE,
-    SELECTED_SITE_CLEARED
+    SELECTED_SITE_CLEARED,
+    PENDING_SELECTED_SITE_UPDATE
 } from './types';
 
 import {navKeys} from '../constants';
@@ -39,6 +41,50 @@ export const initializeMap = ({region}) => {
             });
 
     };
+};
+
+export const getPendingCampsites = ({currentUser}) => {
+
+    if (currentUser.isAdmin) {
+        return (dispatch) => {
+            firebase.firestore().collection('pending_campsites')
+                .onSnapshot(querySnapshot => {
+                    const pendingSites = _.map(querySnapshot.docs, (doc, index) => {
+                        let preparedSite = _.clone(doc.data());
+                        preparedSite.id = doc.id;
+                        preparedSite.key = preparedSite.id;
+
+                        return preparedSite;
+                    });
+
+                    dispatch({
+                        type: PENDING_SITES_UPDATE,
+                        payload: {pendingSites}
+                    });
+                });
+        }
+
+    } else {
+
+        return (dispatch) => {
+            firebase.firestore().collection('pending_campsites').where('uploadedBy.email', '==', `${currentUser.email}`)
+                .onSnapshot(querySnapshot => {
+                    const pendingSites = _.map(querySnapshot.docs, (doc, index) => {
+                        let preparedSite = _.clone(doc.data());
+                        preparedSite.id = doc.id;
+                        preparedSite.key = preparedSite.id;
+
+                        return preparedSite;
+                    });
+
+                    dispatch({
+                        type: PENDING_SITES_UPDATE,
+                        payload: {pendingSites}
+                    });
+                });
+        }
+    }
+
 };
 
 export const updateViewStyle = (newViewStyle) => {
@@ -78,4 +124,13 @@ export const getSiteDetail = ({selectedSite, navigate}) => {
         }
     }
 
+};
+
+export const getPendingSiteDetail = ({selectedSite, navigate}) => {
+    navigate(navKeys.SITE_DETAIL);
+
+    return {
+        type: PENDING_SELECTED_SITE_UPDATE,
+        payload: {selectedSite}
+    }
 };

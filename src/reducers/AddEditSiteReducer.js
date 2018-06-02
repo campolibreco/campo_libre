@@ -27,7 +27,7 @@ import {
     SITE_COUNTY_OPTION_CHANGED,
     SITE_FOREST_OPTION_CHANGED,
     SITE_MVUM_OPTION_CHANGED,
-    NEW_SITE_TO_EDIT
+    NEW_SITE_TO_EDIT, GIVE_ME_CREDIT_TOGGLE_UPDATED, SITE_ADDED_TO_PENDING_UPLOAD
 } from '../actions/types';
 
 import {campsite, reducerAlerts, counties, forest_names, mvum_names} from '../locale.en';
@@ -54,17 +54,19 @@ const INITIAL_STATE = {
     cellProviderOption: cell_provider_options.blank,
     cellStrengthOption: cell_strength_options.blank,
     siteReadyForUpload: false,
-    siteDetailCheckboxesKeys: {facilities: [], features: []}
+    siteDetailCheckboxesKeys: {facilities: [], features: []},
+    id: '',
+    giveCredit: true
 };
 
 const setInitialEditStateFromSite = ({siteToEdit}) => {
-    const {accessibility, alternateSites = '', approvalState, cellProvider = '', cellStrength = '', coordinate, county = '', description, directions, facilities, features, forest = '', mvum = '', nearestTown, price, siteImageData, title} = siteToEdit;
+    const {accessibility, alternateSites = '', approvalState, cellProvider = '', cellStrength = '', coordinate, county = '', description, directions, facilities, features, forest = '', mvum = '', nearestTown, price, siteImageData, title, id, uploadedBy = {giveCredit: false}} = siteToEdit;
     const {latitude, longitude} = coordinate;
 
     const siteStateToDispatch = {
         accessibilityOption: accessibility,
         siteAlternateSitesText: alternateSites,
-        approvalState: approvalState,
+        approvalState,
         cellProviderOption: cellProvider,
         cellStrengthOption: cellStrength,
         latitudeText: latitude.toString(),
@@ -83,7 +85,10 @@ const setInitialEditStateFromSite = ({siteToEdit}) => {
         siteNearestTownText: nearestTown,
         priceOption: price,
         siteImageData,
-        siteTitleText: title
+        siteTitleText: title,
+        id,
+        uploadedBy,
+        giveCredit: uploadedBy.giveCredit
     };
 
     return siteStateToDispatch;
@@ -129,6 +134,13 @@ const formReducer = prefix => (state = INITIAL_STATE, action) => {
                 const siteStateToDispatch = setInitialEditStateFromSite({siteToEdit});
 
                 return {...siteStateToDispatch};
+            } else {
+                return state;
+            }
+
+        case SITE_ADDED_TO_PENDING_UPLOAD:
+            if (prefix === site_form_type.ADD) {
+                return {...INITIAL_STATE};
             } else {
                 return state;
             }
@@ -228,14 +240,12 @@ const formReducer = prefix => (state = INITIAL_STATE, action) => {
 
             return {...state, siteReadyForUpload};
 
-        case `${prefix}_${ADD_SITE_SUCCESS}`:
-            return {...INITIAL_STATE};
-
-        case `${prefix}_${ADD_SITE_FAILURE}`:
-            return {...state};
-
         case `${prefix}_${MAP_IS_INITIALIZING}`:
             return {...state};
+
+        case `${prefix}_${GIVE_ME_CREDIT_TOGGLE_UPDATED}`:
+            const {newGiveMeCreditValue} = payload;
+            return {...state, giveCredit: newGiveMeCreditValue};
 
         case `${prefix}_${FACEBOOK_LOGOUT_COMPLETE}`:
             return INITIAL_STATE;

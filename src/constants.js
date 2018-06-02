@@ -70,6 +70,8 @@ export const external_links = {
 };
 
 export const mvum_links = {
+    gunnison_north: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd514897.pdf',
+    gunnison_south: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd514900.pdf',
     leadville: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd496304.pdf',
     salida: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd555442.pdf',
     pike: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd574084.pdf',
@@ -77,12 +79,34 @@ export const mvum_links = {
 };
 
 export const approval_state = {
-  APPROVED: 'approved',
-  PENDING: 'pending',
-  DENIED: 'denied'
+    APPROVED: 'approved',
+    PENDING_UPLOAD: 'pending_upload',
+    PENDING_APPROVAL: 'pending_approval',
+    REJECTED: 'rejected'
 };
 
 export const site_form_type = {
-  ADD: 'add',
-  EDIT: 'edit'
+    ADD: 'add',
+    EDIT: 'edit',
+    APPROVE: 'approve'
+};
+
+export const campsite_collections = {
+    APPROVED: 'campsites',
+    PENDING: 'pending_campsites',
+    REJECTED: 'not_approved_campsites'
+};
+
+export const connection_type = {
+    NONE: 'none',
+    WIFI: 'wifi',
+    CELL: 'cellular',
+    UNKNOWN: 'unknown'
+};
+
+export const effective_connection_type = {
+    TWO_G: '2g',
+    THREE_G: '3g',
+    FOUR_G: '4g',
+    UNKNOWN: 'unknown'
 };

@@ -6,6 +6,7 @@ export const FACEBOOK_LOGIN_FAILURE = 'fb_login_failure';
 export const FACEBOOK_LOGOUT_COMPLETE = 'fb_logout_complete';
 
 export const INITIALIZE_MAP = 'initialize_map';
+export const PENDING_SITES_UPDATE = 'pending_sites_update';
 export const MAP_IS_INITIALIZING = 'map_is_initializing';
 export const MAP_READY = 'map_ready';
 export const MAP_NOT_READY = 'map_not_ready';
@@ -13,6 +14,7 @@ export const MAP_REGION_CHANGE = 'map_region_change';
 export const VIEW_STYLE_UPDATE = 'view_style_update';
 export const SELECTED_SITE_UPDATE = 'selected_site_update';
 export const SELECTED_SITE_CLEARED = 'selected_site_cleared';
+export const PENDING_SELECTED_SITE_UPDATE = 'pending_selected_site_update';
 
 export const LATITUDE_TEXT_UPDATED = 'latitude_text_updated';
 export const LONGITUDE_TEXT_UPDATED = 'longitude_text_updated';
@@ -34,9 +36,18 @@ export const EDIT_SITE_FIELDS_RESET = 'edit_site_fields_reset';
 export const CURRENT_LOCATION_UPDATED = 'current_location_updated';
 export const ADD_SITE_SUCCESS = 'add_site_success';
 export const ADD_SITE_FAILURE = 'add_site_failure';
+export const EDIT_SITE_FAILURE = 'edit_site_failure';
+export const EDIT_SITE_SUCCESS = 'edit_site_success';
+export const APPROVE_SITE_SUCCESS = 'approve_site_success';
+export const APPROVE_SITE_FAILURE = 'approve_site_failure';
+export const REJECT_SITE_SUCCESS = 'reject_site_success';
+export const REJECT_SITE_FAILURE = 'reject_site_failure';
+export const DELETE_SITE_FAILURE = 'delete_site_failure';
+export const SITE_UPLOAD_IN_PROGRESS = 'site_upload_in_progress';
 export const CHECK_IF_SITE_IS_READY = 'check_if_site_is_ready';
 export const SITE_DETAIL_CHECKBOX_UPDATED = 'site_detail_checkbox_updated';
 export const NEW_SITE_TO_EDIT = 'new_site_to_edit';
+export const GIVE_ME_CREDIT_TOGGLE_UPDATED = 'give_me_credit_toggle_updated';
 
 export const FILTER_CRITERIA_UPDATED = 'filter_criteria_updated';
 export const FILTER_TOGGLE_LOGIC_UPDATED = 'filter_toggle_logic_updated';
@@ -51,3 +62,6 @@ export const FAVORITE_ADDED = 'favorite_added';
 export const FAVORITE_ADD_FAILED = 'favorite_add_failed';
 export const FAVORITE_REMOVED = 'favorite_removed';
 export const FAVORITE_REMOVE_FAILED = 'favorite_remove_failed';
+
+export const CONNECTION_INFO_UPDATED = 'connection_info_updated';
+export const SITE_ADDED_TO_PENDING_UPLOAD = 'site_added_to_pending_upload';

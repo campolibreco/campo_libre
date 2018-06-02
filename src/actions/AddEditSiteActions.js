@@ -1,3 +1,5 @@
+import {NetInfo} from 'react-native';
+
 import firebase from '@firebase/app';
 import '@firebase/firestore'
 
@@ -24,10 +26,20 @@ import {
     SITE_COUNTY_OPTION_CHANGED,
     SITE_FOREST_OPTION_CHANGED,
     SITE_MVUM_OPTION_CHANGED,
-    NEW_SITE_TO_EDIT
+    NEW_SITE_TO_EDIT,
+    GIVE_ME_CREDIT_TOGGLE_UPDATED,
+    SITE_ADDED_TO_PENDING_UPLOAD,
+    SITE_UPLOAD_IN_PROGRESS,
+    EDIT_SITE_FAILURE,
+    EDIT_SITE_SUCCESS,
+    APPROVE_SITE_SUCCESS,
+    APPROVE_SITE_FAILURE,
+    REJECT_SITE_SUCCESS,
+    REJECT_SITE_FAILURE,
+    DELETE_SITE_FAILURE
 } from './types';
 
-import {navKeys, site_form_type} from '../constants';
+import {navKeys, site_form_type, campsite_collections, approval_state} from '../constants';
 
 export const updateLatitudeText = ({latitudeText, siteFormType}) => {
     return {
@@ -154,65 +166,236 @@ export const newSiteToEditAvailable = ({siteToEdit}) => {
     }
 };
 
-// TODO need to fix this logic for URL and redirect
-export const attemptToUploadSite = ({title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData, alternateSites, cellProvider, cellStrength, county, forest, mvum}, {navigate, goBack}, siteFormType) => {
-    const {longitude, latitude} = coordinate;
+export const giveMeCreditToggleUpdated = ({newGiveMeCreditValue, siteFormType}) => {
+    return {
+        type: `${siteFormType}_${GIVE_ME_CREDIT_TOGGLE_UPDATED}`,
+        payload: {newGiveMeCreditValue}
+    }
+};
+
+const attemptToUploadSite = ({approvalState, title, description, directions, nearestTown, accessibility, facilities, features, price, coordinate, siteImageData, alternateSites, cellProvider, cellStrength, county, forest, mvum, uploadedBy}, {navigate, goBack}, {correctCollection, uniqueTitle}) => {
+
+    return firebase.firestore().doc(`${correctCollection}/${uniqueTitle}`)
+        .set({
+            approvalState,
+            title,
+            description,
+            directions,
+            alternateSites,
+            nearestTown,
+            accessibility,
+            facilities,
+            features,
+            price,
+            coordinate,
+            siteImageData,
+            cellProvider,
+            cellStrength,
+            county,
+            forest,
+            mvum,
+            uploadedBy
+        });
+};
+
+const attemptToDeleteSite = ({collectionToDeleteFrom, uniqueTitle}) => {
+
+    return firebase.firestore().doc(`${collectionToDeleteFrom}/${uniqueTitle}`)
+        .delete();
+};
+
+const createUniqueTitle = ({title, coordinate: {longitude, latitude}}) => {
+
     const uniqueTitle = _(`${title}${longitude}${latitude}`)
-        .replace(/ /g, '')
+        .replace(/[\W_]+/g, '')
         .slice(0, 30);
 
+    return uniqueTitle;
+};
+
+export const attemptToUploadNewSite = (newSite, {navigate, goBack}, {currentUser}) => {
+    const correctCollection = currentUser.isAdmin ? campsite_collections.APPROVED : campsite_collections.PENDING;
+    const approvalState = correctCollection === campsite_collections.APPROVED ? approval_state.APPROVED : approval_state.PENDING_APPROVAL;
+
+    const contextOptions = {
+        correctCollection,
+        uniqueTitle: newSite.id
+    };
+
+    newSite.approvalState = approvalState;
+
     return (dispatch) => {
-        firebase.firestore().doc(`campsites/${uniqueTitle}`)
-            .set({
-                title,
-                description,
-                directions,
-                alternateSites,
-                nearestTown,
-                accessibility,
-                facilities,
-                features,
-                price,
-                coordinate,
-                siteImageData,
-                cellProvider,
-                cellStrength,
-                county,
-                forest,
-                mvum
-            })
+        dispatch({
+            type: SITE_UPLOAD_IN_PROGRESS
+        });
+
+        return attemptToUploadSite(newSite, {navigate, goBack}, contextOptions)
             .then(() => {
-                if (siteFormType === site_form_type.ADD) {
-                    dispatch({
-                        type: ADD_SITE_SUCCESS
-                    });
+                dispatch({
+                    type: ADD_SITE_SUCCESS,
+                    payload: {uploadedSite: newSite}
+                });
 
-                    navigate(navKeys.ADD_SITE);
-                } else if (siteFormType === site_form_type.EDIT) {
-
-                    goBack();
-                }
+                goBack();
             })
             .catch(error => {
-                if (siteFormType === site_form_type.ADD) {
-                    dispatch({
-                        type: ADD_SITE_FAILURE,
-                        payload: {error}
-                    });
+                dispatch({
+                    type: ADD_SITE_FAILURE,
+                    payload: {error}
+                });
 
-                    navigate(navKeys.ADD_SITE);
-                } else if (siteFormType === site_form_type.EDIT) {
-                    dispatch({
-                        type: ADD_SITE_FAILURE,
-                        payload: {error}
-                    });
-
-                    goBack();
-                }
+                goBack();
             });
-
 
     }
 
 
 };
+
+export const addNewSiteToPendingUploadQueue = (newSite, {navigate, goBack}) => {
+    navigate(navKeys.ADD_SITE);
+    newSite.approvalState = approval_state.PENDING_UPLOAD;
+
+    newSite.id = createUniqueTitle(newSite);
+
+    return (
+        {
+            type: SITE_ADDED_TO_PENDING_UPLOAD,
+            payload: {newSite}
+        }
+    )
+
+};
+
+export const attemptToEditExistingSite = (newSite, {navigate, goBack}, {currentUser}) => {
+    if (!currentUser || !currentUser.isAdmin) {
+        return;
+    }
+
+    const correctCollection = campsite_collections.APPROVED;
+
+    const contextOptions = {
+        correctCollection,
+        uniqueTitle: newSite.id
+    };
+
+    return (dispatch) => {
+        return attemptToUploadSite(newSite, {navigate, goBack}, contextOptions)
+            .then(() => {
+                dispatch({
+                    type: EDIT_SITE_SUCCESS,
+                    payload: {error}
+                });
+
+                goBack();
+            })
+            .catch(error => {
+                dispatch({
+                    type: EDIT_SITE_FAILURE,
+                    payload: {error}
+                });
+
+                goBack();
+            });
+
+    }
+};
+
+export const attemptToAcceptSubmittedSite = (siteToAccept, {navigate, goBack}, {currentUser}) => {
+    if (!currentUser || !currentUser.isAdmin) {
+        return;
+    }
+
+    siteToAccept.approvalState = approval_state.APPROVED;
+
+    const correctCollection = campsite_collections.APPROVED;
+    const newUniqueTitleForSite = createUniqueTitle(siteToAccept);
+
+    const contextOptions = {
+        correctCollection,
+        uniqueTitle: newUniqueTitleForSite
+    };
+
+    return (dispatch) => {
+        return attemptToUploadSite(siteToAccept, {navigate, goBack}, contextOptions)
+            .then(() => {
+                const collectionToDeleteFrom = campsite_collections.PENDING;
+
+                attemptToDeleteSite({collectionToDeleteFrom, uniqueTitle: siteToAccept.id})
+                    .then(() => {
+                        dispatch({
+                            type: APPROVE_SITE_SUCCESS
+                        });
+
+                        navigate(navKeys.ADD_SITE);
+                    })
+                    .catch(error => {
+                        dispatch({
+                            type: DELETE_SITE_FAILURE,
+                            payload: {error}
+                        });
+
+                        goBack();
+                    })
+            })
+            .catch(error => {
+                dispatch({
+                    type: APPROVE_SITE_FAILURE,
+                    payload: {error}
+                });
+                goBack();
+            });
+    }
+
+};
+
+export const attemptToRejectSite = (siteToReject, {navigate, goBack}, {currentUser}) => {
+
+    if (!currentUser || !currentUser.isAdmin) {
+        return;
+    }
+
+    siteToReject.approvalState = approval_state.REJECTED;
+
+    const correctCollection = campsite_collections.REJECTED;
+
+    const newUniqueTitleForSite = createUniqueTitle(siteToReject);
+
+    const contextOptions = {
+        correctCollection,
+        uniqueTitle: newUniqueTitleForSite
+    };
+
+    return (dispatch) => {
+        return attemptToUploadSite(siteToReject, {navigate, goBack}, contextOptions)
+            .then(() => {
+                const collectionToDeleteFrom = campsite_collections.PENDING;
+
+                attemptToDeleteSite({collectionToDeleteFrom, uniqueTitle: siteToReject.id})
+                    .then(() => {
+                        dispatch({
+                            type: REJECT_SITE_SUCCESS
+                        });
+
+                        navigate(navKeys.ADD_SITE);
+                    })
+                    .catch(error => {
+                        dispatch({
+                            type: DELETE_SITE_FAILURE,
+                            payload: {error}
+                        });
+
+                        goBack();
+                    })
+            })
+            .catch(error => {
+                dispatch({
+                    type: REJECT_SITE_FAILURE,
+                    payload: {error}
+                });
+                goBack();
+            });
+    }
+
+};
+
