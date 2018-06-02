@@ -75,7 +75,14 @@ export const mvum_links = {
     leadville: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd496304.pdf',
     salida: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd555442.pdf',
     pike: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd574084.pdf',
-    south_park: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd544977.pdf'
+    south_park: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd544977.pdf',
+    aspen_sopris: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd506000.pdf',
+    dillon: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd505800.pdf',
+    eagle_holy_cross_front: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd506006.pdf',
+    eagle_holy_cross_back: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd514242.pdf',
+    flat_tops: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd506001.pdf',
+    rifle: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd506015.pdf'
+
 };
 
 export const approval_state = {

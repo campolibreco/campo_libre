@@ -31,6 +31,10 @@ import {blueGreenNav, linkColorBlue} from "./src/styles";
 class App extends Component {
     componentWillMount() {
         firebase.initializeApp(FIREBASE_CONFIG);
+
+        const firestore = firebase.firestore();
+        const settings = {timestampsInSnapshots: true};
+        firestore.settings(settings);
     }
 
     render() {
