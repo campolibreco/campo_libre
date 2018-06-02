@@ -14,7 +14,8 @@ export const campsite = {
     nav_header: 'Share a site, Get a site',
     site_description: "Your submitted sites will go here. Why don't you give it a try by submitting a site above?",
     click_for_maps: 'Click to open me in Google Maps',
-    upload: "Upload Campsite",
+    upload: 'Upload Campsite',
+    admin_options: 'Admin Options',
     campsite_form: {
         reset: 'Reset',
         site_image: 'Site Image',
@@ -25,6 +26,8 @@ export const campsite = {
         add_site_title: 'Add Site Title',
         add_site: 'Add a Site',
         add_a_campsite: 'Add a Campsite',
+        edit_site: 'Edit Site',
+        edit_this_campsite: 'Edit this Campsite',
         site_info: 'Site Info',
         description: 'Description',
         description_placeholder: 'Add Description',

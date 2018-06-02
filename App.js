@@ -17,6 +17,7 @@ import FilterScreen from './src/screens/FilterScreen';
 import FavoritesScreen from './src/screens/FavoritesScreen';
 import AddSiteScreen from './src/screens/AddSiteScreen';
 import AddSiteFormScreen from './src/screens/AddSiteFormScreen';
+import EditSiteScreen from './src/screens/EditSiteScreen';
 import MoreScreen from './src/screens/MoreScreen';
 import AuthScreen from "./src/screens/AuthScreen";
 import SiteDetailScreen from "./src/screens/SiteDetailScreen";
@@ -66,6 +67,11 @@ class App extends Component {
             },
             [navKeys.ADD_SITE_FORM]: {
                 screen: AddSiteFormScreen,
+                navigationOptions: {
+                    tabBarVisible: false
+                }
+            },[navKeys.EDIT_SITE]: {
+                screen: EditSiteScreen,
                 navigationOptions: {
                     tabBarVisible: false
                 }

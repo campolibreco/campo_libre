@@ -6,12 +6,12 @@ import {Icon} from 'react-native-elements';
 import {NavbarButton} from '../components/common/';
 import SiteInfoInputForm from '../components/SiteInfoInputForm';
 
-import {campsite, submit_form, common} from '../locale.en';
+import {campsite} from '../locale.en';
 
 const {
     campsite_form: {
         reset,
-        add_site, add_a_campsite
+        edit_site, edit_this_campsite
     }
 } = campsite;
 
@@ -21,7 +21,7 @@ import {navyBlueButton, grey, darkBlue, inputLabel} from '../styles/index';
 
 import {resetScreenFields} from '../actions';
 
-class AddSiteFormScreen extends Component {
+class EditSiteScreen extends Component {
 
     componentDidMount() {
         const {navigation: {setParams}} = this.props;
@@ -30,7 +30,7 @@ class AddSiteFormScreen extends Component {
     }
 
     onClickReset = () => {
-        this.props.resetScreenFields({siteFormType: site_form_type.ADD});
+        this.props.resetScreenFields({siteFormType: site_form_type.EDIT});
     };
 
     static renderRightNavButton = ({onClickReset}) => {
@@ -51,19 +51,23 @@ class AddSiteFormScreen extends Component {
         const {navigation: {state: {params = {}}}} = props;
 
         return {
-            title: add_site,
-            headerTitle: add_a_campsite,
-            headerRight: AddSiteFormScreen.renderRightNavButton(params),
+            title: edit_site,
+            headerTitle: edit_this_campsite,
+            headerRight: EditSiteScreen.renderRightNavButton(params),
             tabBarIcon: ({focused, tintColor}) => (
                 <Icon type='material-community' name={focused ? 'tent' : 'tent'} size={25} color={tintColor}/>)
         }
     };
 
     render() {
+        const {selectedSite, navigation: {navigate, goBack}} = this.props;
 
         return (
             <SiteInfoInputForm
-                siteFormType={site_form_type.ADD}
+                siteFormType={site_form_type.EDIT}
+                siteToEdit={selectedSite}
+                navigate={navigate}
+                goBack={goBack}
             />
         );
     }
@@ -79,5 +83,11 @@ const styles = {
     }
 };
 
+function mapStateToProps(state) {
+    const {selectedSite} = state.map;
 
-export default connect(null, {resetScreenFields})(AddSiteFormScreen);
+    return {selectedSite}
+}
+
+
+export default connect(mapStateToProps, {resetScreenFields})(EditSiteScreen);

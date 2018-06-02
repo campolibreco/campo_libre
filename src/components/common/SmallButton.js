@@ -11,12 +11,11 @@ import {StyleSheet} from "react-native";
 
 
 
-const LargeButton = ({iconType, iconName, iconColor, iconSizeOverride, buttonStyleOverride, title, onPress}) => {
+const SmallButton = ({iconType, iconName, iconColor, iconSizeOverride, buttonStyleOverride, title, onPress}) => {
     const {buttonStyle} = styles;
 
     return (
         <Button
-            large
             transparent
             icon={<Icon type={iconType} name={iconName} size={iconSizeOverride || 25} color={iconColor}/>}
             title={title}
@@ -28,11 +27,11 @@ const LargeButton = ({iconType, iconName, iconColor, iconSizeOverride, buttonSty
 
 const styles = StyleSheet.create({
     buttonStyle: {
-        margin: 30,
         height: 70,
-        borderRadius: 40
+        borderRadius: 40,
+        width: 150
     }
 });
 
 
-export {LargeButton};
+export {SmallButton};

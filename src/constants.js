@@ -17,6 +17,7 @@ export const navKeys = {
     SEARCH: 'search',
     FAVORITES: 'favorites',
     ADD_SITE: 'addSite',
+    EDIT_SITE: 'editSite',
     ADD_SITE_FORM: 'addSiteForm',
     MORE: 'more',
     FILTER: 'filter',
@@ -73,4 +74,15 @@ export const mvum_links = {
     salida: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd555442.pdf',
     pike: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd574084.pdf',
     south_park: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd544977.pdf'
+};
+
+export const approval_state = {
+  APPROVED: 'approved',
+  PENDING: 'pending',
+  DENIED: 'denied'
+};
+
+export const site_form_type = {
+  ADD: 'add',
+  EDIT: 'edit'
 };

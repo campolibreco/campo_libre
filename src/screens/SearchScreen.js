@@ -7,7 +7,7 @@ import {connect} from 'react-redux';
 
 import _ from 'lodash';
 
-import NavbarButton from '../components/common/NavbarButton';
+import {NavbarButton} from '../components/common';
 import SearchList from '../components/SearchList';
 import SearchMap from '../components/SearchMap';
 

@@ -6,7 +6,7 @@ import {CheckBox, Button, Icon} from 'react-native-elements';
 
 import _ from 'lodash';
 
-import NavbarButton from '../components/common/NavbarButton';
+import {NavbarButton} from '../components/common';
 
 import {checkboxWasClicked, resetAllFilters, filterToggleLogicUpdated} from "../actions";
 

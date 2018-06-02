@@ -26,7 +26,7 @@ const {campo_libre, tagline, login_as_guest, login_with_facebook} = login;
 
 // our components - core
 // our components - additional
-import LargeButton from '../components/common/LargeButton';
+import {LargeButton} from '../components/common';
 
 class LoginScreen extends Component {
 

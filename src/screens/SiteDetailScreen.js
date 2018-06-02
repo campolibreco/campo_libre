@@ -17,7 +17,7 @@ import {navKeys, facilityIconDetails, featureIconDetails, map, tokens, mvum_link
 import {site_detail_screen, campsite, common, counties, forest_names, mvum_names} from '../locale.en';
 import {campsiteIcon} from "../styles";
 
-const {campsite_form} = campsite;
+const {campsite_form, admin_options} = campsite;
 const {location} = common;
 
 class SiteDetailScreen extends Component {
@@ -257,6 +257,42 @@ class SiteDetailScreen extends Component {
         }
     };
 
+    renderAdminEditButton = () => {
+        const {navigation: {navigate}} = this.props;
+
+        return (
+            <Icon
+                reverse={true}
+                name='edit'
+                size={30}
+                color={navyBlueButton}
+                onPress={() => navigate(navKeys.EDIT_SITE)}
+            />
+        );
+
+    };
+
+    renderAdminOptions = () => {
+        const {sectionTitleStyle, adminOptionsButtonContainerStyle} = styles;
+        const {currentUser} = this.props;
+
+        if (!currentUser || !currentUser.isAdmin) {
+            return null;
+        }
+
+        return (
+            <View>
+                <Text style={sectionTitleStyle}>
+                    {admin_options}
+                </Text>
+
+                <View style={adminOptionsButtonContainerStyle}>
+                    {this.renderAdminEditButton()}
+                </View>
+            </View>
+        )
+    };
+
     onClickSiteDetailMapThumb = () => {
         const {navigation: {navigate}} = this.props;
 
@@ -389,6 +425,8 @@ class SiteDetailScreen extends Component {
 
                             {this.renderCellCoverageInfo()}
 
+                            {this.renderAdminOptions()}
+
                         </View>
 
                     </Card>
@@ -423,7 +461,8 @@ const styles = StyleSheet.create({
         marginTop: 20
     },
     cardContainerStyle: {
-        padding: 0
+        padding: 0,
+        marginBottom: 20
     },
     mainTitleStyle: {
         fontWeight: 'bold',
@@ -466,7 +505,8 @@ const styles = StyleSheet.create({
     },
     contentContainerStyle: {
         paddingLeft: 15,
-        paddingRight: 15
+        paddingRight: 15,
+        marginBottom: 20
     },
     touchableContainerStyle: {
         marginTop: -15
@@ -477,6 +517,11 @@ const styles = StyleSheet.create({
     },
     countyInlineStyle: {
         flexDirection: 'row'
+    },
+    adminOptionsButtonContainerStyle: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-end'
     }
 });
 
