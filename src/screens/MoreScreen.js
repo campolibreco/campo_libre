@@ -24,7 +24,10 @@ class MoreScreen extends Component {
     }
 
     onLogout = () => {
-        const {navigation: {navigate}} = this.props;
+        const {unsubscribeApprovedCampsitesSnapshot, unsubscribePendingCampsitesSnapshot, navigation: {navigate}} = this.props;
+
+        unsubscribeApprovedCampsitesSnapshot();
+        unsubscribePendingCampsitesSnapshot();
 
         this.props.logUserOutOfFacebook({navigate});
     };
@@ -195,9 +198,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state, ownProps) => {
-    const {token, appReady, currentUser} = state.auth;
+    const {token, appReady, currentUser, unsubscribeApprovedCampsitesSnapshot, unsubscribePendingCampsitesSnapshot} = state.auth;
 
-    return {token, appReady, currentUser};
+    return {token, appReady, currentUser, unsubscribeApprovedCampsitesSnapshot, unsubscribePendingCampsitesSnapshot};
 };
 
 export default connect(mapStateToProps, {logUserOutOfFacebook})(MoreScreen);

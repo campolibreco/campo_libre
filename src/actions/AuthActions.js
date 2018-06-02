@@ -1,7 +1,7 @@
 import {Facebook} from 'expo';
 import axios from 'axios';
-import firebase from '@firebase/app';
-import '@firebase/firestore'
+import firebase from 'firebase';
+import 'firebase/firestore'
 
 import _ from 'lodash';
 
@@ -53,7 +53,7 @@ const getUserFavorites = ({dispatch, currentUser, navigate}) => {
         .then(() => {
             userLoginSuccess({dispatch, user: currentUser, navigate});
         })
-        .catch(err =>{
+        .catch(err => {
             console.log(err);
         });
 };
@@ -94,6 +94,9 @@ const getFirestoreUserObject = ({dispatch, user, navigate}) => {
                 createUserInFirestore({dispatch, user, navigate});
             }
         })
+        .catch(err => {
+            console.log(err);
+        });
 };
 
 const attemptFacebookLogin = async ({dispatch, navigate}) => {
@@ -195,6 +198,13 @@ export const logUserOutOfFacebook = ({navigate}) => {
 
         // purge all async persisted state
         await persistor.purge();
+
+        firebase.auth().signOut()
+            .then(() => {
+            })
+            .catch(err => {
+                console.log(err);
+            });
 
         dispatch({
             type: FACEBOOK_LOGOUT_COMPLETE

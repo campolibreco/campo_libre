@@ -9,13 +9,17 @@ import {
     MAP_READY,
     FAVORITE_ADDED,
     INITIALIZE_MAP,
-    FAVORITE_REMOVED
+    FAVORITE_REMOVED,
+    APPROVED_SITES_UNSUBSCRIBE_READY,
+    PENDING_SITES_UNSUBSCRIBE_READY
 } from '../actions/types';
 
 const INITIAL_STATE = {
     appLoaded: false,
     token: null,
-    currentUser: {}
+    currentUser: {},
+    unsubscribeApprovedCampsitesSnapshot: _.noop,
+    unsubscribePendingCampsitesSnapshot: _.noop
 };
 
 import {tokens} from '../constants';
@@ -58,7 +62,9 @@ export default (state = INITIAL_STATE, action) => {
             return ({...state, token: payload.token, currentUser: guestUser, appReady: payload.appReady});
 
         case FACEBOOK_LOGIN_SUCCESS:
-            return ({...state, token: payload.token, currentUser: payload.currentUser, appReady: payload.appReady});
+            const {currentUser} = payload;
+
+            return ({...state, token: payload.token, currentUser, appReady: payload.appReady});
 
         case FACEBOOK_LOGIN_FAILURE:
             return ({...state, token: null});
@@ -83,6 +89,16 @@ export default (state = INITIAL_STATE, action) => {
             updatedUserWithoutFavorite.favorites = _.reject(updatedUserWithoutFavorite.favorites, favorite => favorite.id === favoriteToRemove.id);
 
             return ({...state, currentUser: updatedUserWithoutFavorite});
+
+        case APPROVED_SITES_UNSUBSCRIBE_READY:
+            const {unsubscribeApprovedCampsitesSnapshot} = payload;
+
+            return {...state, unsubscribeApprovedCampsitesSnapshot};
+
+        case PENDING_SITES_UNSUBSCRIBE_READY:
+            const {unsubscribePendingCampsitesSnapshot} = payload;
+
+            return {...state, unsubscribePendingCampsitesSnapshot};
 
         case INITIALIZE_MAP:
             const {sites} = payload;

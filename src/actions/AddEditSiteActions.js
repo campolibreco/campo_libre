@@ -1,7 +1,5 @@
-import {NetInfo} from 'react-native';
-
-import firebase from '@firebase/app';
-import '@firebase/firestore'
+import firebase from 'firebase';
+import 'firebase/firestore'
 
 import _ from 'lodash';
 
