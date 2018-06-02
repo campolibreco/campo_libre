@@ -293,5 +293,11 @@ export const mvum_names = {
     leadville: 'Leadville Ranger District',
     pike: 'Pikes Peak Ranger District',
     salida: 'Salida Ranger District',
-    south_park: 'South Park Ranger District'
+    south_park: 'South Park Ranger District',
+    aspen_sopris: 'Aspen Sopris Ranger District',
+    dillon: 'Dillon Ranger District',
+    eagle_holy_cross_front: 'Eagle Holy Cross Ranger District - Front',
+    eagle_holy_cross_back: 'Eagle Holy Cross Ranger District - Back',
+    flat_tops: 'Flat Tops Ranger District',
+    rifle: 'Rifle Ranger District'
 };
