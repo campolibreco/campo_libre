@@ -38,7 +38,7 @@ const INITIAL_STATE = {
     filterResultsScrutinyLoose: {facilities: true, features: true},
     filterCriteriaKeys: {accessibility: [], facilities: [], price: [], features: [], forest: []},
     selectedSite: {},
-    selectedPendingSite : {}
+    selectedPendingSite: {}
 };
 
 const getBoundingBoxForRegion = ({region}) => {
@@ -172,25 +172,21 @@ export default (state = INITIAL_STATE, action) => {
 
         case INITIALIZE_MAP:
             const {sites} = payload;
-            const existingMapLoadedState = state.mapLoaded;
 
-            return payload ? {
-                ...INITIAL_STATE,
-                lastKnownRegion: state.lastKnownRegion,
-                sites: sites,
-                filterCriteriaKeys: state.filterCriteriaKeys,
-                displaySites: filterSites({
+            if (!!sites && sites.length > 0) {
+                return {
+                    ...state,
                     sites,
-                    filterResultsScrutinyLoose: state.filterResultsScrutinyLoose,
-                    lastKnownRegion: state.lastKnownRegion
-                }, state.filterCriteriaKeys),
-                mapLoaded: existingMapLoadedState,
-                filterResultsScrutinyLoose: state.filterResultsScrutinyLoose,
-                selectedSite: state.selectedSite,
-                selectedPendingSite: state.selectedPendingSite,
-                viewStyle: state.viewStyle,
-                pendingSites: state.pendingSites
-            } : INITIAL_STATE;
+                    displaySites: filterSites({
+                        sites,
+                        filterResultsScrutinyLoose: state.filterResultsScrutinyLoose,
+                        lastKnownRegion: state.lastKnownRegion
+                    }, state.filterCriteriaKeys)
+                };
+            } else {
+                return state;
+            }
+
 
         case PENDING_SITES_UPDATE:
             const {pendingSites} = payload;

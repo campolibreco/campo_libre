@@ -4,8 +4,11 @@
     "description": "Get out there...",
     "slug": "campo-libre",
     "privacy": "unlisted",
-    "sdkVersion": "26.0.0",
-    "platforms": ["ios", "android"],
+    "sdkVersion": "27.0.0",
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "version": "0.0.39",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,12 +17,15 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "updates": {
+      "enabled": false,
+      "checkAutomatically": "ON_ERROR_RECOVERY"
+    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.campo.libre",
-      "loadJSInBackgroundExperimental": true,
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription" : "Your location will be used to help you pinpoint your GPS location when you're uploading a new campsite."
+        "NSLocationWhenInUseUsageDescription": "Your location will be used to help you pinpoint your GPS location when you're uploading a new campsite."
       }
     },
     "android": {

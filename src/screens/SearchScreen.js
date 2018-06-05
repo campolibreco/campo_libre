@@ -20,7 +20,7 @@ import {
     attemptToAddFavorite,
     attemptToRemoveFavorite
 } from "../actions";
-import {badgeGreen, limeGreenTitle, linkColorBlue, blueGreenNav} from '../styles';
+import {badgeGreen, limeGreenTitle, linkColorBlue, blueGreenNav} from '../styles/index';
 
 import {map, navKeys} from '../constants';
 import {search_screen} from '../locale.en';
