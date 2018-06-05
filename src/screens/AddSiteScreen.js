@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import _ from 'lodash';
 
 import {Icon, Overlay, Text, Card} from 'react-native-elements';
-import {badgeGreen, limeGreenTitle, linkColorBlue, blueGreenNav} from '../styles/index';
+import {linkColorBlue, facebookBlueButtonTransparent, navyBlueButton} from '../styles';
 import {campsite, common, login} from '../locale.en';
 
 import CampsiteListItem from '../components/CampsiteListItem';
@@ -24,7 +24,6 @@ import {
     setUpConnectionListener,
     attemptToUploadNewSite
 } from '../actions';
-import {facebookBlueButtonTransparent, navyBlueButton} from "../styles";
 
 class AddSiteScreen extends Component {
 

@@ -3,12 +3,10 @@ import {AppLoading} from 'expo';
 import React, {Component} from 'react';
 import {View, Text, ImageBackground, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
-import {Button, Icon} from 'react-native-elements'
 // 3rd party libraries - additional
-import _ from 'lodash';
 
 // actions
-import {checkAndSetToken, setGuestToken, logUserIntoFacebook, logUserOutOfFacebook} from '../actions/index';
+import {checkAndSetToken, setGuestToken, logUserIntoFacebook, logUserOutOfFacebook} from '../actions';
 
 // language and styles
 import {
@@ -18,9 +16,8 @@ import {
     headerWhiteTransparent,
     overlayBlue,
     headerWhite
-} from '../styles/index';
+} from '../styles';
 import {login} from '../locale.en';
-import {campsiteIcon} from "../styles";
 
 const {campo_libre, tagline, login_as_guest, login_with_facebook} = login;
 

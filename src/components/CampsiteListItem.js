@@ -6,7 +6,7 @@ import {Card, ListItem, Button, Tile, List, Image, Badge, Icon} from 'react-nati
 
 // styles and language
 import {featureIconDetails, facilityIconDetails} from '../constants';
-import {badgeGreen, limeGreenTitle, RoyalBlueHighlight, blueGreenNav} from '../styles/index';
+import {badgeGreen, limeGreenTitle, RoyalBlueHighlight, blueGreenNav} from '../styles';
 import {campsite} from '../locale.en'
 import _ from 'lodash';
 

@@ -21,7 +21,7 @@ const {
 
 import {site_form_type} from '../constants';
 
-import {navyBlueButton, grey, darkBlue, inputLabel} from '../styles/index';
+import {navyBlueButton, grey, darkBlue, inputLabel} from '../styles';
 
 import {resetScreenFields} from '../actions';
 
