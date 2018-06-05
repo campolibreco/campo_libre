@@ -27,6 +27,27 @@ import {
 
 class AddSiteScreen extends Component {
 
+    connectionIsStrongEnough = (props) => {
+        const {connectionInfo: {type, effectiveType}} = props;
+
+        const connectionIsWifi = type === connection_type.WIFI;
+        const connectionIsStrongCell = type === connection_type.CELL && effectiveType === effective_connection_type.FOUR_G;
+
+        return connectionIsWifi || connectionIsStrongCell;
+    };
+
+    attemptToUploadNewSiteIfNecessary = ({pendingUploadSites, uploadInProgress, props}) =>{
+        const thereAreSitesToUpload = !!pendingUploadSites && pendingUploadSites.length > 0;
+
+        if (thereAreSitesToUpload && !uploadInProgress && this.connectionIsStrongEnough(props)) {
+            const {navigation: {navigate, goBack}, currentUser} = this.props;
+
+            const siteToUpload = _.first(pendingUploadSites);
+            this.props.attemptToUploadNewSite(siteToUpload, {navigate, goBack}, {currentUser});
+        }
+
+    };
+
     componentWillMount() {
         const {currentUser} = this.props;
 
@@ -35,31 +56,17 @@ class AddSiteScreen extends Component {
     }
 
     componentDidMount() {
-        const {currentUser, navigation: {setParams}} = this.props;
+        const {currentUser, navigation: {setParams}, pendingUploadSites, uploadInProgress} = this.props;
 
         setParams({currentUser});
+
+        this.attemptToUploadNewSiteIfNecessary({pendingUploadSites, uploadInProgress, props: this.props});
     }
-
-    connectionIsStrongEnough = (nextProps) => {
-        const {connectionInfo: {type, effectiveType}} = nextProps;
-
-        const connectionIsWifi = type === connection_type.WIFI;
-        const connectionIsStrongCell = type === connection_type.CELL && effectiveType === effective_connection_type.FOUR_G;
-
-        return connectionIsWifi || connectionIsStrongCell;
-    };
 
     componentWillReceiveProps(nextProps) {
         const {pendingUploadSites, uploadInProgress} = nextProps;
 
-        const thereAreSitesToUpload = !!pendingUploadSites && pendingUploadSites.length > 0;
-
-        if (thereAreSitesToUpload && !uploadInProgress && this.connectionIsStrongEnough(nextProps)) {
-            const {navigation: {navigate, goBack}, currentUser} = this.props;
-
-            const siteToUpload = _.first(pendingUploadSites);
-            this.props.attemptToUploadNewSite(siteToUpload, {navigate, goBack}, {currentUser});
-        }
+        this.attemptToUploadNewSiteIfNecessary({pendingUploadSites, uploadInProgress, props: nextProps});
     }
 
     static renderRightNavButton = ({navigate, params}) => {
