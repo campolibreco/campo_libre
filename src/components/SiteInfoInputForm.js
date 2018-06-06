@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, Picker, Platform, ScrollView, View, Image, Switch} from 'react-native';
+import {Alert, Picker, Platform, ScrollView, View, Image, Switch, TextInput} from 'react-native';
 import {connect} from 'react-redux';
 import {Icon, Text, CheckBox, Input} from 'react-native-elements';
 
@@ -531,7 +531,7 @@ class SiteInfoInputForm extends Component {
     };
 
     render() {
-        const {iAmHereButtonStyle, headerTitle, largeTextInput, modalStyle, imageRowStyle, labelStyle, formInputStyle, pickerStyle, cellServiceContainerStyle, cellProviderPickerStyle, cellStrengthPickerStyle} = styles;
+        const {iAmHereButtonStyle, headerTitle, textInputStyle, modalStyle, imageRowStyle, labelStyle, formInputStyle, pickerStyle, cellServiceContainerStyle, cellProviderPickerStyle, cellStrengthPickerStyle} = styles;
         const {latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, priceOption, siteAlternateSitesText, cellProviderOption, cellStrengthOption} = this.props;
 
         return (
@@ -585,8 +585,8 @@ class SiteInfoInputForm extends Component {
                     >- or -</Text>
 
                     <Text style={labelStyle}>{latitude}</Text>
-                    <Input
-                        containerStyle={formInputStyle}
+                    <TextInput
+                        style={[formInputStyle, textInputStyle]}
                         placeholder={latitude_placeholder}
                         value={latitudeText}
                         onChangeText={this.onUpdateLatitudeText}
@@ -594,8 +594,8 @@ class SiteInfoInputForm extends Component {
                     />
 
                     <Text style={labelStyle}>{longitude}</Text>
-                    <Input
-                        containerStyle={formInputStyle}
+                    <TextInput
+                        style={[formInputStyle, textInputStyle]}
                         placeholder={longitude_placeholder}
                         value={longitudeText}
                         onChangeText={this.onUpdateLongitudeText}
@@ -608,21 +608,20 @@ class SiteInfoInputForm extends Component {
                     </Text>
 
                     <Text style={labelStyle}>{title}</Text>
-                    <Input
+                    <TextInput
                         autoCapitalize={'words'}
-                        containerStyle={formInputStyle}
+                        style={[formInputStyle, textInputStyle]}
                         placeholder={add_site_title}
                         value={siteTitleText}
                         onChangeText={this.onUpdateSiteTitleText}
                     />
 
                     <Text style={labelStyle}>{description}</Text>
-                    <Input
-                        containerStyle={formInputStyle}
+                    <TextInput
+                        style={[formInputStyle, textInputStyle]}
                         placeholder={description_placeholder}
                         value={siteDescriptionText}
                         onChangeText={this.onUpdateSiteDescriptionText}
-                        inputContainerStyle={largeTextInput}
                         blurOnSubmit={true}
                         multiline={true}
                         autoGrow={true}
@@ -630,12 +629,11 @@ class SiteInfoInputForm extends Component {
                     />
 
                     <Text style={labelStyle}>{directions}</Text>
-                    <Input
-                        containerStyle={formInputStyle}
+                    <TextInput
+                        style={[formInputStyle, textInputStyle]}
                         placeholder={directions_placeholder}
                         value={siteDirectionsText}
                         onChangeText={this.onUpdateSiteDirectionsText}
-                        inputContainerStyle={largeTextInput}
                         blurOnSubmit={true}
                         multiline={true}
                         autoGrow={true}
@@ -643,8 +641,8 @@ class SiteInfoInputForm extends Component {
                     />
 
                     <Text style={labelStyle}>{nearest_town}</Text>
-                    <Input
-                        containerStyle={formInputStyle}
+                    <TextInput
+                        style={[formInputStyle, textInputStyle]}
                         placeholder={nearest_town_placeholder}
                         value={siteNearestTownText}
                         onChangeText={this.onUpdateSiteNearestTownText}
@@ -680,12 +678,11 @@ class SiteInfoInputForm extends Component {
                     </View>
 
                     <Text style={labelStyle}>{alternate_sites} {optional}</Text>
-                    <Input
-                        containerStyle={formInputStyle}
+                    <TextInput
+                        style={[formInputStyle, textInputStyle]}
                         placeholder={alternate_sites_placeholder}
                         value={siteAlternateSitesText}
                         onChangeText={this.onUpdateAlternateSitesText}
-                        inputContainerStyle={largeTextInput}
                         blurOnSubmit={true}
                         multiline={true}
                         autoGrow={true}
@@ -760,8 +757,14 @@ const styles = {
         justifyContent: 'center',
         alignSelf: 'center',
     },
-    largeTextInput: {
-        height: 100
+    textInputStyle: {
+        minHeight: 40,
+        fontSize: 18,
+        marginLeft: 10,
+        borderColor: '#86939e',
+        borderBottomWidth: 1,
+        width: '90%',
+        paddingBottom: 5
     },
     modalStyle: {
         padding: 20,
