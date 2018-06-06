@@ -66,7 +66,8 @@ export const external_links = {
     winter_camping_safely_url: 'https://www.reserveamerica.com/outdoors/what-you-need-to-know-for-winter-camping.htm',
     car_camping_checklist_url: 'https://www.uncovercolorado.com/car-camping-checklist/',
     forest_service_contact_url: 'http://cpw.state.co.us/thingstodo/Pages/USFSContactInfo.aspx',
-    google_maps_offline_url: 'https://support.google.com/maps/answer/6291838'
+    google_maps_offline_url: 'https://support.google.com/maps/answer/6291838',
+    rec_dot_gov_reservations_url: 'https://www.recreation.gov/unifSearch.do'
 };
 
 export const mvum_links = {
@@ -117,3 +118,4 @@ export const effective_connection_type = {
     FOUR_G: '4g',
     UNKNOWN: 'unknown'
 };
+

@@ -203,6 +203,29 @@ class SiteDetailScreen extends Component {
 
     };
 
+    renderReservationLinkIfNecessary = () => {
+        const siteToShow = getSiteToShow(this.props);
+        const {textStyle, bottomMargin, hyperlinkStyle, reservationInfoStyle} = styles;
+
+        if (siteToShow && campsite_form.price_options[siteToShow.price] === campsite_form.price_options.paid_reservable) {
+            return (
+                    <View style={reservationInfoStyle}>
+                        <Text style={[textStyle, bottomMargin]}>
+                            {campsite_form.reserve_now}
+                        </Text>
+                        <TouchableOpacity
+                            onPress={() => Expo.WebBrowser.openBrowserAsync(external_links.rec_dot_gov_reservations_url)}
+                        >
+                            <Text style={hyperlinkStyle}>
+                                {campsite_form.rec_dot_gov}
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+            );
+        }
+
+    };
+
     renderForestInfo = () => {
         const siteToShow = getSiteToShow(this.props);
         const {sectionTitleStyle, textStyle, bottomMargin, hyperlinkStyle, countyInlineStyle} = styles;
@@ -450,6 +473,7 @@ class SiteDetailScreen extends Component {
                             <Text style={[textStyle, bottomMargin]}>
                                 {campsite_form.price_options[price]}
                             </Text>
+                            {this.renderReservationLinkIfNecessary()}
 
                             <Text style={sectionTitleStyle}>
                                 {campsite_form.accessibility}
@@ -610,6 +634,10 @@ const styles = StyleSheet.create({
     },
     countyInlineStyle: {
         flexDirection: 'row'
+    },
+    reservationInfoStyle: {
+        flexDirection: 'row',
+        marginTop: -15
     },
     adminOptionsButtonContainerStyle: {
         flex: 1,

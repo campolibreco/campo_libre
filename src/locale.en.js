@@ -48,6 +48,8 @@ export const campsite = {
         accessibility: 'Accessibility',
         facilities: 'Facilities',
         price: 'Price',
+        reserve_now: 'Reserve now: ',
+        rec_dot_gov: 'recreation.gov',
         features: 'Features',
         cell_service: 'Cell Service',
         county: 'County',
