@@ -70,7 +70,6 @@ const createUserInFirestore = ({dispatch, user, navigate}) => {
     firebase.firestore().doc(`users/${email}`)
         .set(currentUser)
         .then(() => {
-
             getUserFavorites({dispatch, currentUser, navigate});
         })
         .catch(err => {
@@ -90,8 +89,6 @@ const getFirestoreUserObject = ({dispatch, user, navigate}) => {
                 const currentUser = doc.data();
 
                 getUserFavorites({dispatch, currentUser, navigate});
-            } else {
-                createUserInFirestore({dispatch, user, navigate});
             }
         })
         .catch(err => {
@@ -116,8 +113,8 @@ const attemptFacebookLogin = async ({dispatch, navigate}) => {
         };
 
         firebase.auth().signInWithEmailAndPassword(email, FIREBASE_USER_PASSWORD)
-            .then(user => {
-                preparedUser.uid = user.uid;
+            .then(response => {
+                preparedUser.uid = response.user.uid;
                 getFirestoreUserObject({dispatch, user: preparedUser, navigate});
             })
             .catch(err => {
@@ -125,9 +122,9 @@ const attemptFacebookLogin = async ({dispatch, navigate}) => {
 
                 if (errorCode === 'auth/user-not-found') {
                     firebase.auth().createUserWithEmailAndPassword(email, FIREBASE_USER_PASSWORD)
-                        .then(user => {
-                            preparedUser.uid = user.uid;
-                            getFirestoreUserObject({dispatch, user: preparedUser, navigate});
+                        .then(response => {
+                            preparedUser.uid = response.user.uid;
+                            createUserInFirestore({dispatch, user: preparedUser, navigate});
                         })
                         .catch(err => {
                             console.log("Error creating user: ", err);
