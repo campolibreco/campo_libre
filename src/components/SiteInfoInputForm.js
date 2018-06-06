@@ -181,6 +181,8 @@ class SiteInfoInputForm extends Component {
                     >
                         {this.mvumOptions()}
                     </Picker>
+
+                    <Text style={formInputStyle}>{mvum_names[mvumOption]}</Text>
                 </View>
             );
         }
