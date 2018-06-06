@@ -152,7 +152,7 @@ class SiteDetailScreen extends Component {
         const siteToShow = getSiteToShow(this.props);
         const {sectionTitleStyle, textStyle, bottomMargin, hyperlinkStyle} = styles;
 
-        if (siteToShow && siteToShow.mvum) {
+        if (siteToShow && siteToShow.mvum && mvum_names[siteToShow.mvum]) {
             return (
                 <View>
                     <Text style={sectionTitleStyle}>
@@ -176,7 +176,7 @@ class SiteDetailScreen extends Component {
         const siteToShow = getSiteToShow(this.props);
         const {sectionTitleStyle, textStyle, bottomMargin, hyperlinkStyle, countyInlineStyle} = styles;
 
-        if (siteToShow && siteToShow.county) {
+        if (siteToShow && siteToShow.county && counties[siteToShow.county]) {
             return (
                 <View>
                     <Text style={sectionTitleStyle}>
@@ -207,7 +207,7 @@ class SiteDetailScreen extends Component {
         const siteToShow = getSiteToShow(this.props);
         const {sectionTitleStyle, textStyle, bottomMargin, hyperlinkStyle, countyInlineStyle} = styles;
 
-        if (siteToShow && siteToShow.forest) {
+        if (siteToShow && siteToShow.forest && forest_names[siteToShow.forest]) {
             return (
                 <View>
                     <Text style={sectionTitleStyle}>
@@ -431,6 +431,20 @@ class SiteDetailScreen extends Component {
                             </Text>
 
                             <Text style={sectionTitleStyle}>
+                                {campsite_form.facilities}
+                            </Text>
+                            <View>
+                                {this.renderFacilities(facilities)}
+                            </View>
+
+                            <Text style={sectionTitleStyle}>
+                                {campsite_form.features}
+                            </Text>
+                            <View>
+                                {this.renderFeatures(features)}
+                            </View>
+
+                            <Text style={sectionTitleStyle}>
                                 {campsite_form.price}
                             </Text>
                             <Text style={[textStyle, bottomMargin]}>
@@ -444,22 +458,17 @@ class SiteDetailScreen extends Component {
                                 {campsite_form.accessibility_options[accessibility]}
                             </Text>
 
+                            {this.renderCellCoverageInfo()}
+
                             {this.renderForestInfo()}
+
+                            {this.renderCountyInfo()}
 
                             <Text style={sectionTitleStyle}>
                                 {campsite_form.nearest_town}
                             </Text>
                             <Text style={[textStyle, bottomMargin]}>
                                 {nearestTown}
-                            </Text>
-
-                            {this.renderCountyInfo()}
-
-                            <Text style={sectionTitleStyle}>
-                                {campsite_form.directions}
-                            </Text>
-                            <Text style={[textStyle, bottomMargin]}>
-                                {directions}
                             </Text>
 
                             <Text style={sectionTitleStyle}>
@@ -496,25 +505,16 @@ class SiteDetailScreen extends Component {
                                 </MapView>
                             </View>
 
+                            <Text style={sectionTitleStyle}>
+                                {campsite_form.directions}
+                            </Text>
+                            <Text style={[textStyle, bottomMargin]}>
+                                {directions}
+                            </Text>
+
                             {this.renderMVUMInfo()}
 
                             {this.renderAlternateSites()}
-
-                            <Text style={sectionTitleStyle}>
-                                {campsite_form.facilities}
-                            </Text>
-                            <View>
-                                {this.renderFacilities(facilities)}
-                            </View>
-
-                            <Text style={sectionTitleStyle}>
-                                {campsite_form.features}
-                            </Text>
-                            <View>
-                                {this.renderFeatures(features)}
-                            </View>
-
-                            {this.renderCellCoverageInfo()}
 
                             {this.renderUserCreditIfApplicable()}
 
