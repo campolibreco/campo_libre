@@ -9,7 +9,7 @@
       "ios",
       "android"
     ],
-    "version": "0.0.42",
+    "version": "0.0.43",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -30,6 +30,18 @@
     },
     "android": {
       "package": "com.campo.libre"
+    },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "campo-libre",
+            "project": "campo-libre-colorado",
+            "authToken": "auth_key_goes_here"
+          }
+        }
+      ]
     }
   }
 }

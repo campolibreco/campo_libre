@@ -21,6 +21,7 @@
     "redux": "~3.7.2",
     "redux-persist": "~5.9.1",
     "redux-thunk": "~2.2.0",
+    "sentry-expo": "^1.9.0",
     "watchman": "~1.0.0"
   }
 }

@@ -6,7 +6,12 @@ import {TabNavigator, StackNavigator} from 'react-navigation';
 import {PersistGate} from 'redux-persist/integration/react';
 import {AppLoading} from 'expo';
 
-import {FIREBASE_CONFIG} from './env';
+import {FIREBASE_CONFIG, SENTRY_CONFIG_URL_KEY} from './env';
+
+import Sentry from 'sentry-expo';
+// import { SentrySeverity, SentryLog } from 'react-native-sentry';
+Sentry.config(`https://${SENTRY_CONFIG_URL_KEY}@sentry.io/1220960`).install();
+
 
 import {navKeys} from './src/constants';
 import {common} from './src/locale.en';
