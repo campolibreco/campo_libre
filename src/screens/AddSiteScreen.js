@@ -208,7 +208,7 @@ class AddSiteScreen extends Component {
                 </Card>
             );
         }
-        else if (pendingSites.length === 0 && pendingUploadSites.length === 0) {
+        else if (!pendingSites || !pendingUploadSites || (pendingSites.length === 0 && pendingUploadSites.length === 0)) {
             return (
                 <Card>
                     <Text style={headerTitleStyle}>{no_pending_sites_header}</Text>
