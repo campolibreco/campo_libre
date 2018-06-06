@@ -234,15 +234,13 @@ export const attemptToUploadNewSite = (newSite, {navigate, goBack}, {currentUser
                     payload: {uploadedSite: newSite}
                 });
 
-                goBack();
+                navigate(navKeys.ADD_SITE);
             })
             .catch(error => {
                 dispatch({
                     type: ADD_SITE_FAILURE,
                     payload: {error}
                 });
-
-                goBack();
             });
 
     }

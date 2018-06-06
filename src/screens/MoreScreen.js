@@ -6,6 +6,8 @@ import {Icon, ListItem} from 'react-native-elements';
 
 import {NavbarButton} from '../components/common';
 
+import _ from 'lodash';
+
 import {logUserOutOfFacebook} from '../actions';
 
 import {more_screen} from '../locale.en';
@@ -26,8 +28,13 @@ class MoreScreen extends Component {
     onLogout = () => {
         const {unsubscribeApprovedCampsitesSnapshot, unsubscribePendingCampsitesSnapshot, navigation: {navigate}} = this.props;
 
-        unsubscribeApprovedCampsitesSnapshot();
-        unsubscribePendingCampsitesSnapshot();
+        if (_.isFunction(unsubscribeApprovedCampsitesSnapshot)){
+            unsubscribeApprovedCampsitesSnapshot();
+        }
+
+        if (_.isFunction(unsubscribePendingCampsitesSnapshot)) {
+            unsubscribePendingCampsitesSnapshot();
+        }
 
         this.props.logUserOutOfFacebook({navigate});
     };

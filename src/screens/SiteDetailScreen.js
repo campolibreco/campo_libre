@@ -13,14 +13,13 @@ import _ from 'lodash';
 
 import {attemptToAddFavorite, attemptToRemoveFavorite, attemptToUploadNewSite} from '../actions';
 
-import {linkColorBlue, navyBlueButton, hyperlinkBlue} from '../styles/index';
+import {linkColorBlue, navyBlueButton, hyperlinkBlue, campsiteIcon} from '../styles';
 
 import {
     navKeys, facilityIconDetails, featureIconDetails, map, tokens, mvum_links, external_links,
     approval_state, site_form_type
 } from '../constants';
 import {submit_form, campsite, common, counties, forest_names, mvum_names, site_detail_screen} from '../locale.en';
-import {campsiteIcon} from "../styles";
 
 const {campsite_form, admin_options} = campsite;
 const {location} = common;
