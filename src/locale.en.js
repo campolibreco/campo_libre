@@ -138,7 +138,10 @@ export const add_site_screen = {
     no_pending_sites_header: 'No Submitted Sites',
     no_pending_sites_detail: 'Your submitted sites will go here. Why don\'t you give it a try by submitting a site above?',
     pending_sites_header: 'Pending Review',
-    pending_upload_sites_header: 'Pending Upload'
+    pending_upload_sites_header: 'Pending Upload',
+    pending_upload_sites_description: 'These sites will automatically upload soon!',
+    pending_upload_sites_waiting: 'Waiting on Wifi or 4G connection to upload...',
+    pending_sites_description: 'These submitted sites are pending admin review.',
 };
 
 export const more_screen = {
