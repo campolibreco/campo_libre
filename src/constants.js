@@ -166,3 +166,7 @@ export const effective_connection_type = {
     UNKNOWN: 'unknown'
 };
 
+export const general = {
+  default_image_ext: 'defaultSiteImage.jpg'
+};
+

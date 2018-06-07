@@ -1,3 +1,5 @@
+import {AsyncStorage} from 'react-native';
+
 import _ from 'lodash';
 
 import {site_form_type} from "../constants";
@@ -26,4 +28,11 @@ export const getSiteToShow = ({selectedSite, selectedPendingSite}) => {
     } else {
         return null;
     }
+};
+
+export const returnImageForSiteKey = ({siteKey}) => {
+    return AsyncStorage.getItem(siteKey)
+        .then(siteImageData => {
+            return siteImageData;
+        });
 };

@@ -24,9 +24,16 @@ import {submit_form, campsite, common, counties, forest_names, mvum_names, site_
 const {campsite_form, admin_options} = campsite;
 const {location} = common;
 
-import {getUserCreditName, getSiteToShow} from '../services/SiteInfoService';
+import {getUserCreditName, getSiteToShow, returnImageForSiteKey} from '../services/SiteInfoService';
 
 class SiteDetailScreen extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            siteImageData: require(`../../assets/defaultSiteImage.jpg`)
+        }
+    }
+
 
     componentDidMount() {
         const {selectedSite, selectedPendingSite, currentUser, navigation: {setParams}} = this.props;
@@ -414,6 +421,17 @@ class SiteDetailScreen extends Component {
         navigate(navKeys.SITE_IMAGE_GALLERY);
     };
 
+    replaceImageData = () => {
+        const siteToShow = getSiteToShow(this.props);
+
+        returnImageForSiteKey({siteKey: siteToShow.id})
+            .then(imageData => {
+                this.setState({
+                    siteImageData: {uri: `data:image/png;base64,${imageData}`}
+                })
+            });
+    };
+
     renderSiteDetailScreen = () => {
         const {textStyle, sectionTitleStyle, mainTitleStyle, locationMainContainerStyle, mapThumbnailStyle, bottomMargin, topMargin, cardContainerStyle, contentContainerStyle, siteImageStyle, touchableContainerStyle} = styles;
         const siteToShow = getSiteToShow(this.props);
@@ -422,7 +440,7 @@ class SiteDetailScreen extends Component {
             return null;
         }
 
-        const {accessibility, coordinate, description, directions, facilities, features, nearestTown, price, siteImageData, title, county} = siteToShow;
+        const {accessibility, coordinate, description, directions, facilities, features, nearestTown, price, title, county} = siteToShow;
 
         if (siteToShow) {
             return (
@@ -444,7 +462,8 @@ class SiteDetailScreen extends Component {
                             <Image
                                 style={siteImageStyle}
                                 resizeMode={'cover'}
-                                source={siteImageData ? {uri: `data:image/png;base64,${siteImageData}`} : require('../../assets/starTent.jpg')}
+                                source={this.state.siteImageData}
+                                onLoadStart={this.replaceImageData}
                             />
                         </TouchableOpacity>
 

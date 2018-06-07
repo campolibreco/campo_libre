@@ -1,7 +1,11 @@
+import {AsyncStorage} from 'react-native';
+
 import firebase from 'firebase';
 import 'firebase/firestore'
 
 import _ from 'lodash';
+
+import {returnImageForSiteKey} from '../services/SiteInfoService';
 
 import {
     INITIALIZE_MAP,
@@ -19,6 +23,10 @@ import {
 
 import {navKeys, tokens} from '../constants';
 
+const saveImageDataForAllSites = ({imageDataArray}) => {
+    return AsyncStorage.multiSet(imageDataArray);
+};
+
 export const initializeMap = ({region}) => {
 
     return (dispatch) => {
@@ -28,18 +36,34 @@ export const initializeMap = ({region}) => {
 
         const unsubscribeApprovedCampsitesSnapshot = firebase.firestore().collection('campsites')
             .onSnapshot(querySnapshot => {
-                const sites = _.map(querySnapshot.docs, (doc, index) => {
-                    let preparedSite = _.clone(doc.data());
+                let sites = [];
+                let imageDataArray = [];
+
+                _.forEach(querySnapshot.docs, (doc) => {
+                    const docData = doc.data();
+
+                    const imageData = [doc.id, docData.siteImageData];
+                    imageDataArray.push(imageData);
+
+                    let preparedSite = _.clone(docData);
+                    delete preparedSite.siteImageData;
                     preparedSite.id = doc.id;
                     preparedSite.key = preparedSite.id;
 
-                    return preparedSite;
+                    sites.push(preparedSite);
                 });
 
-                dispatch({
-                    type: INITIALIZE_MAP,
-                    payload: {region, sites}
-                });
+                saveImageDataForAllSites({imageDataArray})
+                    .then(resp => {
+                        dispatch({
+                            type: INITIALIZE_MAP,
+                            payload: {region, sites}
+                        });
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+
             }, (err) => {
                 console.log(err);
             });
