@@ -22,7 +22,8 @@ import {
     logUserIntoFacebook,
     getPendingSiteDetail,
     setUpConnectionListener,
-    attemptToUploadNewSite
+    attemptToUploadNewSite,
+    checkCurrentConnectionInfo
 } from '../actions';
 
 class AddSiteScreen extends Component {
@@ -36,10 +37,11 @@ class AddSiteScreen extends Component {
         return connectionIsWifi || connectionIsStrongCell;
     };
 
-    attemptToUploadNewSiteIfNecessary = ({pendingUploadSites, uploadInProgress, props}) =>{
+    attemptToUploadNewSiteIfNecessary = ({pendingUploadSites, uploadInProgress, props}) => {
         const thereAreSitesToUpload = !!pendingUploadSites && pendingUploadSites.length > 0;
+        const connectionIsStrongEnough = this.connectionIsStrongEnough(props);
 
-        if (thereAreSitesToUpload && !uploadInProgress && this.connectionIsStrongEnough(props)) {
+        if (thereAreSitesToUpload && !uploadInProgress && connectionIsStrongEnough) {
             const {navigation: {navigate, goBack}, currentUser} = this.props;
 
             const siteToUpload = _.first(pendingUploadSites);
@@ -60,8 +62,15 @@ class AddSiteScreen extends Component {
 
         setParams({currentUser});
 
-        this.attemptToUploadNewSiteIfNecessary({pendingUploadSites, uploadInProgress, props: this.props});
+        this._sub = this.props.navigation.addListener('didFocus', info => {
+            this.props.checkCurrentConnectionInfo();
+        });
     }
+
+    componentWillUnmount() {
+        this._sub.remove();
+    }
+
 
     componentWillReceiveProps(nextProps) {
         const {pendingUploadSites, uploadInProgress} = nextProps;
@@ -277,5 +286,6 @@ export default connect(mapStateToProps, {
     logUserIntoFacebook,
     getPendingSiteDetail,
     setUpConnectionListener,
-    attemptToUploadNewSite
+    attemptToUploadNewSite,
+    checkCurrentConnectionInfo
 })(AddSiteScreen);
