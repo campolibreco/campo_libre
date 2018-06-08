@@ -38,7 +38,7 @@
           "config": {
             "organization": "campo-libre",
             "project": "campo-libre-colorado",
-            "authToken": "021ac130659a4a90aa75761c180757e745934237cea24d63b3bcf86eeb26019f"
+            "authToken": "auth_token_goes_here"
           }
         }
       ]
