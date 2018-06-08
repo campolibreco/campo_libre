@@ -242,14 +242,14 @@ class FilterScreen extends Component {
                     renderContent={this.renderContent}
                 />
 
-                <Accordion
-                    underlayColor={'#00000000'}
-                    initiallyActiveSection={collapsedState}
-                    style={accordionFilterStyle}
-                    sections={FOREST}
-                    renderHeader={this.renderHeader}
-                    renderContent={this.renderContent}
-                />
+                {/*<Accordion*/}
+                    {/*underlayColor={'#00000000'}*/}
+                    {/*initiallyActiveSection={collapsedState}*/}
+                    {/*style={accordionFilterStyle}*/}
+                    {/*sections={FOREST}*/}
+                    {/*renderHeader={this.renderHeader}*/}
+                    {/*renderContent={this.renderContent}*/}
+                {/*/>*/}
 
                 <View style={bottomSpaceStyle}>
 

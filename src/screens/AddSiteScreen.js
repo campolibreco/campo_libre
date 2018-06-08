@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import {TouchableOpacity, View, Platform, ScrollView} from 'react-native';
+import {TouchableOpacity, View, Platform, ScrollView, ActivityIndicator} from 'react-native';
 import {connect} from 'react-redux';
 
 import _ from 'lodash';
 
 import {Icon, Overlay, Text, Card} from 'react-native-elements';
-import {linkColorBlue, facebookBlueButtonTransparent, navyBlueButton} from '../styles';
+import {linkColorBlue, facebookBlueButtonTransparent, navyBlueButton, errorRed} from '../styles';
 import {campsite, common, login} from '../locale.en';
 
 import CampsiteListItem from '../components/CampsiteListItem';
@@ -15,14 +15,15 @@ import {LargeButton} from '../components/common';
 import {connection_type, effective_connection_type, navKeys, site_form_type, tokens} from '../constants';
 import {add_site_screen} from '../locale.en';
 
-const {title, header_title, must_log_in_detail, no_pending_sites_header, no_pending_sites_detail, pending_sites_header, pending_upload_sites_header} = add_site_screen;
+const {title, header_title, must_log_in_detail, no_pending_sites_header, no_pending_sites_detail, pending_sites_header, pending_upload_sites_header, pending_upload_sites_description, pending_upload_sites_waiting, pending_sites_description} = add_site_screen;
 
 import {
     getPendingCampsites,
     logUserIntoFacebook,
     getPendingSiteDetail,
     setUpConnectionListener,
-    attemptToUploadNewSite
+    attemptToUploadNewSite,
+    checkCurrentConnectionInfo
 } from '../actions';
 
 class AddSiteScreen extends Component {
@@ -36,10 +37,15 @@ class AddSiteScreen extends Component {
         return connectionIsWifi || connectionIsStrongCell;
     };
 
-    attemptToUploadNewSiteIfNecessary = ({pendingUploadSites, uploadInProgress, props}) =>{
-        const thereAreSitesToUpload = !!pendingUploadSites && pendingUploadSites.length > 0;
+    thereAreSitesToUpload = ({pendingUploadSites}) => {
+        return !!pendingUploadSites && pendingUploadSites.length > 0;
+    };
 
-        if (thereAreSitesToUpload && !uploadInProgress && this.connectionIsStrongEnough(props)) {
+    attemptToUploadNewSiteIfNecessary = ({pendingUploadSites, uploadInProgress, props}) => {
+        const thereAreSitesToUpload = this.thereAreSitesToUpload({pendingUploadSites});
+        const connectionIsStrongEnough = this.connectionIsStrongEnough(props);
+
+        if (thereAreSitesToUpload && !uploadInProgress && connectionIsStrongEnough) {
             const {navigation: {navigate, goBack}, currentUser} = this.props;
 
             const siteToUpload = _.first(pendingUploadSites);
@@ -60,8 +66,19 @@ class AddSiteScreen extends Component {
 
         setParams({currentUser});
 
-        this.attemptToUploadNewSiteIfNecessary({pendingUploadSites, uploadInProgress, props: this.props});
+        this._sub = this.props.navigation.addListener('didFocus', info => {
+            const thereAreSitesToUpload = this.thereAreSitesToUpload({pendingUploadSites});
+
+            if (thereAreSitesToUpload) {
+                this.props.checkCurrentConnectionInfo();
+            }
+        });
     }
+
+    componentWillUnmount() {
+        this._sub.remove();
+    }
+
 
     componentWillReceiveProps(nextProps) {
         const {pendingUploadSites, uploadInProgress} = nextProps;
@@ -125,24 +142,45 @@ class AddSiteScreen extends Component {
         this.props.logUserIntoFacebook({navigate});
     };
 
+    renderWaitingOnConnectionIfNecessary() {
+        const {pendingUploadSites} = this.props;
+        const {infoTextStyle, errorTextStyle, waitingSignalRowStyle, leftMargin} = styles;
+
+        const thereAreSitesToUpload = this.thereAreSitesToUpload({pendingUploadSites});
+        const connectionIsStrongEnough = this.connectionIsStrongEnough(this.props);
+
+        if (thereAreSitesToUpload && !connectionIsStrongEnough) {
+            return (
+                <View style={waitingSignalRowStyle}>
+                    <ActivityIndicator size='large'/>
+                    <Text style={[infoTextStyle, errorTextStyle, leftMargin]}>{pending_upload_sites_waiting}</Text>
+                </View>
+            );
+        } else {
+            return null;
+        }
+    }
+
     renderPendingUploadSites() {
         const {pendingUploadSites} = this.props;
-        const {headerTitleStyle} = styles;
+        const {headerTitleStyle, infoTextStyle} = styles;
 
         if (pendingUploadSites.length > 0) {
             const {navigation: {navigate}} = this.props;
             const {listContainerStyle} = styles;
 
             return (
-                <View style={listContainerStyle}>
+                <Card style={listContainerStyle}>
                     <Text style={headerTitleStyle}>{pending_upload_sites_header}</Text>
+                    <Text style={infoTextStyle}>{pending_upload_sites_description}</Text>
+                    {this.renderWaitingOnConnectionIfNecessary()}
 
                     {this.renderPendingSites({
                         sites: pendingUploadSites,
                         getPendingSiteDetail: this.props.getPendingSiteDetail,
                         navigate
                     })}
-                </View>
+                </Card>
             );
         } else {
             return null;
@@ -151,22 +189,23 @@ class AddSiteScreen extends Component {
 
     renderPendingApprovalSites() {
         const {pendingSites} = this.props;
-        const {headerTitleStyle} = styles;
+        const {headerTitleStyle, infoTextStyle} = styles;
 
         if (pendingSites.length > 0) {
             const {navigation: {navigate}} = this.props;
             const {listContainerStyle} = styles;
 
             return (
-                <View style={listContainerStyle}>
+                <Card style={listContainerStyle}>
                     <Text style={headerTitleStyle}>{pending_sites_header}</Text>
+                    <Text style={infoTextStyle}>{pending_sites_description}</Text>
 
                     {this.renderPendingSites({
                         sites: pendingSites,
                         getPendingSiteDetail: this.props.getPendingSiteDetail,
                         navigate
                     })}
-                </View>
+                </Card>
             );
         } else {
             return null;
@@ -208,7 +247,7 @@ class AddSiteScreen extends Component {
                 </Card>
             );
         }
-        else if (pendingSites.length === 0 && pendingUploadSites.length === 0) {
+        else if (!pendingSites || !pendingUploadSites || (pendingSites.length === 0 && pendingUploadSites.length === 0)) {
             return (
                 <Card>
                     <Text style={headerTitleStyle}>{no_pending_sites_header}</Text>
@@ -250,7 +289,12 @@ const styles = {
         alignSelf: 'center'
     },
     infoTextStyle: {
-        fontSize: 15
+        fontSize: 15,
+        marginBottom: 10
+    },
+    errorTextStyle: {
+        color: errorRed,
+        fontWeight: 'bold'
     },
     facebookStyle: {
         backgroundColor: facebookBlueButtonTransparent,
@@ -260,6 +304,12 @@ const styles = {
     listContainerStyle: {
         flex: 1,
         marginTop: 20
+    },
+    waitingSignalRowStyle: {
+        flexDirection: 'row'
+    },
+    leftMargin: {
+        marginLeft: 20
     }
 
 };
@@ -277,5 +327,6 @@ export default connect(mapStateToProps, {
     logUserIntoFacebook,
     getPendingSiteDetail,
     setUpConnectionListener,
-    attemptToUploadNewSite
+    attemptToUploadNewSite,
+    checkCurrentConnectionInfo
 })(AddSiteScreen);

@@ -38,3 +38,6 @@ export const hyperlinkBlue = '#3366BB';
 // Icons
 export const approveGreen = '#228B22';
 export const rejectRed = '#FF0000';
+
+// Information and errors
+export const errorRed = rejectRed;

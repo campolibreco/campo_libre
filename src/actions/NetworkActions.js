@@ -27,6 +27,12 @@ const destroyConnectionListener = (connectionInfo) => {
     );
 };
 
+export const checkCurrentConnectionInfo = () => {
+    return (dispatch) => {
+        getCurrentConnectionInfo({dispatch})
+    }
+};
+
 export const setUpConnectionListener = () => {
     return (dispatch) => {
 
@@ -36,6 +42,5 @@ export const setUpConnectionListener = () => {
         );
 
     }
-
 };
 

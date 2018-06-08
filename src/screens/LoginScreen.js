@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
         padding: 20,
         paddingLeft: 40,
         paddingRight: 40,
-        backgroundColor: headerWhiteTransparent
+        // backgroundColor: headerWhiteTransparent,
     },
     buttonContainer: {
         height: '22%',

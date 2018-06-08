@@ -119,8 +119,8 @@ const removeNonNumbers = (text) => {
     return text.replace(/[^0-9.-]/g, '');
 };
 
-const siteIsReadyForUpload = ({latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, siteDetailCheckboxesKeys, priceOption}) => {
-    return latitudeText && longitudeText && siteTitleText && siteDescriptionText && siteDirectionsText && siteNearestTownText && accessibilityOption && priceOption && siteDetailCheckboxesKeys.facilities.length > 0 && siteDetailCheckboxesKeys.features.length > 0;
+const siteIsReadyForUpload = ({latitudeText, longitudeText, siteTitleText, siteDescriptionText, siteDirectionsText, siteNearestTownText, accessibilityOption, siteDetailCheckboxesKeys, priceOption, siteImageData}) => {
+    return !!latitudeText && !!longitudeText && !!siteTitleText && !!siteDescriptionText && !!siteDirectionsText && !!siteNearestTownText && !!accessibilityOption && !!priceOption && !!siteImageData && siteDetailCheckboxesKeys.facilities.length > 0 && siteDetailCheckboxesKeys.features.length > 0;
 };
 
 const formReducer = prefix => (state = INITIAL_STATE, action) => {

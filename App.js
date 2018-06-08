@@ -6,7 +6,20 @@ import {TabNavigator, StackNavigator} from 'react-navigation';
 import {PersistGate} from 'redux-persist/integration/react';
 import {AppLoading} from 'expo';
 
-import {FIREBASE_CONFIG} from './env';
+import {FIREBASE_CONFIG, SENTRY_DSN} from './env';
+
+import Sentry from 'sentry-expo';
+import {SentrySeverity, SentryLog} from 'react-native-sentry';
+
+Sentry.enableInExpoDevelopment = true;
+
+Sentry.config(
+    SENTRY_DSN,
+    {
+        logLevel: SentryLog.Debug
+    }
+).install();
+
 
 import {navKeys} from './src/constants';
 import {common} from './src/locale.en';
@@ -74,7 +87,7 @@ class App extends Component {
                 navigationOptions: {
                     tabBarVisible: false
                 }
-            },[navKeys.EDIT_SITE]: {
+            }, [navKeys.EDIT_SITE]: {
                 screen: EditSiteScreen,
                 navigationOptions: {
                     tabBarVisible: false
@@ -108,7 +121,7 @@ class App extends Component {
             navigationOptions: {
                 gesturesEnabled: false,
                 headerTitleStyle: {
-                    color:'white'
+                    color: 'white'
                 },
                 headerStyle: {
                     backgroundColor: blueGreenNav

@@ -24,9 +24,16 @@ import {submit_form, campsite, common, counties, forest_names, mvum_names, site_
 const {campsite_form, admin_options} = campsite;
 const {location} = common;
 
-import {getUserCreditName, getSiteToShow} from '../services/SiteInfoService';
+import {getUserCreditName, getSiteToShow, returnImageForSiteKey} from '../services/SiteInfoService';
 
 class SiteDetailScreen extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            siteImageData: require(`../../assets/defaultSiteImage.jpg`)
+        }
+    }
+
 
     componentDidMount() {
         const {selectedSite, selectedPendingSite, currentUser, navigation: {setParams}} = this.props;
@@ -152,7 +159,7 @@ class SiteDetailScreen extends Component {
         const siteToShow = getSiteToShow(this.props);
         const {sectionTitleStyle, textStyle, bottomMargin, hyperlinkStyle} = styles;
 
-        if (siteToShow && siteToShow.mvum) {
+        if (siteToShow && siteToShow.mvum && mvum_names[siteToShow.mvum]) {
             return (
                 <View>
                     <Text style={sectionTitleStyle}>
@@ -176,7 +183,7 @@ class SiteDetailScreen extends Component {
         const siteToShow = getSiteToShow(this.props);
         const {sectionTitleStyle, textStyle, bottomMargin, hyperlinkStyle, countyInlineStyle} = styles;
 
-        if (siteToShow && siteToShow.county) {
+        if (siteToShow && siteToShow.county && counties[siteToShow.county]) {
             return (
                 <View>
                     <Text style={sectionTitleStyle}>
@@ -203,11 +210,34 @@ class SiteDetailScreen extends Component {
 
     };
 
+    renderReservationLinkIfNecessary = () => {
+        const siteToShow = getSiteToShow(this.props);
+        const {textStyle, bottomMargin, hyperlinkStyle, reservationInfoStyle} = styles;
+
+        if (siteToShow && campsite_form.price_options[siteToShow.price] === campsite_form.price_options.paid_reservable) {
+            return (
+                    <View style={reservationInfoStyle}>
+                        <Text style={[textStyle, bottomMargin]}>
+                            {campsite_form.reserve_now}
+                        </Text>
+                        <TouchableOpacity
+                            onPress={() => Expo.WebBrowser.openBrowserAsync(external_links.rec_dot_gov_reservations_url)}
+                        >
+                            <Text style={hyperlinkStyle}>
+                                {campsite_form.rec_dot_gov}
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+            );
+        }
+
+    };
+
     renderForestInfo = () => {
         const siteToShow = getSiteToShow(this.props);
         const {sectionTitleStyle, textStyle, bottomMargin, hyperlinkStyle, countyInlineStyle} = styles;
 
-        if (siteToShow && siteToShow.forest) {
+        if (siteToShow && siteToShow.forest && forest_names[siteToShow.forest]) {
             return (
                 <View>
                     <Text style={sectionTitleStyle}>
@@ -391,6 +421,17 @@ class SiteDetailScreen extends Component {
         navigate(navKeys.SITE_IMAGE_GALLERY);
     };
 
+    replaceImageData = () => {
+        const siteToShow = getSiteToShow(this.props);
+
+        returnImageForSiteKey({siteKey: siteToShow.id})
+            .then(imageData => {
+                this.setState({
+                    siteImageData: {uri: `data:image/png;base64,${imageData}`}
+                })
+            });
+    };
+
     renderSiteDetailScreen = () => {
         const {textStyle, sectionTitleStyle, mainTitleStyle, locationMainContainerStyle, mapThumbnailStyle, bottomMargin, topMargin, cardContainerStyle, contentContainerStyle, siteImageStyle, touchableContainerStyle} = styles;
         const siteToShow = getSiteToShow(this.props);
@@ -399,7 +440,7 @@ class SiteDetailScreen extends Component {
             return null;
         }
 
-        const {accessibility, coordinate, description, directions, facilities, features, nearestTown, price, siteImageData, title, county} = siteToShow;
+        const {accessibility, coordinate, description, directions, facilities, features, nearestTown, price, title, county} = siteToShow;
 
         if (siteToShow) {
             return (
@@ -421,7 +462,8 @@ class SiteDetailScreen extends Component {
                             <Image
                                 style={siteImageStyle}
                                 resizeMode={'cover'}
-                                source={siteImageData ? {uri: `data:image/png;base64,${siteImageData}`} : require('../../assets/starTent.jpg')}
+                                source={this.state.siteImageData}
+                                onLoadStart={this.replaceImageData}
                             />
                         </TouchableOpacity>
 
@@ -431,11 +473,26 @@ class SiteDetailScreen extends Component {
                             </Text>
 
                             <Text style={sectionTitleStyle}>
+                                {campsite_form.facilities}
+                            </Text>
+                            <View>
+                                {this.renderFacilities(facilities)}
+                            </View>
+
+                            <Text style={sectionTitleStyle}>
+                                {campsite_form.features}
+                            </Text>
+                            <View>
+                                {this.renderFeatures(features)}
+                            </View>
+
+                            <Text style={sectionTitleStyle}>
                                 {campsite_form.price}
                             </Text>
                             <Text style={[textStyle, bottomMargin]}>
                                 {campsite_form.price_options[price]}
                             </Text>
+                            {this.renderReservationLinkIfNecessary()}
 
                             <Text style={sectionTitleStyle}>
                                 {campsite_form.accessibility}
@@ -444,22 +501,17 @@ class SiteDetailScreen extends Component {
                                 {campsite_form.accessibility_options[accessibility]}
                             </Text>
 
+                            {this.renderCellCoverageInfo()}
+
                             {this.renderForestInfo()}
+
+                            {this.renderCountyInfo()}
 
                             <Text style={sectionTitleStyle}>
                                 {campsite_form.nearest_town}
                             </Text>
                             <Text style={[textStyle, bottomMargin]}>
                                 {nearestTown}
-                            </Text>
-
-                            {this.renderCountyInfo()}
-
-                            <Text style={sectionTitleStyle}>
-                                {campsite_form.directions}
-                            </Text>
-                            <Text style={[textStyle, bottomMargin]}>
-                                {directions}
                             </Text>
 
                             <Text style={sectionTitleStyle}>
@@ -496,25 +548,16 @@ class SiteDetailScreen extends Component {
                                 </MapView>
                             </View>
 
+                            <Text style={sectionTitleStyle}>
+                                {campsite_form.directions}
+                            </Text>
+                            <Text style={[textStyle, bottomMargin]}>
+                                {directions}
+                            </Text>
+
                             {this.renderMVUMInfo()}
 
                             {this.renderAlternateSites()}
-
-                            <Text style={sectionTitleStyle}>
-                                {campsite_form.facilities}
-                            </Text>
-                            <View>
-                                {this.renderFacilities(facilities)}
-                            </View>
-
-                            <Text style={sectionTitleStyle}>
-                                {campsite_form.features}
-                            </Text>
-                            <View>
-                                {this.renderFeatures(features)}
-                            </View>
-
-                            {this.renderCellCoverageInfo()}
 
                             {this.renderUserCreditIfApplicable()}
 
@@ -610,6 +653,10 @@ const styles = StyleSheet.create({
     },
     countyInlineStyle: {
         flexDirection: 'row'
+    },
+    reservationInfoStyle: {
+        flexDirection: 'row',
+        marginTop: -15
     },
     adminOptionsButtonContainerStyle: {
         flex: 1,

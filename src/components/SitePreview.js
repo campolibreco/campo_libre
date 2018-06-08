@@ -1,23 +1,31 @@
 // 3rd party libraries - core
-import React from 'react';
+import React, {Component} from 'react';
 import {View, StyleSheet, Dimensions, ImageBackground, TouchableOpacity} from 'react-native';
+import {connect} from 'react-redux';
 import {Icon, Text} from 'react-native-elements';
 import _ from 'lodash';
 
-// 3rd party libraries - additional
+import {returnImageForSiteKey} from '../services/SiteInfoService';
 
 // styles and language
 import {campsite} from '../locale.en';
 
 const {campsite_form: {accessibility_options}} = campsite;
 
-import {featureIconDetails, facilityIconDetails, tokens} from "../constants";
+import {featureIconDetails, facilityIconDetails, tokens, general} from "../constants";
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
-const SitePreview = ({navigate, siteToPreview, getSiteDetail, isFavorite, toggleSiteFavorite, currentUser}) => {
+class SitePreview extends Component {
 
-    const renderIcons = ({features, facilities}) => {
+    constructor(props) {
+        super(props);
+        this.state = {
+            siteImageData: require(`../../assets/defaultSiteImage.jpg`)
+        }
+    }
+
+    renderIcons = ({features, facilities}) => {
         const featureIcons = _.map(features, feature => {
             return (
                 <Icon
@@ -45,34 +53,45 @@ const SitePreview = ({navigate, siteToPreview, getSiteDetail, isFavorite, toggle
         return _.concat(featureIcons, facilityIcons);
     };
 
-    const renderFavoriteIcon = () => {
-        if (currentUser.name === tokens.GUEST) {
+    renderFavoriteIcon = () => {
+        if (this.props.currentUser.name === tokens.GUEST) {
             return;
         }
 
         return (
             <Icon type='ionicon'
-                  name={isFavorite ? 'ios-heart' : 'ios-heart-outline'}
+                  name={this.props.isFavorite ? 'ios-heart' : 'ios-heart-outline'}
                   size={40}
                   color={'white'}
-                  onPress={() => toggleSiteFavorite({siteToToggle: siteToPreview})}
+                  onPress={() => this.props.toggleSiteFavorite({siteToToggle: this.props.siteToPreview})}
             />
         );
     };
 
-    const renderSelectedSitePreview = () => {
-        if (siteToPreview && !_.isEmpty(siteToPreview)) {
-            const {title, accessibility, siteImageData, features, facilities} = siteToPreview;
+    replaceImageData = () => {
+        returnImageForSiteKey({siteKey: this.props.siteToPreview.id})
+            .then(imageData => {
+                this.setState({
+                    siteImageData: {uri: `data:image/png;base64,${imageData}`}
+                })
+            });
+    };
+
+
+    renderSelectedSitePreview = () => {
+        if (this.props.siteToPreview && !_.isEmpty(this.props.siteToPreview)) {
+            const {title, accessibility, features, facilities} = this.props.siteToPreview;
             const {sitePreviewContainerStyle, touchableMainContainerStyle, mainInnerContainerStyle, topRowInfoStyle, titleRowStyle, bottomRowInfoStyle, bottomRowText, closeIconStyle, IconContainer} = styles;
 
             return (
                 <ImageBackground
                     pointerEvents="none"
-                    source={siteImageData ? {uri: `data:image/png;base64,${siteImageData}`} : require('../../assets/starTent.jpg')}
+                    source={this.state.siteImageData}
                     style={sitePreviewContainerStyle}
+                    onLoadStart={this.replaceImageData}
                 >
                     <TouchableOpacity style={touchableMainContainerStyle}
-                                      onPress={() => getSiteDetail({selectedSite: siteToPreview, navigate})}>
+                                      onPress={() => this.props.getSiteDetail({selectedSite: this.props.siteToPreview, navigate: this.props.navigate})}>
                         <View style={mainInnerContainerStyle}>
                             <View style={topRowInfoStyle}>
                                 <Icon style={closeIconStyle}
@@ -80,10 +99,10 @@ const SitePreview = ({navigate, siteToPreview, getSiteDetail, isFavorite, toggle
                                       name='md-close-circle'
                                       size={40}
                                       color={'white'}
-                                      onPress={() => getSiteDetail({selectedSite: null})}
+                                      onPress={() => this.props.getSiteDetail({selectedSite: null})}
                                 />
 
-                                {renderFavoriteIcon()}
+                                {this.renderFavoriteIcon()}
 
                             </View>
 
@@ -95,7 +114,7 @@ const SitePreview = ({navigate, siteToPreview, getSiteDetail, isFavorite, toggle
                                 </View>
 
                                 <View style={IconContainer}>
-                                    {renderIcons({features, facilities})}
+                                    {this.renderIcons({features, facilities})}
                                 </View>
                             </View>
                         </View>
@@ -108,8 +127,14 @@ const SitePreview = ({navigate, siteToPreview, getSiteDetail, isFavorite, toggle
         }
     };
 
-    return renderSelectedSitePreview();
-};
+    render() {
+        return (
+            <View>
+                {this.renderSelectedSitePreview()}
+            </View>
+        )
+    }
+}
 
 const styles = StyleSheet.create({
     sitePreviewContainerStyle: {
@@ -159,4 +184,10 @@ const styles = StyleSheet.create({
     }
 });
 
-export default SitePreview;
+function mapStateToProps(state, ownProps) {
+    const {navigate, siteToPreview, getSiteDetail, isFavorite, toggleSiteFavorite, currentUser} = ownProps;
+
+    return {navigate, siteToPreview, getSiteDetail, isFavorite, toggleSiteFavorite, currentUser};
+}
+
+export default connect(mapStateToProps, {})(SitePreview);

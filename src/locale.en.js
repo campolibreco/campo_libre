@@ -26,7 +26,7 @@ export const campsite = {
         latitude_placeholder: 'Add latitude',
         longitude: 'Longitude',
         longitude_placeholder: 'Add longitude',
-        add_site_title: 'Add Site Title',
+        add_site_title: 'Add site title',
         add_site: 'Add a Site',
         add_a_campsite: 'Add a Campsite',
         edit_site: 'Edit Site',
@@ -36,11 +36,11 @@ export const campsite = {
         },
         site_info: 'Site Info',
         description: 'Description',
-        description_placeholder: 'Add Description',
+        description_placeholder: 'Add description',
         directions: 'Directions',
         directions_placeholder: 'Add descriptive directions',
         optional: '(Optional)',
-        alternate_sites: 'Alternate Sites',
+        alternate_sites: 'Alternate sites',
         alternate_sites_placeholder: 'Any good backup sites nearby?',
         nearest_town: 'Nearest town',
         nearest_town_placeholder: 'Enter nearest town',
@@ -48,6 +48,8 @@ export const campsite = {
         accessibility: 'Accessibility',
         facilities: 'Facilities',
         price: 'Price',
+        reserve_now: 'Reserve now: ',
+        rec_dot_gov: 'recreation.gov',
         features: 'Features',
         cell_service: 'Cell Service',
         county: 'County',
@@ -136,7 +138,10 @@ export const add_site_screen = {
     no_pending_sites_header: 'No Submitted Sites',
     no_pending_sites_detail: 'Your submitted sites will go here. Why don\'t you give it a try by submitting a site above?',
     pending_sites_header: 'Pending Review',
-    pending_upload_sites_header: 'Pending Upload'
+    pending_upload_sites_header: 'Pending Upload',
+    pending_upload_sites_description: 'These sites will automatically upload soon!',
+    pending_upload_sites_waiting: 'Waiting on Wifi or 4G connection to upload...',
+    pending_sites_description: 'These submitted sites are pending admin review.',
 };
 
 export const more_screen = {
@@ -288,16 +293,65 @@ export const forest_names = {
 
 export const mvum_names = {
     blank: '',
+
+    arapaho_national_forest_divider: 'Arapaho National Forest Divider',
+    clear_creek: 'Clear Creek Ranger District',
+    sulphur_north: 'Sulphur Ranger District - North',
+    sulphur_south: 'Sulphur Ranger District - South',
+
+    grand_mesa_national_forest_divider: 'Grand Mesa National Forest Divider',
+    grand_mesa_visitors_center: 'Grand Mesa Visitors Center',
+
+    gunnison_national_forest_divider: 'Gunnison National Forest Divider',
     gunnison_north: 'Gunnison Ranger District - North',
     gunnison_south: 'Gunnison Ranger District - South',
-    leadville: 'Leadville Ranger District',
+    paonia: 'Paonia Ranger District',
+
+    pike_national_national_forest_divider: 'Pike National Forest Divider',
     pike: 'Pikes Peak Ranger District',
-    salida: 'Salida Ranger District',
     south_park: 'South Park Ranger District',
+    south_platte_front: 'South Platte Ranger District - Front',
+    south_platte_back: 'South Platte Ranger District - Back',
+
+    rio_grande_national_forest_divider: 'Rio Grande National Forest Divider',
+    conejos_peak_east: 'Conejos Peak Ranger District - East',
+    conejos_peak_west: 'Conejos Peak Ranger District - West',
+    divide_east: 'Divide Ranger District - East',
+    divide_west: 'Divide Ranger District - West',
+    saguache_east: 'Saguache Ranger District - East',
+    saguache_west: 'Saguache Ranger District - West',
+
+    roosevelt_national_forest_divider: 'Roosevelt National Forest Divider',
+    boulder_north: 'Boulder Ranger District - North',
+    boulder_south: 'Boulder Ranger District - South',
+    canyon_lakes_north: 'Canyon Lakes Ranger District - North',
+    canyon_lakes_south: 'Canyon Lakes Ranger District - South',
+
+    routt_national_forest_divider: 'Routt National Forest Divider',
+    hahns_peak_bears_ears: 'Hahns Peak/Bears Ears Ranger District',
+    routt_parks: 'Parks Ranger District',
+    yampa: 'Yampa Ranger District',
+
+    san_isabel_national_forest_divider: 'San Isabel National Forest Divider',
+    leadville: 'Leadville Ranger District',
+    san_carlos_front: 'San Carlos Ranger District - Front',
+    san_carlos_back: 'San Carlos Ranger District - Back',
+    salida: 'Salida Ranger District',
+
+    san_juan_national_forest_divider: 'San Juan National Forest Divider',
+    columbine: 'Columbine Ranger District',
+    pagosa: 'Pagosa Ranger District',
+    dolores: 'Dolores Ranger District',
+
+    uncompahgre_national_forest_divider: 'Uncompahgre National Forest Divider',
+    uncompahgre_plateau_division: 'Uncompahgre National Forest: Plateau Division',
+    uncompahgre_mountain_division: 'Uncompahgre National Forest: Mountain Division',
+
+    white_river_national_forest_divider: 'White River National Forest Divider',
     aspen_sopris: 'Aspen Sopris Ranger District',
     dillon: 'Dillon Ranger District',
     eagle_holy_cross_front: 'Eagle Holy Cross Ranger District - Front',
     eagle_holy_cross_back: 'Eagle Holy Cross Ranger District - Back',
     flat_tops: 'Flat Tops Ranger District',
-    rifle: 'Rifle Ranger District'
+    rifle: 'Rifle Ranger District',
 };
