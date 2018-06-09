@@ -13,6 +13,7 @@ import {campsite} from '../locale.en';
 const {campsite_form: {accessibility_options}} = campsite;
 
 import {featureIconDetails, facilityIconDetails, tokens, general} from "../constants";
+import {badgeGreen, limeGreenTitle, RoyalBlueHighlight, bloodOrange, boogerGreen} from '../styles';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -30,6 +31,7 @@ class SitePreview extends Component {
             return (
                 <Icon
                     key={feature}
+                    color={boogerGreen}
                     reverse
                     size={15}
                     name={featureIconDetails[feature].name}
@@ -43,6 +45,7 @@ class SitePreview extends Component {
                 <Icon
                     key={facility}
                     reverse
+                    color={boogerGreen}
                     size={15}
                     name={facilityIconDetails[facility].name}
                     type={facilityIconDetails[facility].type}
@@ -62,7 +65,7 @@ class SitePreview extends Component {
             <Icon type='ionicon'
                   name={this.props.isFavorite ? 'ios-heart' : 'ios-heart-outline'}
                   size={40}
-                  color={'white'}
+                  color={bloodOrange}
                   onPress={() => this.props.toggleSiteFavorite({siteToToggle: this.props.siteToPreview})}
             />
         );

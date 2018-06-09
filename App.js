@@ -39,7 +39,7 @@ import SiteImageGalleryScreen from "./src/screens/SiteImageGalleryScreen";
 import MVUMInspectorScreen from "./src/screens/MVUMInspectorScreen";
 
 import {store, persistor} from './src/store';
-import {blueGreenNav, linkColorBlue} from "./src/styles";
+import {blueGreenNav, linkColorBlue, navBarBlue} from "./src/styles";
 
 class App extends Component {
     componentWillMount() {
@@ -124,7 +124,7 @@ class App extends Component {
                     color: 'white'
                 },
                 headerStyle: {
-                    backgroundColor: blueGreenNav
+                    backgroundColor: navBarBlue
                 },
                 headerBackTitle: common.back,
                 headerBackTitleStyle: {

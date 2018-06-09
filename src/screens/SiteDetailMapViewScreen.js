@@ -10,7 +10,7 @@ const {Marker} = MapView;
 import _ from 'lodash';
 
 import { campsite, common} from '../locale.en';
-import {campsiteIcon, linkColorBlue} from "../styles";
+import {campsiteIcon, linkColorBlue, bloodOrange} from "../styles";
 
 const {click_for_maps} = campsite;
 
@@ -73,7 +73,7 @@ class SiteMapViewScreen extends Component {
                         onPress={this.onClickMarker}
                     >
 
-                        <Icon type='material-community' name='tent' size={25} color={campsiteIcon}/>
+                        <Icon type='material-community' name='tent' size={25} color={sunsetOrange}/>
 
                     </Marker>
                 </MapView>

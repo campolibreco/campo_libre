@@ -17,7 +17,7 @@ const {
 
 import {site_form_type} from '../constants';
 
-import {navyBlueButton, grey, darkBlue, inputLabel} from '../styles';
+import {navyBlueButton, grey, mossGreen, darkBlue, inputLabel, bloodOrange,sunsetOrange, boogerGreen, eggShellWhite, navBarBlue} from '../styles';
 
 import {resetScreenFields} from '../actions';
 
@@ -75,7 +75,7 @@ const styles = {
     headerTitle: {
         flex: 1,
         marginTop: 20,
-        color: navyBlueButton,
+        color: mossGreen,
         justifyContent: 'center',
         alignSelf: 'center',
     }

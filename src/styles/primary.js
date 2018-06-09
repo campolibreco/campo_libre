@@ -13,13 +13,22 @@ export const grayblue = '#C9D1DB';
 export const grey = '#999FA6';
 export const darkBlue = '#1F1F27';
 
+//New Theme Color
+export const navBarBlue = '#105F73';
+export const eggShellWhite = '#F7F3B2';
+export const boogerGreen = '#30ADB3';
+export const sunsetOrange = '#F28322'
+export const bloodOrange = '#EC7C74'
+export const mossGreen = '#63C099'
+
 
 // Hightlight colors
 export const badgeGreen = '#1B6E65';
 export const limeGreenTitle ='#B8BB5A';
 export const linkColorBlue = '#9ED0F5';
 export const RoyalBlueHighlight ='#18517B';
-export const blueGreenNav = '#498680'
+export const blueGreenNav = '#498680';
+export const grayBlueDark = '#374657';
 
 // Social media
 export const facebookBlue ='#3b5998';
@@ -27,7 +36,7 @@ export const facebookBlueButtonTransparent ='rgba(59, 89, 152, .8)';
 
 // Campsite Icons
 export const selectedCampsiteIcon = '#228b22';
-export const campsiteIcon = navyBlueButton;
+export const campsiteIcon = '#105F73';
 
 // AddSiteForm
 export const inputLabel = '#86939e';

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, ScrollView, Platform, TouchableOpacity, Image} from 'react-native';
+import {View, StyleSheet, ScrollView,  Platform, TouchableOpacity, Image, ImageBackground} from 'react-native';
 import {Card, Text, ListItem} from 'react-native-elements';
 import {Icon} from 'react-native-elements';
 import {connect} from 'react-redux';
@@ -13,7 +13,7 @@ import _ from 'lodash';
 
 import {attemptToAddFavorite, attemptToRemoveFavorite, attemptToUploadNewSite} from '../actions';
 
-import {linkColorBlue, navyBlueButton, hyperlinkBlue, campsiteIcon} from '../styles';
+import {linkColorBlue, navyBlueButton,mossGreen,grayBlueDark,headerWhiteMediumTransparent, headerWhite, overlayBlue, headerWhiteTransparent, hyperlinkBlue, campsiteIcon, bloodOrange, sunsetOrange, boogerGreen,navBarBlue, eggShellWhite} from '../styles';
 
 import {
     navKeys, facilityIconDetails, featureIconDetails, map, tokens, mvum_links, external_links,
@@ -433,7 +433,7 @@ class SiteDetailScreen extends Component {
     };
 
     renderSiteDetailScreen = () => {
-        const {textStyle, sectionTitleStyle, mainTitleStyle, locationMainContainerStyle, mapThumbnailStyle, bottomMargin, topMargin, cardContainerStyle, contentContainerStyle, siteImageStyle, touchableContainerStyle} = styles;
+        const {textStyle, sectionTitleStyle,overlayContainer,header, top, mainTitleStyle,  locationMainContainerStyle, mapThumbnailStyle, bottomMargin, topMargin, cardContainerStyle, contentContainerStyle, siteImageStyle, touchableContainerStyle} = styles;
         const siteToShow = getSiteToShow(this.props);
 
         if (!siteToShow) {
@@ -445,26 +445,25 @@ class SiteDetailScreen extends Component {
         if (siteToShow) {
             return (
                 <ScrollView>
-                    <Card
-                        title={title}
-                        titleStyle={mainTitleStyle}
-                        containerStyle={cardContainerStyle}
-                        dividerStyle={{
-                            margin: 0, padding: 0,
-                            borderBottomWidth: 0
-                        }}
-                    >
+
 
                         <TouchableOpacity
                             style={touchableContainerStyle}
                             onPress={this.onClickSiteImage}
                         >
-                            <Image
+                            <ImageBackground
                                 style={siteImageStyle}
                                 resizeMode={'cover'}
                                 source={this.state.siteImageData}
                                 onLoadStart={this.replaceImageData}
-                            />
+                            >
+
+                            <View style={overlayContainer}>
+                                <View style={top}>
+                                    <Text style={header}>{title}</Text>
+                                </View>
+                                </View>
+                            </ImageBackground>
                         </TouchableOpacity>
 
                         <View style={contentContainerStyle}>
@@ -542,7 +541,7 @@ class SiteDetailScreen extends Component {
                                         coordinate={coordinate}
                                     >
 
-                                        <Icon type='material-community' name='tent' size={25} color={campsiteIcon}/>
+                                        <Icon type='material-community' name='tent' size={25} color={sunsetOrange}/>
 
                                     </Marker>
                                 </MapView>
@@ -565,7 +564,7 @@ class SiteDetailScreen extends Component {
 
                         </View>
 
-                    </Card>
+
                 </ScrollView>
             );
         }
@@ -585,10 +584,12 @@ class SiteDetailScreen extends Component {
 
 const styles = StyleSheet.create({
     fillScreen: {
-        flex: 1
+        flex: 1,
+        backgroundColor:grayBlueDark
     },
     textStyle: {
-        fontSize: 15
+        fontSize: 15,
+        color:'white'
     },
     bottomMargin: {
         marginBottom: 20
@@ -603,16 +604,17 @@ const styles = StyleSheet.create({
     mainTitleStyle: {
         fontWeight: 'bold',
         fontSize: 30,
-        color: navyBlueButton,
-        marginTop: 15,
+        color: 'white',
+
         borderBottomWidth: 0,
         paddingLeft: 5,
-        paddingRight: 5
+        paddingRight: 5,
+        backgroundColor:boogerGreen
     },
     sectionTitleStyle: {
         fontWeight: 'bold',
         fontSize: 25,
-        color: navyBlueButton
+        color: bloodOrange
     },
     locationMainContainerStyle: {
         display: 'flex',
@@ -637,15 +639,17 @@ const styles = StyleSheet.create({
         marginLeft: 10
     },
     siteImageStyle: {
-        height: 250
+        height: 300
     },
     contentContainerStyle: {
         paddingLeft: 15,
         paddingRight: 15,
-        marginBottom: 20
+        marginBottom: 20,
+        backgroundColor:grayBlueDark
     },
     touchableContainerStyle: {
-        marginTop: -15
+        marginTop: -15,
+        backgroundColor:grayBlueDark
     },
     hyperlinkStyle: {
         color: hyperlinkBlue,
@@ -658,6 +662,23 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginTop: -15
     },
+    overlayContainer: {
+        flex: 1,
+    },
+    top: {
+        height: '50%',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    header: {
+        color: headerWhite,
+        fontSize: 25,
+        borderColor: headerWhiteMediumTransparent,
+        borderWidth: 2,
+        paddingLeft: 40,
+        paddingRight: 40,
+       backgroundColor: headerWhiteTransparent,
+    },
     adminOptionsButtonContainerStyle: {
         flex: 1,
         flexDirection: 'row',
@@ -666,7 +687,7 @@ const styles = StyleSheet.create({
     submitButtonStyle: {
         marginTop: 10,
         marginBottom: 10,
-        backgroundColor: navyBlueButton,
+        backgroundColor: sunsetOrange,
         marginBottom: 100
     },
 });

@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import _ from 'lodash';
 
 import {Icon, Overlay, Text, Card} from 'react-native-elements';
-import {linkColorBlue, facebookBlueButtonTransparent, navyBlueButton, errorRed} from '../styles';
+import {linkColorBlue, facebookBlueButtonTransparent, navyBlueButton, errorRed, sunsetOrange} from '../styles';
 import {campsite, common, login} from '../locale.en';
 
 import CampsiteListItem from '../components/CampsiteListItem';
