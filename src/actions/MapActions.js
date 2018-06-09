@@ -91,18 +91,34 @@ export const getPendingCampsites = ({currentUser}) => {
         else if (currentUser.isAdmin) {
             const unsubscribePendingCampsitesSnapshot = firebase.firestore().collection('pending_campsites')
                 .onSnapshot(querySnapshot => {
-                    const pendingSites = _.map(querySnapshot.docs, (doc, index) => {
-                        let preparedSite = _.clone(doc.data());
+                    let pendingSites = [];
+                    let imageDataArray = [];
+
+                    _.forEach(querySnapshot.docs, (doc) => {
+                        const docData = doc.data();
+
+                        const imageData = [doc.id, docData.siteImageData];
+                        imageDataArray.push(imageData);
+
+                        let preparedSite = _.clone(docData);
+                        delete preparedSite.siteImageData;
                         preparedSite.id = doc.id;
                         preparedSite.key = preparedSite.id;
 
-                        return preparedSite;
+                        pendingSites.push(preparedSite);
                     });
 
-                    dispatch({
-                        type: PENDING_SITES_UPDATE,
-                        payload: {pendingSites}
-                    });
+                    saveImageDataForAllSites({imageDataArray})
+                        .then(resp => {
+                            dispatch({
+                                type: PENDING_SITES_UPDATE,
+                                payload: {pendingSites}
+                            });
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        });
+
                 }, (err) => {
                     console.log(err);
                 });

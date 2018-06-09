@@ -1,3 +1,5 @@
+import {AsyncStorage} from 'react-native';
+
 import firebase from 'firebase';
 import 'firebase/firestore'
 
@@ -249,17 +251,22 @@ export const attemptToUploadNewSite = (newSite, {navigate, goBack}, {currentUser
 };
 
 export const addNewSiteToPendingUploadQueue = (newSite, {navigate, goBack}) => {
-    navigate(navKeys.ADD_SITE);
-    newSite.approvalState = approval_state.PENDING_UPLOAD;
 
-    newSite.id = createUniqueTitle(newSite);
+    return (dispatch) => {
+        navigate(navKeys.ADD_SITE);
+        newSite.approvalState = approval_state.PENDING_UPLOAD;
 
-    return (
-        {
-            type: SITE_ADDED_TO_PENDING_UPLOAD,
-            payload: {newSite}
-        }
-    )
+        newSite.id = createUniqueTitle(newSite);
+
+        return AsyncStorage.setItem(newSite.id, newSite.siteImageData)
+            .then(result => {
+                dispatch({
+                    type: SITE_ADDED_TO_PENDING_UPLOAD,
+                    payload: {newSite}
+                });
+            });
+
+    }
 
 };
 
