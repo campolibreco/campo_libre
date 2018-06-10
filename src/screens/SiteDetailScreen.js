@@ -13,7 +13,7 @@ import _ from 'lodash';
 
 import {attemptToAddFavorite, attemptToRemoveFavorite, attemptToUploadNewSite} from '../actions';
 
-import {linkColorBlue, navyBlueButton,mossGreen,grayBlueDark,headerSemiWhiteTransparent,headerWhiteMediumTransparent, headerWhite, overlayBlue, headerWhiteTransparent, hyperlinkBlue, campsiteIcon, bloodOrange, sunsetOrange, boogerGreen,navBarBlue, eggShellWhite} from '../styles';
+import {linkColorBlue,gradientBlue,gradientMinte, navyBlueButton,mossGreen,limeGreenTitle,grayBlueDark,headerSemiWhiteTransparent,headerWhiteMediumTransparent, headerWhite, overlayBlue, headerWhiteTransparent, hyperlinkBlue, campsiteIcon, bloodOrange, sunsetOrange, boogerGreen,navBarBlue, eggShellWhite} from '../styles';
 
 import {
     navKeys, facilityIconDetails, featureIconDetails, map, tokens, mvum_links, external_links,
@@ -110,9 +110,12 @@ class SiteDetailScreen extends Component {
     };
 
     renderFacilities = (facilities) => {
+        const {facilities_features} = styles;
         return _.map(facilities, (facility, index) => {
             return (
                 <ListItem
+                    titleStyle={{color:'white'}}
+                    containerStyle={facilities_features}
                     key={index}
                     title={campsite_form.facilities_options[facility]}
                     leftIcon={facilityIconDetails[facility]}
@@ -123,9 +126,12 @@ class SiteDetailScreen extends Component {
     };
 
     renderFeatures = (features) => {
+        const {facilities_features} = styles;
         return _.map(features, (feature, index) => {
             return (
                 <ListItem
+                titleStyle={{color:'white'}}
+                containerStyle={facilities_features}
                     key={index}
                     title={campsite_form.features_options[feature]}
                     leftIcon={featureIconDetails[feature]}
@@ -138,17 +144,24 @@ class SiteDetailScreen extends Component {
     renderAlternateSites = () => {
         const siteToShow = getSiteToShow(this.props);
 
-        const {sectionTitleStyle, textStyle, bottomMargin} = styles;
+        const {sectionTitleStyle, textStyle,textContainer, bottomMargin, badgeStyle} = styles;
 
         if (siteToShow && siteToShow.alternateSites) {
             return (
                 <View>
-                    <Text style={sectionTitleStyle}>
-                        {campsite_form.alternate_sites}
-                    </Text>
-                    <Text style={[textStyle, bottomMargin]}>
-                        {siteToShow.alternateSites}
-                    </Text>
+                  <Badge
+                        containerStyle={badgeStyle}
+                        value={campsite_form.alternate_sites}
+                        textColor="white"
+                        maxWidth={150}
+                        textStyle={{fontSize:18}}
+                  >
+                  </Badge>
+                  <View style={textContainer}>
+                      <Text style={[textStyle, bottomMargin]}>
+                          {siteToShow.alternateSites}
+                      </Text>
+                    </View>
                 </View>
             );
         }
@@ -157,21 +170,28 @@ class SiteDetailScreen extends Component {
 
     renderMVUMInfo = () => {
         const siteToShow = getSiteToShow(this.props);
-        const {sectionTitleStyle, textStyle, bottomMargin, hyperlinkStyle} = styles;
+        const {sectionTitleStyle,textContainer, textStyle, bottomMargin, hyperlinkStyle, badgeStyle} = styles;
 
         if (siteToShow && siteToShow.mvum && mvum_names[siteToShow.mvum]) {
             return (
                 <View>
-                    <Text style={sectionTitleStyle}>
-                        {campsite_form.mvum}
-                    </Text>
+                <Badge
+                      containerStyle={badgeStyle}
+                      value={campsite_form.mvum}
+                      textColor="white"
+                      maxWidth={150}
+                      textStyle={{fontSize:18}}
+                >
+                </Badge>
                     <TouchableOpacity
                         onPress={() => Expo.WebBrowser.openBrowserAsync(mvum_links[siteToShow.mvum])}
                         // onPress={() => navigate(navKeys.MVUM_INSPECTOR)}
                     >
+                    <View style={textContainer}>
                         <Text style={[textStyle, bottomMargin, hyperlinkStyle]}>
                             {mvum_names[siteToShow.mvum]}
                         </Text>
+                    </View>
                     </TouchableOpacity>
                 </View>
             );
@@ -181,14 +201,19 @@ class SiteDetailScreen extends Component {
 
     renderCountyInfo = () => {
         const siteToShow = getSiteToShow(this.props);
-        const {sectionTitleStyle, textStyle, bottomMargin, hyperlinkStyle, countyInlineStyle} = styles;
+        const {sectionTitleStyle, textStyle, bottomMargin,badgeStyle, hyperlinkStyle, countyInlineStyle} = styles;
 
         if (siteToShow && siteToShow.county && counties[siteToShow.county]) {
             return (
                 <View>
-                    <Text style={sectionTitleStyle}>
-                        {campsite_form.county}
-                    </Text>
+                <Badge
+                      containerStyle={badgeStyle}
+                      value={campsite_form.county}
+                      textColor="white"
+                      maxWidth={150}
+                      textStyle={{fontSize:18}}
+                >
+                </Badge>
                     <View style={countyInlineStyle}>
                         <Text style={[textStyle, bottomMargin]}>
                             {counties[siteToShow.county]}
@@ -235,19 +260,26 @@ class SiteDetailScreen extends Component {
 
     renderForestInfo = () => {
         const siteToShow = getSiteToShow(this.props);
-        const {sectionTitleStyle, textStyle, bottomMargin, hyperlinkStyle, countyInlineStyle} = styles;
+        const {sectionTitleStyle, textStyle,textContainer, bottomMargin, hyperlinkStyle, countyInlineStyle,badgeStyle} = styles;
 
         if (siteToShow && siteToShow.forest && forest_names[siteToShow.forest]) {
             return (
                 <View>
-                    <Text style={sectionTitleStyle}>
-                        {campsite_form.forest}
-                    </Text>
+                <Badge
+                      containerStyle={badgeStyle}
+                      value={campsite_form.forest}
+                      textColor="white"
+                      maxWidth={150}
+                      textStyle={{fontSize:18}}
+                >
+                </Badge>
+                <View style={textContainer}>
                     <View style={countyInlineStyle}>
-                        <Text style={[textStyle, bottomMargin]}>
+                        <Text style={[textStyle]}>
                             {forest_names[siteToShow.forest]}
                         </Text>
                     </View>
+                  </View>
                 </View>
             );
         }
@@ -255,25 +287,30 @@ class SiteDetailScreen extends Component {
 
     renderCellProvider = ({cellProvider}) => {
         if (cellProvider) {
-            const {textStyle, bottomMargin} = styles;
+            const {textStyle, bottomMargin, textContainer} = styles;
 
             return (
+              <View style={textContainer}>
                 <Text style={[textStyle, bottomMargin]}>
                     {campsite_form.cell_provider_options[cellProvider]}
                 </Text>
+              </View>
             );
         }
     };
 
     renderCellStrength = ({cellProvider, cellStrength}) => {
         if (cellStrength) {
-            const {textStyle, bottomMargin, leftPad} = styles;
+            const {textStyle, bottomMargin,textContainer, leftPad} = styles;
             const stylesList = cellProvider ? [textStyle, bottomMargin, leftPad] : [textStyle, bottomMargin];
 
             return (
+              <View style={textContainer}>
                 <Text style={stylesList}>
                     {campsite_form.cell_strength_options[cellStrength]}
                 </Text>
+
+              </View>
             );
         }
     };
@@ -284,13 +321,18 @@ class SiteDetailScreen extends Component {
         if (siteToShow) {
             const {cellProvider, cellStrength} = siteToShow;
             if (cellProvider || cellStrength) {
-                const {sectionTitleStyle, cellServiceContainerStyle} = styles;
+                const {sectionTitleStyle, cellServiceContainerStyle, badgeStyle} = styles;
 
                 return (
                     <View>
-                        <Text style={sectionTitleStyle}>
-                            {campsite_form.cell_service}
-                        </Text>
+                    <Badge
+                          containerStyle={badgeStyle}
+                          value={campsite_form.cell_service}
+                          textColor="white"
+                          maxWidth={150}
+                          textStyle={{fontSize:18}}
+                    >
+                    </Badge>
                         <View style={cellServiceContainerStyle}>
                             {this.renderCellProvider({cellProvider})}
                             {this.renderCellStrength({cellProvider, cellStrength})}
@@ -344,7 +386,7 @@ class SiteDetailScreen extends Component {
     };
 
     renderUserCreditIfApplicable = () => {
-        const {sectionTitleStyle, textStyle, bottomMargin} = styles;
+        const {sectionTitleStyle, textStyle,textContainer, bottomMargin, badgeStyle} = styles;
         const siteToShow = getSiteToShow(this.props);
 
         if (!siteToShow || _.isEmpty(siteToShow)) {
@@ -355,12 +397,19 @@ class SiteDetailScreen extends Component {
 
             return (
                 <View>
-                    <Text style={sectionTitleStyle}>
-                        {submit_form.uploaded_by_title}
-                    </Text>
+                    <Badge
+                          containerStyle={badgeStyle}
+                          value={submit_form.uploaded_by_title}
+                          textColor="white"
+                          maxWidth={150}
+                          textStyle={{fontSize:18}}
+                    >
+                    </Badge>
+                  <View style={textContainer}>
                     <Text style={[textStyle, bottomMargin]}>
                         {getUserCreditName({uploadedBy, giveCredit})}
                     </Text>
+                  </View>
                 </View>
             );
         }
@@ -433,7 +482,7 @@ class SiteDetailScreen extends Component {
     };
 
     renderSiteDetailScreen = () => {
-        const {textStyle, sectionTitleStyle,overlayContainer,header, descriptionText, top, mainTitleStyle,  locationMainContainerStyle, mapThumbnailStyle, bottomMargin, topMargin, cardContainerStyle, contentContainerStyle, siteImageStyle, touchableContainerStyle} = styles;
+        const {textStyle, sectionTitleStyle,textContainer, facilities_features,overlayContainer,header,badgeStyle, descriptionText, top, mainTitleStyle,  locationMainContainerStyle, mapThumbnailStyle, bottomMargin, topMargin, cardContainerStyle, contentContainerStyle, siteImageStyle, touchableContainerStyle} = styles;
         const siteToShow = getSiteToShow(this.props);
 
         if (!siteToShow) {
@@ -445,8 +494,6 @@ class SiteDetailScreen extends Component {
         if (siteToShow) {
             return (
                 <ScrollView>
-
-
                         <TouchableOpacity
                             style={touchableContainerStyle}
                             onPress={this.onClickSiteImage}
@@ -468,82 +515,107 @@ class SiteDetailScreen extends Component {
 
                         <View style={contentContainerStyle}>
                                 <LinearGradient
-                                          colors={['rgba(0,0,0,0.8)', 'transparent']}
+                                          colors={[grayBlueDark, gradientMinte]}
+                                          start={[0, 0]}
+                                          end={[0, 1]}
                                           style={{
-                                            position: 'absolute',
-                                            left: 0,
-                                            right: 0,
-                                            top: 0,
-                                            height: 1000,
+                                          position: 'absolute',
+                                          left: 0,
+                                          right: 0,
+                                          top: 0,
+                                          height: 2000,
                           }}
                         />
                             <Text style={descriptionText}>
                                 {description}
                             </Text>
 
-
-
                             <Badge
-                                  containerStyle={{ backgroundColor: bloodOrange,
-                                  paddingLeft:10, paddingRight:10,marginBottom:10, marginTop:10}}
+                                  containerStyle={badgeStyle}
                                   value={campsite_form.facilities}
                                   textColor="white"
                                   maxWidth={150}
                                   textStyle={{fontSize:18}}
                             >
-
-                                      </Badge>
+                            </Badge>
                             <View>
                                 {this.renderFacilities(facilities)}
                             </View>
-
-                            <Text style={sectionTitleStyle}>
-                                {campsite_form.features}
-                            </Text>
+                            <Badge
+                                  containerStyle={badgeStyle}
+                                  value={campsite_form.features}
+                                  textColor="white"
+                                  maxWidth={150}
+                                  textStyle={{fontSize:18}}
+                            >
+                            </Badge>
                             <View>
                                 {this.renderFeatures(features)}
                             </View>
-
-                            <Text style={sectionTitleStyle}>
-                                {campsite_form.price}
-                            </Text>
-                            <Text style={[textStyle, bottomMargin]}>
-                                {campsite_form.price_options[price]}
-                            </Text>
-                            {this.renderReservationLinkIfNecessary()}
-
-                            <Text style={sectionTitleStyle}>
-                                {campsite_form.accessibility}
-                            </Text>
-                            <Text style={[textStyle, bottomMargin]}>
+                            <Badge
+                                  containerStyle={badgeStyle}
+                                  value={campsite_form.price}
+                                  textColor="white"
+                                  maxWidth={150}
+                                  textStyle={{fontSize:18}}
+                            >
+                            </Badge>
+                           <View style={textContainer}>
+                              <Text style={textStyle}>
+                                  {campsite_form.price_options[price]}
+                              </Text>
+                              {this.renderReservationLinkIfNecessary()}
+                           </View>
+                            <Badge
+                                  containerStyle={badgeStyle}
+                                  value={campsite_form.accessibility}
+                                  textColor="white"
+                                  maxWidth={150}
+                                  textStyle={{fontSize:18}}
+                            >
+                            </Badge>
+                             <View style={textContainer}>
+                            <Text style={textStyle}>
                                 {campsite_form.accessibility_options[accessibility]}
                             </Text>
-
+                            </View>
                             {this.renderCellCoverageInfo()}
 
                             {this.renderForestInfo()}
 
                             {this.renderCountyInfo()}
 
-                            <Text style={sectionTitleStyle}>
-                                {campsite_form.nearest_town}
-                            </Text>
-                            <Text style={[textStyle, bottomMargin]}>
-                                {nearestTown}
-                            </Text>
+                            <Badge
+                                  containerStyle={badgeStyle}
+                                  value={campsite_form.nearest_town}
+                                  textColor="white"
+                                  maxWidth={150}
+                                  textStyle={{fontSize:18}}
+                            >
+                            </Badge>
+                              <View style={textContainer}>
+                                <Text style={textStyle}>
+                                    {nearestTown}
+                                </Text>
+                              </View>
+                            <Badge
+                                  containerStyle={badgeStyle}
+                                  value={location}
+                                  textColor="white"
+                                  maxWidth={150}
+                                  textStyle={{fontSize:18}}
+                            >
+                            </Badge>
 
-                            <Text style={sectionTitleStyle}>
-                                {location}
-                            </Text>
                             <View style={[bottomMargin, locationMainContainerStyle]}>
-                                <View>
+                                <View style={textContainer}>
                                     <Text style={textStyle}>
                                         {campsite_form.latitude}: {coordinate.latitude.toFixed(5)}
                                     </Text>
                                     <Text style={[textStyle, bottomMargin]}>
                                         {campsite_form.longitude}: {coordinate.longitude.toFixed(5)}
                                     </Text>
-                                </View>
+
 
                                 <MapView
                                     style={mapThumbnailStyle}
@@ -564,14 +636,22 @@ class SiteDetailScreen extends Component {
 
                                     </Marker>
                                 </MapView>
+                                    </View>
                             </View>
+                            <Badge
+                                  containerStyle={badgeStyle}
+                                  value={campsite_form.directions}
+                                  textColor="white"
+                                  maxWidth={150}
+                                  textStyle={{fontSize:18}}
+                            >
+                            </Badge>
 
-                            <Text style={sectionTitleStyle}>
-                                {campsite_form.directions}
-                            </Text>
+                            <View style={textContainer}>
                             <Text style={[textStyle, bottomMargin]}>
                                 {directions}
                             </Text>
+                            </View>
 
                             {this.renderMVUMInfo()}
 
@@ -605,6 +685,13 @@ const styles = StyleSheet.create({
     fillScreen: {
         flex: 1,
         backgroundColor:grayBlueDark
+    },
+    badgeStyle:{
+       backgroundColor: sunsetOrange,
+      paddingLeft:10,
+      paddingRight:10,
+      marginBottom:10,
+      marginTop:10
     },
     descriptionText:{
       alignItems: 'center',
@@ -676,7 +763,7 @@ const styles = StyleSheet.create({
         paddingLeft: 15,
         paddingRight: 15,
         marginBottom: 20,
-        backgroundColor:sunsetOrange
+        backgroundColor:limeGreenTitle
     },
     touchableContainerStyle: {
         marginTop: -15,
@@ -701,13 +788,25 @@ const styles = StyleSheet.create({
         height: '30%',
         alignItems: 'center',
         justifyContent: 'center',
+        borderWidth:1,
         borderColor: headerWhiteMediumTransparent,
-        borderWidth: 2,
         paddingLeft: 10,
         paddingRight: 10,
         paddingTop:10,
         paddingBottom:10,
         backgroundColor: headerSemiWhiteTransparent,
+    },
+    facilities_features:{
+      backgroundColor:headerWhiteTransparent,
+      color:'white'
+    },
+    textContainer:{
+        backgroundColor:headerWhiteTransparent,
+        paddingTop:10,
+        paddingLeft:10,
+        paddingRight:10,
+        paddingBottom:10,
+
     },
     header: {
       color: 'white',

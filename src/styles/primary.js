@@ -14,6 +14,8 @@ export const grayblue = '#C9D1DB';
 export const grey = '#999FA6';
 export const darkBlue = '#1F1F27';
 
+export const gradientMinte = 'rgb(164,254,217)';
+export const gradientBlue = 'rgb(42,105,162)';
 //New Theme Color
 export const navBarBlue = '#105F73';
 export const eggShellWhite = '#F7F3B2';
