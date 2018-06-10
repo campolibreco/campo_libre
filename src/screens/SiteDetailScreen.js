@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, ScrollView,  Platform, TouchableOpacity, Image, ImageBackground} from 'react-native';
-import {Card, Text, ListItem} from 'react-native-elements';
+import {Card, Text, ListItem, Badge} from 'react-native-elements';
 import {Icon} from 'react-native-elements';
 import {connect} from 'react-redux';
-import {MapView} from 'expo';
+import {MapView, LinearGradient} from 'expo';
 
 const {Marker} = MapView;
 
@@ -13,7 +13,7 @@ import _ from 'lodash';
 
 import {attemptToAddFavorite, attemptToRemoveFavorite, attemptToUploadNewSite} from '../actions';
 
-import {linkColorBlue, navyBlueButton,mossGreen,grayBlueDark,headerWhiteMediumTransparent, headerWhite, overlayBlue, headerWhiteTransparent, hyperlinkBlue, campsiteIcon, bloodOrange, sunsetOrange, boogerGreen,navBarBlue, eggShellWhite} from '../styles';
+import {linkColorBlue, navyBlueButton,mossGreen,grayBlueDark,headerSemiWhiteTransparent,headerWhiteMediumTransparent, headerWhite, overlayBlue, headerWhiteTransparent, hyperlinkBlue, campsiteIcon, bloodOrange, sunsetOrange, boogerGreen,navBarBlue, eggShellWhite} from '../styles';
 
 import {
     navKeys, facilityIconDetails, featureIconDetails, map, tokens, mvum_links, external_links,
@@ -433,7 +433,7 @@ class SiteDetailScreen extends Component {
     };
 
     renderSiteDetailScreen = () => {
-        const {textStyle, sectionTitleStyle,overlayContainer,header, top, mainTitleStyle,  locationMainContainerStyle, mapThumbnailStyle, bottomMargin, topMargin, cardContainerStyle, contentContainerStyle, siteImageStyle, touchableContainerStyle} = styles;
+        const {textStyle, sectionTitleStyle,overlayContainer,header, descriptionText, top, mainTitleStyle,  locationMainContainerStyle, mapThumbnailStyle, bottomMargin, topMargin, cardContainerStyle, contentContainerStyle, siteImageStyle, touchableContainerStyle} = styles;
         const siteToShow = getSiteToShow(this.props);
 
         if (!siteToShow) {
@@ -467,13 +467,32 @@ class SiteDetailScreen extends Component {
                         </TouchableOpacity>
 
                         <View style={contentContainerStyle}>
-                            <Text style={[textStyle, bottomMargin, topMargin]}>
+                                <LinearGradient
+                                          colors={['rgba(0,0,0,0.8)', 'transparent']}
+                                          style={{
+                                            position: 'absolute',
+                                            left: 0,
+                                            right: 0,
+                                            top: 0,
+                                            height: 1000,
+                          }}
+                        />
+                            <Text style={descriptionText}>
                                 {description}
                             </Text>
 
-                            <Text style={sectionTitleStyle}>
-                                {campsite_form.facilities}
-                            </Text>
+
+
+                            <Badge
+                                  containerStyle={{ backgroundColor: bloodOrange,
+                                  paddingLeft:10, paddingRight:10,marginBottom:10, marginTop:10}}
+                                  value={campsite_form.facilities}
+                                  textColor="white"
+                                  maxWidth={150}
+                                  textStyle={{fontSize:18}}
+                            >
+
+                                      </Badge>
                             <View>
                                 {this.renderFacilities(facilities)}
                             </View>
@@ -587,6 +606,18 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor:grayBlueDark
     },
+    descriptionText:{
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingLeft: 10,
+      paddingRight: 10,
+      paddingTop:10,
+      paddingBottom:10,
+      marginTop:5,
+      color:'white',
+      fontSize:16,
+
+    },
     textStyle: {
         fontSize: 15,
         color:'white'
@@ -645,7 +676,7 @@ const styles = StyleSheet.create({
         paddingLeft: 15,
         paddingRight: 15,
         marginBottom: 20,
-        backgroundColor:grayBlueDark
+        backgroundColor:sunsetOrange
     },
     touchableContainerStyle: {
         marginTop: -15,
@@ -666,18 +697,27 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     top: {
-        height: '50%',
+        margin:20,
+        height: '30%',
         alignItems: 'center',
-        justifyContent: 'center'
-    },
-    header: {
-        color: headerWhite,
-        fontSize: 25,
+        justifyContent: 'center',
         borderColor: headerWhiteMediumTransparent,
         borderWidth: 2,
-        paddingLeft: 40,
-        paddingRight: 40,
-       backgroundColor: headerWhiteTransparent,
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingTop:10,
+        paddingBottom:10,
+        backgroundColor: headerSemiWhiteTransparent,
+    },
+    header: {
+      color: 'white',
+      alignSelf: 'center',
+      textShadowColor: 'rgba(0, 0, 0, 0.55)',
+      textShadowOffset: {width: 1, height: 1},
+      textShadowRadius: 3,
+      fontSize: 24,
+      textAlign:'center'
+
     },
     adminOptionsButtonContainerStyle: {
         flex: 1,
