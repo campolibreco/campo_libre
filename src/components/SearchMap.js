@@ -42,14 +42,23 @@ const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites, navigate, s
                 <Marker
                     onPress={() => getSiteDetail({selectedSite: site})}
                     key={id}
-                    title={title}
-                    description={description}
                     coordinate={coordinate}
                 >
 
+                    {/*<Icon*/}
+                        {/*type='material-community'*/}
+                        {/*name='tent'*/}
+                        {/*reverse={isSelectedSite ? true : false}*/}
+                        {/*size={25}*/}
+                        {/*color={isSelectedSite ? selectedCampsiteIcon : campsiteIcon}*/}
+                    {/*/>*/}
 
-                    <Icon type='material-community' name='tent' size={25}
-                          color={isSelectedSite ? selectedCampsiteIcon : campsiteIcon}/>
+                    <Icon
+                        type='material-community'
+                        name='tent'
+                        size={isSelectedSite ? 40 : 25}
+                        color={isSelectedSite ? selectedCampsiteIcon : campsiteIcon}
+                    />
 
                 </Marker>
             );

@@ -797,8 +797,7 @@ const styles = StyleSheet.create({
         backgroundColor: headerSemiWhiteTransparent,
     },
     facilities_features:{
-      backgroundColor:headerWhiteTransparent,
-      color:'white'
+      backgroundColor:headerWhiteTransparent
     },
     textContainer:{
         backgroundColor:headerWhiteTransparent,

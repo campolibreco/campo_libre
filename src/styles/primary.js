@@ -38,7 +38,7 @@ export const facebookBlue ='#3b5998';
 export const facebookBlueButtonTransparent ='rgba(59, 89, 152, .8)';
 
 // Campsite Icons
-export const selectedCampsiteIcon = '#228b22';
+export const selectedCampsiteIcon = sunsetOrange;
 export const campsiteIcon = '#105F73';
 
 // AddSiteForm
