@@ -119,7 +119,8 @@ export const reducerAlerts = {
 export const search_screen = {
     title: 'Search',
     header_title: 'Find a Site',
-    filter: 'Filter'
+    filter: 'Filter',
+    filtered: '*Filtered'
 };
 
 export const site_detail_screen = {

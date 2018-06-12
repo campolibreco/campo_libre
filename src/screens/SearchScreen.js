@@ -24,8 +24,9 @@ import {badgeGreen, limeGreenTitle, linkColorBlue, blueGreenNav} from '../styles
 
 import {map, navKeys} from '../constants';
 import {search_screen} from '../locale.en';
+import {bloodOrange} from "../styles";
 
-const {title, header_title, filter} = search_screen;
+const {title, header_title, filter, filtered} = search_screen;
 
 
 class SearchScreen extends Component {
@@ -44,6 +45,17 @@ class SearchScreen extends Component {
         setParams({buttonName: newViewStyle, toggleButton: this.toggleButton});
 
         this.props.mapHasLoaded();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const {filterCriteriaKeys} = nextProps;
+        const {navigation: {state: {params = {}}}} = this.props;
+
+        const sitesAreFiltered = filterCriteriaKeys.accessibility.length > 0 || filterCriteriaKeys.facilities.length > 0 || filterCriteriaKeys.features.length > 0 || filterCriteriaKeys.price.length > 0 || filterCriteriaKeys.forest.length > 0;
+
+        if (sitesAreFiltered !== params.sitesAreFiltered) {
+            this.props.navigation.setParams({sitesAreFiltered});
+        }
     }
 
     getNextViewStyle = () => {
@@ -79,12 +91,15 @@ class SearchScreen extends Component {
         }
     };
 
-    static renderRightNavButton = (navigate) => {
+    static renderRightNavButton = ({navigate, params}) => {
+        const {sitesAreFiltered} = params;
+
         if (Platform.OS === 'ios') {
             return (
                 <NavbarButton
-                    title={filter}
+                    title={sitesAreFiltered ? filtered : filter}
                     onPress={() => navigate(navKeys.FILTER)}
+                    textStyleOverride={{color: sitesAreFiltered ? bloodOrange: linkColorBlue}}
                 />
             );
         } else if (Platform.OS === 'android') {
@@ -99,7 +114,7 @@ class SearchScreen extends Component {
             title: title,
             headerTitle: header_title,
             headerLeft: SearchScreen.renderLeftNavButton(params),
-            headerRight: SearchScreen.renderRightNavButton(navigate),
+            headerRight: SearchScreen.renderRightNavButton({navigate, params}),
             tabBarIcon: ({focused, tintColor}) => (
                 <Icon type='ionicon' name={focused ? 'ios-search' : 'ios-search-outline'} size={25} color={tintColor}/>)
         }
@@ -163,10 +178,10 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-    const {lastKnownRegion, mapLoaded, viewStyle, displaySites, selectedSite} = state.map;
+    const {lastKnownRegion, mapLoaded, viewStyle, displaySites, selectedSite, filterCriteriaKeys} = state.map;
     const {token, appReady, currentUser} = state.auth;
 
-    return {lastKnownRegion, mapLoaded, viewStyle, token, appReady, currentUser, displaySites, selectedSite};
+    return {lastKnownRegion, mapLoaded, viewStyle, token, appReady, currentUser, displaySites, selectedSite, filterCriteriaKeys};
 }
 
 export default connect(mapStateToProps, {
