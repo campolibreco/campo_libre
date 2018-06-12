@@ -7,7 +7,7 @@ import _ from 'lodash';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import {LargeButton, SmallButton} from './common';
-import {getUserCreditName} from '../services/SiteInfoService';
+import {getUserCreditName, returnImageForSiteKey} from '../services/SiteInfoService';
 
 import {
     updateLatitudeText,
@@ -86,7 +86,12 @@ class SiteInfoInputForm extends Component {
         if (siteFormType === site_form_type.EDIT) {
             const {siteToEdit} = this.props;
 
-            this.props.newSiteToEditAvailable({siteToEdit});
+            returnImageForSiteKey({siteKey: this.props.siteToEdit.id})
+                .then(imageData => {
+                    siteToEdit.siteImageData = imageData;
+
+                    this.props.newSiteToEditAvailable({siteToEdit});
+                });
         }
     }
 
