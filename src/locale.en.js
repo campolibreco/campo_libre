@@ -120,7 +120,7 @@ export const search_screen = {
     title: 'Search',
     header_title: 'Find a Site',
     filter: 'Filter',
-    filtered: '*Filtered'
+    filtered: 'Filtered'
 };
 
 export const site_detail_screen = {
