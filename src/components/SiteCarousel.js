@@ -116,6 +116,8 @@ class SiteCarousel extends Component {
                     index={this.state.initialIndex}
                     onIndexChanged={this.setNextSelectedSite}
                     loop={false}
+                    dotStyle={{opacity: 0}}
+                    activeDotStyle={{opacity: 0}}
                 >
                     {this.renderSlides()}
                 </Swiper>
