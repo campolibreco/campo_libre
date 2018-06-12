@@ -162,7 +162,9 @@ const filterSites = ({sites, filterResultsScrutinyLoose, lastKnownRegion}, updat
         return accessibilityMatch && facilitiesMatch && priceMatch && featuresMatch && forestMatch;
     });
 
-    return filteredSites;
+    const sortedFilteredSites = _.sortBy(filteredSites, site => site.title);
+
+    return sortedFilteredSites;
 };
 
 export default (state = INITIAL_STATE, action) => {
