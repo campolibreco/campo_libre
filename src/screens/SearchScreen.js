@@ -20,11 +20,10 @@ import {
     attemptToAddFavorite,
     attemptToRemoveFavorite
 } from "../actions";
-import {badgeGreen, limeGreenTitle, linkColorBlue, blueGreenNav} from '../styles/index';
 
 import {map, navKeys} from '../constants';
 import {search_screen} from '../locale.en';
-import {bloodOrange} from "../styles";
+import {bloodOrange, sunsetOrange, badgeGreen, limeGreenTitle, linkColorBlue, blueGreenNav} from "../styles";
 
 const {title, header_title, filter, filtered} = search_screen;
 
@@ -99,7 +98,7 @@ class SearchScreen extends Component {
                 <NavbarButton
                     title={sitesAreFiltered ? filtered : filter}
                     onPress={() => navigate(navKeys.FILTER)}
-                    textStyleOverride={{color: sitesAreFiltered ? bloodOrange: linkColorBlue}}
+                    textStyleOverride={{color: sitesAreFiltered ? sunsetOrange: linkColorBlue}}
                 />
             );
         } else if (Platform.OS === 'android') {
