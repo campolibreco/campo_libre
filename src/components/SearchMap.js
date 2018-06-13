@@ -40,18 +40,10 @@ const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites, navigate, s
 
             return (
                 <Marker
-                    onPress={() => getSiteDetail({selectedSite: site})}
                     key={id}
                     coordinate={coordinate}
+                    identifier={id}
                 >
-
-                    {/*<Icon*/}
-                        {/*type='material-community'*/}
-                        {/*name='tent'*/}
-                        {/*reverse={isSelectedSite ? true : false}*/}
-                        {/*size={25}*/}
-                        {/*color={isSelectedSite ? selectedCampsiteIcon : campsiteIcon}*/}
-                    {/*/>*/}
 
                     <Icon
                         type='material-community'
@@ -76,6 +68,12 @@ const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites, navigate, s
         updateRegion(newRegion);
     };
 
+    const getSiteFromDisplaySites = ({id}) => {
+        const selectedSite = _.find(sites, site => site.id === id);
+
+        getSiteDetail({selectedSite});
+    };
+
 
     const renderMap = () => {
         if (mapLoaded) {
@@ -86,6 +84,8 @@ const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites, navigate, s
                         initialRegion={lastKnownRegion}
                         onRegionChangeComplete={onRegionChange}
                         rotateEnabled={false}
+                        onPress={() => getSiteDetail({selectedSite: null})}
+                        onMarkerPress={(event) => getSiteFromDisplaySites({id: event.nativeEvent.id})}
                     >
 
                         {renderSites()}
