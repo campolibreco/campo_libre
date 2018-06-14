@@ -2,6 +2,7 @@ import {Facebook} from 'expo';
 import axios from 'axios';
 import firebase from 'firebase';
 import 'firebase/firestore'
+import Sentry from 'sentry-expo';
 
 import _ from 'lodash';
 
@@ -18,7 +19,14 @@ import {tokens, navKeys} from '../constants';
 
 import {persistor} from '../store';
 
+const setSentryUserContext = ({user}) =>{
+    Sentry.setUserContext({email: user.email, extra:{name: user.name}});
+};
+
 const userLoginSuccess = ({dispatch, user, navigate}) => {
+
+    setSentryUserContext({user});
+
     dispatch({
         type: FACEBOOK_LOGIN_SUCCESS,
         payload: {token: user.email, currentUser: user, appReady: false}
@@ -164,6 +172,8 @@ export const checkAndSetToken = ({token, currentUser, navigate}) => {
                     payload: {token, appReady: false}
                 });
             } else {
+                setSentryUserContext({user: currentUser});
+
                 dispatch({
                     type: FACEBOOK_LOGIN_SUCCESS,
                     payload: {token, currentUser, appReady: false}
