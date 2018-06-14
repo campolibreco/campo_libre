@@ -261,8 +261,8 @@ class SiteDetailScreen extends Component {
 
         if (siteToShow && campsite_form.price_options[siteToShow.price] === campsite_form.price_options.paid_reservable) {
             return (
-                <View style={reservationInfoStyle}>
-                    <Text style={[textStyle, bottomMargin]}>
+                <View style={[reservationInfoStyle]}>
+                    <Text style={[textStyle]}>
                         {campsite_form.reserve_now}
                     </Text>
                     <TouchableOpacity
@@ -800,15 +800,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     reservationInfoStyle: {
-        flexDirection: 'row',
-        marginTop: -15
+        flexDirection: 'row'
     },
     overlayContainer: {
         flex: 1,
     },
     top: {
         margin: 20,
-        height: '30%',
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth: 1,
