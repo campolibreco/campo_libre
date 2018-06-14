@@ -41,12 +41,15 @@ const getUserFavorites = ({dispatch, currentUser, navigate}) => {
     firebase.firestore().collection(`users/${email}/favorites`)
         .get()
         .then(querySnapshot => {
-            const userFavorites = _.map(querySnapshot.docs, doc => {
-                let preparedFavorite = doc.data();
-                preparedFavorite.favoriteIsComplete = false;
+            let userFavorites = _(querySnapshot.docs)
+                .map(doc => {
+                    let preparedFavorite = doc.data();
+                    preparedFavorite.favoriteIsComplete = false;
 
-                return preparedFavorite;
-            });
+                    return preparedFavorite;
+                })
+                .sortBy(favorite => favorite.title)
+                .valueOf();
 
             currentUser.favorites = userFavorites;
         })
