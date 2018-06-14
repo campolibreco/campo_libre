@@ -90,7 +90,7 @@ class SiteDetailScreen extends Component {
                     <Icon type='ionicon'
                           name={isFavorite ? 'ios-heart' : 'ios-heart-outline'}
                           size={30}
-                          color={linkColorBlue}
+                          color={bloodOrange}
                     />
                 </TouchableOpacity>
             );
