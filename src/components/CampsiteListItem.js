@@ -28,7 +28,6 @@ const renderIcons = ({features, facilities}) => {
     const featureIcons = _.map(features, feature => {
         return (
             <Icon
-
                 containerStyle={{marginRight:-2, marginTop:-1}}
                 key={feature}
                 color={boogerGreen}
