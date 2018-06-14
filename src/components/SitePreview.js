@@ -85,7 +85,7 @@ class SitePreview extends Component {
     renderSelectedSitePreview = () => {
         if (this.props.siteToPreview && !_.isEmpty(this.props.siteToPreview)) {
             const {title, accessibility, features, facilities} = this.props.siteToPreview;
-            const {sitePreviewContainerStyle, touchableMainContainerStyle, mainInnerContainerStyle, topRowInfoStyle, titleRowStyle, bottomRowInfoStyle, bottomRowText, IconContainer} = styles;
+            const {sitePreviewContainerStyle, touchableMainContainerStyle, mainInnerContainerStyle, topRowInfoStyle, titleRowStyle, bottomRowInfoStyle, bottomRowText, IconContainer, closeIconContainerStyle} = styles;
 
             return (
                 <ImageBackground
@@ -95,15 +95,19 @@ class SitePreview extends Component {
                     onLoadStart={this.replaceImageData}
                 >
                     <TouchableOpacity style={touchableMainContainerStyle}
-                                      onPress={() => this.props.getSiteDetail({selectedSite: this.props.siteToPreview, navigate: this.props.navigate})}>
+                                      onPress={() => this.props.getSiteDetail({
+                                          selectedSite: this.props.siteToPreview,
+                                          navigate: this.props.navigate
+                                      })}>
                         <View style={mainInnerContainerStyle}>
                             <View style={topRowInfoStyle}>
                                 <Icon
-                                      type='material-community'
-                                      name='close-circle-outline'
-                                      size={40}
-                                      color={'black'}
-                                      onPress={() => this.props.getSiteDetail({selectedSite: null})}
+                                    type='ionicon'
+                                    name='md-close'
+                                    size={30}
+                                    color={'black'}
+                                    onPress={() => this.props.getSiteDetail({selectedSite: null})}
+                                    containerStyle={closeIconContainerStyle}
                                 />
 
                                 {this.renderFavoriteIcon()}
@@ -185,6 +189,9 @@ const styles = StyleSheet.create({
     IconContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap'
+    },
+    closeIconContainerStyle: {
+        backgroundColor: 'white', borderRadius: 80, height: 30, width: 30, marginTop: 5
     }
 });
 
