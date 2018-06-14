@@ -688,7 +688,9 @@ const styles = StyleSheet.create({
       paddingLeft:10,
       paddingRight:10,
       marginBottom:10,
-      marginTop:10
+      marginTop:10,
+      borderColor:'white',
+      borderWidth:2
     },
     descriptionText:{
       alignItems: 'center',
