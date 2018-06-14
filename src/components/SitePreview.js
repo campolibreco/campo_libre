@@ -67,6 +67,7 @@ class SitePreview extends Component {
                   size={40}
                   color={bloodOrange}
                   onPress={() => this.props.toggleSiteFavorite({siteToToggle: this.props.siteToPreview})}
+                  underlayColor={'rgba(0, 0, 0, 0)'}
             />
         );
     };
@@ -84,7 +85,7 @@ class SitePreview extends Component {
     renderSelectedSitePreview = () => {
         if (this.props.siteToPreview && !_.isEmpty(this.props.siteToPreview)) {
             const {title, accessibility, features, facilities} = this.props.siteToPreview;
-            const {sitePreviewContainerStyle, touchableMainContainerStyle, mainInnerContainerStyle, topRowInfoStyle, titleRowStyle, bottomRowInfoStyle, bottomRowText, closeIconStyle, IconContainer} = styles;
+            const {sitePreviewContainerStyle, touchableMainContainerStyle, mainInnerContainerStyle, topRowInfoStyle, titleRowStyle, bottomRowInfoStyle, bottomRowText, IconContainer} = styles;
 
             return (
                 <ImageBackground
@@ -97,11 +98,11 @@ class SitePreview extends Component {
                                       onPress={() => this.props.getSiteDetail({selectedSite: this.props.siteToPreview, navigate: this.props.navigate})}>
                         <View style={mainInnerContainerStyle}>
                             <View style={topRowInfoStyle}>
-                                <Icon style={closeIconStyle}
-                                      type='ionicon'
-                                      name='md-close-circle'
+                                <Icon
+                                      type='material-community'
+                                      name='close-circle-outline'
                                       size={40}
-                                      color={'white'}
+                                      color={'black'}
                                       onPress={() => this.props.getSiteDetail({selectedSite: null})}
                                 />
 
