@@ -56,7 +56,7 @@ class SiteMapViewScreen extends Component {
 
                 <MapView
                     style={fillScreen}
-                    onRegionChangeComplete={() => this.marker.showCallout()}
+                    onMapReady={() => this.marker.showCallout()}
                     initialRegion={{
                         longitude: coordinate.longitude,
                         latitude: coordinate.latitude,
@@ -67,7 +67,6 @@ class SiteMapViewScreen extends Component {
                     <Marker
                         ref={this.setMarkerRef}
                         coordinate={coordinate}
-                        showCallout={true}
                         title={click_for_maps}
                         onCalloutPress={this.onClickMarker}
                         onPress={this.onClickMarker}
