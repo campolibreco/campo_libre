@@ -30,10 +30,11 @@ class SitePreview extends Component {
         const featureIcons = _.map(features, feature => {
             return (
                 <Icon
+                   containerStyle={{marginRight:-2}}
                     key={feature}
                     color={boogerGreen}
                     reverse
-                    size={15}
+                    size={13}
                     name={featureIconDetails[feature].name}
                     type={featureIconDetails[feature].type}
                 />
@@ -43,10 +44,11 @@ class SitePreview extends Component {
         const facilityIcons = _.map(facilities, facility => {
             return (
                 <Icon
+                   containerStyle={{marginRight:-2}}
                     key={facility}
                     reverse
                     color={boogerGreen}
-                    size={15}
+                    size={13}
                     name={facilityIconDetails[facility].name}
                     type={facilityIconDetails[facility].type}
                 />
@@ -172,23 +174,27 @@ const styles = StyleSheet.create({
     titleRowStyle: {
         display: 'flex',
         flexDirection: 'row',
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
+        justifyContent:'center'
     },
     bottomRowInfoStyle: {
         margin: 10,
+        justifyContent:'center'
         // marginBottom: 180
     },
     bottomRowText: {
         color: 'white',
         fontWeight: 'bold',
         alignSelf: 'center',
+
         textShadowColor: 'rgba(0, 0, 0, 0.75)',
         textShadowOffset: {width: 1, height: 1},
         textShadowRadius: 3
     },
     IconContainer: {
         flexDirection: 'row',
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
+        justifyContent:'center'
     },
     closeIconContainerStyle: {
         backgroundColor: 'white', borderRadius: 80, height: 30, width: 30, marginTop: 5

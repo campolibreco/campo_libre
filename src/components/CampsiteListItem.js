@@ -15,7 +15,8 @@ import {
     RoyalBlueHighlight,
     blueGreenNav,
     gradientBlue,
-  bloodOrange
+    bloodOrange,
+    navBarBlue
 
  }from '../styles';
 import {campsite} from '../locale.en'
@@ -155,7 +156,10 @@ const styles = StyleSheet.create({
         marginBottom:8
     },
     badgeContainerStyle: {
-        backgroundColor: blueGreenNav,
+      borderWidth: 2,
+      backgroundColor:blueGreenNav,
+      borderColor:'white'
+
     },
     siteAvatarContainerStyle: {
         margin: 0,
@@ -180,7 +184,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingLeft: 10,
         marginBottom:8
-
     },
     accessibilityStyle: {
         color: bloodOrange,
