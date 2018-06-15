@@ -85,7 +85,7 @@ class SitePreview extends Component {
     renderSelectedSitePreview = () => {
         if (this.props.siteToPreview && !_.isEmpty(this.props.siteToPreview)) {
             const {title, accessibility, features, facilities} = this.props.siteToPreview;
-            const {sitePreviewContainerStyle, touchableMainContainerStyle, mainInnerContainerStyle, topRowInfoStyle, titleRowStyle, bottomRowInfoStyle, bottomRowText, IconContainer, closeIconContainerStyle} = styles;
+            const {sitePreviewContainerStyle, touchableMainContainerStyle, mainInnerContainerStyle, topRowInfoStyle, titleRowStyle, bottomRowInfoStyle, bottomRowText, iconContainer, closeIconContainerStyle} = styles;
 
             return (
                 <ImageBackground
@@ -116,12 +116,11 @@ class SitePreview extends Component {
 
                             <View style={bottomRowInfoStyle}>
                                 <View style={titleRowStyle}>
-                                    <Text h4 style={bottomRowText}>{title}</Text>
-                                    <Text style={bottomRowText}> - </Text>
-                                    <Text style={bottomRowText}>{accessibility_options[accessibility]}</Text>
+                                    <Text h4 style={bottomRowText} numberOfLines={1}>{title}</Text>
+                                    <Text style={bottomRowText} numberOfLines={1}>{accessibility_options[accessibility]}</Text>
                                 </View>
 
-                                <View style={IconContainer}>
+                                <View style={iconContainer}>
                                     {this.renderIcons({features, facilities})}
                                 </View>
                             </View>
@@ -148,7 +147,7 @@ const styles = StyleSheet.create({
     sitePreviewContainerStyle: {
         display: 'flex',
         width: SCREEN_WIDTH,
-        height: 200,
+        height: 300,
         alignContent: 'center',
         justifyContent: 'center',
         paddingBottom: 50
@@ -160,7 +159,7 @@ const styles = StyleSheet.create({
         flex: 1,
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
         backgroundColor: 'transparent'
     },
     topRowInfoStyle: {
@@ -171,22 +170,22 @@ const styles = StyleSheet.create({
     },
     titleRowStyle: {
         display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap'
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        flexWrap: 'nowrap'
     },
     bottomRowInfoStyle: {
-        margin: 10,
-        // marginBottom: 180
+        marginHorizontal: 40
     },
     bottomRowText: {
         color: 'white',
         fontWeight: 'bold',
-        alignSelf: 'center',
         textShadowColor: 'rgba(0, 0, 0, 0.75)',
         textShadowOffset: {width: 1, height: 1},
         textShadowRadius: 3
     },
-    IconContainer: {
+    iconContainer: {
+        marginHorizontal: -10,
         flexDirection: 'row',
         flexWrap: 'wrap'
     },
