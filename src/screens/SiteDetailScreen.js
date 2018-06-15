@@ -520,6 +520,7 @@ class SiteDetailScreen extends Component {
                         style={touchableContainerStyle}
                         onPress={this.onClickSiteImage}
                     >
+                      <Text style={header}>{title}</Text>
                         <ImageBackground
                             style={siteImageStyle}
                             resizeMode={'cover'}
@@ -527,7 +528,7 @@ class SiteDetailScreen extends Component {
                             onLoadStart={this.replaceImageData}
                         >
                             <View style={top}>
-                                <Text style={header}>{title}</Text>
+
                             </View>
                         </ImageBackground>
                     </TouchableOpacity>
@@ -800,20 +801,9 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     top: {
-
         flexDirection: 'column',
         justifyContent: 'flex-end',
-        // margin:20,
-        // alignSelf:'flex-end',
-        // height: '30%',
-        // alignItems: 'center',
-        // justifyContent: 'center',
-        // borderWidth:1,
-        // borderColor: headerWhiteMediumTransparent,
-        // paddingLeft: 10,
-        // paddingRight: 10,
-        // paddingTop:10,
-        // paddingBottom:10,
+        marginTop:250,
         backgroundColor: headerSemiWhiteTransparent
     },
     facilities_features: {
@@ -827,12 +817,14 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
     },
     header: {
-        color: bloodOrange,
+        color: sunsetOrange,
         alignSelf: 'center',
         textShadowColor: 'rgba(0, 0, 0, 0.55)',
         textShadowOffset: {width: 1, height: 1},
         textShadowRadius: 3,
         fontSize: 26,
+        paddingTop:20,
+        paddingBottom:15,
         textAlign: 'center'
     },
     adminOptionsButtonContainerStyle: {

@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import {TouchableOpacity, View, Platform, ScrollView, ActivityIndicator} from 'react-native';
 import {connect} from 'react-redux';
+import{LinearGradient} from 'expo'
 
 import _ from 'lodash';
 
 import {Icon, Overlay, Text, Card} from 'react-native-elements';
-import {linkColorBlue, facebookBlueButtonTransparent, navyBlueButton, errorRed, sunsetOrange} from '../styles';
+import {linkColorBlue, facebookBlueButtonTransparent,gradientMinte, grayBlueDark, navyBlueButton, errorRed, sunsetOrange} from '../styles';
 import {campsite, common, login} from '../locale.en';
 
 import CampsiteListItem from '../components/CampsiteListItem';
@@ -196,7 +197,19 @@ class AddSiteScreen extends Component {
             const {listContainerStyle} = styles;
 
             return (
-                <Card style={listContainerStyle}>
+              <View style={contentContainerStyle}>
+                  <LinearGradient
+                      colors={[grayBlueDark, gradientMinte]}
+                      start={[0, 0]}
+                      end={[0, 1]}
+                      style={{
+                          position: 'absolute',
+                          left: 0,
+                          right: 0,
+                          top: 0,
+                          height: 2000,
+                      }}
+                  />
                     <Text style={headerTitleStyle}>{pending_sites_header}</Text>
                     <Text style={infoTextStyle}>{pending_sites_description}</Text>
 
@@ -205,7 +218,7 @@ class AddSiteScreen extends Component {
                         getPendingSiteDetail: this.props.getPendingSiteDetail,
                         navigate
                     })}
-                </Card>
+</View>
             );
         } else {
             return null;
