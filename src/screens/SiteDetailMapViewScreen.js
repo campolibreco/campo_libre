@@ -10,7 +10,7 @@ const {Marker} = MapView;
 import _ from 'lodash';
 
 import { campsite, common} from '../locale.en';
-import {campsiteIcon, linkColorBlue, bloodOrange} from "../styles";
+import {campsiteIcon, linkColorBlue, bloodOrange, sunsetOrange} from "../styles";
 
 const {click_for_maps} = campsite;
 
@@ -56,7 +56,7 @@ class SiteMapViewScreen extends Component {
 
                 <MapView
                     style={fillScreen}
-                    onRegionChangeComplete={() => this.marker.showCallout()}
+                    onMapReady={() => this.marker.showCallout()}
                     initialRegion={{
                         longitude: coordinate.longitude,
                         latitude: coordinate.latitude,
@@ -67,13 +67,12 @@ class SiteMapViewScreen extends Component {
                     <Marker
                         ref={this.setMarkerRef}
                         coordinate={coordinate}
-                        showCallout={true}
                         title={click_for_maps}
                         onCalloutPress={this.onClickMarker}
                         onPress={this.onClickMarker}
                     >
 
-                        <Icon type='material-community' name='tent' size={25} color={sunsetOrange}/>
+                        <Icon type='material-community' name='tent' size={40} color={sunsetOrange}/>
 
                     </Marker>
                 </MapView>

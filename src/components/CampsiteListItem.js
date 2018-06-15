@@ -6,7 +6,19 @@ import {Card, ListItem, Button, Tile, List, Badge, Icon} from 'react-native-elem
 
 // styles and language
 import {featureIconDetails, facilityIconDetails} from '../constants';
-import {badgeGreen, limeGreenTitle, RoyalBlueHighlight, blueGreenNav} from '../styles';
+import {
+    badgeGreen,
+    limeGreenTitle,
+    boogerGreen,
+    grayBlueDark,
+    gradientMinte,
+    RoyalBlueHighlight,
+    blueGreenNav,
+    gradientBlue,
+    bloodOrange,
+    navBarBlue
+
+ }from '../styles';
 import {campsite} from '../locale.en'
 import _ from 'lodash';
 import {connect} from "react-redux";
@@ -17,7 +29,11 @@ const renderIcons = ({features, facilities}) => {
     const featureIcons = _.map(features, feature => {
         return (
             <Icon
+                containerStyle={{marginRight:-2, marginTop:-1}}
                 key={feature}
+                color={boogerGreen}
+                reverse
+                size={11}
                 name={featureIconDetails[feature].name}
                 type={featureIconDetails[feature].type}
             />
@@ -27,7 +43,11 @@ const renderIcons = ({features, facilities}) => {
     const facilityIcons = _.map(facilities, facility => {
         return (
             <Icon
+              containerStyle={{marginRight:-2, marginTop:-1}}
                 key={facility}
+                color={boogerGreen}
+                reverse
+                size={11}
                 name={facilityIconDetails[facility].name}
                 type={facilityIconDetails[facility].type}
             />
@@ -58,13 +78,24 @@ class CampsiteListItem extends Component {
         const {mainContainerStyle, contentContainerStyle, textStyle, IconContainer, subtitleView, titleContainerStyle, siteAvatarContainerStyle, titleView, nearestTownStyle, badgeWrapperStyle, badgeContainerStyle, accessibilityStyle} = styles
         const {campsite_form: {accessibility_options}} = campsite;
         const {title, description, nearestTown, accessibility, features, facilities} = this.props.site;
-        const preparedDescription = description && description.length > 57 ? `${description.substring(0, 57)}...` : description;
+        const preparedDescription = description && description.length > 48 ? `${description.substring(0, 48)}...` : description;
 
         return (
-            <ListItem
+                  <ListItem
+                      scaleProps={{
+                      friction: 90,
+                      tension: 100,
+                      activeScale: .98,
+                    }}
+                    linearGradientProps={{
+                      colors: [gradientMinte,grayBlueDark],
+                      start: [1, 0],
+                      end: [0.2, 0],
+              }}
                 containerStyle={mainContainerStyle}
                 titleStyle={contentContainerStyle}
                 bottomDivider={true}
+                chevronColor="white"
                 onPress={() => this.props.getSiteDetail({selectedSite: this.props.site, navigate: this.props.navigate})}
                 leftAvatar={
                     <Image
@@ -83,7 +114,7 @@ class CampsiteListItem extends Component {
                             <Text style={nearestTownStyle}>{nearestTown}</Text>
                         </Badge>
                         <View style={subtitleView}>
-                            <Text>{preparedDescription}</Text>
+                            <Text style={{color:'white'}}>{preparedDescription}</Text>
                         </View>
                         <View style={subtitleView}>
 
@@ -96,6 +127,8 @@ class CampsiteListItem extends Component {
                         {renderIcons({features, facilities})}
                     </View>
                 }
+                chevronColor="white"
+                chevron
             />
         )
 
@@ -110,47 +143,53 @@ const styles = StyleSheet.create({
         paddingRight: 14
     },
     titleContainerStyle: {
-        marginLeft: -15
+        marginLeft: -15,
+
     },
     IconContainer: {
         flexDirection: 'row',
-        marginLeft: -5,
-        paddingTop: 5
+        marginLeft:-15
     },
     badgeWrapperStyle: {
-        marginLeft: 10
+        marginLeft: 10,
+        width:135,
+        marginBottom:8
     },
     badgeContainerStyle: {
-        backgroundColor: blueGreenNav
+      borderWidth: 2,
+      backgroundColor:blueGreenNav,
+      borderColor:'white'
+
     },
     siteAvatarContainerStyle: {
         margin: 0,
         padding: 0,
-        borderRadius: 0,
+        borderRadius: 3,
         paddingLeft: 0,
-        height: 150,
-        width: 135
+        height: 175,
+        width: 125
     },
     nearestTownStyle: {
         color: 'white'
     },
     subtitleView: {
         flexDirection: 'row',
-        paddingLeft: 10,
-        paddingTop: 5
+        marginLeft:10,
+        marginBottom:8
     },
     titleView: {
-        fontSize: 17,
+        fontSize: 18,
         fontWeight: '600',
-        color: limeGreenTitle,
+        color: 'white',
         flexDirection: 'row',
         paddingLeft: 10,
-        paddingBottom: 5
+        marginBottom:8
     },
     accessibilityStyle: {
-        color: 'red',
-        borderStyle: 'solid'
-    }
+        color: bloodOrange,
+        borderStyle: 'solid',
+        fontWeight: '600',
+    },
 });
 
 

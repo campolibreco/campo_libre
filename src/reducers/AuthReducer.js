@@ -79,6 +79,7 @@ export default (state = INITIAL_STATE, action) => {
             updatedUserWithNewFavorite.favorites = _(updatedUserWithNewFavorite.favorites)
                 .concat(favoriteToAdd)
                 .uniqBy('id')
+                .sortBy(site => site.title)
                 .valueOf();
 
             return ({...state, currentUser: updatedUserWithNewFavorite});
