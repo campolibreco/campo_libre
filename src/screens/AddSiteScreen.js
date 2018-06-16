@@ -241,13 +241,13 @@ class AddSiteScreen extends Component {
 
     renderAddSiteScreen() {
         const {currentUser, pendingSites, pendingUploadSites} = this.props;
-        const {fillScreen, headerTitleStyle, infoTextStyle, facebookStyle} = styles;
+        const {fillScreen, headerTitleStyle, textSize, facebookStyle} = styles;
 
         if (!currentUser || currentUser.name === tokens.GUEST) {
             return (
                 <Card>
                     <Text style={headerTitleStyle}>{common.must_log_in}</Text>
-                    <Text style={infoTextStyle}>{must_log_in_detail}</Text>
+                    <Text style={textSize}>{must_log_in_detail}</Text>
 
                     <LargeButton
                         title={login.login_with_facebook}
@@ -304,6 +304,9 @@ const styles = {
     infoTextStyle: {
         fontSize: 15,
         marginBottom: 10
+    },
+    textSize: {
+        fontSize: 15,
     },
     errorTextStyle: {
         color: errorRed,

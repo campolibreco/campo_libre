@@ -11,7 +11,7 @@ import {
     limeGreenTitle,
     boogerGreen,
     grayBlueDark,
-    gradientMinte,
+    gradientDarkBlue,
     RoyalBlueHighlight,
     blueGreenNav,
     gradientBlue,
@@ -88,7 +88,7 @@ class CampsiteListItem extends Component {
                       activeScale: .98,
                     }}
                     linearGradientProps={{
-                      colors: [gradientMinte,grayBlueDark],
+                      colors: [gradientDarkBlue,grayBlueDark],
                       start: [1, 0],
                       end: [0.2, 0],
               }}

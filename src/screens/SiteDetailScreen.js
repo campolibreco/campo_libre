@@ -16,7 +16,7 @@ import {attemptToAddFavorite, attemptToRemoveFavorite, attemptToUploadNewSite} f
 import {
     linkColorBlue,
     gradientBlue,
-    gradientMinte,
+    gradientDarkBlue,
     navyBlueButton,
     mossGreen,
     limeGreenTitle,
@@ -535,7 +535,7 @@ class SiteDetailScreen extends Component {
 
                     <View style={[contentContainerStyle]}>
                         <LinearGradient
-                            colors={[grayBlueDark, gradientMinte]}
+                            colors={[grayBlueDark, gradientDarkBlue]}
                             start={[0, 0]}
                             end={[0, 1]}
                             style={gradientStyle}
