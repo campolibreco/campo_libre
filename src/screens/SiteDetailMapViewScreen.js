@@ -11,15 +11,17 @@ import _ from 'lodash';
 
 import { campsite, common} from '../locale.en';
 import {campsiteIcon, linkColorBlue, bloodOrange, sunsetOrange} from "../styles";
+import {getSiteToShow} from '../services/SiteInfoService';
 
 const {click_for_maps} = campsite;
 
 class SiteMapViewScreen extends Component {
 
     componentWillMount() {
-        const {selectedSite, navigation: {setParams}} = this.props;
+        const {navigation: {setParams}} = this.props;
+        const siteToShow = getSiteToShow(this.props);
 
-        setParams({siteTitle: selectedSite.title});
+        setParams({siteTitle: siteToShow.title});
     }
 
     setMarkerRef = (ref) => {
@@ -37,8 +39,9 @@ class SiteMapViewScreen extends Component {
     };
 
     onClickMarker = () => {
-        const {selectedSite} = this.props;
-        const {coordinate} = selectedSite;
+        const siteToShow = getSiteToShow(this.props);
+
+        const {coordinate} = siteToShow;
         const zoomLevel = 15;
         const mapLink = `http://maps.google.com/maps?q=${coordinate.latitude},${coordinate.longitude}&z=${zoomLevel}`;
 
@@ -48,10 +51,11 @@ class SiteMapViewScreen extends Component {
 
     renderSiteDetailMapViewScreen = () => {
         const {fillScreen} = styles;
-        const {selectedSite} = this.props;
-        const {coordinate} = selectedSite;
+        const siteToShow = getSiteToShow(this.props);
 
-        if (selectedSite) {
+        const {coordinate} = siteToShow;
+
+        if (siteToShow) {
             return (
 
                 <MapView
@@ -99,9 +103,9 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-    const {selectedSite} = state.map;
+    const {selectedSite, selectedPendingSite} = state.map;
 
-    return {selectedSite};
+    return {selectedSite, selectedPendingSite};
 }
 
 export default connect(mapStateToProps, {})(SiteMapViewScreen);
