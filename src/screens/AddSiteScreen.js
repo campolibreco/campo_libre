@@ -174,10 +174,10 @@ class AddSiteScreen extends Component {
 
         if (pendingUploadSites.length > 0) {
             const {navigation: {navigate}} = this.props;
-            const {listContainerStyle} = styles;
+            const {listContainerStyle, marginBottom} = styles;
 
             return (
-                <Card style={listContainerStyle}>
+                <View style={[listContainerStyle, marginBottom]}>
                     <Text style={headerTitleStyle}>{pending_upload_sites_header}</Text>
                     <Text style={infoTextStyle}>{pending_upload_sites_description}</Text>
                     {this.renderWaitingOnConnectionIfNecessary()}
@@ -187,7 +187,7 @@ class AddSiteScreen extends Component {
                         getPendingSiteDetail: this.props.getPendingSiteDetail,
                         navigate
                     })}
-                </Card>
+                </View>
             );
         } else {
             return null;
@@ -196,14 +196,14 @@ class AddSiteScreen extends Component {
 
     renderPendingApprovalSites() {
         const {pendingSites} = this.props;
-        const {contentContainerStyle, headerTitleStyle, infoTextStyle} = styles;
+        const {headerTitleStyle, infoTextStyle} = styles;
 
         if (pendingSites.length > 0) {
             const {navigation: {navigate}} = this.props;
             const {listContainerStyle} = styles;
 
             return (
-                <View style={contentContainerStyle}>
+                <View containerStyle={listContainerStyle}>
                     <Text style={headerTitleStyle}>{pending_sites_header}</Text>
                     <Text style={infoTextStyle}>{pending_sites_description}</Text>
 
@@ -313,13 +313,18 @@ const styles = {
     },
     listContainerStyle: {
         flex: 1,
-        marginTop: 20
+        marginTop: 20,
+        paddingLeft: 0,
+        paddingRight: 0
     },
     waitingSignalRowStyle: {
         flexDirection: 'row'
     },
     leftMargin: {
         marginLeft: 20
+    },
+    marginBottom: {
+        marginBottom: 30
     }
 
 };
