@@ -17,7 +17,9 @@ class SiteImageGalleryScreen extends Component {
     }
 
     render() {
-        returnImageForSiteKey({siteKey: this.props.selectedSite.id})
+        const siteToShow = getSiteToShow(this.props);
+
+        returnImageForSiteKey({siteKey: siteToShow.id})
             .then(imageData => {
                 this.setState({
                     siteImageData: {uri: `data:image/png;base64,${imageData}`},
@@ -47,9 +49,9 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-    const {selectedSite} = state.map;
+    const {selectedSite, selectedPendingSite} = state.map;
 
-    return {selectedSite};
+    return {selectedSite, selectedPendingSite};
 }
 
 export default connect(mapStateToProps, {})(SiteImageGalleryScreen);
