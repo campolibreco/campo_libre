@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end'
     },
     buttonStyle: {
-        fontSize: 50,
+        fontSize: 55,
         color: 'white',
         fontFamily: 'Arial',
         textShadowColor: 'rgba(0, 0, 0, 0.75)',
