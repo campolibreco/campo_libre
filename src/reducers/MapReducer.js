@@ -23,10 +23,10 @@ const {campsite_form: {accessibility_options, facilities_options, features_optio
 
 const INITIAL_STATE = {
     lastKnownRegion: {
-        latitude: 39.45920664966847,
-        latitudeDelta: 2.032473192672093,
-        longitude: -105.7341373487853,
-        longitudeDelta: 1.781939358781671
+        longitude: -105.56149,
+        latitude: 39.36128,
+        longitudeDelta: 1.105,
+        latitudeDelta: 1.263
     },
     mapLoaded: false,
     viewStyle: map.SearchOptions.MAP,
