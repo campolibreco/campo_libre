@@ -1,12 +1,18 @@
 import React, {Component} from 'react';
 import {TouchableOpacity, View, Platform, ScrollView, ActivityIndicator} from 'react-native';
 import {connect} from 'react-redux';
-import{LinearGradient} from 'expo'
 
 import _ from 'lodash';
 
 import {Icon, Overlay, Text, Card} from 'react-native-elements';
-import {linkColorBlue, facebookBlueButtonTransparent,gradientMinte, grayBlueDark, navyBlueButton, errorRed, sunsetOrange} from '../styles';
+import {
+    linkColorBlue,
+    facebookBlueButtonTransparent,
+    grayBlueDark,
+    navyBlueButton,
+    errorRed,
+    sunsetOrange
+} from '../styles';
 import {campsite, common, login} from '../locale.en';
 
 import CampsiteListItem from '../components/CampsiteListItem';
@@ -190,26 +196,14 @@ class AddSiteScreen extends Component {
 
     renderPendingApprovalSites() {
         const {pendingSites} = this.props;
-        const {headerTitleStyle, infoTextStyle} = styles;
+        const {contentContainerStyle, headerTitleStyle, infoTextStyle} = styles;
 
         if (pendingSites.length > 0) {
             const {navigation: {navigate}} = this.props;
             const {listContainerStyle} = styles;
 
             return (
-              <View style={contentContainerStyle}>
-                  <LinearGradient
-                      colors={[grayBlueDark, gradientMinte]}
-                      start={[0, 0]}
-                      end={[0, 1]}
-                      style={{
-                          position: 'absolute',
-                          left: 0,
-                          right: 0,
-                          top: 0,
-                          height: 2000,
-                      }}
-                  />
+                <View style={contentContainerStyle}>
                     <Text style={headerTitleStyle}>{pending_sites_header}</Text>
                     <Text style={infoTextStyle}>{pending_sites_description}</Text>
 
@@ -218,7 +212,7 @@ class AddSiteScreen extends Component {
                         getPendingSiteDetail: this.props.getPendingSiteDetail,
                         navigate
                     })}
-</View>
+                </View>
             );
         } else {
             return null;
@@ -241,7 +235,7 @@ class AddSiteScreen extends Component {
 
     renderAddSiteScreen() {
         const {currentUser, pendingSites, pendingUploadSites} = this.props;
-        const {fillScreen, headerTitleStyle, textSize, facebookStyle} = styles;
+        const {fillScreen, headerTitleStyle, infoTextStyle, textSize, facebookStyle} = styles;
 
         if (!currentUser || currentUser.name === tokens.GUEST) {
             return (

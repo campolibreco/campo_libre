@@ -88,10 +88,19 @@ const updateFilterKeys = ({filterCriteriaKeys}, filterKey) => {
     let updatedFilterKeyList = _.cloneDeep(filterCriteriaKeys);
 
     if (keyIsAlreadyInList) {
-        updatedFilterKeyList[filterCriteriaSubKey] = _.reject(filterCriteriaKeys[filterCriteriaSubKey], existingFilterKey => existingFilterKey === filterKey);
+        updatedFilterKeyList[filterCriteriaSubKey] = _.reject(updatedFilterKeyList[filterCriteriaSubKey], existingFilterKey => existingFilterKey === filterKey);
     } else {
-        updatedFilterKeyList[filterCriteriaSubKey] = _.concat(filterCriteriaKeys[filterCriteriaSubKey], filterKey);
+        if (filterCriteriaSubKey === 'facilities') {
+            if (filterKey === 'none') {
+                updatedFilterKeyList[filterCriteriaSubKey] = [];
+            } else {
+                updatedFilterKeyList[filterCriteriaSubKey] = _.reject(updatedFilterKeyList[filterCriteriaSubKey], existingFilterKey => existingFilterKey === 'none');
+            }
+        }
+
+        updatedFilterKeyList[filterCriteriaSubKey] = _.concat(updatedFilterKeyList[filterCriteriaSubKey], filterKey);
     }
+
 
     return updatedFilterKeyList;
 };
