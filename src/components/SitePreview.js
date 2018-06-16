@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
         marginHorizontal: -10,
         flexDirection: 'row',
         flexWrap: 'wrap',
-        justifyContent:'center'
+        justifyContent:'flex-start'
     },
     closeIconContainerStyle: {
         backgroundColor: 'white', borderRadius: 80, height: 30, width: 30, marginTop: 5
