@@ -90,14 +90,6 @@ const updateFilterKeys = ({filterCriteriaKeys}, filterKey) => {
     if (keyIsAlreadyInList) {
         updatedFilterKeyList[filterCriteriaSubKey] = _.reject(updatedFilterKeyList[filterCriteriaSubKey], existingFilterKey => existingFilterKey === filterKey);
     } else {
-        if (filterCriteriaSubKey === 'facilities') {
-            if (filterKey === 'none') {
-                updatedFilterKeyList[filterCriteriaSubKey] = [];
-            } else {
-                updatedFilterKeyList[filterCriteriaSubKey] = _.reject(updatedFilterKeyList[filterCriteriaSubKey], existingFilterKey => existingFilterKey === 'none');
-            }
-        }
-
         updatedFilterKeyList[filterCriteriaSubKey] = _.concat(updatedFilterKeyList[filterCriteriaSubKey], filterKey);
     }
 

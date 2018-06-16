@@ -109,7 +109,15 @@ const updateSiteDetailCheckboxesKeys = ({siteDetailCheckboxesKeys}, siteDetailCh
     if (keyIsAlreadyInList) {
         updatedSiteDetailCheckboxesKeyList[siteDetailCheckboxesSubKey] = _.reject(siteDetailCheckboxesKeys[siteDetailCheckboxesSubKey], existingSiteDetailCheckboxKey => existingSiteDetailCheckboxKey === siteDetailCheckboxKey);
     } else {
-        updatedSiteDetailCheckboxesKeyList[siteDetailCheckboxesSubKey] = _.concat(siteDetailCheckboxesKeys[siteDetailCheckboxesSubKey], siteDetailCheckboxKey);
+        if (siteDetailCheckboxesSubKey === 'facilities') {
+            if (siteDetailCheckboxKey === 'none') {
+                updatedSiteDetailCheckboxesKeyList[siteDetailCheckboxesSubKey] = [];
+            } else {
+                updatedSiteDetailCheckboxesKeyList[siteDetailCheckboxesSubKey] = _.reject(updatedSiteDetailCheckboxesKeyList[siteDetailCheckboxesSubKey], existingFilterKey => existingFilterKey === 'none');
+            }
+        }
+
+        updatedSiteDetailCheckboxesKeyList[siteDetailCheckboxesSubKey] = _.concat(updatedSiteDetailCheckboxesKeyList[siteDetailCheckboxesSubKey], siteDetailCheckboxKey);
     }
 
     return updatedSiteDetailCheckboxesKeyList;
