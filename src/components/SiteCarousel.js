@@ -107,7 +107,7 @@ class SiteCarousel extends Component {
             return null;
         }
 
-        const {carouselContainerStyle, swipeButtonRowStyle} = styles;
+        const {carouselContainerStyle, swipeButtonRowStyle, buttonStyle} = styles;
         return (
             <View style={carouselContainerStyle}>
                 <Swiper
@@ -118,6 +118,8 @@ class SiteCarousel extends Component {
                     loop={false}
                     dotStyle={{opacity: 0}}
                     activeDotStyle={{opacity: 0}}
+                    nextButton={<Text style={buttonStyle}>›</Text>}
+                    prevButton={<Text style={buttonStyle}>‹</Text>}
                 >
                     {this.renderSlides()}
                 </Swiper>
@@ -136,6 +138,14 @@ const styles = StyleSheet.create({
     },
     swipeButtonRowStyle: {
         alignItems: 'flex-end'
+    },
+    buttonStyle: {
+        fontSize: 50,
+        color: 'white',
+        fontFamily: 'Arial',
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowOffset: {width: 1, height: 1},
+        textShadowRadius: 3
     }
 });
 
