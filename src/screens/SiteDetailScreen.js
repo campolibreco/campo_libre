@@ -190,7 +190,7 @@ class SiteDetailScreen extends Component {
 
     renderMVUMInfo = () => {
         const siteToShow = getSiteToShow(this.props);
-        const {sectionTitleStyle, textContainer, textStyle, bottomMargin, hyperlinkStyle, badgeStyle} = styles;
+        const {centerText, textContainer, textStyle, bottomMargin, hyperlinkStyle, badgeStyle} = styles;
 
         if (siteToShow && siteToShow.mvum && mvum_names[siteToShow.mvum]) {
             return (
@@ -238,7 +238,7 @@ class SiteDetailScreen extends Component {
                         <Text style={[textStyle]}>
                             {counties[siteToShow.county]}
                         </Text>
-                        <Text>
+                        <Text style={[textStyle]}>
                             {' - '}
                         </Text>
                         <TouchableOpacity
@@ -504,7 +504,7 @@ class SiteDetailScreen extends Component {
     };
 
     renderSiteDetailScreen = () => {
-        const {textStyle, sectionTitleStyle, textContainer, facilities_features, overlayContainer, header, badgeStyle, descriptionText, top, mainTitleStyle, locationMainContainerStyle, mapThumbnailStyle, bottomMargin, topMargin, cardContainerStyle, contentContainerStyle, siteImageStyle, touchableContainerStyle, longLatContainerStyle} = styles;
+        const {textStyle, fillScreen, textContainer, gradientStyle, overlayContainer, header, badgeStyle, descriptionText, top, mainTitleStyle, locationMainContainerStyle, mapThumbnailStyle, bottomMargin, smallTopMargin, contentContainerStyle, siteImageStyle, touchableContainerStyle, longLatContainerStyle} = styles;
         const siteToShow = getSiteToShow(this.props);
 
         if (!siteToShow) {
@@ -533,18 +533,12 @@ class SiteDetailScreen extends Component {
                         </ImageBackground>
                     </TouchableOpacity>
 
-                    <View style={contentContainerStyle}>
+                    <View style={[contentContainerStyle]}>
                         <LinearGradient
                             colors={[grayBlueDark, gradientMinte]}
                             start={[0, 0]}
                             end={[0, 1]}
-                            style={{
-                                position: 'absolute',
-                                left: 0,
-                                right: 0,
-                                top: 0,
-                                height: 2000,
-                            }}
+                            style={gradientStyle}
                         />
                         <Text style={descriptionText}>
                             {description}
@@ -632,7 +626,7 @@ class SiteDetailScreen extends Component {
                                 <Text style={textStyle}>
                                     {campsite_form.latitude}: {coordinate.latitude.toFixed(5)}
                                 </Text>
-                                <Text style={[textStyle, bottomMargin]}>
+                                <Text style={[textStyle]}>
                                     {campsite_form.longitude}: {coordinate.longitude.toFixed(5)}
                                 </Text>
                             </View>
@@ -667,8 +661,8 @@ class SiteDetailScreen extends Component {
                         >
                         </Badge>
 
-                        <View style={textContainer}>
-                            <Text style={[textStyle, bottomMargin]}>
+                        <View style={[textContainer, bottomMargin]}>
+                            <Text style={[textStyle]}>
                                 {directions}
                             </Text>
                         </View>
@@ -731,12 +725,8 @@ const styles = StyleSheet.create({
     bottomMargin: {
         marginBottom: 20
     },
-    topMargin: {
-        marginTop: 20
-    },
-    cardContainerStyle: {
-        padding: 0,
-        marginBottom: 20
+    smallTopMargin: {
+        marginTop: 10
     },
     mainTitleStyle: {
         fontWeight: 'bold',
@@ -750,12 +740,12 @@ const styles = StyleSheet.create({
     sectionTitleStyle: {
         fontWeight: 'bold',
         fontSize: 25,
-        color: bloodOrange
+        color: sunsetOrange
     },
     locationMainContainerStyle: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'space-around',
+        justifyContent: 'space-between',
         alignContent: 'center'
     },
     mapThumbnailStyle: {
@@ -780,7 +770,7 @@ const styles = StyleSheet.create({
     contentContainerStyle: {
         paddingLeft: 15,
         paddingRight: 15,
-        marginBottom: 20,
+        paddingBottom: 20,
         backgroundColor: limeGreenTitle
     },
     touchableContainerStyle: {
@@ -788,8 +778,9 @@ const styles = StyleSheet.create({
         backgroundColor: grayBlueDark
     },
     hyperlinkStyle: {
-        color: hyperlinkBlue,
-        textDecorationLine: 'underline'
+        color: sunsetOrange,
+        textDecorationLine: 'underline',
+        fontWeight: 'bold'
     },
     countyInlineStyle: {
         flexDirection: 'row'
@@ -825,7 +816,10 @@ const styles = StyleSheet.create({
         fontSize: 26,
         paddingTop:20,
         paddingBottom:15,
-        textAlign: 'center'
+        textAlign: 'center',
+        marginTop: 10,
+        paddingLeft: 10,
+        paddingRight: 10
     },
     adminOptionsButtonContainerStyle: {
         flex: 1,
@@ -841,6 +835,16 @@ const styles = StyleSheet.create({
     longLatContainerStyle: {
         flexDirection: 'column',
         justifyContent: 'center'
+    },
+    gradientStyle: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0
+    },
+    centerText: {
+        textAlign: 'center'
     }
 });
 
