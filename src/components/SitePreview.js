@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     sitePreviewContainerStyle: {
         display: 'flex',
         width: SCREEN_WIDTH,
-        height: 300,
+        height: 200,
         alignContent: 'center',
         justifyContent: 'center',
         paddingBottom: 50
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
         flexWrap: 'nowrap'
     },
     bottomRowInfoStyle: {
-        marginHorizontal: 40
+        marginHorizontal: 35
     },
     bottomRowText: {
         color: 'white',
