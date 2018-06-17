@@ -151,14 +151,14 @@ class AddSiteScreen extends Component {
 
     renderWaitingOnConnectionIfNecessary() {
         const {pendingUploadSites} = this.props;
-        const {infoTextStyle, errorTextStyle, waitingSignalRowStyle, leftMargin} = styles;
+        const {infoTextStyle, errorTextStyle, waitingSignalRowStyle, leftMargin, padSides} = styles;
 
         const thereAreSitesToUpload = this.thereAreSitesToUpload({pendingUploadSites});
         const connectionIsStrongEnough = this.connectionIsStrongEnough(this.props);
 
         if (thereAreSitesToUpload && !connectionIsStrongEnough) {
             return (
-                <View style={waitingSignalRowStyle}>
+                <View style={[waitingSignalRowStyle, padSides]}>
                     <ActivityIndicator size='large'/>
                     <Text style={[infoTextStyle, errorTextStyle, leftMargin]}>{pending_upload_sites_waiting}</Text>
                 </View>
@@ -174,12 +174,12 @@ class AddSiteScreen extends Component {
 
         if (pendingUploadSites.length > 0) {
             const {navigation: {navigate}} = this.props;
-            const {listContainerStyle, marginBottom} = styles;
+            const {listContainerStyle, marginBottom, padSides} = styles;
 
             return (
-                <View style={[listContainerStyle, marginBottom]}>
+                <View style={listContainerStyle}>
                     <Text style={headerTitleStyle}>{pending_upload_sites_header}</Text>
-                    <Text style={infoTextStyle}>{pending_upload_sites_description}</Text>
+                    <Text style={[infoTextStyle, padSides]}>{pending_upload_sites_description}</Text>
                     {this.renderWaitingOnConnectionIfNecessary()}
 
                     {this.renderPendingSites({
@@ -200,12 +200,12 @@ class AddSiteScreen extends Component {
 
         if (pendingSites.length > 0) {
             const {navigation: {navigate}} = this.props;
-            const {listContainerStyle} = styles;
+            const {listContainerStyle, padSides} = styles;
 
             return (
-                <View containerStyle={listContainerStyle}>
+                <View style={listContainerStyle}>
                     <Text style={headerTitleStyle}>{pending_sites_header}</Text>
-                    <Text style={infoTextStyle}>{pending_sites_description}</Text>
+                    <Text style={[infoTextStyle, padSides]}>{pending_sites_description}</Text>
 
                     {this.renderPendingSites({
                         sites: pendingSites,
@@ -298,6 +298,10 @@ const styles = {
     infoTextStyle: {
         fontSize: 15,
         marginBottom: 10
+    },
+    padSides: {
+      paddingLeft: 20,
+      paddingRight: 20
     },
     textSize: {
         fontSize: 15,
