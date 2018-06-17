@@ -9,7 +9,7 @@
       "ios",
       "android"
     ],
-    "version": "0.0.55",
+    "version": "0.0.56",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -21,6 +21,9 @@
       "enabled": false,
       "checkAutomatically": "ON_ERROR_RECOVERY"
     },
+    "facebookAppId": "212219972689228",
+    "facebookDisplayName": "Campo Libre Colorado",
+    "facebookScheme": "fb212219972689228",
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.campo.libre",
