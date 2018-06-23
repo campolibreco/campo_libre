@@ -111,11 +111,6 @@ export const campsite = {
     }
 };
 
-export const reducerAlerts = {
-    site_upload_success: 'Successfully uploaded your site. Thanks!',
-    site_upload_error: 'Sorry, there was an error uploading your site. Please try again later.'
-};
-
 export const search_screen = {
     title: 'Search',
     header_title: 'Find a Site',

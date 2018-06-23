@@ -1,9 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, WebView, View} from 'react-native';
 import {connect} from 'react-redux';
-import Gallery from 'react-native-image-gallery';
-
-import _ from 'lodash';
 
 class MVUMInspectorScreen extends Component {
 

@@ -44,7 +44,7 @@ const userLoginFailure = ({dispatch, navigate}) => {
 };
 
 const getUserFavorites = ({dispatch, currentUser, navigate}) => {
-    const {name, email, imageUrl} = currentUser;
+    const {email} = currentUser;
 
     firebase.firestore().collection(`users/${email}/favorites`)
         .get()
@@ -90,8 +90,7 @@ const createUserInFirestore = ({dispatch, user, navigate}) => {
 };
 
 const getFirestoreUserObject = ({dispatch, user, navigate}) => {
-    const {name, email, imageUrl} = user;
-    const currentUser = firebase.auth().currentUser;
+    const {email} = user;
 
     firebase.firestore().collection('users').doc(`${email}`)
         .get()

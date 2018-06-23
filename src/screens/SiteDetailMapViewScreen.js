@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Linking, Platform} from 'react-native';
-import {Card, Text} from 'react-native-elements';
+import {View, StyleSheet, Linking} from 'react-native';
 import {Icon} from 'react-native-elements';
 import {connect} from 'react-redux';
 import {MapView} from 'expo';
@@ -9,8 +8,8 @@ const {Marker} = MapView;
 
 import _ from 'lodash';
 
-import { campsite, common} from '../locale.en';
-import {campsiteIcon, linkColorBlue, bloodOrange, sunsetOrange} from "../styles";
+import {campsite} from '../locale.en';
+import {sunsetOrange} from "../styles";
 import {getSiteToShow} from '../services/SiteInfoService';
 
 const {click_for_maps} = campsite;

@@ -6,7 +6,7 @@ import {Icon} from 'react-native-elements';
 import {NavbarButton} from '../components/common/';
 import SiteInfoInputForm from '../components/SiteInfoInputForm';
 
-import {campsite, submit_form, common} from '../locale.en';
+import {campsite} from '../locale.en';
 
 const {
     campsite_form: {
@@ -16,8 +16,6 @@ const {
 } = campsite;
 
 import {site_form_type} from '../constants';
-
-import {navyBlueButton, grey, mossGreen, darkBlue, inputLabel, bloodOrange,sunsetOrange, boogerGreen, eggShellWhite, navBarBlue} from '../styles';
 
 import {resetScreenFields} from '../actions';
 
@@ -44,6 +42,12 @@ class AddSiteFormScreen extends Component {
             );
         } else if (Platform.OS === 'android') {
             // android-specific code for navigation here
+            return (
+                <NavbarButton
+                    title={reset}
+                    onPress={onClickReset}
+                />
+            );
         }
     };
 
@@ -70,16 +74,5 @@ class AddSiteFormScreen extends Component {
         );
     }
 }
-
-const styles = {
-    headerTitle: {
-        flex: 1,
-        marginTop: 20,
-        color: mossGreen,
-        justifyContent: 'center',
-        alignSelf: 'center',
-    }
-};
-
 
 export default connect(null, {resetScreenFields})(AddSiteFormScreen);

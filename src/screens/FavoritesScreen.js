@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {View, ScrollView, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
-import {Icon, Text, Card, Button} from 'react-native-elements';
+import {Icon, Text, Card} from 'react-native-elements';
 
 import _ from 'lodash';
 
@@ -18,8 +18,7 @@ import {common, favorites, login} from '../locale.en';
 const {no_favorites_header, no_favorites_detail, must_log_in_detail} = favorites;
 
 class FavoritesScreen extends Component {
-    static navigationOptions = (props) => {
-        const {navigation: {navigate}} = props;
+    static navigationOptions = () => {
 
         return {
             title: 'Favorites',

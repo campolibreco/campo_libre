@@ -4,23 +4,22 @@ import {connect} from 'react-redux';
 
 import _ from 'lodash';
 
-import {Icon, Overlay, Text, Card} from 'react-native-elements';
-import {
-    linkColorBlue,
-    facebookBlueButtonTransparent,
-    grayBlueDark,
-    navyBlueButton,
-    errorRed,
-    sunsetOrange
-} from '../styles';
-import {campsite, common, login} from '../locale.en';
+import {Icon, Text, Card} from 'react-native-elements';
+
 
 import CampsiteListItem from '../components/CampsiteListItem';
 import {LargeButton} from '../components/common';
 
+import {
+    linkColorBlue,
+    facebookBlueButtonTransparent,
+    navyBlueButton,
+    errorRed,
+} from '../styles';
 
-import {connection_type, effective_connection_type, navKeys, site_form_type, tokens} from '../constants';
-import {add_site_screen} from '../locale.en';
+import {common, login, add_site_screen} from '../locale.en';
+
+import {connection_type, effective_connection_type, navKeys, tokens} from '../constants';
 
 const {title, header_title, must_log_in_detail, no_pending_sites_header, no_pending_sites_detail, pending_sites_header, pending_upload_sites_header, pending_upload_sites_description, pending_upload_sites_waiting, pending_sites_description} = add_site_screen;
 
@@ -69,11 +68,11 @@ class AddSiteScreen extends Component {
     }
 
     componentDidMount() {
-        const {currentUser, navigation: {setParams}, pendingUploadSites, uploadInProgress} = this.props;
+        const {currentUser, navigation: {setParams}, pendingUploadSites} = this.props;
 
         setParams({currentUser});
 
-        this._sub = this.props.navigation.addListener('didFocus', info => {
+        this._sub = this.props.navigation.addListener('didFocus', () => {
             const thereAreSitesToUpload = this.thereAreSitesToUpload({pendingUploadSites});
 
             if (thereAreSitesToUpload) {
@@ -114,6 +113,16 @@ class AddSiteScreen extends Component {
             );
         } else if (Platform.OS === 'android') {
             // android-specific code for navigation here
+            return (
+                <TouchableOpacity style={topRightIconStyle} onPress={() => navigate(navKeys.ADD_SITE_FORM)}>
+                    <Icon type='entypo'
+                          name='add-to-list'
+                          size={25}
+                          color={linkColorBlue}
+
+                    />
+                </TouchableOpacity>
+            );
         }
     };
 
@@ -174,7 +183,7 @@ class AddSiteScreen extends Component {
 
         if (pendingUploadSites.length > 0) {
             const {navigation: {navigate}} = this.props;
-            const {listContainerStyle, marginBottom, padSides} = styles;
+            const {listContainerStyle, padSides} = styles;
 
             return (
                 <View style={listContainerStyle}>
@@ -220,7 +229,6 @@ class AddSiteScreen extends Component {
     }
 
     renderAllPendingSites() {
-        const {navigation: {navigate}} = this.props;
         const {fillScreen} = styles;
 
         return (
@@ -333,7 +341,7 @@ const styles = {
 
 };
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
     const {currentUser} = state.auth;
     const {pendingSites} = state.map;
     const {connectionInfo, pendingUploadSites, uploadInProgress} = state.network;

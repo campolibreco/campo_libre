@@ -9,14 +9,10 @@ import {
     SITE_DIRECTIONS_TEXT_CHANGED,
     SITE_NEAREST_TOWN_TEXT_CHANGED,
     SITE_ACCESSIBILITY_OPTION_CHANGED,
-    SITE_FACILITIES_OPTION_CHANGED,
     SITE_PRICE_OPTION_CHANGED,
     ADD_SITE_FIELDS_RESET,
-    EDIT_SITE_FIELDS_RESET,
     CURRENT_LOCATION_UPDATED,
     CHECK_IF_SITE_IS_READY,
-    ADD_SITE_SUCCESS,
-    ADD_SITE_FAILURE,
     MAP_IS_INITIALIZING,
     SITE_DETAIL_CHECKBOX_UPDATED,
     FACEBOOK_LOGOUT_COMPLETE,
@@ -30,7 +26,7 @@ import {
     NEW_SITE_TO_EDIT, GIVE_ME_CREDIT_TOGGLE_UPDATED, SITE_ADDED_TO_PENDING_UPLOAD
 } from '../actions/types';
 
-import {campsite, reducerAlerts, counties, forest_names, mvum_names} from '../locale.en';
+import {campsite, counties, forest_names, mvum_names} from '../locale.en';
 import {site_form_type} from '../constants';
 
 const {campsite_form: {accessibility_options, facilities_options, price_options, features_options, cell_provider_options, cell_strength_options}} = campsite;

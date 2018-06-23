@@ -1,7 +1,5 @@
 import {NetInfo} from 'react-native';
 
-import _ from 'lodash';
-
 import {
 
     CONNECTION_INFO_UPDATED
@@ -18,13 +16,6 @@ const getCurrentConnectionInfo = ({dispatch}) => {
 
     });
 
-};
-
-const destroyConnectionListener = (connectionInfo) => {
-    NetInfo.removeEventListener(
-        'connectionChange',
-        getCurrentConnectionInfo
-    );
 };
 
 export const checkCurrentConnectionInfo = () => {

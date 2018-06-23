@@ -12,8 +12,8 @@ import {campsite} from '../locale.en';
 
 const {campsite_form: {accessibility_options}} = campsite;
 
-import {featureIconDetails, facilityIconDetails, tokens, general} from "../constants";
-import {badgeGreen, limeGreenTitle, RoyalBlueHighlight, bloodOrange, boogerGreen} from '../styles';
+import {featureIconDetails, facilityIconDetails, tokens} from "../constants";
+import {bloodOrange, boogerGreen} from '../styles';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 

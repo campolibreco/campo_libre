@@ -3,7 +3,6 @@ import {StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import Gallery from 'react-native-image-gallery';
 
-import _ from 'lodash';
 import {getSiteToShow, returnImageForSiteKey} from "../services/SiteInfoService";
 
 class SiteImageGalleryScreen extends Component {

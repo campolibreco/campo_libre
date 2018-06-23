@@ -1,7 +1,7 @@
 // 3rd party libraries - core
 import React, {Component} from 'react';
-import {View, StyleSheet, ActivityIndicator, Dimensions, ImageBackground, TouchableOpacity} from 'react-native';
-import {Icon, Card, Text} from 'react-native-elements';
+import {View, StyleSheet, Dimensions} from 'react-native';
+import {Text} from 'react-native-elements';
 import Swiper from 'react-native-swiper';
 import _ from 'lodash';
 
@@ -10,11 +10,8 @@ import SitePreview from './SitePreview';
 // 3rd party libraries - additional
 
 // styles and language
-import {campsite} from '../locale.en';
 import {attemptToAddFavorite, attemptToRemoveFavorite, getSiteDetail} from "../actions";
 import {connect} from "react-redux";
-
-const {campsite_form: {accessibility_options}} = campsite;
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -127,7 +124,7 @@ class SiteCarousel extends Component {
         );
     }
 
-};
+}
 
 const styles = StyleSheet.create({
     carouselContainerStyle: {

@@ -8,7 +8,7 @@ import {permissionResponses} from '../constants';
 
 import {permissions} from '../locale.en'
 
-const {GRANTED, DENIED, UNDETERMINED} = permissionResponses;
+const {GRANTED, UNDETERMINED} = permissionResponses;
 
 const INITIAL_STATE = {
     locationServicesPermission: UNDETERMINED,

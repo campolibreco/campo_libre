@@ -38,10 +38,6 @@ export const attemptToAddFavorite = ({favoriteSiteToAdd, currentUser}) => {
 export const attemptToRemoveFavorite = ({favoriteSiteToRemove, currentUser}) => {
 
     return async (dispatch) => {
-        const favoriteMetadata = {
-            title: favoriteSiteToRemove.title,
-            id: favoriteSiteToRemove.id,
-        };
 
         return firebase.firestore().doc(`users/${currentUser.email}/favorites/${favoriteSiteToRemove.title}`)
             .delete()

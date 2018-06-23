@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Text, ScrollView, View, StyleSheet, Platform, Switch} from 'react-native';
 import {connect} from "react-redux";
 import Accordion from 'react-native-collapsible/Accordion';
-import {CheckBox, Button, Icon} from 'react-native-elements';
+import {CheckBox, Icon} from 'react-native-elements';
 
 import _ from 'lodash';
 
@@ -10,8 +10,8 @@ import {NavbarButton} from '../components/common';
 
 import {checkboxWasClicked, resetAllFilters, filterToggleLogicUpdated} from "../actions";
 
-import {map, navKeys} from '../constants';
-import {campsiteIcon, grey} from "../styles";
+import {navKeys} from '../constants';
+import {campsiteIcon} from "../styles";
 import {campsite, filter_screen, forest_names} from '../locale.en';
 const {results} = filter_screen;
 
@@ -85,6 +85,12 @@ class FilterScreen extends Component {
             );
         } else if (Platform.OS === 'android') {
             // android-specific code for navigation here
+            return (
+                <NavbarButton
+                    title={_.isUndefined(siteCount) ? '' : `${siteCount} ${results}`}
+                    onPress={() => navigate(navKeys.SEARCH)}
+                />
+            );
         }
     };
 
@@ -98,6 +104,12 @@ class FilterScreen extends Component {
             );
         } else if (Platform.OS === 'android') {
             // android-specific code for navigation here
+            return (
+                <NavbarButton
+                    title={reset}
+                    onPress={onClickReset}
+                />
+            );
         }
     };
 

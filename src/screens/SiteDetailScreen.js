@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, ScrollView, Platform, TouchableOpacity, Image, ImageBackground} from 'react-native';
-import {Card, Text, ListItem, Badge} from 'react-native-elements';
+import {View, StyleSheet, ScrollView, Platform, TouchableOpacity, ImageBackground} from 'react-native';
+import {Text, ListItem, Badge} from 'react-native-elements';
 import {Icon} from 'react-native-elements';
 import {connect} from 'react-redux';
 import {MapView, LinearGradient} from 'expo';
@@ -14,31 +14,22 @@ import _ from 'lodash';
 import {attemptToAddFavorite, attemptToRemoveFavorite, attemptToUploadNewSite} from '../actions';
 
 import {
-    linkColorBlue,
-    gradientBlue,
     gradientDarkBlue,
     navyBlueButton,
-    mossGreen,
     limeGreenTitle,
     grayBlueDark,
     headerSemiWhiteTransparent,
-    headerWhiteMediumTransparent,
-    headerWhite,
-    overlayBlue,
     headerWhiteTransparent,
-    hyperlinkBlue,
-    campsiteIcon,
     bloodOrange,
     sunsetOrange,
     boogerGreen,
-    navBarBlue,
-    eggShellWhite
 } from '../styles';
 
 import {
-    navKeys, facilityIconDetails, featureIconDetails, map, tokens, mvum_links, external_links,
-    approval_state, site_form_type
+    navKeys, facilityIconDetails, featureIconDetails, tokens, mvum_links, external_links,
+    approval_state
 } from '../constants';
+
 import {submit_form, campsite, common, counties, forest_names, mvum_names, site_detail_screen} from '../locale.en';
 
 const {campsite_form, admin_options} = campsite;
@@ -116,6 +107,16 @@ class SiteDetailScreen extends Component {
             );
         } else if (Platform.OS === 'android') {
             // android-specific code for navigation here
+            return (
+                <TouchableOpacity style={topRightIconStyle}
+                                  onPress={() => toggleSiteFavorite({isFavorite, selectedSite, currentUser})}>
+                    <Icon type='ionicon'
+                          name={isFavorite ? 'ios-heart' : 'ios-heart-outline'}
+                          size={30}
+                          color={bloodOrange}
+                    />
+                </TouchableOpacity>
+            );
         }
     };
 
@@ -164,7 +165,7 @@ class SiteDetailScreen extends Component {
     renderAlternateSites = () => {
         const siteToShow = getSiteToShow(this.props);
 
-        const {sectionTitleStyle, textStyle, textContainer, bottomMargin, badgeStyle} = styles;
+        const {textStyle, textContainer, bottomMargin, badgeStyle} = styles;
 
         if (siteToShow && siteToShow.alternateSites) {
             return (
@@ -190,7 +191,7 @@ class SiteDetailScreen extends Component {
 
     renderMVUMInfo = () => {
         const siteToShow = getSiteToShow(this.props);
-        const {centerText, textContainer, textStyle, bottomMargin, hyperlinkStyle, badgeStyle} = styles;
+        const {textContainer, textStyle, bottomMargin, hyperlinkStyle, badgeStyle} = styles;
 
         if (siteToShow && siteToShow.mvum && mvum_names[siteToShow.mvum]) {
             return (
@@ -257,7 +258,7 @@ class SiteDetailScreen extends Component {
 
     renderReservationLinkIfNecessary = () => {
         const siteToShow = getSiteToShow(this.props);
-        const {textStyle, bottomMargin, hyperlinkStyle, reservationInfoStyle} = styles;
+        const {textStyle, hyperlinkStyle, reservationInfoStyle} = styles;
 
         if (siteToShow && campsite_form.price_options[siteToShow.price] === campsite_form.price_options.paid_reservable) {
             return (
@@ -280,7 +281,7 @@ class SiteDetailScreen extends Component {
 
     renderForestInfo = () => {
         const siteToShow = getSiteToShow(this.props);
-        const {sectionTitleStyle, textStyle, textContainer, bottomMargin, hyperlinkStyle, countyInlineStyle, badgeStyle} = styles;
+        const {textStyle, textContainer, bottomMargin, countyInlineStyle, badgeStyle} = styles;
 
         if (siteToShow && siteToShow.forest && forest_names[siteToShow.forest]) {
             return (
@@ -368,7 +369,6 @@ class SiteDetailScreen extends Component {
 
     renderAdminEditButton = () => {
         const {navigation: {navigate}} = this.props;
-        const siteToShow = getSiteToShow(this.props);
 
         return (
             <Icon
@@ -390,9 +390,6 @@ class SiteDetailScreen extends Component {
     };
 
     renderAdminForceSubmitButton = () => {
-        const {navigation: {navigate}} = this.props;
-        const siteToShow = getSiteToShow(this.props);
-
         const {submitButtonStyle} = styles;
 
         return (
@@ -408,7 +405,7 @@ class SiteDetailScreen extends Component {
     };
 
     renderUserCreditIfApplicable = () => {
-        const {sectionTitleStyle, textStyle, textContainer, bottomMargin, badgeStyle} = styles;
+        const {textStyle, textContainer, bottomMargin, badgeStyle} = styles;
         const siteToShow = getSiteToShow(this.props);
 
         if (!siteToShow || _.isEmpty(siteToShow)) {
@@ -462,7 +459,7 @@ class SiteDetailScreen extends Component {
     };
 
     renderAdminOptions = () => {
-        const {sectionTitleStyle, adminOptionsButtonContainerStyle} = styles;
+        const {sectionTitleStyle} = styles;
         const {currentUser} = this.props;
 
         if (!currentUser || !currentUser.isAdmin) {
@@ -504,14 +501,14 @@ class SiteDetailScreen extends Component {
     };
 
     renderSiteDetailScreen = () => {
-        const {textStyle, fillScreen, textContainer, gradientStyle, overlayContainer, header, badgeStyle, descriptionText, top, mainTitleStyle, locationMainContainerStyle, mapThumbnailStyle, bottomMargin, smallTopMargin, contentContainerStyle, siteImageStyle, touchableContainerStyle, longLatContainerStyle} = styles;
+        const {textStyle, textContainer, gradientStyle, header, badgeStyle, descriptionText, top, locationMainContainerStyle, mapThumbnailStyle, bottomMargin, contentContainerStyle, siteImageStyle, touchableContainerStyle, longLatContainerStyle} = styles;
         const siteToShow = getSiteToShow(this.props);
 
         if (!siteToShow) {
             return null;
         }
 
-        const {accessibility, coordinate, description, directions, facilities, features, nearestTown, price, title, county} = siteToShow;
+        const {accessibility, coordinate, description, directions, facilities, features, nearestTown, price, title} = siteToShow;
 
         if (siteToShow) {
             return (
@@ -520,7 +517,7 @@ class SiteDetailScreen extends Component {
                         style={touchableContainerStyle}
                         onPress={this.onClickSiteImage}
                     >
-                      <Text style={header}>{title}</Text>
+                        <Text style={header}>{title}</Text>
                         <ImageBackground
                             style={siteImageStyle}
                             resizeMode={'cover'}
@@ -794,7 +791,7 @@ const styles = StyleSheet.create({
     top: {
         flexDirection: 'column',
         justifyContent: 'flex-end',
-        marginTop:250,
+        marginTop: 250,
         backgroundColor: headerSemiWhiteTransparent
     },
     facilities_features: {
@@ -814,8 +811,8 @@ const styles = StyleSheet.create({
         textShadowOffset: {width: 1, height: 1},
         textShadowRadius: 3,
         fontSize: 26,
-        paddingTop:20,
-        paddingBottom:15,
+        paddingTop: 20,
+        paddingBottom: 15,
         textAlign: 'center',
         marginTop: 10,
         paddingLeft: 10,
@@ -828,7 +825,6 @@ const styles = StyleSheet.create({
     },
     submitButtonStyle: {
         marginTop: 10,
-        marginBottom: 10,
         backgroundColor: sunsetOrange,
         marginBottom: 100
     },

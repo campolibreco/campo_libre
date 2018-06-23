@@ -1,7 +1,5 @@
 import {
-    FAVORITE_ADDED,
     FAVORITE_ADD_FAILED,
-    FAVORITE_REMOVED,
     FAVORITE_REMOVE_FAILED
 } from '../actions/types';
 

@@ -11,15 +11,13 @@ import {checkAndSetToken, setGuestToken, logUserIntoFacebook, logUserOutOfFacebo
 // language and styles
 import {
     facebookBlueButtonTransparent,
-    grayblue,
     navyBlueButtonTransparent,
-    headerWhiteTransparent,
     overlayBlue,
     headerWhite
 } from '../styles';
 import {login} from '../locale.en';
 
-const {campo_libre, tagline, login_as_guest, login_with_facebook} = login;
+const {campo_libre, login_as_guest, login_with_facebook} = login;
 
 // our components - core
 // our components - additional
@@ -45,7 +43,7 @@ class LoginScreen extends Component {
         this.props.logUserIntoFacebook({navigate});
     };
 
-    static navigationOptions = (props) => {
+    static navigationOptions = () => {
 
         return {
             header: null
@@ -53,7 +51,7 @@ class LoginScreen extends Component {
     };
 
     renderPage() {
-        const {heroContainer, overlayContainer, top, header, buttonContainer, facebookStyle, buttonStyle, guestStyle} = styles;
+        const {heroContainer, overlayContainer, top, header, buttonContainer, facebookStyle, guestStyle} = styles;
 
         return (
             <ImageBackground
@@ -150,7 +148,7 @@ const styles = StyleSheet.create({
     }
 });
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
     const {token, appReady, currentUser} = state.auth;
 
     return {token, appReady, currentUser};

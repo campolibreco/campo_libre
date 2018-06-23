@@ -1,4 +1,4 @@
-import {AppLoading, WebBrowser} from 'expo';
+import {AppLoading} from 'expo';
 import React, {Component} from 'react';
 import {Platform, Text, View, ScrollView, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
@@ -49,6 +49,12 @@ class MoreScreen extends Component {
             );
         } else if (Platform.OS === 'android') {
             // android-specific code for navigation here
+            return (
+                <NavbarButton
+                    title={more_screen.right_nav}
+                    onPress={onLogout}
+                />
+            );
         }
     };
 
@@ -97,7 +103,7 @@ class MoreScreen extends Component {
     renderScreen() {
         const {headingStyle, cardStyle, listItemStyle} = styles;
 
-        const {appReady, currentUser} = this.props;
+        const {appReady} = this.props;
 
         if (!appReady) {
             return <AppLoading/>
@@ -204,7 +210,7 @@ const styles = StyleSheet.create({
     }
 });
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
     const {token, appReady, currentUser, unsubscribeApprovedCampsitesSnapshot, unsubscribePendingCampsitesSnapshot} = state.auth;
 
     return {token, appReady, currentUser, unsubscribeApprovedCampsitesSnapshot, unsubscribePendingCampsitesSnapshot};

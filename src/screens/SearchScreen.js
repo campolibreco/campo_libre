@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import {View, Text, ActivityIndicator, StyleSheet, Platform, Keyboard} from 'react-native';
-import {Button, Card} from 'react-native-elements';
-import {MapView, AppLoading} from 'expo';
+import {View, StyleSheet, Platform} from 'react-native';
+import {AppLoading} from 'expo';
 import {Icon} from 'react-native-elements';
 import {connect} from 'react-redux';
 
@@ -23,7 +22,7 @@ import {
 
 import {map, navKeys} from '../constants';
 import {search_screen} from '../locale.en';
-import {bloodOrange, sunsetOrange, badgeGreen, limeGreenTitle, linkColorBlue, blueGreenNav} from "../styles";
+import {sunsetOrange, linkColorBlue} from "../styles";
 
 const {title, header_title, filter, filtered} = search_screen;
 
@@ -37,7 +36,7 @@ class SearchScreen extends Component {
     }
 
     componentDidMount() {
-        const {lastKnownRegion, viewStyle, navigation: {setParams}} = this.props;
+        const {navigation: {setParams}} = this.props;
 
         const newViewStyle = this.getNextViewStyle();
 
@@ -87,6 +86,12 @@ class SearchScreen extends Component {
             );
         } else if (Platform.OS === 'android') {
             // android-specific code for navigation here
+            return (
+                <NavbarButton
+                    title={preparedName}
+                    onPress={toggleButton}
+                />
+            );
         }
     };
 
@@ -103,6 +108,13 @@ class SearchScreen extends Component {
             );
         } else if (Platform.OS === 'android') {
             // android-specific code for navigation here
+            return (
+                <NavbarButton
+                    title={sitesAreFiltered ? filtered : filter}
+                    onPress={() => navigate(navKeys.FILTER)}
+                    textStyleOverride={{color: sitesAreFiltered ? sunsetOrange: linkColorBlue}}
+                />
+            );
         }
     };
 
@@ -120,7 +132,7 @@ class SearchScreen extends Component {
     };
 
     renderSearchScreen = () => {
-        const {viewStyle, lastKnownRegion, mapLoaded, displaySites, selectedSite, currentUser, navigation: {navigate}} = this.props;
+        const {viewStyle, lastKnownRegion, mapLoaded, displaySites, selectedSite, navigation: {navigate}} = this.props;
 
         if (viewStyle === map.SearchOptions.MAP) {
             return (

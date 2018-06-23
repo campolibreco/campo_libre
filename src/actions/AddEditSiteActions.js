@@ -13,7 +13,6 @@ import {
     SITE_DIRECTIONS_TEXT_CHANGED,
     SITE_NEAREST_TOWN_TEXT_CHANGED,
     SITE_ACCESSIBILITY_OPTION_CHANGED,
-    SITE_FACILITIES_OPTION_CHANGED,
     SITE_PRICE_OPTION_CHANGED,
     ADD_SITE_FIELDS_RESET,
     ADD_SITE_SUCCESS,
@@ -39,7 +38,7 @@ import {
     DELETE_SITE_FAILURE
 } from './types';
 
-import {navKeys, site_form_type, campsite_collections, approval_state} from '../constants';
+import {navKeys, campsite_collections, approval_state} from '../constants';
 
 export const updateLatitudeText = ({latitudeText, siteFormType}) => {
     return {
@@ -250,7 +249,7 @@ export const attemptToUploadNewSite = (newSite, {navigate, goBack}, {currentUser
 
 };
 
-export const addNewSiteToPendingUploadQueue = (newSite, {navigate, goBack}) => {
+export const addNewSiteToPendingUploadQueue = (newSite, {navigate}) => {
 
     return (dispatch) => {
         navigate(navKeys.ADD_SITE);
@@ -259,7 +258,7 @@ export const addNewSiteToPendingUploadQueue = (newSite, {navigate, goBack}) => {
         newSite.id = createUniqueTitle(newSite);
 
         return AsyncStorage.setItem(newSite.id, newSite.siteImageData)
-            .then(result => {
+            .then(() => {
                 dispatch({
                     type: SITE_ADDED_TO_PENDING_UPLOAD,
                     payload: {newSite}

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {Alert, Picker, Platform, ScrollView, View, Image, Switch, TextInput} from 'react-native';
+import {Picker, View, Image, Switch, TextInput} from 'react-native';
 import {connect} from 'react-redux';
-import {Icon, Text, CheckBox, Input} from 'react-native-elements';
+import {Icon, Text, CheckBox} from 'react-native-elements';
 
 import _ from 'lodash';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
@@ -41,11 +41,10 @@ import {
     attemptToRejectSite
 } from '../actions';
 
-import {campsite, submit_form, common, more_screen, counties, mvum_names, forest_names} from '../locale.en';
+import {campsite, submit_form, common, counties, mvum_names, forest_names} from '../locale.en';
 
 const {
     campsite_form: {
-        reset,
         site_image,
         latitude, longitude,
         longitude_placeholder, latitude_placeholder,
@@ -70,9 +69,7 @@ const {submit, give_me_credit_title, give_me_credit_detail, give_me_credit_examp
 
 const {title, location} = common;
 
-import {approval_state, map, navKeys, permissionResponses, site_form_type} from '../constants';
-
-const {GRANTED, DENIED, UNDETERMINED} = permissionResponses;
+import {approval_state, site_form_type} from '../constants';
 
 import {navyBlueButton, grey, darkBlue, inputLabel, approveGreen, rejectRed} from '../styles';
 
@@ -95,7 +92,7 @@ class SiteInfoInputForm extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps() {
         const {siteFormType} = this.props;
 
         this.props.checkIfSiteIsReadyForUpload({siteFormType});
@@ -469,7 +466,7 @@ class SiteInfoInputForm extends Component {
 
     renderSubmitOptions = () => {
         const {siteReadyForUpload, siteFormType, goBack, approvalState} = this.props;
-        const {submitButtonStyle, lastElementStyle, adminOptionsButtonContainerStyle, iconButtonStyle, approveButtonStyle, cancelButtonStyle} = styles;
+        const {submitButtonStyle, lastElementStyle, adminOptionsButtonContainerStyle, approveButtonStyle, cancelButtonStyle} = styles;
 
         if (siteReadyForUpload && siteFormType === site_form_type.ADD) {
             return (
@@ -748,7 +745,6 @@ const styles = {
     },
     submitButtonStyle: {
         marginTop: 10,
-        marginBottom: 10,
         backgroundColor: navyBlueButton,
         marginBottom: 100
     },

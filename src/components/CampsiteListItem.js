@@ -1,27 +1,23 @@
 // 3rd party libraries - core
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, ScrollView, ImageBackground, Image} from 'react-native';
-import {Card, ListItem, Button, Tile, List, Badge, Icon} from 'react-native-elements';
+import {connect} from "react-redux";
+import {View, Text, StyleSheet, Image} from 'react-native';
+import {ListItem, Badge, Icon} from 'react-native-elements';
 // 3rd party libraries - additional
+
+import _ from 'lodash';
 
 // styles and language
 import {featureIconDetails, facilityIconDetails} from '../constants';
 import {
-    badgeGreen,
-    limeGreenTitle,
     boogerGreen,
     grayBlueDark,
     gradientDarkBlue,
-    RoyalBlueHighlight,
     blueGreenNav,
-    gradientBlue,
-    bloodOrange,
-    navBarBlue
+    bloodOrange
+} from '../styles';
 
- }from '../styles';
 import {campsite} from '../locale.en'
-import _ from 'lodash';
-import {connect} from "react-redux";
 import {returnImageForSiteKey} from "../services/SiteInfoService";
 
 
@@ -29,7 +25,7 @@ const renderIcons = ({features, facilities}) => {
     const featureIcons = _.map(features, feature => {
         return (
             <Icon
-                containerStyle={{marginRight:-2, marginTop:-1}}
+                containerStyle={{marginRight: -2, marginTop: -1}}
                 key={feature}
                 color={boogerGreen}
                 reverse
@@ -43,7 +39,7 @@ const renderIcons = ({features, facilities}) => {
     const facilityIcons = _.map(facilities, facility => {
         return (
             <Icon
-              containerStyle={{marginRight:-2, marginTop:-1}}
+                containerStyle={{marginRight: -2, marginTop: -1}}
                 key={facility}
                 color={boogerGreen}
                 reverse
@@ -75,26 +71,27 @@ class CampsiteListItem extends Component {
     };
 
     render() {
-        const {mainContainerStyle, contentContainerStyle, textStyle, IconContainer, subtitleView, titleContainerStyle, siteAvatarContainerStyle, titleView, nearestTownStyle, badgeWrapperStyle, badgeContainerStyle, accessibilityStyle} = styles
+        const {mainContainerStyle, contentContainerStyle, IconContainer, subtitleView, titleContainerStyle, siteAvatarContainerStyle, titleView, nearestTownStyle, badgeWrapperStyle, badgeContainerStyle, accessibilityStyle} = styles;
         const {campsite_form: {accessibility_options}} = campsite;
         const {title, description, nearestTown, accessibility, features, facilities} = this.props.site;
         const preparedDescription = description && description.length > 48 ? `${description.substring(0, 48)}...` : description;
 
         return (
-                  <ListItem
-                      scaleProps={{
-                      friction: 90,
-                      tension: 100,
-                      activeScale: .98,
-                    }}
-                    linearGradientProps={{
-                      colors: [gradientDarkBlue,grayBlueDark],
-                      start: [1, 0],
-                      end: [0.2, 0],
-              }}
+            <ListItem
+                scaleProps={{
+                    friction: 90,
+                    tension: 100,
+                    activeScale: .98,
+                }}
+                linearGradientProps={{
+                    colors: [gradientDarkBlue, grayBlueDark],
+                    start: [1, 0],
+                    end: [0.2, 0],
+                }}
                 containerStyle={mainContainerStyle}
                 titleStyle={contentContainerStyle}
                 bottomDivider={true}
+                chevron
                 chevronColor="white"
                 onPress={() => this.props.getSiteDetail({selectedSite: this.props.site, navigate: this.props.navigate})}
                 leftAvatar={
@@ -114,7 +111,7 @@ class CampsiteListItem extends Component {
                             <Text style={nearestTownStyle}>{nearestTown}</Text>
                         </Badge>
                         <View style={subtitleView}>
-                            <Text style={{color:'white'}}>{preparedDescription}</Text>
+                            <Text style={{color: 'white'}}>{preparedDescription}</Text>
                         </View>
                         <View style={subtitleView}>
 
@@ -127,8 +124,6 @@ class CampsiteListItem extends Component {
                         {renderIcons({features, facilities})}
                     </View>
                 }
-                chevronColor="white"
-                chevron
             />
         )
 
@@ -148,17 +143,17 @@ const styles = StyleSheet.create({
     },
     IconContainer: {
         flexDirection: 'row',
-        marginLeft:-15
+        marginLeft: -15
     },
     badgeWrapperStyle: {
         marginLeft: 10,
-        width:135,
-        marginBottom:8
+        width: 135,
+        marginBottom: 8
     },
     badgeContainerStyle: {
-      borderWidth: 2,
-      backgroundColor:blueGreenNav,
-      borderColor:'white'
+        borderWidth: 2,
+        backgroundColor: blueGreenNav,
+        borderColor: 'white'
 
     },
     siteAvatarContainerStyle: {
@@ -174,8 +169,8 @@ const styles = StyleSheet.create({
     },
     subtitleView: {
         flexDirection: 'row',
-        marginLeft:10,
-        marginBottom:8
+        marginLeft: 10,
+        marginBottom: 8
     },
     titleView: {
         fontSize: 18,
@@ -183,7 +178,7 @@ const styles = StyleSheet.create({
         color: 'white',
         flexDirection: 'row',
         paddingLeft: 10,
-        marginBottom:8
+        marginBottom: 8
     },
     accessibilityStyle: {
         color: bloodOrange,

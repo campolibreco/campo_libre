@@ -8,7 +8,7 @@ import _ from 'lodash';
 import {NavbarButton} from '../components/common/';
 import SiteInfoInputForm from '../components/SiteInfoInputForm';
 
-import {campsite, site_detail_screen} from '../locale.en';
+import {campsite} from '../locale.en';
 
 import {getSiteToShow} from '../services/SiteInfoService';
 
@@ -21,7 +21,7 @@ const {
 
 import {site_form_type} from '../constants';
 
-import {navyBlueButton, grey, darkBlue, inputLabel} from '../styles';
+import {navyBlueButton} from '../styles';
 
 import {resetScreenFields} from '../actions';
 
@@ -49,6 +49,12 @@ class EditSiteScreen extends Component {
             );
         } else if (Platform.OS === 'android') {
             // android-specific code for navigation here
+            return (
+                <NavbarButton
+                    title={reset}
+                    onPress={onClickReset}
+                />
+            );
         }
     };
 
@@ -79,16 +85,6 @@ class EditSiteScreen extends Component {
         );
     }
 }
-
-const styles = {
-    headerTitle: {
-        flex: 1,
-        marginTop: 20,
-        color: navyBlueButton,
-        justifyContent: 'center',
-        alignSelf: 'center',
-    }
-};
 
 function mapStateToProps(state) {
     const {selectedSite, selectedPendingSite} = state.map;

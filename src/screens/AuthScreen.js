@@ -1,5 +1,4 @@
 // 3rd part libraries - core
-import {AppLoading} from 'expo';
 import React, {Component} from 'react';
 import { ImageBackground } from 'react-native';
 import {connect} from 'react-redux';
@@ -13,7 +12,7 @@ import {connect} from 'react-redux';
 // our components - additional
 
 class AuthScreen extends Component {
-    static navigationOptions = (props) => {
+    static navigationOptions = () => {
 
         return {
             header: null
@@ -39,9 +38,4 @@ const styles = {
 
 };
 
-const mapStateToProps = (state, ownProps) => {
-
-    return {};
-};
-
-export default connect(mapStateToProps, {})(AuthScreen);
+export default connect(null, {})(AuthScreen);

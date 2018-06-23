@@ -1,7 +1,7 @@
 // 3rd party libraries - core
 import React from 'react';
-import {View, StyleSheet, ActivityIndicator, Dimensions, ImageBackground, TouchableOpacity} from 'react-native';
-import {Icon, Card, Text} from 'react-native-elements';
+import {View, StyleSheet, ActivityIndicator} from 'react-native';
+import {Icon} from 'react-native-elements';
 import {MapView} from 'expo';
 
 const {Marker} = MapView;
@@ -11,15 +11,8 @@ import SiteCarousel from './SiteCarousel';
 
 
 // styles and language
-import {campsite} from '../locale.en';
 
-const {campsite_form: {accessibility_options}} = campsite;
-
-import {featureIconDetails, facilityIconDetails} from "../constants";
-
-import {campsiteIcon, selectedCampsiteIcon, navyBlueButton, linkColorBlue} from '../styles';
-
-const SCREEN_WIDTH = Dimensions.get('window').width;
+import {campsiteIcon, selectedCampsiteIcon} from '../styles';
 
 const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites, navigate, selectedSite, getSiteDetail}) => {
     const {fillScreen, spinnerContainerStyle} = styles;
@@ -35,7 +28,7 @@ const SearchMap = ({mapLoaded, lastKnownRegion, updateRegion, sites, navigate, s
 
     const renderSites = () => {
         const renderedSites = _.map(sites, site => {
-            const {title, description, coordinate, id} = site;
+            const {coordinate, id} = site;
             const isSelectedSite = !!selectedSite && id === selectedSite.id;
 
             return (

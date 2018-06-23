@@ -5,8 +5,6 @@ import 'firebase/firestore'
 
 import _ from 'lodash';
 
-import {returnImageForSiteKey} from '../services/SiteInfoService';
-
 import {
     INITIALIZE_MAP,
     PENDING_SITES_UPDATE,
@@ -54,7 +52,7 @@ export const initializeMap = ({region}) => {
                 });
 
                 saveImageDataForAllSites({imageDataArray})
-                    .then(resp => {
+                    .then(() => {
                         dispatch({
                             type: INITIALIZE_MAP,
                             payload: {region, sites}
@@ -109,7 +107,7 @@ export const getPendingCampsites = ({currentUser}) => {
                     });
 
                     saveImageDataForAllSites({imageDataArray})
-                        .then(resp => {
+                        .then(() => {
                             dispatch({
                                 type: PENDING_SITES_UPDATE,
                                 payload: {pendingSites}
@@ -133,7 +131,7 @@ export const getPendingCampsites = ({currentUser}) => {
 
             const unsubscribePendingCampsitesSnapshot = firebase.firestore().collection('pending_campsites').where('uploadedBy.email', '==', `${currentUser.email}`)
                 .onSnapshot(querySnapshot => {
-                    const pendingSites = _.map(querySnapshot.docs, (doc, index) => {
+                    const pendingSites = _.map(querySnapshot.docs, (doc) => {
                         let preparedSite = _.clone(doc.data());
                         preparedSite.id = doc.id;
                         preparedSite.key = preparedSite.id;

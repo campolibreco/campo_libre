@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
 import {Provider} from 'react-redux';
 import firebase from 'firebase';
 import {TabNavigator, StackNavigator} from 'react-navigation';
@@ -39,7 +38,7 @@ import SiteImageGalleryScreen from "./src/screens/SiteImageGalleryScreen";
 import MVUMInspectorScreen from "./src/screens/MVUMInspectorScreen";
 
 import {store, persistor} from './src/store';
-import {blueGreenNav, linkColorBlue, navBarBlue} from "./src/styles";
+import {linkColorBlue, navBarBlue} from "./src/styles";
 
 class App extends Component {
     componentWillMount() {
@@ -51,7 +50,6 @@ class App extends Component {
     }
 
     render() {
-        const {navigatorContainerStyle} = styles;
 
         const MainNavigator = StackNavigator({
             [navKeys.LOGIN]: {
@@ -74,6 +72,8 @@ class App extends Component {
                     [navKeys.MORE]: {
                         screen: MoreScreen
                     }
+                }, {
+                    tabBarPosition: 'bottom'
                 })
             },
             [navKeys.FILTER]: {
@@ -143,7 +143,5 @@ class App extends Component {
         );
     }
 }
-
-const styles = StyleSheet.create({});
 
 export default App;
