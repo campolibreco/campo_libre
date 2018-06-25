@@ -40,6 +40,8 @@ import MVUMInspectorScreen from "./src/screens/MVUMInspectorScreen";
 import {store, persistor} from './src/store';
 import {linkColorBlue, navBarBlue} from "./src/styles";
 
+console.ignoredYellowBox = ['Setting a timer'];
+
 class App extends Component {
     componentWillMount() {
         firebase.initializeApp(FIREBASE_CONFIG);
@@ -120,6 +122,7 @@ class App extends Component {
         }, {
             navigationOptions: {
                 gesturesEnabled: false,
+                backBehavior: 'none',
                 headerTitleStyle: {
                     color: 'white'
                 },
