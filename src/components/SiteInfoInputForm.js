@@ -846,7 +846,6 @@ const styles = {
         justifyContent: 'space-between',
         alignContent: 'center'
     }
-
 };
 
 function mapStateToProps(state, ownProps) {

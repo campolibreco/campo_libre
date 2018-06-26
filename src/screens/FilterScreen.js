@@ -13,6 +13,7 @@ import {checkboxWasClicked, resetAllFilters, filterToggleLogicUpdated} from "../
 import {navKeys} from '../constants';
 import {campsiteIcon} from "../styles";
 import {campsite, filter_screen, forest_names} from '../locale.en';
+
 const {results} = filter_screen;
 
 const {campsite_form: {accessibility, facilities, price, features, accessibility_options, facilities_options, price_options, features_options, reset, filter, forest}} = campsite;
@@ -176,8 +177,8 @@ class FilterScreen extends Component {
         this.props.filterToggleLogicUpdated({filterToggleKey});
     };
 
-    renderToggleSwitch = ({title}) => {
-        const {toggleContainerStyle} = styles;
+    renderToggleSwitches = ({title}) => {
+        const {toggleContainerStyle, toggleRowStyle, textStyle, switchStyle, anyOfTheseStyle} = styles;
         const {filterResultsScrutinyLoose} = this.props;
 
         if (title === features || title === facilities) {
@@ -185,12 +186,22 @@ class FilterScreen extends Component {
 
             return (
                 <View style={toggleContainerStyle}>
-                    <Text>{filter.exactly_these}</Text>
-                    <Switch
-                        onValueChange={() => this.onFilterScrutinyToggleChange({filterToggleKey: lowercaseTitle})}
-                        value={filterResultsScrutinyLoose[lowercaseTitle]}
-                    />
-                    <Text>{filter.any_of_these}</Text>
+                    <View style={[toggleRowStyle]}>
+                        <Text style={textStyle}>{`${filter.exactly_these} ${lowercaseTitle}`}</Text>
+                        <Switch
+                            style={switchStyle}
+                            onValueChange={() => this.onFilterScrutinyToggleChange({filterToggleKey: lowercaseTitle})}
+                            value={!filterResultsScrutinyLoose[lowercaseTitle]}
+                        />
+                    </View>
+                    <View style={[toggleRowStyle, anyOfTheseStyle]}>
+                        <Text style={textStyle}>{`${filter.any_of_these} ${lowercaseTitle}`}</Text>
+                        <Switch
+                            style={switchStyle}
+                            onValueChange={() => this.onFilterScrutinyToggleChange({filterToggleKey: lowercaseTitle})}
+                            value={filterResultsScrutinyLoose[lowercaseTitle]}
+                        />
+                    </View>
                 </View>
             )
         }
@@ -201,7 +212,7 @@ class FilterScreen extends Component {
 
         return (
             <View style={contentStyle}>
-                {this.renderToggleSwitch(section)}
+                {this.renderToggleSwitches(section)}
                 {this.renderCheckboxes(section.content)}
             </View>
         );
@@ -255,12 +266,12 @@ class FilterScreen extends Component {
                 />
 
                 {/*<Accordion*/}
-                    {/*underlayColor={'#00000000'}*/}
-                    {/*initiallyActiveSection={collapsedState}*/}
-                    {/*style={accordionFilterStyle}*/}
-                    {/*sections={FOREST}*/}
-                    {/*renderHeader={this.renderHeader}*/}
-                    {/*renderContent={this.renderContent}*/}
+                {/*underlayColor={'#00000000'}*/}
+                {/*initiallyActiveSection={collapsedState}*/}
+                {/*style={accordionFilterStyle}*/}
+                {/*sections={FOREST}*/}
+                {/*renderHeader={this.renderHeader}*/}
+                {/*renderContent={this.renderContent}*/}
                 {/*/>*/}
 
                 <View style={bottomSpaceStyle}>
@@ -279,9 +290,9 @@ const styles = StyleSheet.create({
     bottomSpaceStyle: {
         marginTop: 50
     },
-    mainContainerStyle: {
+    mainContainerStyle: {},
+    accordionFilterStyle: {
     },
-    accordionFilterStyle: {},
     headerStyle: {
         height: 50,
         display: 'flex',
@@ -293,21 +304,39 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     toggleContainerStyle: {
-        marginTop: 20,
-        marginBottom: 10,
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        alignContent: 'center'
+        paddingTop: 20,
+        paddingBottom: 10,
+        backgroundColor: '#fafafa',
+        marginLeft: 10,
+        marginRight: 10
     },
     headerTextStyle: {
         justifyContent: 'center',
         alignItems: 'center'
     },
-    contentStyle: {},
+    contentStyle: {
+        marginBottom: 30
+    },
     contentTextStyle: {},
     checkBoxRowStyle: {
         margin: 0
+    },
+    toggleRowStyle: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignContent: 'center'
+    },
+    switchStyle: {
+        marginRight: 50
+    },
+    textStyle: {
+        marginLeft: 30,
+        fontWeight: 'bold',
+        color: '#43484d'
+    },
+    anyOfTheseStyle: {
+        marginTop: 10
     }
 });
 
