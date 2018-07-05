@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Campo Libre CO",
+    "name": "Campo Libre",
     "description": "It's time to get out there.",
     "slug": "campo-libre",
     "privacy": "unlisted",
@@ -9,7 +9,7 @@
       "ios",
       "android"
     ],
-    "version": "0.0.57",
+    "version": "0.0.59",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {

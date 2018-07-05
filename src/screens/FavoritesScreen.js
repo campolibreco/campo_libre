@@ -18,6 +18,17 @@ import {common, favorites, login} from '../locale.en';
 const {no_favorites_header, no_favorites_detail, must_log_in_detail} = favorites;
 
 class FavoritesScreen extends Component {
+
+    componentDidMount() {
+        this._sub = this.props.navigation.addListener('didFocus', () => {
+            this.props.getSiteDetail({selectedSite: null});
+        });
+    }
+
+    componentWillUnmount() {
+        this._sub.remove();
+    }
+
     static navigationOptions = () => {
 
         return {

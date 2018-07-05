@@ -8,7 +8,7 @@ import {NavbarButton} from '../components/common';
 
 import _ from 'lodash';
 
-import {logUserOutOfFacebook} from '../actions';
+import {logUserOutOfFacebook, getSiteDetail} from '../actions';
 
 import {more_screen} from '../locale.en';
 
@@ -21,8 +21,17 @@ const {co_fire_bans_url, build_a_safe_fire_url, camping_bear_safe_url, general_s
 import {APP_VERSION} from '../../env';
 
 class MoreScreen extends Component {
+
     componentDidMount() {
         this.props.navigation.setParams({onLogout: this.onLogout});
+
+        this._sub = this.props.navigation.addListener('didFocus', () => {
+            this.props.getSiteDetail({selectedSite: null});
+        });
+    }
+
+    componentWillUnmount() {
+        this._sub.remove();
     }
 
     onLogout = () => {
@@ -216,4 +225,4 @@ const mapStateToProps = (state) => {
     return {token, appReady, currentUser, unsubscribeApprovedCampsitesSnapshot, unsubscribePendingCampsitesSnapshot};
 };
 
-export default connect(mapStateToProps, {logUserOutOfFacebook})(MoreScreen);
+export default connect(mapStateToProps, {logUserOutOfFacebook, getSiteDetail})(MoreScreen);

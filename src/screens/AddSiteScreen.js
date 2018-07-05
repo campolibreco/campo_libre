@@ -29,7 +29,8 @@ import {
     getPendingSiteDetail,
     setUpConnectionListener,
     attemptToUploadNewSite,
-    checkCurrentConnectionInfo
+    checkCurrentConnectionInfo,
+    getSiteDetail
 } from '../actions';
 
 class AddSiteScreen extends Component {
@@ -73,6 +74,8 @@ class AddSiteScreen extends Component {
         setParams({currentUser});
 
         this._sub = this.props.navigation.addListener('didFocus', () => {
+            this.props.getSiteDetail({selectedSite: null});
+
             const thereAreSitesToUpload = this.thereAreSitesToUpload({pendingUploadSites});
 
             if (thereAreSitesToUpload) {
@@ -355,5 +358,6 @@ export default connect(mapStateToProps, {
     getPendingSiteDetail,
     setUpConnectionListener,
     attemptToUploadNewSite,
-    checkCurrentConnectionInfo
+    checkCurrentConnectionInfo,
+    getSiteDetail
 })(AddSiteScreen);
