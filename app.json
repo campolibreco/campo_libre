@@ -28,7 +28,8 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.campo.libre",
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "Your location will be used to help you pinpoint your GPS location when you're uploading a new campsite."
+        "NSLocationWhenInUseUsageDescription": "Your location will be used to help you pinpoint your GPS location when you're uploading a new campsite.",
+        "CFBundleDisplayName": "Campo Libre"
       }
     },
     "android": {

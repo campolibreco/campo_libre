@@ -113,7 +113,7 @@ export const mvum_links = {
     leadville: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd496304.pdf',
     san_carlos_front: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd553152.pdf',
     san_carlos_back: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd553153.pdf',
-    salida: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd518828.pdf',
+    salida: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd555442.pdf',
 
     san_juan_national_forest_divider: '',
     columbine: 'https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd492994.pdf',
