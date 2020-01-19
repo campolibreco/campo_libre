@@ -46,8 +46,6 @@ class App extends Component {
         firebase.initializeApp(FIREBASE_CONFIG);
 
         const firestore = firebase.firestore();
-        const settings = {timestampsInSnapshots: true};
-        firestore.settings(settings);
     }
 
     render() {
