@@ -22,6 +22,13 @@
     "redux-persist": "~5.9.1",
     "redux-thunk": "~2.2.0",
     "sentry-expo": "^1.9.0",
-    "watchman": "~1.0.0"
+    "watchman": "~1.0.0",
+    "expo-facebook": "~5.0.1",
+    "expo-image-picker": "~5.0.2",
+    "expo-permissions": "~5.0.1",
+    "expo-location": "~5.0.1",
+    "react-native-maps": "~0.24.0",
+    "expo-web-browser": "~5.0.2",
+    "expo-linear-gradient": "~5.0.1"
   }
 }

@@ -1,4 +1,6 @@
-import {Location, Permissions, ImagePicker} from 'expo';
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
+import * as Location from 'expo-location';
 
 import {
     LOCATION_SERVICES_PERMISSION_UPDATED,

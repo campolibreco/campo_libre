@@ -3,7 +3,7 @@ import {View, StyleSheet, Linking, Platform} from 'react-native';
 import {Card, Text} from 'react-native-elements';
 import {Icon} from 'react-native-elements';
 import {connect} from 'react-redux';
-import {MapView} from 'expo';
+import MapView from 'react-native-maps';
 
 const {Marker} = MapView;
 

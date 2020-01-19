@@ -2,7 +2,7 @@
 import React from 'react';
 import {View, StyleSheet, ActivityIndicator, Dimensions, ImageBackground, TouchableOpacity} from 'react-native';
 import {Icon, Card, Text} from 'react-native-elements';
-import {MapView} from 'expo';
+import MapView from 'react-native-maps';
 
 const {Marker} = MapView;
 import _ from 'lodash';

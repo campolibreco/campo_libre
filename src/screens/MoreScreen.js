@@ -1,4 +1,5 @@
-import {AppLoading, WebBrowser} from 'expo';
+import { AppLoading } from 'expo';
+import * as WebBrowser from 'expo-web-browser';
 import React, {Component} from 'react';
 import {Platform, Text, View, ScrollView, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
