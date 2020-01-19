@@ -8,17 +8,13 @@ import {AppLoading} from 'expo';
 
 import {FIREBASE_CONFIG, SENTRY_DSN} from './env';
 
-import Sentry from 'sentry-expo';
-import {SentrySeverity, SentryLog} from 'react-native-sentry';
+import * as Sentry from 'sentry-expo';
 
-Sentry.enableInExpoDevelopment = true;
-
-Sentry.config(
-    SENTRY_DSN,
-    {
-        logLevel: SentryLog.Debug
-    }
-).install();
+Sentry.init({
+    dsn: SENTRY_DSN,
+    enableInExpoDevelopment: true,
+    debug: true
+});
 
 
 import {navKeys} from './src/constants';
@@ -46,8 +42,6 @@ class App extends Component {
         firebase.initializeApp(FIREBASE_CONFIG);
 
         const firestore = firebase.firestore();
-        const settings = {timestampsInSnapshots: true};
-        firestore.settings(settings);
     }
 
     render() {

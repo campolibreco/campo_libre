@@ -1,4 +1,4 @@
-import {Facebook} from 'expo';
+import * as Facebook from 'expo-facebook';
 import axios from 'axios';
 import firebase from 'firebase';
 import 'firebase/firestore'

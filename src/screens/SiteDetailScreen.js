@@ -3,7 +3,8 @@ import {View, StyleSheet, ScrollView, Platform, TouchableOpacity, Image, ImageBa
 import {Card, Text, ListItem, Badge} from 'react-native-elements';
 import {Icon} from 'react-native-elements';
 import {connect} from 'react-redux';
-import {MapView, LinearGradient} from 'expo';
+import { LinearGradient } from 'expo-linear-gradient';
+import MapView from 'react-native-maps';
 
 const {Marker} = MapView;
 

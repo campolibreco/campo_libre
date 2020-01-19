@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {View, Text, ActivityIndicator, StyleSheet, Platform, Keyboard} from 'react-native';
 import {Button, Card} from 'react-native-elements';
-import {MapView, AppLoading} from 'expo';
+import { AppLoading } from 'expo';
+import MapView from 'react-native-maps';
 import {Icon} from 'react-native-elements';
 import {connect} from 'react-redux';
 

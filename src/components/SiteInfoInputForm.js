@@ -803,7 +803,7 @@ const styles = {
     },
     siteImageStyle: {
         flex: 1,
-        resizeMode: Image.resizeMode.contain
+        resizeMode: 'contain'
     },
     imageRowStyle: {
         display: 'flex',
